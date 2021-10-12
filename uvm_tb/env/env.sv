@@ -5,7 +5,7 @@
 // Class: env
 // <Description_here>
 //--------------------------------------------------------------------------------------------
-class env extends uvm_component;
+class env extends uvm_env;
   `uvm_component_utils(env)
 //declaring handle env config
   env_config e_cfg;
