@@ -1,4 +1,4 @@
-'ifdef BASE_TEST_INCLUDED_
+`ifdef _BASE_TEST_INCLUDED_
 `define _BASE_TEST_INCLUDED_
 
 ----------------------------------------------------------------------
@@ -13,14 +13,14 @@
           
             env envh;
 //              env_config e_cfg;
-                master_agent_config m_cfg[];
-                 slave_agent_config s_cfg[];
+ //               master_agent_config m_cfg[];
+   //              slave_agent_config s_cfg[];
 
 //---------------------------------------------
  // Externally defined tasks and functions
 //---------------------------------------------
        extern function new(string name = "base_test", uvm_component parent); 
-         extern function void configuration();
+     //    extern function void configuration();
          extern function void build_phase(uvm_phase phase);
        endclass:base_test 
 
@@ -35,7 +35,7 @@
  // Function: config
  // Creates the required ports
  //-----------------------------------------------------------------------------
-       function void base_test::configuration();
+    /*   function void base_test::configuration();
                                             
           uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg);
             
@@ -48,7 +48,7 @@
         m_cfg[i] = master_agent_config::type_id::create($sformatf("m_cfg[%0d]",i));
            end
          end
-  
+  */
    //-------------------------------------------------------------------  
    // Function: build_phase
                                                                                                                                                                        // Creates the required ports
@@ -57,13 +57,15 @@
    //  phase - stores the current phase
    //-----------------------------------------------------------------------------
                                                                                                                                                                               function void base_test::build_phase(uvm_phase phase);
-                                                                                                                                                                                  e_cfg = env_config::type_id::create("e_cfg")
+            super.build_phase(phase);
+            $display ("fatal");
+            /*                                                                                                                                                                      e_cfg = env_config::type_id::create("e_cfg")
                                                                                                                                                                                   if(has_m_agt)
                                                                                                                                                                                 e_cfg.m_cfg = new[no_of_magent];
                                                                                                                                                                                 configuration();
             uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg)
             super.build()
-            envh=env::type_id::create("envh", this);
+         */   envh=env::type_id::create("env", this);
           endfunction
   //--------------------------------------------------------------------------------------
                                                                                                                                                                          `endif

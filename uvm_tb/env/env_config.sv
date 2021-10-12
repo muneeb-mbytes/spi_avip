@@ -9,7 +9,7 @@ class env_config extends uvm_object;
   //register with factory so that we can use create uvm method
   //and override in future if necessary
   `uvm_object_utils(env_config)
-
+/*
  // bit has_scoreboard=1;
   bit has_m_agt=1;
 //  bit has_s_agt=1;
@@ -25,7 +25,7 @@ class env_config extends uvm_object;
   int no_of_mtop=1;
  // int no_of_stop=1;
  // int no_of_sb=1;
-  //-------------------------------------------------------
+ */ //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "env_config");

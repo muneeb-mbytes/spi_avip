@@ -1,4 +1,4 @@
-STER_AGENT_INCLUDED_
+`ifdef _MASTER_AGENT_INCLUDED_
 `define _MASTER_AGENT_INCLUDED_
 
 
@@ -20,9 +20,9 @@ class master_agent extends uvm_agent;
 //master monitor and master sequencer 
 
     //master_agent_config  m_cfg;
-    master_driver  m_drv;
-    master_monitor  m_mon;
-    master_sequencer m_seqrh;
+   // master_driver  m_drv;
+   // master_monitor  m_mon;
+   // master_sequencer m_seqrh;
   
 //---------------------------------------------
 // Externally defined tasks and functions
@@ -50,7 +50,7 @@ class master_agent extends uvm_agent;
   //       // Parameters:
   //       //  phase - stores the current phase 
   //       //-----------------------------------------------------------------------------
-      function void master_agent::build_phase(uvm_phase phase);
+     /* function void master_agent::build_phase(uvm_phase phase);
          super.build_phase(phase);
        if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
           begin
@@ -78,6 +78,9 @@ class master_agent extends uvm_agent;
             begin
             m_drv.seq_item_port.connect(m_seqrh.seq_item_export);
             end
-         endfunction:connect_phase
+         endfunction:connect_phase*/
 //------------------------------------------------------------------------------------
-    `endif
+     function void master_agent::build_phase(uvm_phase phase);
+     super.build_phase(phase);
+     endfunction
+  `endif
