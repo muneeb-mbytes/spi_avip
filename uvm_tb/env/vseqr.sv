@@ -1,6 +1,5 @@
-`ifndef VIRTUAL_SEQUENCER_INCLUDED_
-`define VIRTUAL_SEQUENCER_INCLUDED_
-
+`define VIRTUAL_SEQUENCER_INCLUDED
+`ifndef VIRTUAL_SEQUENCER_INCLUDED
 //-------------------------------------------------------
 //Class virtual sequencer 
 //
@@ -19,3 +18,5 @@
 
 
    endclass
+
+`endif
