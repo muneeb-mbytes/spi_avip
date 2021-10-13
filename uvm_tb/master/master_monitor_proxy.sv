@@ -20,7 +20,7 @@ class master_monitor_proxy extends uvm_component;
    //virtual spi_if.MMON_CB vif;
    
    //declaring handle for master config class
-     master_agent_config  m_cfg;
+//     master_agent_config  m_cfg;
    
    //declaring analysis port for the monitor port
    //uvm_analysis_port #(master_xtn)monitor_port;
@@ -50,7 +50,7 @@ function master_monitor_proxy::new(string name = "master_monitor_proxy",
   
   //creating monitor port
   
-  monitor_port=new("monitor_port",this);
+//  monitor_port=new("monitor_port",this);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -63,10 +63,10 @@ endfunction : new
 function void master_monitor_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
-        if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
+ /*       if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
         begin
         `uvm_fatal("TB CONFIG","cannot get() m_cfg from uvm_config");
-        end
+        end */
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------

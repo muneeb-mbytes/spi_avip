@@ -1,15 +1,16 @@
 //-------------------------------------------------------
 //Initiating the top module
 //-------------------------------------------------------
- import uvm_pkg::*;
+   import uvm_pkg::*;
   
   `include "uvm_macros.svh"
-  
-   `include "../test/test_pkg.sv"
+  `include "../test/test_pkg.sv"
+//  `include "../test/test_pkg.sv"
+  `include "../test/test_dup.sv"
    module hvl_top;
 
-    import test_pkg::*;
-
+     import test_pkg::*;
+//    import uvm_pkg::*;
     bit reset;
     bit clock;
 
@@ -33,6 +34,6 @@
     initial 
     begin
    //   uvm_config_db#(virtual spi_if)::set(null,"*","vif",in0);
-      run_test("base_test");
+      run_test("test_dup");
     end
   endmodule

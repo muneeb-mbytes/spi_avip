@@ -1,6 +1,5 @@
-`ifndef ENV_INCLUDED
-`define ENV_INCLUDED
-
+`ifndef ENV_INCLUDED_
+`define ENV_INCLUDED_
 
 
 //--------------------------------------------------------------------------------------------
@@ -12,7 +11,8 @@ class env extends uvm_env;
 //declaring handle env config
  // env_config e_cfg;
 //declaring handles for master and slave agent top 
-    master_agent magt;
+//    master_agent magt;
+     master_agent_dup magt;
 // master_agent mtop; 
 //    slave_agent_top stop;
 // declaring handles for master and slave agent config
@@ -53,7 +53,7 @@ function void env::build_phase(uvm_phase phase);
     // end
  //creating master agent top and slave agent top
  //  if(e_cfg.has_mtop == 1)begin
-   magt=master_agent::type_id::create("magt",this);
+    magt=master_agent_dup::type_id::create("master_agent_dup",this);
   // end
 //if(e_cfg.has_stop == 1)begin
 //   stop = slave_agent_top::type_id::create("stop",this);

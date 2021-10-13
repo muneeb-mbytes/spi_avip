@@ -21,7 +21,7 @@ class master_driver_proxy extends uvm_driver;
   
      
     //declaring handle for master agent config class 
-     master_agent_config m_cfg;
+//     master_agent_config m_cfg;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -55,10 +55,10 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void master_driver_proxy::build_phase(uvm_phase phase);
   
-      if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
+  /*    if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
       begin
       `uvm_fatal("TB CONFIG","cannot get() m_cfg from uvm_config");
-      end
+      end  */
   super.build_phase(phase);
 endfunction : build_phase
 

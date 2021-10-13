@@ -1,5 +1,5 @@
-`ifdef MASTER_AGENT_INCLUDED
-`define MASTER_AGENT_INCLUDED
+`ifdef MASTER_AGENT_INCLUDED_
+`define MASTER_AGENT_INCLUDED_
 
 
 //----------------------------------------------------------------------------
