@@ -1,3 +1,6 @@
+`ifndef VIRTUAL_SEQUENCER_INCLUDED_
+`define VIRTUAL_SEQUENCER_INCLUDED_
+
 //-------------------------------------------------------
 //Class virtual sequencer 
 //
