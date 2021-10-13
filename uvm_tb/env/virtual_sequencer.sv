@@ -14,7 +14,7 @@
 //Here the name of the sequencer is master_sequencer
 //and the handle assigned is m_seqr
 //-------------------------------------------------------
-   //  master_sequencer m_seqr;
+     master_sequencer m_seqr;
 
 
    endclass
