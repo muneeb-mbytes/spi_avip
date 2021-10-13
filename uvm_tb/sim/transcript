@@ -1,5 +1,5 @@
 # vsim -novopt work.hvl_top -c -do "log -r /*; add wave -r /*; run -all;" -wlf waveform.wlf 
-# Start time: 23:58:49 on Oct 12,2021
+# Start time: 01:41:16 on Oct 14,2021
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
 # //  Questa Sim
 # //  Version 10.6c linux Jul 25 2017
@@ -15,12 +15,12 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# Refreshing /pdtools/work_area/frontend/mukul/avip_pro/spi_avip/uvm_tb/sim/work.hvl_top
-# Refreshing /pdtools/work_area/frontend/mukul/avip_pro/spi_avip/uvm_tb/sim/work.test_pkg
+# Refreshing /pdtools/work_area/frontend/chetankumar/spi_avip-1/uvm_tb/sim/work.hvl_top
+# Refreshing /pdtools/work_area/frontend/chetankumar/spi_avip-1/uvm_tb/sim/work.test_pkg
 # Loading sv_std.std
 # Loading mtiUvm.uvm_pkg
 # Loading work.test_pkg
-# Refreshing /pdtools/work_area/frontend/mukul/avip_pro/spi_avip/uvm_tb/sim/work.top_sv_unit
+# Refreshing /pdtools/work_area/frontend/chetankumar/spi_avip-1/uvm_tb/sim/work.top_sv_unit
 # Loading work.top_sv_unit
 # Loading work.hvl_top
 # Loading mtiUvm.questa_uvm_pkg
@@ -50,21 +50,41 @@
 # 
 # UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
 # UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
-# UVM_WARNING @ 0: reporter [BDTYP] Cannot create a component of type 'base_test' because it is not registered with the factory.
-# UVM_FATAL @ 0: reporter [INVTST] Requested test from call to run_test(base_test) not found.
+# UVM_INFO @ 0: reporter [RNTST] Running test test_dup...
+# UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+# ---------------------------------------------------------------
+# Name                        Type                    Size  Value
+# ---------------------------------------------------------------
+# uvm_test_top                test_dup                -     @466 
+#   envh                      env                     -     @473 
+#     master_agent_dup        master_agent_dup        -     @480 
+#       master_driver_proxy   master_driver_proxy     -     @604 
+#         rsp_port            uvm_analysis_port       -     @619 
+#         seq_item_port       uvm_seq_item_pull_port  -     @611 
+#       master_monitor_proxy  master_monitor_proxy    -     @627 
+#       master_sequencer      master_sequencer        -     @495 
+#         rsp_export          uvm_analysis_export     -     @502 
+#         seq_item_export     uvm_seq_item_pull_imp   -     @596 
+#         arbitration_queue   array                   0     -    
+#         lock_queue          array                   0     -    
+#         num_last_reqs       integral                32    'd1  
+#         num_last_rsps       integral                32    'd1  
+#     virtual_sequencer       virtual_sequencer       -     @487 
+# ---------------------------------------------------------------
+# 
 # 
 # --- UVM Report Summary ---
 # 
 # ** Report counts by severity
-# UVM_INFO :    2
-# UVM_WARNING :    1
+# UVM_INFO :    4
+# UVM_WARNING :    0
 # UVM_ERROR :    0
-# UVM_FATAL :    1
+# UVM_FATAL :    0
 # ** Report counts by id
-# [BDTYP]     1
-# [INVTST]     1
 # [Questa UVM]     2
-# ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_report_object.svh(292)
-#    Time: 0 ns  Iteration: 0  Instance: /hvl_top
-# End time: 23:58:53 on Oct 12,2021, Elapsed time: 0:00:04
+# [RNTST]     1
+# [UVMTOP]     1
+# ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 0 ns  Iteration: 215  Instance: /hvl_top
+# End time: 01:41:20 on Oct 14,2021, Elapsed time: 0:00:04
 # Errors: 0, Warnings: 1

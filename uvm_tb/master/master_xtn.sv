@@ -17,7 +17,7 @@
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "master_xtn");
-
+  extern function void do_print(uvm_printer printer);
  endclass : master_xtn
 
 //--------------------------------------------------------------------------------------------
@@ -30,6 +30,11 @@
 function master_xtn::new(string name = "master_xtn");
   super.new(name);
 endfunction : new
+
+function void master_xtn::do_print(uvm_printer printer);
+    super.do_print(printer);
+  endfunction : do_print
+  
 
 `endif
 
