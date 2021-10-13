@@ -1,6 +1,6 @@
 module master_drv;
 
-virtual spi_if vif
+virtual spi_if vif;
 
 
 
