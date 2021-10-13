@@ -1,5 +1,5 @@
-`ifdef _BASE_TEST_INCLUDED_
-`define _BASE_TEST_INCLUDED_
+`ifdef BASE_TEST_INCLUDED_
+`define BASE_TEST_INCLUDED_
 
 ----------------------------------------------------------------------
 // Class: test
@@ -11,7 +11,7 @@
 
         `uvm_component_utils(base_test)
           
-            env envh;
+//            env envh;
 //              env_config e_cfg;
  //               master_agent_config m_cfg[];
    //              slave_agent_config s_cfg[];
@@ -65,7 +65,7 @@
                configuration();
             uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg)
             super.build()
-         */   envh=env::type_id::create("env", this);
+         */ //  envh=env::type_id::create("env", this);
           endfunction
   //--------------------------------------------------------------------------------------
         `endif
