@@ -19,12 +19,12 @@ class env extends uvm_env;
 //  master_agent_config m_cfg;
 //slave_agent_config s_cfg;
 //declaring handles for virtual sequencr and scoreboard
- //  virtual_sequencer v_sequencer;
+//  virtual_sequencer v_sequencer;
 // scoreboard sb; 
    
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
+//-------------------------------------------------------
+// Externally defined Tasks and Functions
+//-------------------------------------------------------
   extern function new(string name = "env", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
 //  extern virtual function void connect_phase(uvm_phase phase);
@@ -48,19 +48,20 @@ endfunction : new
 function void env::build_phase(uvm_phase phase);
    super.build_phase(phase);
    // if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg))
-  //  begin
-    // `uvm_fatal("CONFIG", "cannot get() e_cfg from uvm_config")
+   //  begin
+    //  `uvm_fatal("CONFIG", "cannot get() e_cfg from uvm_config")
     // end
  //creating master agent top and slave agent top
  //  if(e_cfg.has_mtop == 1)begin
     magt=master_agent_dup::type_id::create("master_agent_dup",this);
   // end
+
 //if(e_cfg.has_stop == 1)begin
 //   stop = slave_agent_top::type_id::create("stop",this);
 //   end 
 //creating virtual sequencer and scoreboard
   // if(e_cfg.has_virtual_sequencer==1)begin
-//   v_sequencer = virtual_sequencer::type_id::create("v_sequencer",this);
+  // v_sequencer = virtual_sequencer::type_id::create("v_sequencer",this);
   // end
 /* if(e_cfg.has_scoreboard == 1)begin
    sb = scoreboard::type_id::create("sb",this);
