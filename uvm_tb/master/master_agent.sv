@@ -1,8 +1,8 @@
-`ifdef _MASTER_AGENT_INCLUDED_
-`define _MASTER_AGENT_INCLUDED_
+`ifdef MASTER_AGENT_INCLUDED
+`define MASTER_AGENT_INCLUDED
 
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Class: master_agent
 // Description of the class.
 //agent is container called universal verification component
@@ -83,4 +83,5 @@ class master_agent extends uvm_agent;
      function void master_agent::build_phase(uvm_phase phase);
      super.build_phase(phase);
      endfunction
-  `endif
+   
+ `endif

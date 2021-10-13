@@ -51,21 +51,21 @@
   */
    //-------------------------------------------------------------------  
    // Function: build_phase
-                                                                                                                                                                       // Creates the required ports
+ // Creates the required ports
                                                                                                                                                                 
    // Parameters:
    //  phase - stores the current phase
    //-----------------------------------------------------------------------------
-                                                                                                                                                                              function void base_test::build_phase(uvm_phase phase);
+       function void base_test::build_phase(uvm_phase phase);
             super.build_phase(phase);
-            $display ("fatal");
-            /*                                                                                                                                                                      e_cfg = env_config::type_id::create("e_cfg")
-                                                                                                                                                                                  if(has_m_agt)
-                                                                                                                                                                                e_cfg.m_cfg = new[no_of_magent];
-                                                                                                                                                                                configuration();
+           
+            /* e_cfg = env_config::type_id::create("e_cfg")
+                if(has_m_agt)
+               e_cfg.m_cfg = new[no_of_magent];
+               configuration();
             uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg)
             super.build()
          */   envh=env::type_id::create("env", this);
           endfunction
   //--------------------------------------------------------------------------------------
-                                                                                                                                                                         `endif
+        `endif

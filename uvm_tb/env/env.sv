@@ -1,5 +1,7 @@
-`ifndef ENV_INCLUDED_
-`define ENV_INCLUDED_
+`ifndef ENV_INCLUDED
+`define ENV_INCLUDED
+
+
 
 //--------------------------------------------------------------------------------------------
 // Class: env
@@ -10,9 +12,9 @@ class env extends uvm_env;
 //declaring handle env config
  // env_config e_cfg;
 //declaring handles for master and slave agent top 
- // master_agent mtop;
- // master_agent mtop; 
-// slave_agent_top stop;
+    master_agent magt;
+// master_agent mtop; 
+//    slave_agent_top stop;
 // declaring handles for master and slave agent config
 //  master_agent_config m_cfg;
 //slave_agent_config s_cfg;
@@ -31,16 +33,8 @@ class env extends uvm_env;
 //extern virtual task run_phase(uvm_phase phase);
 
 endclass : env
-
 //--------------------------------------------------------------------------------------------
-// Construct: new
-//
-// Parameters:
-//  name - env
-//  parent - parent under which this component is created
-//--------------------------------------------------------------------------------------------
-function env::new(string name = "env",
-                                 uvm_component parent = null);
+function env::new(string name = "env",uvm_component parent = null);
   super.new(name, parent);
 endfunction : new
 
@@ -52,18 +46,18 @@ endfunction : new
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void env::build_phase(uvm_phase phase);
-  // if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg))
+   super.build_phase(phase);
+   // if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg))
   //  begin
     // `uvm_fatal("CONFIG", "cannot get() e_cfg from uvm_config")
     // end
-  super.build_phase(phase);
-//creating master agent top and slave agent top
+ //creating master agent top and slave agent top
  //  if(e_cfg.has_mtop == 1)begin
- //  mtop = master_agent::type_id::create("master_agent",this);
+   magt=master_agent::type_id::create("magt",this);
   // end
-/*if(e_cfg.has_stop == 1)begin
-   stop = slave_agent_top::type_id::create("stop",this);
-   end */
+//if(e_cfg.has_stop == 1)begin
+//   stop = slave_agent_top::type_id::create("stop",this);
+//   end 
 //creating virtual sequencer and scoreboard
   // if(e_cfg.has_virtual_sequencer==1)begin
 //   v_sequencer = virtual_sequencer::type_id::create("v_sequencer",this);
