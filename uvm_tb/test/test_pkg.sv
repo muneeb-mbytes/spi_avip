@@ -9,12 +9,12 @@ package test_pkg;
                 
  // `include "../master/master_driver_proxy.sv"
  // `include "../master/master_monitor_proxy.sv"    
- // `include "../master/master_sequencer.sv"
+  `include "../master/master_sequencer.sv"
   `include "../master/master_agent.sv"
  // `include "top.sv"
   //`include "master_sequence.sv"
                                   
-  `include "../env/vseqr.sv"
+  `include "../env/virtual_sequencer.sv"
  // `include "../env/virtual_sequence.sv"
   //`include "dut_wrapper.sv";
                                                          

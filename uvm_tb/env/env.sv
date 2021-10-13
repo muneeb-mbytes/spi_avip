@@ -17,7 +17,7 @@ class env extends uvm_env;
 //  master_agent_config m_cfg;
 //slave_agent_config s_cfg;
 //declaring handles for virtual sequencr and scoreboard
-   virtual_sequencer v_sequencer;
+ //  virtual_sequencer v_sequencer;
 // scoreboard sb; 
    
   //-------------------------------------------------------
@@ -66,7 +66,7 @@ function void env::build_phase(uvm_phase phase);
    end */
 //creating virtual sequencer and scoreboard
   // if(e_cfg.has_virtual_sequencer==1)begin
-   v_sequencer = virtual_sequencer::type_id::create("virtual_sequencer",this);
+//   v_sequencer = virtual_sequencer::type_id::create("v_sequencer",this);
   // end
 /* if(e_cfg.has_scoreboard == 1)begin
    sb = scoreboard::type_id::create("sb",this);
