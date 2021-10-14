@@ -17,7 +17,7 @@ class master_virtual_sequence extends uvm_sequence;
   
    //slave_sequencer s_seqr1;
    
-   env_config e_cfg;
+//   env_config e_cfg;
   
   //declaring virtual sequencer handle
    
