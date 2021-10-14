@@ -8,7 +8,7 @@
     `include "../master/master_driver_proxy.sv"
     `include "../master/master_monitor_proxy.sv"    
     `include "../master/master_sequencer.sv"
-    `include "../master/master_agent_dup.sv"
+    `include "../master/master_agent.sv"
   //`include "top.sv"
   //`include "master_sequence.sv"                                
     `include "../env/master_virtual_sequencer.sv"
@@ -16,7 +16,7 @@
   //`include "dut_wrapper.sv";
   //`include "../master/master_agent.sv"                                                      
     `include "../env/env.sv"                                                        
-    `include "test_dup.sv"
+    `include "mtest.sv"
  endpackage
 
 
