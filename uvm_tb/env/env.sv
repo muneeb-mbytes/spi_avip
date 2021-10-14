@@ -13,7 +13,7 @@ class env extends uvm_env;
 
 // declaring handles for master and slave agent top 
 //    master_agent magt;
-      master_agent_dup magt;
+      master_agent ma_h;
 //    master_agent mtop; 
 //    slave_agent_top stop;
 
@@ -21,7 +21,7 @@ class env extends uvm_env;
 //    master_agent_config m_cfg;
 //    slave_agent_config s_cfg;
 //    declaring handles for virtual sequencr and scoreboard
-      master_virtual_sequencer v_sqr_h;
+      master_virtual_sequencer m_v_sqr_h;
 //    scoreboard sb; 
    
 //-------------------------------------------------------
@@ -55,8 +55,8 @@ endclass : env
     //  end
     //creating master agent top and slave agent top
     //  if(e_cfg.has_mtop == 1)begin
-         magt=master_agent_dup::type_id::create("master_agent_dup",this);
-         v_sqr_h=master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
+         ma_h=master_agent::type_id::create("master_agent",this);
+        m_v_sqr_h=master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
     // end
 
     //if(e_cfg.has_stop == 1)begin

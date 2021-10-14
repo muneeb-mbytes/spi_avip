@@ -6,7 +6,7 @@
   `include "uvm_macros.svh"
   `include "../test/test_pkg.sv"
 //`include "../test/test_pkg.sv"
-  `include "../test/test_dup.sv"
+  `include "../test/mtest.sv"
    module hvl_top;
 
     import test_pkg::*;
@@ -33,6 +33,6 @@
     initial 
     begin
    //   uvm_config_db#(virtual spi_if)::set(null,"*","vif",in0);
-      run_test("test_dup");
+      run_test("mtest");
     end
   endmodule
