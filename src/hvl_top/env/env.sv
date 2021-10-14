@@ -12,16 +12,18 @@ class env extends uvm_env;
   // Factory registration to create uvm_method and override it
   //-------------------------------------------------------
   `uvm_component_utils(env)
+
   //-------------------------------------------------------
   // declaring master handles
   //-------------------------------------------------------
-    master_agent ma_h;
-    master_virtual_sequencer m_v_sqr_h;
+  master_agent ma_h;
+  master_virtual_sequencer m_v_sqr_h;
+  
   //-------------------------------------------------------
-  // Declaring handles for both
+  // Declaring slave handles
   //-------------------------------------------------------
   slave_agent sa_h;
-  slave_virtual_sequencer v_sqr_h;
+  slave_virtual_sequencer s_v_sqr_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -56,7 +58,7 @@ function void env::build_phase(uvm_phase phase);
   `uvm_info(get_full_name(),"ENV: build_phase",UVM_LOW);
   ma_h=master_agent::type_id::create("master_agent",this);
   m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
-  v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
+  s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
   sa_h = slave_agent::type_id::create("slave_agent",this);
 endfunction : build_phase
 
