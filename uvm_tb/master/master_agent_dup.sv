@@ -20,6 +20,7 @@ endclass
 function  master_agent_dup::new(string name="master_agent_dup",uvm_component parent = null);
   super.new(name,parent);
 endfunction : new
+//--------------------------------------------------------------------------------------------
 // Function: build_phase
 // <Description_here>
 //

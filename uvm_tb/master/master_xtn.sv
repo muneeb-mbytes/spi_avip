@@ -27,11 +27,11 @@
 // Parameters:
 //  name - master_xtn
 //--------------------------------------------------------------------------------------------
-function master_xtn::new(string name = "master_xtn");
-  super.new(name);
-endfunction : new
+  function master_xtn::new(string name = "master_xtn");
+    super.new(name);
+  endfunction : new
 
-function void master_xtn::do_print(uvm_printer printer);
+  function void master_xtn::do_print(uvm_printer printer);
     super.do_print(printer);
   endfunction : do_print
   

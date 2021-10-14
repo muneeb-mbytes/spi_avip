@@ -5,12 +5,12 @@
   
   `include "uvm_macros.svh"
   `include "../test/test_pkg.sv"
-//  `include "../test/test_pkg.sv"
+//`include "../test/test_pkg.sv"
   `include "../test/test_dup.sv"
    module hvl_top;
 
-     import test_pkg::*;
-//    import uvm_pkg::*;
+    import test_pkg::*;
+//  import uvm_pkg::*;
     bit reset;
     bit clock;
 //-------------------------------------------------------

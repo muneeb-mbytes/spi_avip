@@ -7,12 +7,12 @@
 //--------------------------------------------------------------------------------------------
 class virtual_sequencer extends uvm_component;
   `uvm_component_utils(virtual_sequencer)
-  master_sequencer m_sqr_h;
+   master_sequencer m_sqr_h;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "virtual_sequencer", uvm_component parent = null);
-  extern virtual function void build_phase(uvm_phase phase);
+   extern function new(string name = "virtual_sequencer", uvm_component parent = null);
+   extern virtual function void build_phase(uvm_phase phase);
 endclass : virtual_sequencer
 
 //--------------------------------------------------------------------------------------------

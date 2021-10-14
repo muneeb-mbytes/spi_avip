@@ -41,8 +41,7 @@ endclass : master_driver_proxy
 //  name - master_driver_proxy
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function master_driver_proxy::new(string name = "master_driver_proxy",
-                                 uvm_component parent = null);
+function master_driver_proxy::new(string name = "master_driver_proxy",uvm_component parent = null);
   super.new(name, parent);
 endfunction : new
 
