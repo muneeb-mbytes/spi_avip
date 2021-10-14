@@ -4,6 +4,8 @@ all:
 compile:
 	vlib work; 
 	vlog -sv \
+	+incdir+../src/hvl_top/master/ \
+	+incdir+../src/hdl_top/master_agent_bfm/  \
 	+incdir+../src/hvl_top/env/virtual_sequencer/ \
   +incdir+../src/hvl_top/test/virtual_sequence/ \
 	+incdir+../src/hvl_top/env \
