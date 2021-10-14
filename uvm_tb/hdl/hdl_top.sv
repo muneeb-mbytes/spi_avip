@@ -6,7 +6,7 @@
 
    `include "uvm_macros.svh"
 
-  module hdl_top;
+    module hdl_top;
 
     bit reset;
 
@@ -16,18 +16,18 @@
 // Generating CLock
 //-------------------------------------------------------
 
-    always 
-    begin
-      #10 clock=1;
-      #10 clock=0;
-    end
+      always 
+      begin
+       #10 clock=1;
+       #10 clock=0;
+      end
 
 //-------------------------------------------------------
 //  Here the interface name is spi_inf
 //-------------------------------------------------------
 
-    spi_in in1(clock);
+     spi_in in1(clock);
 
 
-  endmodule
+    endmodule
 

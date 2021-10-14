@@ -14,7 +14,7 @@
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "master_sequence");
+   extern function new(string name = "master_sequence");
   
  endclass : master_sequence
 

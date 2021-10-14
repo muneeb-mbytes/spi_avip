@@ -6,8 +6,7 @@
 //--------------------------------------------------------------------------------------------
 class test_dup extends uvm_test;
   `uvm_component_utils(test_dup)
-       env envh;
-
+   env envh;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -37,17 +36,11 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void test_dup::build_phase(uvm_phase phase);
   super.build_phase(phase);
-   envh=env::type_id::create("envh",this);
-   
+  envh=env::type_id::create("envh",this);
 endfunction : build_phase
 
  
 function void test_dup::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
-  
 endfunction : end_of_elaboration_phase
-
-
-
 `endif
-
