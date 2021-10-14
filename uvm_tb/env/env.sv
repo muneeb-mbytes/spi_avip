@@ -21,7 +21,7 @@ class env extends uvm_env;
 //    master_agent_config m_cfg;
 //    slave_agent_config s_cfg;
 //    declaring handles for virtual sequencr and scoreboard
-      virtual_sequencer v_sqr_h;
+      master_virtual_sequencer v_sqr_h;
 //    scoreboard sb; 
    
 //-------------------------------------------------------
@@ -56,15 +56,15 @@ endclass : env
     //creating master agent top and slave agent top
     //  if(e_cfg.has_mtop == 1)begin
          magt=master_agent_dup::type_id::create("master_agent_dup",this);
-         v_sqr_h=virtual_sequencer::type_id::create("virtual_sequencer",this);
+         v_sqr_h=master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
     // end
 
     //if(e_cfg.has_stop == 1)begin
     //stop = slave_agent_top::type_id::create("stop",this);
     //   end 
     //creating virtual sequencer and scoreboard
-    // if(e_cfg.has_virtual_sequencer==1)begin
-    // v_sequencer = virtual_sequencer::type_id::create("v_sequencer",this);
+    // if(e_cfg.has_master_virtual_sequencer==1)begin
+    // v_sequencer = master_virtual_sequencer::type_id::create("v_sequencer",this);
     // end
 /* if(e_cfg.has_scoreboard == 1)begin
    sb = scoreboard::type_id::create("sb",this);
@@ -81,7 +81,7 @@ endclass : env
 //--------------------------------------------------------------------------------------------
 /*function void env::connect_phase(uvm_phase phase);
 //  super.connect_phase(phase);
-   if(e_cfg.has_virtual_sequencer)
+   if(e_cfg.has_master_virtual_sequencer)
    begin
    if(e_cfg.has_mtop==1) 
    begin

@@ -11,7 +11,7 @@
     `include "../master/master_agent_dup.sv"
   //`include "top.sv"
   //`include "master_sequence.sv"                                
-    `include "../env/virtual_sequencer.sv"
+    `include "../env/master_virtual_sequencer.sv"
   //`include "../env/virtual_sequence.sv"
   //`include "dut_wrapper.sv";
   //`include "../master/master_agent.sv"                                                      
