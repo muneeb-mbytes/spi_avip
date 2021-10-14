@@ -21,7 +21,7 @@ package test_pkg;
   `include "master_monitor_proxy.sv"
   `include "master_agent.sv"
   
-  `include "virtual_sequence.sv"
+  `include "master_virtual_sequence.sv"
   `include "master_virtual_sequencer.sv"
   `include "env.sv"
   `include "mtest.sv"
