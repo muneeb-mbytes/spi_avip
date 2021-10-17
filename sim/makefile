@@ -1,5 +1,5 @@
 all:
-	make clean; make compile; make simulate; make clean;
+	make compile; make simulate; make clean;
 
 compile:
 	vlib work; 
