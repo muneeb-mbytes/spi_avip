@@ -1,5 +1,5 @@
 all:
-	make clean; make compile; make simulate
+	make clean; make compile; make simulate; make clean;
 
 compile:
 	vlib work; 
@@ -22,4 +22,4 @@ simulate:
 	-wlf waveform.wlf
 
 clean:
-	rm -rf work/ transcript vsim.wlf
+	rm -rf work/ transcript waveform.wlf
