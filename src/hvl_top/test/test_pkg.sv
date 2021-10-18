@@ -20,11 +20,10 @@ package test_pkg;
   `include "master_monitor_proxy.sv"
   `include "master_agent.sv"
   
-//  `include "master_virtual_sequence.sv"
+//`include "master_virtual_sequence.sv"
   `include "master_virtual_sequencer.sv"
  
-  // `include "master_agent_config.sv"
-  //`include "env_config.sv"
+  `include "master_agent_config.sv"
    
   //-------------------------------------------------------
   // Include all other files

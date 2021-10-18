@@ -19,6 +19,8 @@ class base_test extends uvm_test;
    //-------------------------------------------------------
    // Declaring Agent Config Handles
    //-------------------------------------------------------
+  
+   master_agent_config ma_cfg_h;
    slave_agent_config sa_cfg_h[];
 
    //-------------------------------------------------------
@@ -62,6 +64,10 @@ endfunction : new
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   e_cfg_h = env_config::type_id::create("e_cfg_h");
+ 
+  ma_cfg_h=master_agent_config::type_id::create("ma_cfg_h");
+  e_cfg_h.ma_cfg_h=ma_cfg_h;
+
   e_cfg_h.sa_cfg_h = new[no_of_sagent];
   env_h = env::type_id::create("env",this);
 

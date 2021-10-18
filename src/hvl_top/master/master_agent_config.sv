@@ -1,28 +1,28 @@
-`ifndef ENV_CONFIG_INCLUDED_
-`define ENV_CONFIG_INCLUDED_
+`ifndef SLAVE_AGENT_CONFIG_INCLUDED_
+`define SLAVE_AGENT_CONFIG_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: env_config
+// Class: master_agent_config
 // <Description_here>
 //--------------------------------------------------------------------------------------------
-class env_config extends uvm_object;
-  `uvm_object_utils(env_config)
-  
-  master_agent_config ma_cfg_h;
-  slave_agent_config sa_cfg_h[];
+class master_agent_config extends uvm_object;
+  `uvm_object_utils(master_agent_config)
+
+  uvm_active_passive_enum is_active=UVM_ACTIVE;  
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "env_config");
-endclass : env_config
+  extern function new(string name = "master_agent_config");
+endclass : master_agent_config
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
 //
 // Parameters:
-//  name - env_config
+//  name - master_agent_config
 //--------------------------------------------------------------------------------------------
-function env_config::new(string name = "env_config");
+function master_agent_config::new(string name = "master_agent_config");
   super.new(name);
 endfunction : new
 
