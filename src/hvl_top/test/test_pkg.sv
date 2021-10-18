@@ -10,7 +10,7 @@ package test_pkg;
   //-------------------------------------------------------
   `include "uvm_macros.svh"
   import uvm_pkg::*;
-  
+
   //-------------------------------------------------------
   // Include master files
   //-------------------------------------------------------
@@ -24,7 +24,7 @@ package test_pkg;
   `include "master_virtual_sequencer.sv"
  
   // `include "master_agent_config.sv"
-  // `include"env_config.sv"
+  //`include "env_config.sv"
    
   //-------------------------------------------------------
   // Include all other files
@@ -34,15 +34,15 @@ package test_pkg;
   `include "slave_sequencer.sv"
   `include "slave_driver_proxy.sv"
   `include "slave_monitor_proxy.sv"
-  `include "slave_agent.sv"
   
   `include "slave_virtual_sequence.sv"
   `include "slave_virtual_sequencer.sv"
+  `include "slave_agent_config.sv"
+  `include "slave_agent.sv"
+  
+  `include "env_config.sv"
   `include "env.sv"
-
   `include "base_test.sv"
-
-  // `include "slave_agent_config.sv"
-  // `include "env_config.sv"
+ 
 
 endpackage :test_pkg

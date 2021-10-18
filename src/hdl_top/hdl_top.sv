@@ -6,7 +6,6 @@
 //-------------------------------------------------------
 // Including SPI interface and Slave Agent BFM Files
 //-------------------------------------------------------
-`include "spi_if.sv"
 `include "slave_agent_bfm.sv"
 
 module hdl_top;
@@ -23,6 +22,6 @@ module hdl_top;
   //-------------------------------------------------------
   // SPI BFM Agent Instantiation
   //-------------------------------------------------------
-  slave_agent_bfm slave_agent_bfm_h(.intf(intf));
+  slave_agent_bfm slave_agent_bfm_h(intf);
 
 endmodule : hdl_top
