@@ -12,7 +12,8 @@ class env extends uvm_env;
   // Factory registration to create uvm_method and override it
   //-------------------------------------------------------
   `uvm_component_utils(env)
-
+  
+  env_config e_cfg_h;
   //-------------------------------------------------------
   // declaring master handles
   //-------------------------------------------------------
