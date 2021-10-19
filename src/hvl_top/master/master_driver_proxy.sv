@@ -15,9 +15,9 @@ class master_driver_proxy extends uvm_driver;
   //override in future if necessary 
   
     `uvm_component_utils(master_driver_proxy)
-   
+    
     //declaring virtual interface
-    //virtual spi_if.MDR_CB vif;
+    //  virtual spi_if vif;
   
      
     //declaring handle for master agent config class 
@@ -53,12 +53,12 @@ endfunction : new
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void master_driver_proxy::build_phase(uvm_phase phase);
-  
+  super.build_phase(phase);
   /*    if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
       begin
       `uvm_fatal("TB CONFIG","cannot get() m_cfg from uvm_config");
       end  */
-  super.build_phase(phase);
+//  super.build_phase(phase);
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ endfunction  : end_of_elaboration_phase
 function void master_driver_proxy::start_of_simulation_phase(uvm_phase phase);
   super.start_of_simulation_phase(phase);
 endfunction : start_of_simulation_phase
-
+*/
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
 // <Description_here>
@@ -103,12 +103,18 @@ endfunction : start_of_simulation_phase
 //--------------------------------------------------------------------------------------------
 task master_driver_proxy::run_phase(uvm_phase phase);
 
-  phase.raise_objection(this, "master_driver_proxy");
+//  phase.raise_objection(this, "master_driver_proxy");
 
   super.run_phase(phase);
-
-  // Work here
-  // ...
+/*
+  vif.wait_for_reset();
+    
+  forever
+      begin
+        seq_item_port.get_next_item(req);
+          vif.drive();
+        seq_item_port.item_done();
+      end
 
   phase.drop_objection(this);
 
