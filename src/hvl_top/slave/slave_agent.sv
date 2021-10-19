@@ -13,8 +13,8 @@
   `uvm_component_utils(slave_agent)
   //declaring handles for agent config driver monitor and sequencer
   slave_agent_config sa_cfg_h;
-  slave_driver_proxy s_drv_h;
-  slave_monitor_proxy s_mon_h;
+//  slave_driver_proxy sd_proxy_h;
+//  slave_monitor_proxy sm_proxy_h;
   slave_sequencer s_sqr_h;
 
 
@@ -59,8 +59,8 @@
   // end*/
     sa_cfg_h = slave_agent_config::type_id::create("sa_cfg_h");
     s_sqr_h = slave_sequencer::type_id::create("s_sqr_h",this);
-    s_drv_h = slave_driver_proxy::type_id::create("s_drv_h",this);
-    s_mon_h = slave_monitor_proxy::type_id::create("s_mon_h",this);
+  //  sd_proxy_h = slave_driver_proxy::type_id::create("sd_proxy_h",this);
+  //  sm_proxy_h = slave_monitor_proxy::type_id::create("sm_proxy_h",this);
   endfunction : build_phase
 
   //--------------------------------------------------------------------------------------------
