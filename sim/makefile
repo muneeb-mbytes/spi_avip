@@ -21,6 +21,8 @@ compile:
 simulate:
 	vsim -novopt work.hvl_top work.hdl_top -c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf waveform.wlf
+	# To open the waveform use the below command 
+	# vsim -view waveform.wlf &
 
 clean:
 	rm -rf work/ transcript waveform.wlf
