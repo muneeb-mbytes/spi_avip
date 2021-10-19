@@ -15,9 +15,9 @@
   
   //declaring handles for slave_sequencer and environment config
 
-    slave_sequencer s_sqr_h;
-  //  virtual_sequence v_seq_h;
-  //  env_config e_cfg;
+    slave_sequencer s_sqr_h[];
+    //virtual_sequence v_seq_h;
+    env_config e_cfg_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -48,9 +48,14 @@
   //--------------------------------------------------------------------------------------------
   function void slave_virtual_sequencer::build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg_h))
+      `uvm_error("VSEQR","COULDNT GET")
+      
+      s_sqr_h = new[e_cfg_h.no_of_sagent];
+  
   endfunction : build_phase
 
-  //--------------------------------------------------------------------------------------------
 
 `endif
 
