@@ -117,6 +117,5 @@ monior_por.write(data_sent);
 .sprint()),UVM_LOW)
 
 endtask:collect_data
-
 `endif
 
