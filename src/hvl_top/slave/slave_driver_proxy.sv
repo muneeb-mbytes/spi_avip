@@ -3,9 +3,10 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: slave_driver_proxy
-// <Description_here>
+// This is the proxy driver on the HVL side
+// It receives the transactions and converts them to task calls for the HDL driver
 //--------------------------------------------------------------------------------------------
-class slave_driver_proxy extends uvm_component;
+class slave_driver_proxy extends uvm_driver#(slave_tx);
   `uvm_component_utils(slave_driver_proxy)
 
   //-------------------------------------------------------
@@ -13,13 +14,13 @@ class slave_driver_proxy extends uvm_component;
   //-------------------------------------------------------
   extern function new(string name = "slave_driver_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  //extern virtual task run_phase();
+  extern virtual task run_phase(uvm_phase phase);
 
 endclass : slave_driver_proxy
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-//
+// // TODO(mshariff): add comments
 // Parameters:
 //  name - slave_driver_proxy
 //  parent - parent under which this component is created
@@ -31,6 +32,7 @@ endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
+// // TODO(mshariff): COmments
 // <Description_here>
 //
 // Parameters:
@@ -38,12 +40,21 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
+  // TODO(mshariff): get the interface handle
 endfunction : build_phase
 
-/*task run_phase();
-  req.print();
-endtask
-*/
+//--------------------------------------------------------------------------------------------
+// Task: run_phase
+// // TODO(mshariff): 
+//--------------------------------------------------------------------------------------------
+task slave_driver_proxy::run_phase(uvm_phase phase);
+  `uvm_info(get_type_name(), $sformatf("Inside the slave_driver_proxy"), UVM_LOW)
+
+  // Get the next item
+  // req.print();
+
+  // Drive to the DUT
+
+endtask : run_phase 
 
 `endif
-

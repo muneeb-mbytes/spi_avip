@@ -23,7 +23,7 @@ class master_monitor_proxy extends uvm_component;
 //     master_agent_config  m_cfg;
    
    //declaring analysis port for the monitor port
-   //uvm_analysis_port #(master_xtn)monitor_port;
+   //uvm_analysis_port #(master_tx)monitor_port;
   
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

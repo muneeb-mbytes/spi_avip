@@ -1,5 +1,5 @@
-`ifndef master_virtual_sequence_INCLUDED_
-`define master_virtual_sequence_INCLUDED_
+`ifndef MASTER_VIRTUAL_SEQUENCE_INCLUDED_
+`define MASTER_VIRTUAL_SEQUENCE_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // Class: master_virtual_sequence
@@ -25,13 +25,14 @@ class master_virtual_sequence extends uvm_sequence;
   
   //declaring handles for master and slave extended class
    
-   mseq1 m_seq1h;
+  // TODO(mshariff): Have better naming philosophy 
+  //  mseq1 m_seq1h;
   //sseq1 s_seq1h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "master_virtual_sequence",uvm_component parent);
+  extern function new(string name = "master_virtual_sequence");
   extern task body();
 endclass : master_virtual_sequence
 
@@ -52,37 +53,35 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 task master_virtual_sequence::body();
 
-   if(!uvm_config_db #(env_config)::get(null,get_full_name,"env_config",e_cfg))
-   begin
-  `uvm_fatal("CONFIG","cannot get() e_cfg from uvm_config_db. Have you set() it?")
-   end
-  
-  //declaring no. of  master sequencer in master agent
-  //and slave sequencer in slave agent
-  
-   m_seqr1=new[e_cfg.no_of_magent];
-  
-   //s_seqr1=new[e_cfg.no_of_sagent];
-
-  //asserting dynamic cast     
-  
-   assert($cast(v_sequencer,m_seqr1))
-   else 
-       begin
-       `uvm_error("body","error in  $cast of virtual sequencer")
-       end
-  //connecting master sequencer and slave sequencer in env to
-  // master sequencer and slave sequencer in virtual sequencer 
-   
-   m_seqr1=v_sequencer.m_seqr1;
-  
-  //s_seqr1=v_sequencer.s_seqr1;
+// MSHA:    if(!uvm_config_db #(env_config)::get(null,get_full_name,"env_config",e_cfg))
+// MSHA:    begin
+// MSHA:   `uvm_fatal("CONFIG","cannot get() e_cfg from uvm_config_db. Have you set() it?")
+// MSHA:    end
+// MSHA:   
+// MSHA:   //declaring no. of  master sequencer in master agent
+// MSHA:   //and slave sequencer in slave agent
+// MSHA:   
+// MSHA:    m_seqr1=new[e_cfg.no_of_magent];
+// MSHA:   
+// MSHA:    //s_seqr1=new[e_cfg.no_of_sagent];
+// MSHA: 
+// MSHA:   //asserting dynamic cast     
+// MSHA:   
+// MSHA:    assert($cast(v_sequencer,m_seqr1))
+// MSHA:    else 
+// MSHA:        begin
+// MSHA:        `uvm_error("body","error in  $cast of virtual sequencer")
+// MSHA:        end
+// MSHA:   //connecting master sequencer and slave sequencer in env to
+// MSHA:   // master sequencer and slave sequencer in virtual sequencer 
+// MSHA:    
+// MSHA:    // TODO(mshariff): m_seqr1=v_sequencer.m_seqr1;
+// MSHA:   
+// MSHA:   //s_seqr1=v_sequencer.s_seqr1;
 
     endtask:body
 //--------------------------------------------------------------------------------------------
 // extended class from the master_virtual_sequence
 //--------------------------------------------------------------------------------------------
 
-
-
-`end
+`endif

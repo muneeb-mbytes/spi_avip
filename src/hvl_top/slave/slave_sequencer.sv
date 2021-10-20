@@ -3,14 +3,9 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: slave_sequencer
-// Class Description:
-// This class sends transaction from sequencer to driver via tlm ports
+// It send transactions to driver via tlm ports
 //--------------------------------------------------------------------------------------------
-class slave_sequencer extends uvm_sequencer #(slave_tx);
-
-  //-------------------------------------------------------
-  // Factory registration: To create a method and override later
-  //-------------------------------------------------------
+class slave_sequencer extends uvm_sequencer#(slave_tx);
   `uvm_component_utils(slave_sequencer)
 
   //-------------------------------------------------------
@@ -32,7 +27,4 @@ function slave_sequencer::new(string name = "slave_sequencer", uvm_component par
   super.new(name, parent);
 endfunction : new
 
-//--------------------------------------------------------------------------------------------
-
 `endif
-
