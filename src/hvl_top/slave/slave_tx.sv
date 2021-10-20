@@ -3,11 +3,8 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: slave_tx
-<<<<<<< HEAD
 // <Description_here>
-=======
 // It's a transaction class that holds the SPI data items for generating the stimulus
->>>>>>> e83a01ba7691ecc0a834df934e024d49f54a59af
 //--------------------------------------------------------------------------------------------
 class slave_tx extends uvm_sequence_item;
   `uvm_object_utils(slave_tx)
@@ -42,12 +39,7 @@ endclass : slave_tx
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-<<<<<<< HEAD
-=======
 // Constructs the slave_tx object
-//  
->>>>>>> e83a01ba7691ecc0a834df934e024d49f54a59af
-//
 // Parameters:
 //  name - slave_tx
 //--------------------------------------------------------------------------------------------
@@ -55,11 +47,8 @@ function slave_tx::new(string name = "slave_tx");
   super.new(name);
 endfunction : new
 
-<<<<<<< HEAD
 
-=======
 // TODO(mshariff): Have print, cpoy compare methods
->>>>>>> e83a01ba7691ecc0a834df934e024d49f54a59af
 function void slave_tx::do_print(uvm_printer printer);
   super.do_print(printer);
      
