@@ -10,7 +10,7 @@
 class base_test extends uvm_test;
   `uvm_component_utils(base_test)
 
-   virtual spi_if vif;
+    virtual spi_if vif;
    //-------------------------------------------------------
    // Declaring env config handle
    //-------------------------------------------------------
@@ -85,3 +85,83 @@ endfunction : end_of_elaboration_phase
 
 `endif
 
+//--------------------------------------------------------------------------------------------
+//starting spi_fd_8b_test  
+//
+//--------------------------------------------------------------------------------------------
+
+`ifndef spi_fd_8b_test 
+`define spi_fd_8b_test 
+
+//--------------------------------------------------------------------------------------------
+//class spi_fd_8b_test:
+//Descripition: creating spi_fd_8b_test by extending from base_test
+//and declaring handle for master and slave sequence
+//
+//--------------------------------------------------------------------------------------------
+
+class spi_fd_8b_test extends base_test;
+  
+ `uvm_component_utils(spi_fd_8b_test)
+  m_spi_fd_8b_seq  m_spi_fd_8b;
+  s_spi_fd_8b_seq  s_spi_fd_8b;
+
+  //--------------------------------------------------------------------------------------------
+  // Externally defined tasks and functions
+  //--------------------------------------------------------------------------------------------
+
+  extern function new(string name = "spi_fd_8b_test ", uvm_component parent); 
+  extern function void build_phase(uvm_phase phase);
+  extern virtual task run_phase(uvm_phase phase);
+
+endclass:spi_fd_8b_test 
+
+//--------------------------------------------------------------------------------------------
+//constructor :new
+//initializes the spi_fd_8b_test object
+//Parameters:
+//name   - instance name of the spi_fd_8b_test:
+//parent - parent under which this component is created
+//
+//--------------------------------------------------------------------------------------------
+
+ function spi_fd_8b_test::new(string name = "spi_fd_8b_test ", uvm_component parent);
+   super.new(name,parent); 
+ endfunction:new
+
+//-----------------------------------------------------------------------------
+//Function: build_phase
+//Parameters:
+//phase - stores the current phase 
+//-----------------------------------------------------------------------------
+ function void spi_fd_8b_test:: build_phase(uvm_phase phase);
+   super.build_phase(phase);
+ endfunction:build_phase
+
+ //function void end_of_elaboration_phase(uvm_phase phase);
+ //`uvm_info(get_type_name(), $psprintf("SPI VIP hierarchy is %s", this.sprint(printer)), UVM_NONE);
+ //endfunction: end_of_elaboration_phase
+
+
+//-----------------------------------------------------------------------------
+//Task: run_phase
+//Starts master sequence on master sequencer and slave sequece on slave sequecer
+//
+//Parameters:
+//phase - stores the current phase 
+//-----------------------------------------------------------------------------
+
+task spi_fd_8b_test::run_phase(uvm_phase phase);
+  m_spi_fd_8b=m_spi_fd_8b_seq::type_id::create("m_spi_fd_8b");
+  s_spi_fd_8b=s_spi_fd_8b_seq::type_id::create("s_spi_fd_8b");
+   phase.raise_objection(this);
+   fork
+   m_spi_fd_8b.start(env_h.ma_h.m_sqr_h);
+   s_spi_fd_8b.start(env_h.sa_h.s_sqr_h);
+   join  
+   phase.drop_objection(this);
+endtask: run_phase
+
+`endif
+    
+        

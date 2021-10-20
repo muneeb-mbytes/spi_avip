@@ -3,12 +3,17 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: slave_agent_config
-// <Description_here>
+// Used as the configuration class for slave agent and it's components
 //--------------------------------------------------------------------------------------------
 class slave_agent_config extends uvm_object;
   `uvm_object_utils(slave_agent_config)
 
+  // Variable: vif
+  // Virtual handle for spi interface
   virtual spi_if vif;
+
+  // Variable: is_active
+  // Used for creating the agent in either passive or active mode
   uvm_active_passive_enum is_active=UVM_ACTIVE;  
 
   //-------------------------------------------------------
