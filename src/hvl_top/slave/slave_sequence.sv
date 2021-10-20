@@ -17,7 +17,7 @@ endclass : slave_sequence
 
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
+// Function: new
 // Initializes new memory for slave_sequence
 //
 // Parameters:

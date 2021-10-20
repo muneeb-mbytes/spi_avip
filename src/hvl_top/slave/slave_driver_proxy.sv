@@ -26,7 +26,7 @@ endclass : slave_driver_proxy
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-// // TODO(mshariff): add comments
+// Description: It's creates the components and objects
 // Parameters:
 // name - slave_driver_proxy
 // parent - parent under which this component is created
@@ -38,8 +38,8 @@ endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
-// // TODO(mshariff): COmments
-// <Description_here>
+// 
+//Description: It will create memory for required classes
 //
 // Parameters:
 // phase - uvm phase
@@ -71,7 +71,7 @@ endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
-// // TODO(mshariff):
+// Description:In this phase we are getting the sequence_item from sequencer
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
 
