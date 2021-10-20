@@ -63,18 +63,20 @@ function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   e_cfg_h = env_config::type_id::create("e_cfg_h");
   e_cfg_h.sa_cfg_h = new[no_of_sagent];
-  env_h = env::type_id::create("env",this);
 
   sa_cfg_h = new[no_of_sagent];
   foreach(sa_cfg_h[i]) begin
     sa_cfg_h[i]=slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
-    $display("Agent-%0d",i);
+    //Below line is used to switch between passive and active agents
+    //sa_cfg_h[i].is_active = UVM_PASSIVE;
+    e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
+    uvm_config_db #(slave_agent_config)::set(this,"*","slave_agent_config",e_cfg_h.sa_cfg_h[i]);
     if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
       `uvm_fatal("TEST","COULDNT GET")
-      e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
     end
   end
 
+  env_h = env::type_id::create("env",this);
   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
 endfunction : build_phase

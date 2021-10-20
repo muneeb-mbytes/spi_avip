@@ -56,15 +56,19 @@ endfunction : new
 function void slave_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
-  // if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h))
-  //   `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
+  if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) 
+  begin
+     `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
+  end
 
-  // if(sa_cfg_h.is_active == UVM_ACTIVE) begin
-  //   sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);
-  //   s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
-  // end
-
-  // smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
+   if(sa_cfg_h.is_active == UVM_ACTIVE) begin
+     sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);
+     s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
+     smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
+   end
+   else begin
+     smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
+   end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
