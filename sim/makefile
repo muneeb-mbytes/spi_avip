@@ -16,11 +16,16 @@ compile:
 	../src/hvl_top/test/test_pkg.sv \
 	../src/hdl_top/spi_interface/spi_if.sv \
 	../src/hdl_top/hdl_top.sv \
+	../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv \
+	../src/hdl_top/slave_agent_bfm/slave_agent_bfm.sv \
 	../src/hvl_top/hvl_top.sv 
+	
 
 simulate:
 	vsim -novopt work.hvl_top work.hdl_top -c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf waveform.wlf
+	# To open the waveform use the below command 
+	# vsim -view waveform.wlf &
 
 clean:
 	rm -rf work/ transcript waveform.wlf
