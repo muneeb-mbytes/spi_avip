@@ -29,7 +29,7 @@ class slave_monitor_proxy extends uvm_monitor;
   extern function new(string name = "slave_monitor_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task mon_bfm(bit cs,bit CPOL,bit CPHA,bit mosi, bit [2:0]txn_values);
+  extern virtual task mon_bfm(bit cs,bit CPOL,bit CPHA,bit miso,bit mosi, bit [2:0]txn_values);
   extern virtual function void convert_to_txn(bit [2:0]txn_values, bit [3:0]i);
 
 endclass : slave_monitor_proxy
@@ -90,18 +90,20 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
 
     //Signal : Miso
     //Master-in Slave-out
-    //bit miso;
+    bit miso;
     
     //Signal : CS
     //Chip Select
     bit cs;
-  
-    bit [2:0] txn_values;
+    
+    //Variable : Txn_values
+    //Consists of Mosi, Miso Values.
+    //bit [2:0] txn_values;
 
     //-------------------------------------------------------
     // Calling the tasks from monitor bfm
     //-------------------------------------------------------
-    mon_bfm(cs,CPOL,CPHA,mosi,txn_values);    
+    mon_bfm(cs,CPOL,CPHA,mosi,miso,txn_values);    
   end
 
 endtask : run_phase 
@@ -111,14 +113,14 @@ endtask : run_phase
 // Task : Mon_bfm
 // Used to call the tasks from moitor bfm
 //-------------------------------------------------------
-task slave_monitor_proxy::mon_bfm(bit cs,bit CPOL,bit CPHA,bit mosi,bit [2:0]txn_values);
+task slave_monitor_proxy::mon_bfm(bit cs,bit CPOL,bit CPHA,bit miso,bit mosi,bit [2:0]txn_values);
   if(!cs) begin
     $display("Entering If");
     $display(CPOL,CPHA);
     case({CPOL,CPHA})
       2'b00 : for(bit [3:0]i=DATA_LENGTH-1;i<=0;i++)
                 begin 
-                  s_mon_bfm_h.sample_mosi_pos_00(mosi,txn_values);
+                  s_mon_bfm_h.sample_mosi_pos_00(mosi,miso,cs,txn_values);
                   //Converting to transactions
                   convert_to_txn(s_mon_bfm_h.sample_mosi_pos_00.txn_values,i);
                 end
@@ -128,7 +130,7 @@ task slave_monitor_proxy::mon_bfm(bit cs,bit CPOL,bit CPHA,bit mosi,bit [2:0]txn
                 //delete the below line if yoy remove for loop comments
                   bit [3:0]i;
                   $display("Entering 2'b01");
-                  s_mon_bfm_h.sample_mosi_neg_01(mosi,txn_values);
+                  s_mon_bfm_h.sample_mosi_neg_01(mosi,miso,cs,txn_values);
                   $display("txn_values=%b",s_mon_bfm_h.sample_mosi_neg_01.txn_values);
                   //Converting to transactions
                   convert_to_txn(s_mon_bfm_h.sample_mosi_neg_01.txn_values,i);
@@ -136,13 +138,13 @@ task slave_monitor_proxy::mon_bfm(bit cs,bit CPOL,bit CPHA,bit mosi,bit [2:0]txn
               end
       2'b10 : for(bit [3:0]i=DATA_LENGTH-1;i<=0;i++)
                 begin 
-                  s_mon_bfm_h.sample_mosi_pos_10(mosi,txn_values);
+                  s_mon_bfm_h.sample_mosi_pos_10(mosi,miso,cs,txn_values);
                   //Converting to transactions
                   convert_to_txn(s_mon_bfm_h.sample_mosi_pos_10.txn_values,i);
                 end
       2'b11 : for(bit [3:0]i=DATA_LENGTH-1;i<=0;i++)
                 begin 
-                  s_mon_bfm_h.sample_mosi_neg_11(mosi,txn_values);
+                  s_mon_bfm_h.sample_mosi_neg_11(mosi,miso,cs,txn_values);
                   //Converting to transactions
                   convert_to_txn(s_mon_bfm_h.sample_mosi_neg_11.txn_values,i);
                 end

@@ -22,13 +22,13 @@ interface slave_monitor_bfm (spi_if.MON_MP intf);
 //sampling happen on the posedge
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_pos_00 (bit mosi,bit miso, bit cs, bit [2:0]all);
+task sample_mosi_pos_00 (bit mosi,bit miso, bit cs, bit [2:0]txn_values);
   @(intf.sample_mosi_pos_cb)
   mosi=intf.sample_mosi_pos_cb.mosi0;
   mosi =1;
   miso =1;
   cs = 1;
-  all = {mosi,miso,cs};
+  txn_values = {mosi,miso,cs};
 endtask : sample_mosi_pos_00
 
 //--------------------------------------------------------------------------------------------
@@ -37,13 +37,13 @@ endtask : sample_mosi_pos_00
 //sampling happen on the negedge
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_neg_01 (bit mosi, bit miso, bit cs,bit [2:0]all);
+task sample_mosi_neg_01 (bit mosi, bit miso, bit cs,bit [2:0]txn_values);
   @(intf.sample_mosi_neg_cb)
   mosi=intf.sample_mosi_neg_cb.mosi0;
   mosi =1;
   miso =0;
   cs = 0;
-  all = {mosi,miso,cs};
+  txn_values = {mosi,miso,cs};
 endtask : sample_mosi_neg_01
 //--------------------------------------------------------------------------------------------
 //Task  :sample_mosi_pos_10
@@ -51,13 +51,13 @@ endtask : sample_mosi_neg_01
 //sampling happen on the posedge
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_pos_10 (bit mosi, bit miso, bit cs,bit[2:0]all);
+task sample_mosi_pos_10 (bit mosi, bit miso, bit cs,bit[2:0]txn_values);
   @(intf.sample_mosi_pos_cb)
   mosi=intf.sample_mosi_pos_cb.mosi0;
   mosi =1;
   miso =1;
   cs = 0;
-  all = {mosi,miso,cs};
+  txn_values = {mosi,miso,cs};
 endtask : sample_mosi_pos_10
 
 //--------------------------------------------------------------------------------------------
@@ -66,13 +66,13 @@ endtask : sample_mosi_pos_10
 //sampling happens on the negedge
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_neg_11 (bit mosi, bit miso, bit cs, bit [2:0] all);
+task sample_mosi_neg_11 (bit mosi, bit miso, bit cs, bit [2:0] txn_values);
   @(intf.sample_mosi_neg_cb)
   mosi=intf.sample_mosi_neg_cb.mosi0;
   mosi =1;
   miso =0;
   cs = 1;
-  all = {mosi,miso,cs};
+  txn_values = {mosi,miso,cs};
 endtask : sample_mosi_neg_11
 
 endinterface : slave_monitor_bfm
