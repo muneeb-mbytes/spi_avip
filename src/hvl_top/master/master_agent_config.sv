@@ -20,10 +20,12 @@ class master_agent_config extends uvm_object;
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "master_agent_config");
+
 endclass : master_agent_config
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
+// Initializes the master_agent_config class component
 //
 // Parameters:
 //  name - master_agent_config
