@@ -2,9 +2,8 @@
 `define SLAVE_AGENT_BFM_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Module      : Slave Agent BFM
-// TODO(mshariff): 
-// Description : Instantiates driver and monitor
+// Module      : Slave Agent BFM 
+//  This module is used as the configuration class for slave agent bfm and its components
 //--------------------------------------------------------------------------------------------
 module slave_agent_bfm(spi_if intf);
   

@@ -35,14 +35,12 @@ endclass : slave_agent
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-// Initializes the slave_agent class object
 //
 // Parameters:
 //  name - instance name of the  slave_agent
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function slave_agent::new(string name = "slave_agent",
-                               uvm_component parent);
+function slave_agent::new(string name = "slave_agent", uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
@@ -58,12 +56,12 @@ function void slave_agent::build_phase(uvm_phase phase);
 
   if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) 
   begin
-     `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
+     `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get slave_agent_config"))
   end
 
    if(sa_cfg_h.is_active == UVM_ACTIVE) begin
      sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);
-     s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
+     s_sqr_h = slave_sequencer::type_id::create("s_sqr_h",this);
      smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
    end
    else begin
@@ -80,8 +78,7 @@ endfunction : build_phase
 //--------------------------------------------------------------------------------------------
 function void slave_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-
-  //sdrv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
+  sdrv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
 endfunction : connect_phase
 
 `endif
