@@ -48,3 +48,30 @@ module master_monitor_bfm (spi_if.MON_MP intf);
       
     //task 1
     task po0_ph0(bit [7:0]mosi);
+    
+      if(!cs) begin 
+
+      data.mosi0 <= intf.mosi_pos_cb.mosi0;
+      //data.miso0 <= intf.miso_pos_cb.miso0;  
+    
+    //task 2
+    task po0_ph1(bit [7:0]mosi);
+      data.mosi1 <= intf.mosi_pos_cb.mosi1;
+      //data.miso1 <= intf.miso_neg_cb.miso1; 
+
+    //task 3
+    task po1_ph0(bit [7:0]mosi);
+      data.mosi2 <= intf.mosi_neg_cb.mosi2;
+      //data.miso2 <= intf.miso_pos_cb.miso2; 
+ 
+    //task 4 
+    task po1_ph1(bit [7:0]mosi);
+      data.mosi3 <= intf.mosi_neg_cb.mosi3;
+      //data.miso3 <= intf.miso_neg_cb.miso3
+
+    initial begin
+    $display("Master Monitor BFM");
+    end
+
+endmodule: master_monitor_bfm
+
