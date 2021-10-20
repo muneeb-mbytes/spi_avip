@@ -51,7 +51,7 @@
     super.build_phase(phase);
   // if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h))
   // `uvm_fatal("slave_agent","COULDNT GET")
-
+//test_comment
   // if(sa_cfg_h.is_active==UVM_ACTIVE)
   // /*begin
   //   s_drv_h=slave_driver_proxy::type_id::create("s_drv_h",this);
