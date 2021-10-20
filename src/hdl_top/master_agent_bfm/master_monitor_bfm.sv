@@ -8,36 +8,70 @@ module master_monitor_bfm (spi_if.MON_MP intf);
 //--------------------------------------------------------------------------------------------
 // Creating the handel for the proxy monitor
 //--------------------------------------------------------------------------------------------
-  import spi_master_pkg::master_monitor_proxy;
-  master_monitor_proxy m_mon_proxy  
+    import spi_master_pkg::master_monitor_proxy;
+    master_monitor_proxy m_mon_proxy  
  
-  task write(bit [7:0]mosi);
-  
-   
+//
+//    bit [2:0]cpol;
+//    bit [2:0]cphs;
+//
+//
+//    //task 1
+//    task write(bit [7:0]mosi);
+//    
+//    if(!cs) begin
+//      case(cpol,cphase);
+//      
+//      2'b00 : begin
+//              data.mosi0 <= intf.mosi_pos_cb.mosi0;
+//              data.miso0 <= intf.miso_pos_cb.miso0;
+//              end
+//
+//      2'b01 : begin
+//              data.mosi1 <= intf.mosi_pos_cb.mosi1;
+//              data.miso1 <= intf.miso_neg_cb.miso1;
+//              end
+//
+//      2'b10 : begin
+//              data.mosi1 <= intf.mosi_neg_cb.mosi2;
+//              data.miso1 <= intf.miso_pos_cb.miso2;
+//              end
+//
+//      2'b11 : begin
+//              data.mosi1 <= intf.mosi_neg_cb.mosi3;
+//              data.miso1 <= intf.miso_neg_cb.miso3;
+//              end
 
-    data_sent.sclk = intf.mmon_cb.sclk;
- 
-    task 1
-
-    data_sent.cs = intf.mmon_cb.ss;
-    data_sent.mosi0 = intf.mmon_cb.mosi0;
-    data_sent.miso0 = intf.mmon_cb.miso0;  
+ //--------------------------------------------------------------------------------------------
+ // 2nd part
+ //--------------------------------------------------------------------------------------------
+      
+    //task 1
+    task po0_ph0(bit [7:0]mosi);
     
-    task 2
-    data_sent.mosi1 = intf.mmon_cb.mosi1;
-    data_sent.miso1 = intf.mmon_cb.miso1; 
+      if(!cs) begin 
 
-    task 3
-    data_sent.mosi2 = intf.mmon_cb.mosi2;
-    data_sent.miso2 = intf.mmon_cb.miso2; 
+      data.mosi0 <= intf.mosi_pos_cb.mosi0;
+      //data.miso0 <= intf.miso_pos_cb.miso0;  
+    
+    //task 2
+    task po0_ph1(bit [7:0]mosi);
+      data.mosi1 <= intf.mosi_pos_cb.mosi1;
+      //data.miso1 <= intf.miso_neg_cb.miso1; 
+
+    //task 3
+    task po1_ph0(bit [7:0]mosi);
+      data.mosi2 <= intf.mosi_neg_cb.mosi2;
+      //data.miso2 <= intf.miso_pos_cb.miso2; 
  
-    task 4 
-    data_sent.mosi3 = intf.mmon_cb.mosi3;
-    data_sent.miso3 = intf.mmon_cb.miso3
+    //task 4 
+    task po1_ph1(bit [7:0]mosi);
+      data.mosi3 <= intf.mosi_neg_cb.mosi3;
+      //data.miso3 <= intf.miso_neg_cb.miso3
 
-  initial begin
-  $display("Master Monitor BFM");
-  end
+    initial begin
+    $display("Master Monitor BFM");
+    end
 
 endmodule: master_monitor_bfm
 
