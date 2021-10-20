@@ -1,3 +1,5 @@
+//`include "../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv"
+
 `ifndef SLAVE_DRIVER_PROXY_INCLUDED_
 `define SLAVE_DRIVER_PROXY_INCLUDED_
 
@@ -8,6 +10,11 @@
 //--------------------------------------------------------------------------------------------
 class slave_driver_proxy extends uvm_driver#(slave_tx);
   `uvm_component_utils(slave_driver_proxy)
+
+  //-------------------------------------------------------
+  // Creating the handle for driver bfm
+  //-------------------------------------------------------
+  virtual slave_driver_bfm v_bfm;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -25,9 +32,9 @@ endclass : slave_driver_proxy
 //  name - slave_driver_proxy
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function slave_driver_proxy::new(string name = "slave_driver_proxy",
-                                 uvm_component parent = null);
+function slave_driver_proxy::new(string name = "slave_driver_proxy", uvm_component parent = null);
   super.new(name, parent);
+ // v_bfm.drv_proxy = this;
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -41,6 +48,7 @@ endfunction : new
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
   // TODO(mshariff): get the interface handle
+ // v_bfm.drv_proxy = this;
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -48,13 +56,17 @@ endfunction : build_phase
 // // TODO(mshariff): 
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
-  `uvm_info(get_type_name(), $sformatf("Inside the slave_driver_proxy"), UVM_LOW)
+//  `uvm_info(get_type_name(), $sformatf("Inside the slave_driver_proxy"), UVM_LOW)
 
-  // Get the next item
-  // req.print();
+//  slave_tx tx = new();
+//  tx.randomize();
+//  seq_item_port.get_next_item(tx);
+//  tx.print();
 
-  // Drive to the DUT
-
+  forever begin
+    seq_item_port.get_next_item(req);
+//    drive_to_dut();
+  end
 endtask : run_phase 
-
+    
 `endif

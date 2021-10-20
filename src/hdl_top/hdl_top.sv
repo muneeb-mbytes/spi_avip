@@ -34,9 +34,9 @@ module hdl_top;
   // System Reset Generation
   //-------------------------------------------------------
   initial begin
-    rst = 1'b0;
-    #80;
     rst = 1'b1;
+    repeat (2) @(posedge clk)
+    rst = 1'b0;
   end
 
   //-------------------------------------------------------
