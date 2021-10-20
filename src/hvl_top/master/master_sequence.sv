@@ -5,7 +5,7 @@
  // Class: master_sequence
  // <Description_here>
  //--------------------------------------------------------------------------------------------
- class master_sequence extends uvm_sequence #(master_xtn);
+ class master_sequence extends uvm_sequence #(master_tx);
 
   //register with factory so we can ovverride using uvm methos in future.
 

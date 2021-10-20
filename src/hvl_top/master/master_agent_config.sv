@@ -1,12 +1,12 @@
-`ifndef SLAVE_AGENT_CONFIG_INCLUDED_
-`define SLAVE_AGENT_CONFIG_INCLUDED_
-
+`ifndef MASTER_AGENT_CONFIG_INCLUDED_
+`define MASTER_AGENT_CONFIG_INCLUDED_
+// TODO(mshariff): 
 //--------------------------------------------------------------------------------------------
-// Class: slave_agent_config
-// Used as the configuration class for slave agent and it's components
+// Class: master_agent_config
+// Used as the configuration class for master agent and it's components
 //--------------------------------------------------------------------------------------------
-class slave_agent_config extends uvm_object;
-  `uvm_object_utils(slave_agent_config)
+class master_agent_config extends uvm_object;
+  `uvm_object_utils(master_agent_config)
 
   // Variable: vif
   // Virtual handle for spi interface
@@ -19,16 +19,16 @@ class slave_agent_config extends uvm_object;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "slave_agent_config");
-endclass : slave_agent_config
+  extern function new(string name = "master_agent_config");
+endclass : master_agent_config
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
 //
 // Parameters:
-//  name - slave_agent_config
+//  name - master_agent_config
 //--------------------------------------------------------------------------------------------
-function slave_agent_config::new(string name = "slave_agent_config");
+function master_agent_config::new(string name = "master_agent_config");
   super.new(name);
 endfunction : new
 
