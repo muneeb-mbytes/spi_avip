@@ -1,9 +1,11 @@
+`ifndef SPI_ENV_PKG_INCLUDED_
+`define SPI_ENV_PKG_INCLUDED_
+
 //--------------------------------------------------------------------------------------------
-// Package: Test
-// Description:
-// Includes all the files written to run the simulation
+// Package: spi_env_pkg
+//  Includes all the files related to SPI env
 //--------------------------------------------------------------------------------------------
-package test_pkg;
+package spi_env_pkg;
 
   //-------------------------------------------------------
   // Import uvm package
@@ -16,11 +18,21 @@ package test_pkg;
   //-------------------------------------------------------
   import spi_master_pkg::*;
   import spi_slave_pkg::*;
-  import spi_env_pkg::*;
-  
-  `include "master_virtual_sequence.sv"
-  `include "slave_virtual_sequence.sv"
-  
-  `include "base_test.sv"
 
-endpackage :test_pkg
+  //-------------------------------------------------------
+  // Include all other files
+  //-------------------------------------------------------
+  `include "env_config.sv"
+
+  `include "master_virtual_sequencer.sv"
+  `include "slave_virtual_sequencer.sv"
+  `include "virtual_sequencer.sv"
+
+  // SCOREBOARD
+  // Coverage 
+
+  `include "env.sv"
+
+endpackage : spi_env_pkg
+
+`endif

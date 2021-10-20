@@ -1,3 +1,4 @@
+// TODO(mshariff): 
 //--------------------------------------------------------------------------------------------
 // Module      : HDL Top
 // Description : Has a interface and slave agent bfm.
@@ -22,7 +23,7 @@ module hdl_top;
   end
 
   //-------------------------------------------------------
-  // Clock Generation
+  // System Clock Generation
   //-------------------------------------------------------
   initial begin
     clk = 1'b0;
@@ -30,7 +31,7 @@ module hdl_top;
   end
 
   //-------------------------------------------------------
-  // Reset Generation
+  // System Reset Generation
   //-------------------------------------------------------
   initial begin
     rst = 1'b0;
