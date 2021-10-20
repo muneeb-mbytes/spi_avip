@@ -1,5 +1,5 @@
-`ifndef SLAVE_AGENT_CONFIG_INCLUDED_
-`define SLAVE_AGENT_CONFIG_INCLUDED_
+`ifndef MASTER_AGENT_CONFIG_INCLUDED_
+`define MASTER_AGENT_CONFIG_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // Class: master_agent_config
@@ -8,8 +8,7 @@
 class master_agent_config extends uvm_object;
   `uvm_object_utils(master_agent_config)
 
-  uvm_active_passive_enum is_active=UVM_ACTIVE;  
-
+  uvm_active_passive_enum is_active=UVM_ACTIVE; 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------

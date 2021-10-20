@@ -13,10 +13,12 @@
 
   `uvm_object_utils(slave_virtual_sequence)
 
-  //  env_config e_cfg;
+   env_config e_cfg_h;
 
   //declaring handles for slave extended class
-  //  s_seq_1 s_seq_h;
+  slave_sequencer s_sqr_h[];
+  slave_virtual_sequencer sv_sqr_h;
+
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -47,8 +49,50 @@
   //-------------------------------------------------------
 
   task slave_virtual_sequence::body();
+    if(!uvm_config_db #(env_config)::get(null,get_full_name(),"ENV_CONFIG",e_cfg_h))
+      `uvm_error("VSEQ","COULDNT GET")
+      
+      s_sqr_h = new[e_cfg_h.no_of_sagent];
+      
+      if(!$cast(sv_sqr_h,m_sequencer))  
+        `uvm_error("VSEQ","COULDNT CAST")
+        
+          foreach(s_sqr_h[i])
+            s_sqr_h[i]=sv_sqr_h.s_sqr_h[i];
+    
 
   endtask:body
 
+
+
+class seq_one extends slave_virtual_sequence;
+
+  `uvm_object_utils(seq_one)
+
+  slave_sequence s_seq;
+  
+  function new(string name="seq_one");
+    super.new(name);
+  endfunction
+  
+  task body;
+    super.body;
+
+s_seq = slave_sequence::type_id::create("s_seq");
+
+s_seq.start(s_sqr_h[0]);
+
+endtask
+
+
+endclass
+
+
+
 `endif
+
+
+
+
+
 
