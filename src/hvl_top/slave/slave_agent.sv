@@ -12,7 +12,7 @@
 
   `uvm_component_utils(slave_agent)
   //declaring handles for agent config driver monitor and sequencer
-
+  slave_agent_config sa_cfg_h;
   slave_driver_proxy s_drv_h;
   slave_monitor_proxy s_mon_h;
   slave_sequencer s_sqr_h;
@@ -49,9 +49,18 @@
   //--------------------------------------------------------------------------------------------
   function void slave_agent::build_phase(uvm_phase phase);
     super.build_phase(phase);
-    s_sqr_h = slave_sequencer::type_id::create("slave_sequencer",this);
-    s_drv_h = slave_driver_proxy::type_id::create("slave_driver_proxy",this);
-    s_mon_h = slave_monitor_proxy::type_id::create("slave_monitor_proxy",this);
+  // if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h))
+  // `uvm_fatal("slave_agent","COULDNT GET")
+
+  // if(sa_cfg_h.is_active==UVM_ACTIVE)
+  // /*begin
+  //   s_drv_h=slave_driver_proxy::type_id::create("s_drv_h",this);
+  //   s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
+  // end*/
+    sa_cfg_h = slave_agent_config::type_id::create("sa_cfg_h");
+    s_sqr_h = slave_sequencer::type_id::create("s_sqr_h",this);
+    s_drv_h = slave_driver_proxy::type_id::create("s_drv_h",this);
+    s_mon_h = slave_monitor_proxy::type_id::create("s_mon_h",this);
   endfunction : build_phase
 
   //--------------------------------------------------------------------------------------------
