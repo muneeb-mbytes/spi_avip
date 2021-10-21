@@ -22,7 +22,7 @@ interface slave_monitor_bfm (spi_if.MON_MP intf);
 //sampling happen on the posedge
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_pos_00 (bit mosi,bit miso, bit cs, bit [2:0]txn_values);
+ task sample_mosi_pos_00 (input bit mosi,bit miso, bit cs, output bit [2:0]txn_values);
   @(intf.sample_mosi_pos_cb)
   mosi=intf.sample_mosi_pos_cb.mosi0;
   mosi =1;
