@@ -1,0 +1,9 @@
+
+
+Create master_spi_fd_8b_seq and
+Create slave_spi_fd_8b_seq 
+
+// Complete the flow
+.....
+.....
+....
