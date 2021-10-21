@@ -30,11 +30,13 @@ interface slave_monitor_bfm (spi_if.MON_MP intf);
 //--------------------------------------------------------------------------------------------
 task mon_msb_first(bit mosi);
   for(int i=DATA_WIDTH-1;i>0;i--) begin
-    @(intf.sample_mosi_pos_cb.sclk);
+    @(intf.sample_mosi_pos_cb);
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
     data_mosi[i] = mosi;
   end
+  // mon_proxy.write(data_mosi);
+
 endtask : mon_msb_first
 //--------------------------------------------------------------------------------------------
 //Task : mon_lsb_first
@@ -45,11 +47,13 @@ endtask : mon_msb_first
 task mon_lsb_first(bit mosi);
   //mosi = 1;
   for(int i=0;i<DATA_WIDTH;i++) begin
-    @(intf.sample_mosi_pos_cb.sclk);
+    @(intf.sample_mosi_pos_cb);
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
     data_mosi[i] = mosi;
   end
+  // mon_proxy.write(data_mosi);
+
 endtask : mon_lsb_first
 
 //--------------------------------------------------------------------------------------------
