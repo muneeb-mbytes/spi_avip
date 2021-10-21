@@ -10,18 +10,12 @@
 //sequence_item and the type of the response sequence_item 
 //--------------------------------------------------------------------------------------------
 class master_driver_proxy extends uvm_driver;
-  
-  //register with factory so can use create uvm_method and
-  //override in future if necessary 
-  
-    `uvm_component_utils(master_driver_proxy)
+  `uvm_component_utils(master_driver_proxy)
    
-    //declaring virtual interface
-    //virtual spi_if.MDR_CB vif;
-  
-     
-    //declaring handle for master agent config class 
-//     master_agent_config m_cfg;
+  // Variable: m_cfg
+  // Declaring handle for master agent config class 
+  master_agent_config m_cfg;
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -54,10 +48,6 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void master_driver_proxy::build_phase(uvm_phase phase);
   
-  /*    if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
-      begin
-      `uvm_fatal("TB CONFIG","cannot get() m_cfg from uvm_config");
-      end  */
   super.build_phase(phase);
 endfunction : build_phase
 

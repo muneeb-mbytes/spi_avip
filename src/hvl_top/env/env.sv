@@ -23,7 +23,7 @@ class env extends uvm_env;
   //-------------------------------------------------------
   // Declaring slave handles
   //-------------------------------------------------------
-  slave_agent sa_h;
+  slave_agent slave_agent_h[];
   slave_virtual_sequencer s_v_sqr_h;
 
   //-------------------------------------------------------
@@ -59,10 +59,22 @@ function void env::build_phase(uvm_phase phase);
 
   `uvm_info(get_full_name(),"ENV: build_phase",UVM_LOW);
 
+  if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg_h)) begin
+   `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
+  end
+
   ma_h=master_agent::type_id::create("master_agent",this);
-  m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
-  s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
-  sa_h = slave_agent::type_id::create("slave_agent",this);
+
+  slave_agent_h = new[e_cfg_h.no_of_slaves];
+  foreach(slave_agent_h[i]) begin
+    slave_agent_h[i] = slave_agent::type_id::create($sformatf("slave_agent_h[%0d]",i),this);
+  end
+
+  if(e_cfg_h.has_virtual_sqr) begin
+    m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
+    s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
+  end
+
 
 endfunction : build_phase
 

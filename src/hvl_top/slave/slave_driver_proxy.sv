@@ -9,6 +9,10 @@
 class slave_driver_proxy extends uvm_driver#(slave_tx);
   `uvm_component_utils(slave_driver_proxy)
 
+  // Variable: sa_cfg_h;
+  // Handle for slave agent configuration
+  slave_agent_config sa_cfg_h;
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
