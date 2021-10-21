@@ -56,14 +56,21 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void env::build_phase(uvm_phase phase);
   super.build_phase(phase);
+<<<<<<< HEAD
 
   `uvm_info(get_full_name(),"ENV: build_phase",UVM_LOW);
 
+=======
+  `uvm_info(get_full_name(),"ENV: build_phase",UVM_LOW);
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
   ma_h=master_agent::type_id::create("master_agent",this);
   m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
   s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
   sa_h = slave_agent::type_id::create("slave_agent",this);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------

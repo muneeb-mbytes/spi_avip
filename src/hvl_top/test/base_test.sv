@@ -19,11 +19,21 @@ class base_test extends uvm_test;
    //-------------------------------------------------------
    // Declaring Agent Config Handles
    //-------------------------------------------------------
+<<<<<<< HEAD
+=======
+   master_agent_config ma_cfg_h[];
+   
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
    slave_agent_config sa_cfg_h[];
 
    //-------------------------------------------------------
    // Assigning values
    //-------------------------------------------------------
+<<<<<<< HEAD
+=======
+   int no_of_magent = 1;
+   
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
    int no_of_sagent = 1;
 
    //-------------------------------------------------------
@@ -62,6 +72,7 @@ endfunction : new
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   e_cfg_h = env_config::type_id::create("e_cfg_h");
+<<<<<<< HEAD
   e_cfg_h.sa_cfg_h = new[no_of_sagent];
   
   sa_cfg_h = new[no_of_sagent];
@@ -76,6 +87,36 @@ function void base_test::build_phase(uvm_phase phase);
     end
   end
   env_h = env::type_id::create("env",this);
+=======
+  e_cfg_h.ma_cfg_h = new[no_of_magent];
+  e_cfg_h.sa_cfg_h = new[no_of_sagent];
+  env_h = env::type_id::create("env",this);
+  
+
+  ma_cfg_h = new[no_of_magent];
+  foreach(ma_cfg_h[i])
+  begin
+    ma_cfg_h[i]=master_agent_config::type_id::create($sformatf("ma_cfg_h[%0d]",i));
+    $display("Agent-%0d",i);
+    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif))
+    begin
+      `uvm_fatal("TEST","COULDNT GET")
+      e_cfg_h.ma_cfg_h[i]=ma_cfg_h[i];
+    end
+  end
+
+
+  sa_cfg_h = new[no_of_sagent];
+  foreach(sa_cfg_h[i]) begin
+    sa_cfg_h[i]=slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
+    $display("Agent-%0d",i);
+    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
+      `uvm_fatal("TEST","COULDNT GET")
+      e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
+    end
+  end
+
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
 endfunction : build_phase

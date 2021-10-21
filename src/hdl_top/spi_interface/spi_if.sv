@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 `ifndef SPI_IF_INCLUDED_
 `define SPI_IF_INCLUDED_
 
@@ -189,3 +190,17 @@ interface spi_if;
 endinterface: spi_if 
 
 `endif
+=======
+//--------------------------------------------------------------------------------------------
+// Module       : Interface
+// Description  : Declaration of pin level signals as logic
+//--------------------------------------------------------------------------------------------
+interface spi_if;
+
+  logic sclk;
+  logic miso;
+  logic mosi;
+  logic ss;
+
+endinterface : spi_if
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27

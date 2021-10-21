@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // TODO(mshariff): 
+=======
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
 //--------------------------------------------------------------------------------------------
 // Module      : HDL Top
 // Description : Has a interface and slave agent bfm.
@@ -7,6 +10,7 @@
 //-------------------------------------------------------
 // Including SPI interface and Slave Agent BFM Files
 //-------------------------------------------------------
+<<<<<<< HEAD
 module hdl_top;
 
   //-------------------------------------------------------
@@ -39,6 +43,16 @@ module hdl_top;
     rst = 1'b1;
   end
 
+=======
+`include "slave_agent_bfm.sv"
+
+module hdl_top;
+
+  initial begin
+    $display("HDL_TOP");
+  end
+  
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
   //-------------------------------------------------------
   // SPI Interface Instantiation
   //-------------------------------------------------------

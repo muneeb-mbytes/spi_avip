@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 `ifndef SLAVE_VIRTUAL_SEQUENCER_INCLUDED_
 `define SLAVE_VIRTUAL_SEQUENCER_INCLUDED_
 
@@ -9,6 +10,23 @@
 class slave_virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
   `uvm_component_utils(slave_virtual_sequencer)
 
+=======
+  `ifndef SLAVE_VIRTUAL_SEQUENCER_INCLUDED_
+  `define SLAVE_VIRTUAL_SEQUENCER_INCLUDED_
+
+  //--------------------------------------------------------------------------------------------
+  // Class: slave_virtual_sequencer
+  // Description of the class.
+  // this class contains the handle of actual sequencer pointing towards them
+  //--------------------------------------------------------------------------------------------
+  class slave_virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
+
+  //register with factory so can use create uvm_method
+  //and override in future if neccessary
+
+  `uvm_component_utils(slave_virtual_sequencer)
+  
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
   //declaring handles for slave_sequencer and environment config
 
     slave_sequencer s_sqr_h[];
@@ -20,8 +38,13 @@ class slave_virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
   //-------------------------------------------------------
   extern function new(string name = "slave_virtual_sequencer", uvm_component parent );
   extern virtual function void build_phase(uvm_phase phase);
+<<<<<<< HEAD
 
 endclass : slave_virtual_sequencer
+=======
+  
+  endclass : slave_virtual_sequencer
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
 
   //--------------------------------------------------------------------------------------------
   // Construct: new

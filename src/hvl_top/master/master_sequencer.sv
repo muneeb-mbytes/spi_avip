@@ -4,7 +4,11 @@
  //--------------------------------------------------------------------------------------------
  // Class: master_sequencer
  //--------------------------------------------------------------------------------------------
+<<<<<<< HEAD
  class master_sequencer extends uvm_sequencer #(master_tx);
+=======
+ class master_sequencer extends uvm_sequencer #(master_xtn);
+>>>>>>> dfc01ce26b0bff2778eb8b7ad3edf43a349d7b27
   
   //register with factory so we can override it in further by using uvm method.
 
