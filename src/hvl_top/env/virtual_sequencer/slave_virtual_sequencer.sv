@@ -12,7 +12,6 @@ class slave_virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
   //declaring handles for slave_sequencer and environment config
 
     slave_sequencer s_sqr_h[];
-    //virtual_sequence v_seq_h;
     env_config e_cfg_h;
 
   //-------------------------------------------------------

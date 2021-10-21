@@ -1,42 +1,41 @@
-
-`ifndef SPI_SIMPLE_FD_8B_TEST_INCLUDED_
-`define SPI_SIMPLE_FD_8B_TEST_INCLUDED_
+`ifndef SPI_SIMPLE_FD_16B_TEST_INCLUDED_
+`define SPI_SIMPLE_FD_16B_TEST_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: spi_simple_fd_8b_test
+// Class: spi_simple_fd_16b_test
 // Description:
-// Extended the spi_simple_fd_8b_test class from base_test class
+// Extended the spi_simple_fd_16b_test class from base_test class
 //--------------------------------------------------------------------------------------------
-class spi_simple_fd_8b_test extends base_test;
+class spi_simple_fd_16b_test extends base_test;
 
-  //Registering the spi_simple_fd_8b_test in the factory
-  `uvm_component_utils(spi_simple_fd_8b_test)
+  //Registering the spi_simple_fd_16b_test in the factory
+  `uvm_component_utils(spi_simple_fd_16b_test)
 
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  vseq1_fd_8b_seq vseq1_fd_8b_h;
-  vseq1_fd_8b_seq vseq1_fd_8b_h;
+  m_spi_fd_16b_seq m_spi_fd_16b_h;
+  s_spi_fd_16b_seq s_spi_fd_16b_h;
 
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "spi_simple_fd_8b_test", uvm_component parent);
+  extern function new(string name = "spi_simple_fd_16b_test", uvm_component parent);
   extern function void build_phase(uvm_phase phase);
   extern task run_phase(uvm_phase phase);
 
-endclass : spi_simple_fd_8b_test
+endclass : spi_simple_fd_16b_test
 
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
 // Initializes class object
 // Parameters:
-// name - spi_simple_fd_8b_test
+// name - spi_simple_fd_16b_test
 // parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function spi_simple_fd_8b_test::new(string name = "spi_simple_fd_8b_test",uvm_component parent);
+function spi_simple_fd_16b_test::new(string name = "spi_simple_fd_16b_test",uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
@@ -52,16 +51,16 @@ endfunction : build_phase
 // Responsible for starting the transactions
 //--------------------------------------------------------------------------------------------
 task run_phase(uvm_phase phase);
-  vseq1_fd_8b_h = vseq1_fd_8b_seq::type_id::create("vseq1_fd_8b_h");
-  vseq1_fd_8b_h = vseq1_fd_8b_seq::type_id::create("vseq1_fd_8b_h");
+  m_spi_fd_16b_h = m_spi_fd_16b_seq::type_id::create("m_spi_fd_16b_h");
+  s_spi_fd_16b_h = s_spi_fd_16b_seq::type_id::create("s_spi_fd_16b_h");
 
   phase.raise_objection(this);
   fork
-      vseq1_fd_8b_h.start(env_h.v_sqr_h);
-      vseq1_fd_8b_h.start(env_h.v_sqr_h);
+      m_spi_fd_16b_h.start(env_h.v_sqr_h);
+      s_spi_fd_16b_h.start(env_h.v_sqr_h);
   join
   phase.drop_objection(this);
 
-endtask : run_phase
+endtask:run_phase
 
 `endif

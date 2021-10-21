@@ -1,31 +1,31 @@
-`ifndef SPI_SLAVE_PKG_INCLUDED_
-`define SPI_SLAVE_PKG_INCLUDED_
+`ifndef SPI_VIRTUAL_SEQ_PKG_INCLUDED_
+`define SPI_VIRTUAL_SEQ_PKG_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Package: spi_slave_pkg
-//  Includes all the files related to SPI slave
+// Package: spi_virtual_seq_pkg
+//  Includes all the files related to SPI virtual sequences
 //--------------------------------------------------------------------------------------------
-package spi_slave_pkg;
+package spi_virtual_seq_pkg;
 
   //-------------------------------------------------------
   // Import uvm package
   //-------------------------------------------------------
- `include "uvm_macros.svh"
+  `include "uvm_macros.svh"
   import uvm_pkg::*;
+  import spi_master_pkg::*;
+  import spi_slave_pkg::*;
+  import m_spi_seq_pkg::*;
+  import s_spi_seq_pkg::*;
+  import spi_env_pkg::*;
+
 
   //-------------------------------------------------------
   // Include all other files
   //-------------------------------------------------------
-
-  `include "slave_tx.sv"
-//`include "mspi_config.sv"
-//`include "slave_seq.sv"
-  `include "slave_agent_config.sv"
-  `include "slave_sequencer.sv"
-  `include "slave_driver_proxy.sv"
-  `include "slave_monitor_proxy.sv"
-  `include "slave_agent.sv"
+  `include "spi_fd_vseq_base.sv"
+  `include "vseq1_fd_8b_seq.sv"
+  `include "vseq1_fd_16b_seq.sv"
   
-endpackage : spi_slave_pkg
+endpackage : spi_virtual_seq_pkg
 
 `endif

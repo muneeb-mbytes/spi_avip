@@ -7,7 +7,6 @@
 //--------------------------------------------------------------------------------------------
 class master_agent_config extends uvm_object;
   `uvm_object_utils(master_agent_config)
-
   // Variable: vif
   // Virtual handle for spi interface
   virtual spi_if vif;
