@@ -5,14 +5,14 @@
 // Class: seq
 // <Description_here>
 //--------------------------------------------------------------------------------------------
-class slave_seq extends uvm_sequence #(slave_tx);
-  `uvm_object_utils(slave_seq)
+class master_seq extends uvm_sequence #(master_tx);
+  `uvm_object_utils(master_seq)
 
 //-------------------------------------------------------
 // Externally defined Tasks and Functions
 //-------------------------------------------------------
-  extern function new(string name = "slave_seq");
-endclass : slave_seq
+  extern function new(string name = "master_seq");
+endclass : master_seq
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
@@ -20,11 +20,11 @@ endclass : slave_seq
 // Parameters:
 //  name - seq
 //--------------------------------------------------------------------------------------------
-function slave_seq::new(string name = "slave_seq");
+function seq::new(string name = "master_seq");
   super.new(name);
 endfunction : new
 
-class spi_fd_8b_seq extends slave_seq;
+class spi_fd_8b_seq extends master_seq;
 
 //register with factory so can use create uvm_method 
 //and override in future if necessary 
@@ -41,80 +41,81 @@ extern virtual task body();
 
 endclass:spi_fd_8b_seq
 
-//class S_spi_fd_8b_test_ct extends slave_seq;
+
+//class M_SPI_FD_8b_ct extends master_seq;
 //
 ////register with factory so can use create uvm_method 
 ////and override in future if necessary 
 //
-// `uvm_object_utils(S_spi_fd_8b_test_ct)
+// `uvm_object_utils(M_SPI_FD_8b_ct)
 //
 //
 ////---------------------------------------------
 //// Externally defined tasks and functions
 ////---------------------------------------------
-//extern function new (string name="S_spi_fd_8b_test_ct");
+//extern function new (string name="M_SPI_FD_8b_ct");
 //
 //extern virtual task body();
 //
-//endclass:S_SPI_FD_8b_ct
+//endclass:M_SPI_FD_8b_ct
 //
 //
-//class S_SPI_FD_8b_dct extends slave_seq;
+//class M_SPI_FD_8b_dct extends master_seq;
 //
 ////register with factory so can use create uvm_method 
 ////and override in future if necessary 
 //
-// `uvm_object_utils(S_SPI_FD_8b_dct)
+// `uvm_object_utils(M_SPI_FD_8b_dct)
 //
 //
 ////---------------------------------------------
 //// Externally defined tasks and functions
 ////---------------------------------------------
-//extern function new (string name="S_SPI_FD_8b_dct");
+//extern function new (string name="M_SPI_FD_8b_dct");
 //
 //extern virtual task body();
 //
-//endclass:S_SPI_FD_8b_dct
+//endclass:M_SPI_FD_8b_dct
 //
 //
-//class S_SPI_RST extends slave_seq;
+//class M_SPI_RST extends master_seq;
 //
 ////register with factory so can use create uvm_method 
 ////and override in future if necessary 
 //
-// `uvm_object_utils(S_SPI_RST)
+// `uvm_object_utils(M_SPI_RST)
 //
 //
 ////---------------------------------------------
 //// Externally defined tasks and functions
 ////---------------------------------------------
-//extern function new (string name="S_SPI_RST");
+//extern function new (string name="M_SPI_RST");
 //
 //extern virtual task body();
 //
-//endclass:S_SPI_RST
+//endclass:M_SPI_RST
 //
 //
-//class S_SPI_HD_8b extends slave_seq;
+//class M_SPI_HD_8b extends master_seq;
 //
 ////register with factory so can use create uvm_method 
 ////and override in future if necessary 
 //
-// `uvm_object_utils(S_SPI_HD_8b)
+// `uvm_object_utils(M_SPI_HD_8b)
 //
 //
 ////---------------------------------------------
 //// Externally defined tasks and functions
 ////---------------------------------------------
-//extern function new (string name="S_SPI_HD_8b");
+//extern function new (string name="M_SPI_HD_8b");
 //
 //extern virtual task body();
 //
-//endclass:S_SPI_HD_8b
+//endclass:M_SPI_HD_8b
 
 //-----------------------------------------------------------------------------
 // Constructor: new
-// Initializes the slave_sequence class object
+// Initializes the master_sequence class object
 //
 // Parameters:
 //  name - instance name of the config_template
@@ -129,15 +130,14 @@ endfunction:new
 //-----------------------------------------------------------------------------
 task spi_fd_8b_seq::body(); 
   begin
-    req=slave_tx::type_id::create("req");
+    req=master_tx::type_id::create("req");
     repeat(2)
   begin
 		start_item(req);
-    assert(req.randomize () with { cphase==0; 
-                                   cpol==0;
-                                   slave_data_in==8'b1011_1010;
-                              });
-    req.print();
+    assert(req.randomize () with {  cphase==0;
+                                    cpol == 0;
+                                    master_data_in==8'b1011_1110;
+                                  });
     finish_item(req);
   end
 end
@@ -146,12 +146,12 @@ endtask:body
 
 //-----------------------------------------------------------------------------
 // Constructor: new
-// Initializes the slave_sequence class object
+// Initializes the master_sequence class object
 //
 // Parameters:
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
-//function S_SPI_FD_8b_ct::new(string name="S_SPI_FD_8b_ct");
+//function M_SPI_FD_8b_ct::new(string name="M_SPI_FD_8b_ct");
 //	super.new(name);
 //endfunction:new
 //
@@ -159,13 +159,15 @@ endtask:body
 ////task:body
 ////creating request which is will be coming from driver
 ////-----------------------------------------------------------------------------
-//task S_SPI_FD_8b_ct::body(); 
+//task M_SPI_FD_8b_ct::body(); 
 //  begin
-//    req=slave_tx::type_id::create("req");
-//    for(int i=0; i < 8;i++)
+//    req=master_tx::type_id::create("req");
+//    for(int i=0; i < 8; i++)
 //  begin
 //		start_item(req);
-//    assert(req.randomize () with {rst==0;});
+//    assert(req.randomize () with { cs==2'b0; 
+//                                   rst==0;
+//                                 });
 //    finish_item(req);
 //  end
 //end
@@ -174,12 +176,12 @@ endtask:body
 //
 ////-----------------------------------------------------------------------------
 //// Constructor: new
-//// Initializes the slave_sequence class object
+//// Initializes the master_sequence class object
 ////
 //// Parameters:
 ////  name - instance name of the config_template
 ////-----------------------------------------------------------------------------
-//function S_SPI_FD_8b_dct::new(string name="S_SPI_FD_8b_dct");
+//function M_SPI_FD_8b_dct::new(string name="M_SPI_FD_8b_dct");
 //	super.new(name);
 //endfunction:new
 //
@@ -187,15 +189,17 @@ endtask:body
 ////task:body
 ////creating request which is will be coming from driver
 ////-----------------------------------------------------------------------------
-//task S_SPI_FD_8b_dct::body(); 
+//task M_SPI_FD_8b_dct::body(); 
 //  begin
-//    req=slave_tx::type_id::create("req");
-//    for(int i=0; i < 8;i++)
+//    req=master_tx::type_id::create("req");
+//    for(int i=0; i < 8; i++)
 //  begin
 //		start_item(req);
-//    assert(req.randomize () with { cs==2'b0;
+//    assert(req.randomize () with {
+//                                   cs==2'b0;
 //                                   rst==0;
-//                                 });  
+//                                 });
+//
 //    assert(req.randomize () with {cs==2'b1;});
 //    continue;
 //    finish_item(req);
@@ -206,12 +210,12 @@ endtask:body
 //
 ////-----------------------------------------------------------------------------
 //// Constructor: new
-//// Initializes the slave_sequence class object
+//// Initializes the master_sequence class object
 ////
 //// Parameters:
 ////  name - instance name of the config_template
 ////-----------------------------------------------------------------------------
-//function S_SPI_RST::new(string name="S_SPI_RST");
+//function M_SPI_RST::new(string name="M_SPI_RST");
 //	super.new(name);
 //endfunction:new
 //
@@ -219,9 +223,9 @@ endtask:body
 ////task:body
 ////creating request which is will be coming from driver
 ////-----------------------------------------------------------------------------
-//task S_SPI_RST::body(); 
+//task M_SPI_RST::body(); 
 //  begin
-//    req=slave_tx::type_id::create("req");
+//    req=master_tx::type_id::create("req");
 //    repeat(1)
 //  begin
 //		start_item(req);
@@ -234,12 +238,12 @@ endtask:body
 //
 ////-----------------------------------------------------------------------------
 //// Constructor: new
-//// Initializes the slave_sequence class object
+//// Initializes the master_sequence class object
 ////
 //// Parameters:
 ////  name - instance name of the config_template
 ////-----------------------------------------------------------------------------
-//function S_SPI_HD_8b::new(string name="S_SPI_HD_8b");
+//function M_SPI_HD_8b::new(string name="M_SPI_HD_8b");
 //	super.new(name);
 //endfunction:new
 //
@@ -247,19 +251,20 @@ endtask:body
 ////task:body
 ////creating request which is will be coming from driver
 ////-----------------------------------------------------------------------------
-//task S_SPI_HD_8b::body(); 
+//task M_SPI_HD_8b::body(); 
 //  begin
-//    req=slave_tx::type_id::create("req");
+//    req=master_tx::type_id::create("req");
 //    repeat(1)
 //  begin
 //		start_item(req);
-//    assert(req.randomize () with { 
-//                                   rst == 1;
-//                                });
+//    assert(req.randomize () with {  cs==2'b0;
+//                                    rst == 0;
+//                                    master_data_in==8'b0101_0011;
+//                                  });
 //    finish_item(req);
 //  end
 //end
 //endtask:body
-//
+
 `endif
 
