@@ -98,7 +98,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     
     //Variable : Txn_values
     //Consists of Mosi, Miso Values.
-    //bit [2:0] txn_values;
+    bit [2:0] txn_values;
 
     //-------------------------------------------------------
     // Calling the tasks from monitor bfm
