@@ -12,6 +12,8 @@
 //interface slave_driver_bfm(spi_if drv_intf, spi_if.SLV_DRV_MP drv_intf);
 interface slave_driver_bfm(spi_if.SLV_DRV_MP drv_intf);
 
+  parameter int DATA_WIDTH = 8;
+  
   //-------------------------------------------------------
   // Creating the handle for proxy driver
   //-------------------------------------------------------
@@ -37,17 +39,30 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP drv_intf);
     endcase
   end
 
-  task mosi_pos_miso_neg();
-    @(drv_intf.sample_mosi_pos_cb.sclk);
-    for(int i=0; i<tx.data_master_in_slave_out; i++) begin
-      tx.data_master_out_slave_in[0] = drv_intf.s_neg_drv_cb.miso0;
-      $display ("right_shift_operation",tx.data_master_out_slave_in << 1'b1);
-    end
-      
+  task mosi_pos_miso_neg(bit[7:0] data);
+        
+    drive_msb_first(data);
+          
     drv_intf.MDR_CB.mosi0 = tx.data_master_in_slave_out;
   
   endtask : mosi_pos_miso_neg
+  
+  // MSB is driven first
+  task drive_msb_first(input bit[7:0] data);
+    for(int i=DATA_WIDTH; i>0 ; i--) begin
+      @(drv_intf.sample_mosi_pos_cb.sclk);
+      drv_intf.MDR_CB.mosi0 = data[i-1];
+    end
+  endtask: drive_msb_first
 
+  
+  // LSB is driven first
+  task drive_lsb_first(input bit[7:0] data);
+  for(int i=0; i < DATA_WIDTH; i++) begin
+    @(drv_intf.sample_mosi_pos_cb.sclk);
+    drv_intf.MDR_CB.mosi0 = data[i];
+  end
+  
   /*
   task slave_driver::drive_mosi_neg_miso_pos();
   task slave_driver::drive_mosi_pos_miso_neg();
