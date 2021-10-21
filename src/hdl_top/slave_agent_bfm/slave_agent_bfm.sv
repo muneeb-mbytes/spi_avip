@@ -9,6 +9,8 @@ module slave_agent_bfm(spi_if intf);
   
   initial begin
     $display("Slave Agent BFM");
+    // Set the slave_driver and slave_moniot bfms into config_db
+    // ::set(null, "*", "slave_driver_bfm", slave_driver_bfm_h);  
   end
 
   //-------------------------------------------------------
