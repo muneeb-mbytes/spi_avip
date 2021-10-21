@@ -3,11 +3,11 @@
 
  //--------------------------------------------------------------------------------------------
  // Class: master_sequencer
+ // It sends transaction via TLM ports
  //--------------------------------------------------------------------------------------------
  class master_sequencer extends uvm_sequencer #(master_tx);
   
   //register with factory so we can override it in further by using uvm method.
-
   `uvm_component_utils(master_sequencer)
 
   //-------------------------------------------------------

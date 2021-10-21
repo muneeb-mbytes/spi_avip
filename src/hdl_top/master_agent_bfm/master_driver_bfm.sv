@@ -2,7 +2,7 @@
 // master driver BFM
 //-------------------------------------------------------
 
-module master_drv(spi_if intf);
+interface master_driver_bfm (spi_if intf);
 
 virtual spi_if vif;
 
@@ -10,4 +10,4 @@ initial
   begin
     $display("Master driver BFM");
   end
-endmodule
+endinterface:master_driver_bfm
