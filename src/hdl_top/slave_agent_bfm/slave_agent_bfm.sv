@@ -3,15 +3,12 @@
 
 //--------------------------------------------------------------------------------------------
 // Module      : Slave Agent BFM
-// TODO(mshariff): 
-// Description : Instantiates driver and monitor
+// Contains Slave driver bfm and slave monitor bfm interfaces
 //--------------------------------------------------------------------------------------------
 module slave_agent_bfm(spi_if intf);
+ 
+  //import uvm_pkg::*;
   
-  initial begin
-    $display("Slave Agent BFM");
-  end
-
   //-------------------------------------------------------
   //Slave driver bfm instantiation
   //-------------------------------------------------------
@@ -21,6 +18,16 @@ module slave_agent_bfm(spi_if intf);
   //Slave driver bfm instantiation
   //-------------------------------------------------------
   slave_monitor_bfm slave_monitor_bfm_h (intf.MON_MP);
+
+
+  //-------------------------------------------------------
+  // Setting Slave_moitor_bfm interface in config db
+  //-------------------------------------------------------
+  initial begin
+    $display("Slave Agent BFM");
+    //uvm_config_db #(slave_monitor_bfm)::set(null,"*","slave_monitor_bfm",slave_monitor_bfm);
+  end
+
 
 endmodule : slave_agent_bfm
 
