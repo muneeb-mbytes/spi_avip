@@ -38,8 +38,17 @@ endtask : sample_mosi_pos_00
 //--------------------------------------------------------------------------------------------
 
 task sample_mosi_neg_01 (bit mosi, bit miso, bit cs,bit [2:0]txn_values);
+ bit[7:0] data;
+ 
   @(intf.sample_mosi_neg_cb)
   mosi=intf.sample_mosi_neg_cb.mosi0;
+ 
+  data = data << 1;
+  data[0] = mosi; 
+ 
+ // data = data >> 1;
+ // data[7] = mosi;
+ 
   mosi =1;
   miso =0;
   cs = 0;
