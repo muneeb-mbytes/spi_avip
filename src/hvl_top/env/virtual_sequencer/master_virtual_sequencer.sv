@@ -7,7 +7,9 @@
 //--------------------------------------------------------------------------------------------
 class master_virtual_sequencer extends uvm_component;
   `uvm_component_utils(master_virtual_sequencer)
-   master_sequencer m_sqr_h;
+  
+  master_sequencer m_sqr_h;
+  
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------

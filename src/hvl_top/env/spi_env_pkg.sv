@@ -7,32 +7,30 @@
 //--------------------------------------------------------------------------------------------
 package spi_env_pkg;
 
-  //-------------------------------------------------------
-  // Import uvm package
-  //-------------------------------------------------------
-  `include "uvm_macros.svh"
-  import uvm_pkg::*;
+//-------------------------------------------------------
+// Import uvm package
+//-------------------------------------------------------
+`include "uvm_macros.svh"
+ import uvm_pkg::*;
 
-  //-------------------------------------------------------
-  // Importing the required packages
-  //-------------------------------------------------------
-  import spi_globals_pkg::*;
-  import spi_master_pkg::*;
-  import spi_slave_pkg::*;
+//-------------------------------------------------------
+// Importing the required packages
+//-------------------------------------------------------
+ import spi_master_pkg::*;
+ import spi_slave_pkg::*;
 
-  //-------------------------------------------------------
-  // Include all other files
-  //-------------------------------------------------------
-  `include "env_config.sv"
+//-------------------------------------------------------
+// Include all other files
+//-------------------------------------------------------
+`include "env_config.sv"
+`include "master_virtual_sequencer.sv"
+`include "slave_virtual_sequencer.sv"
+`include "virtual_sequencer.sv"
 
-  `include "master_virtual_sequencer.sv"
-  `include "slave_virtual_sequencer.sv"
-  `include "virtual_sequencer.sv"
+// SCOREBOARD
+// Coverage 
 
-  // SCOREBOARD
-  // Coverage 
-
-  `include "env.sv"
+`include "env.sv"
 
 endpackage : spi_env_pkg
 

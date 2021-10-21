@@ -10,10 +10,6 @@
 class slave_monitor_proxy extends uvm_monitor;
   `uvm_component_utils(slave_monitor_proxy)
 
-  // Variable: sa_cfg_h;
-  // Handle for slave agent configuration
-  slave_agent_config sa_cfg_h;
-
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -43,21 +39,20 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_monitor_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  // TODO(mshariff): Get the interface
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
-// // TODO(mshariff): 
+// 
+// Parameter:
+// phase - stores the current phase 
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
 
   // Get the data 
   // req.print();
-
   // Convert to transactions
-
 endtask : run_phase 
 
 `endif
