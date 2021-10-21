@@ -14,6 +14,7 @@
          $display("master Monitor BFM");
          end
 
+
     //--------------------------------------------------------------------------------------------
     //Task  : sample_mosi_pos_00
     //assigning the sample_miso_pos_cb to proxy miso
