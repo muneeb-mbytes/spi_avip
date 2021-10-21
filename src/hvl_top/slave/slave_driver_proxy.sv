@@ -83,12 +83,31 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
 
   forever begin
     seq_item_port.get_next_item(req);
-    v_drv_bfm.mosi_pos_miso_neg (req);
+    
+    drive_to_dut();
+        
     seq_item_port.item_done();
   end
 
 endtask : run_phase 
 
+task drive_to_dut();
+  foreach(req.master_out_slave_in[i]) begin
+    bit[7:0] data;
+    
+    data = req.master_out_slave_in[i];
+    
+      case: {cpol,cpha}
+        2'b00: v_drv_bfm.drive_mosi_pos_miso_neg(data);
+        2'b01: v_drv_bfm.drive_mosi_neg_miso_pos(data);
+        2'b10: v_drv_bfm.drive_mosi_pos_miso_neg(data);
+        2'b11: v_drv_bfm.drive_mosi_neg_miso_pos(data);
+      endcase
+    end
+    
+  end
+endtask
+    
 /*
 task slave_driver_proxy::over_all_task;
   repeat(2) begin
