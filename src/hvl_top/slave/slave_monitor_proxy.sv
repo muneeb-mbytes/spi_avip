@@ -23,14 +23,19 @@ class slave_monitor_proxy extends uvm_monitor;
   //Signal : MOSI Data-Input
   bit [DATA_LENGTH-1:0]data_mosi;
 
+  //Queue : data_mosi_q
+  //Sets of Data_mosi data
+  bit [DATA_LENGTH-1:0]data_mosi_q[$];
+
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "slave_monitor_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi,bit [7:0]data_mosi_q[$]);
-  extern virtual task write(bit [7:0]data_mosi_q[$],bit [7:0]data);
+  extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
+  extern virtual task write(bit [DATA_LENGTH-1:0]data);
 
 endclass : slave_monitor_proxy
 
@@ -94,15 +99,12 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     //Chip Select
     //bit cs;
     
-    //Queue : data_mosi_q
-    //Sets of Data_mosi data
-    bit [7:0]data_mosi_q[$];
 
 
     //-------------------------------------------------------
     // Calling the tasks from monitor bfm
     //-------------------------------------------------------
-    read_from_mon_bfm(CPOL,CPHA,mosi,data_mosi_q);    
+    read_from_mon_bfm(CPOL,CPHA,mosi);    
   end
 
 endtask : run_phase 
@@ -112,24 +114,24 @@ endtask : run_phase
 // Task : read_from_mon_bfm
 // Used to call the tasks from moitor bfm
 //-------------------------------------------------------
-task slave_monitor_proxy::read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi,bit [7:0]data_mosi_q[$]);
+task slave_monitor_proxy::read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
     case({CPOL,CPHA})
       2'b00 : begin
                   s_mon_bfm_h.sample_mosi_pos_00(mosi);
                   $display("data_mosi=%d",s_mon_bfm_h.data_mosi);
-                  write(data_mosi_q,s_mon_bfm_h.data_mosi);
+                  write(s_mon_bfm_h.data_mosi);
               end
       2'b01 : begin 
                   s_mon_bfm_h.sample_mosi_neg_01(mosi);
-                  write(data_mosi_q,s_mon_bfm_h.data_mosi);
+                  write(s_mon_bfm_h.data_mosi);
               end
       2'b10 : begin                  
                   s_mon_bfm_h.sample_mosi_pos_10(mosi);
-                  write(data_mosi_q,s_mon_bfm_h.data_mosi);
+                  write(s_mon_bfm_h.data_mosi);
               end
       2'b11 : begin
                   s_mon_bfm_h.sample_mosi_neg_11(mosi);
-                  write(data_mosi_q,s_mon_bfm_h.data_mosi);
+                  write(s_mon_bfm_h.data_mosi);
               end
     endcase
 endtask : read_from_mon_bfm
@@ -138,7 +140,7 @@ endtask : read_from_mon_bfm
 // Task : Write
 // Captures the 8 bit MOSI data sampled.
 //-------------------------------------------------------
-task slave_monitor_proxy::write(bit [7:0]data_mosi_q[$],bit [7:0]data);
+task slave_monitor_proxy::write(bit [DATA_LENGTH-1:0]data);
 
   data_mosi = data;
   $display("WRITE__data_mosi=%0d",data_mosi);
