@@ -4,11 +4,11 @@
 // to call the tasks and functions from monitor bfm to monitor proxy
 //--------------------------------------------------------------------------------------------
     interface master_monitor_bfm (spi_if.MON_MP intf);
-        
+    int i;    
     //-------------------------------------------------------
     // Creating the handle for proxy driver
     //-------------------------------------------------------
-    import spi_monitor_pkg::master_monitor_proxy;
+    import spi_master_pkg::master_monitor_proxy;
          master_monitor_proxy mon_proxy;
          initial begin
          $display("master Monitor BFM");
@@ -20,7 +20,7 @@
     //sampling happen on the posedge
     //--------------------------------------------------------------------------------------------
 
-    task sample_miso_pos_00 (bit [7:0]data);
+    task sample_miso_pos_00 (bit [7:0]data,bit miso);
         if(!intf.cs)begin
         for(i=0;i<7;i++)begin 
         @(intf.sample_miso_pos_cb)
@@ -39,7 +39,7 @@
     //sampling happen on the negedge
     //--------------------------------------------------------------------------------------------
  
-    task sample_miso_neg_01 (bit [7:0]data);
+    task sample_miso_neg_01 (bit [7:0]data,bit miso);
         
         if(!intf.cs)begin
         for(i=0;i<7;i++)begin 
@@ -60,7 +60,7 @@
     //assigning the sample_miso_pos_cb signal to proxy mosi
     //sampling happen on the posedge
     //--------------------------------------------------------------------------------------------
-    task sample_miso_pos_10 (bit [7:0]data);
+    task sample_miso_pos_10 (bit [7:0]data,bit miso);
       
         if(!intf.cs)begin
         for(i=0;i<7;i++)begin 
@@ -79,7 +79,7 @@
       //assigning the sample_miso_pos_cb.miso signal to proxy miso
       //sampling happens on the negedge
       //--------------------------------------------------------------------------------------------
-      task sample_miso_neg_11 (bit [7:0]data);
+      task sample_miso_neg_11 (bit [7:0]data,bit miso);
       
         if(!intf.cs)begin
         for(i=0;i<7;i++)begin 

@@ -8,6 +8,6 @@ virtual spi_if vif;
 
 initial 
   begin
-    $display("Master driver BFM")
+    $display("Master driver BFM");
   end
 endmodule
