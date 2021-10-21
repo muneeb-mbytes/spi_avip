@@ -10,7 +10,7 @@ class env_config extends uvm_object;
   
   int no_of_sagent = 1;
 
-  slave_agent_config sa_cfg_h[];
+  slave_agent_config sa_cfg_h;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------

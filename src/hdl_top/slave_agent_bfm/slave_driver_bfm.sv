@@ -6,7 +6,7 @@
 // Parameters:
 //  intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(spi_if drv_intf, spi_if.MON_MP mon_intf);
+interface slave_driver_bfm(spi_if drv_vif, spi_if.MON_MP mon_vif);
 
   //-------------------------------------------------------
   // Creating the handle for proxy driver

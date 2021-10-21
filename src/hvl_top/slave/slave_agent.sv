@@ -55,11 +55,10 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
-
-  if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) 
-  begin
+   if(!uvm_config_db #(slave_agent_config)::get(this,",","slave_agent_config",sa_cfg_h)) 
+    begin
      `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
-  end
+    end
 
    if(sa_cfg_h.is_active == UVM_ACTIVE) begin
      sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);

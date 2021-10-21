@@ -1,0 +1,9 @@
+# vsim -novopt work.hvl_top work.hdl_top -c -do "log -r /*; add wave -r /*; run -all;" -wlf waveform.wlf 
+# Start time: 01:48:52 on Oct 22,2021
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# ** Error: (vsim-3170) Could not find 'hvl_top'.
+#         Searched libraries:
+#             /hwetools/work_area/frontend/deepikapatil/spi_avip/sim/questa_sim/work
+# Error loading design
+# End time: 01:48:52 on Oct 22,2021, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 1
