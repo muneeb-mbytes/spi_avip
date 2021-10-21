@@ -1,35 +1,28 @@
-`ifndef TEST_PKG_INCLUDED
-`define TEST_PKG_INCLUDED
+`ifndef M_SPI_SEQ_PKG_INCLUDED
+`define M_SPI_SEQ_PKG_INCLUDED
 
 //-----------------------------------------------------------------------------------------
-// Package: Test
+// Package: m_spi_seq
 // Description:
 // Includes all the files written to run the simulation
 //-------------------------------------------------------------------------------------------
-  package test_pkg;
+  package m_spi_seq_pkg;
 
 //-------------------------------------------------------
 // Import uvm package
 //-------------------------------------------------------
  `include "uvm_macros.svh"
   import uvm_pkg::*;
+  import spi_master_pkg::*;
 
 //-------------------------------------------------------
 // Importing the required packages
 //-------------------------------------------------------
-  import spi_master_pkg::*;
-  import spi_slave_pkg::*;
-  import spi_env_pkg::*;
-  import m_spi_seq_pkg::*;
-  import s_spi_seq_pkg::*;
-  import spi_virtual_seq_pkg::*;
+ `include "master_base_seq.sv"
+ `include "m_spi_fd_8b_seq.sv"
+ `include "m_spi_fd_16b_seq.sv"
 
- //including base_test for testing
- `include "base_test.sv"
- `include "spi_simple_fd_8b_test.sv"
- `include "spi_simple_fd_16b_test.sv"
-
-endpackage :test_pkg
+endpackage :m_spi_seq_pkg
 
 `endif
 
