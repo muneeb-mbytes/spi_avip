@@ -1,3 +1,4 @@
+
 `ifndef MASTER_DRIVER_BFM_INCLUDED_
 `define MASTER_DRIVER_BFM_INCLUDED_
 
@@ -131,3 +132,4 @@
  endinterface:master_driver_bfm
 
 `endif
+
