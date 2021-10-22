@@ -9,30 +9,13 @@
 class base_test extends uvm_test;
   `uvm_component_utils(base_test)
 
-   virtual spi_if vif;
-
    // Variable: e_cfg_h
    // Declaring environment config handle
    env_config e_cfg_h;
 
-   //-------------------------------------------------------
-   // Declaring Agent Config Handles
-   //-------------------------------------------------------
-   slave_agent_config sa_cfg_h[];
-   master_agent_config ma_cfg_h[];
-
-   //-------------------------------------------------------
-   // Environment Handles
-   //.....................................................
+   // Variable: env_h
+   // Handle for environment 
    env env_h;
-
-   //-------------------------------------------------------
-   // Assigning values
-   //-------------------------------------------------------
-   int no_of_sagent = 1;
-   int no_of_magent = 1;
-   int has_m_agt = 1;
-   int has_s_agt = 1;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -69,46 +52,19 @@ function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
   // Setup the environemnt cfg 
-      setup_env_cfg();
-
-    e_cfg_h = env_config::type_id::create("e_cfg_h");
-    e_cfg_h.sa_cfg_h = new[no_of_sagent];
-    e_cfg_h.ma_cfg_h = new[no_of_magent];
-
-    sa_cfg_h = new[no_of_sagent];
-    ma_cfg_h = new[no_of_magent];
-
-    foreach(ma_cfg_h[i]) begin
-
-    ma_cfg_h[i]=master_agent_config::type_id::create($sformatf("ma_cfg_h[%0d]",i));
-    e_cfg_h.ma_cfg_h[i]=ma_cfg_h[i];
-
-    uvm_config_db #(master_agent_config)::set(this,"*","master_agent_config",e_cfg_h.ma_cfg_h[i]);
-    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
-      `uvm_fatal("TEST","COULDNT GET")
-    end
-  end
-    foreach(sa_cfg_h[i]) begin
-
-    sa_cfg_h[i]=slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
-    e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
-
-    uvm_config_db #(slave_agent_config)::set(this,"*","slave_agent_config",e_cfg_h.sa_cfg_h[i]);
-    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
-      `uvm_fatal("TEST","COULDNT GET")
-    end
-  end
+  setup_env_cfg();
 
   // Create the environment
   env_h = env::type_id::create("env",this);
 
 endfunction : build_phase
+
 //--------------------------------------------------------------------------------------------
 // Function: setup_env_cfg
 // Setup the environment configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_env_cfg();
+function void base_test:: setup_env_cfg();
 
   e_cfg_h = env_config::type_id::create("e_cfg_h");
  
@@ -122,9 +78,9 @@ function void base_test::setup_env_cfg();
   // Setup the slave agent(s) cfg 
   setup_slave_agents_cfg();
 
-   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
+  uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
- endfunction: setup_env_cfg
+endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------
 // Function: setup_master_agent_cfg
@@ -132,9 +88,9 @@ function void base_test::setup_env_cfg();
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
 function void base_test::setup_master_agent_cfg();
-  
+
   e_cfg_h.ma_cfg_h = master_agent_config::type_id::create("ma_cfg_h");
-  
+
   // Configure the Master agent configuration
   e_cfg_h.ma_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
   e_cfg_h.ma_cfg_h.no_of_slaves         = NO_OF_SLAVES;
@@ -191,4 +147,3 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 `endif
-
