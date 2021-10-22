@@ -13,7 +13,6 @@ module slave_agent_bfm(spi_if intf);
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-
   //-------------------------------------------------------
   //Slave driver bfm instantiation
   //-------------------------------------------------------
@@ -31,14 +30,9 @@ module slave_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   slave_monitor_bfm slave_monitor_bfm_h (intf.MON_MP);
 
-  //-------------------------------------------------------
-  // Setting Slave_moitor_bfm interface in config db
-  //-------------------------------------------------------
   initial begin
     $display("Slave Agent BFM");
-    //uvm_config_db #(slave_monitor_bfm)::set(null,"*","slave_monitor_bfm",slave_monitor_bfm);
   end
-
 endmodule : slave_agent_bfm
 
 `endif
