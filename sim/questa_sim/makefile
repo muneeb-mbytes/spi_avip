@@ -18,6 +18,9 @@ compile:
 	../../src/hvl_top/env/spi_env_pkg.sv \
 	../../src/hvl_top/test/test_pkg.sv \
 	../../src/hdl_top/spi_interface/spi_if.sv \
+	../../src/hdl_top/master_agent_bfm/master_driver_bfm.sv \
+	../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv \
+	../../src/hdl_top/master_agent_bfm/master_agent_bfm.sv \
 	../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv \
 	../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv \
 	../../src/hdl_top/slave_agent_bfm/slave_agent_bfm.sv \
