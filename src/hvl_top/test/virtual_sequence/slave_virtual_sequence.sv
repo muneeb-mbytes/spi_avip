@@ -52,7 +52,7 @@
     if(!uvm_config_db #(env_config)::get(null,get_full_name(),"ENV_CONFIG",e_cfg_h))
       `uvm_error("VSEQ","COULDNT GET")
       
-      s_sqr_h = new[e_cfg_h.no_of_sagent];
+      s_sqr_h = new[e_cfg_h.no_of_slaves];
       
       if(!$cast(sv_sqr_h,m_sequencer))  
         `uvm_error("VSEQ","COULDNT CAST")

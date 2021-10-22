@@ -48,7 +48,7 @@ endclass : slave_virtual_sequencer
     if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg_h))
       `uvm_error("VSEQR","COULDNT GET")
       
-      s_sqr_h = new[e_cfg_h.no_of_sagent];
+      s_sqr_h = new[e_cfg_h.no_of_slaves];
   
   endfunction : build_phase
 

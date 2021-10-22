@@ -14,6 +14,7 @@ package test_pkg;
   //-------------------------------------------------------
   // Importing the required packages
   //-------------------------------------------------------
+  import spi_globals_pkg::*;
   import spi_master_pkg::*;
   import spi_slave_pkg::*;
   import spi_env_pkg::*;

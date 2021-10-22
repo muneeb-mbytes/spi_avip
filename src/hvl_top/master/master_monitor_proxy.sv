@@ -16,6 +16,10 @@ class master_monitor_proxy extends uvm_component;
   
   `uvm_component_utils(master_monitor_proxy)
   
+  // Variable: m_cfg
+  // Declaring handle for master agent config class 
+  master_agent_config m_cfg;
+
    //declaring virtual interface
    //virtual spi_if.MMON_CB vif;
    

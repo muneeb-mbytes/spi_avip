@@ -8,13 +8,21 @@
 class slave_agent_config extends uvm_object;
   `uvm_object_utils(slave_agent_config)
 
-  // Variable: vif
-  // Virtual handle for spi interface
-  virtual spi_if vif;
-
   // Variable: is_active
   // Used for creating the agent in either passive or active mode
   uvm_active_passive_enum is_active=UVM_ACTIVE;  
+
+  // Variable: slave_id
+  // Used for indicating the ID of this slave
+  int slave_id;
+
+  // Variable: spi_mode 
+  // Used for setting the opeartion mode 
+  operation_modes_e spi_mode;
+
+  // Variable: shift_dir
+  // Shifts the data, LSB first or MSB first
+  shift_direction_e shift_dir;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
