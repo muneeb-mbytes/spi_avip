@@ -29,7 +29,8 @@ endclass : slave_driver_proxy
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-// // TODO(mshariff): add comments
+//  Initializes memory for new object
+//
 // Parameters:
 //  name - slave_driver_proxy
 //  parent - parent under which this component is created
@@ -41,8 +42,7 @@ endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
-// // TODO(mshariff): COmments
-// <Description_here>
+//   Slave_driver_bfm congiguration is obtained in build phase
 //
 // Parameters:
 //  phase - uvm phase
@@ -72,7 +72,7 @@ endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
-// // TODO(mshariff): 
+//   Tasks for driving data to dut from transaction
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
 
