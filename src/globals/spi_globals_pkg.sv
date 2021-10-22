@@ -20,7 +20,7 @@ parameter int NO_OF_SLAVES = 1;
 // LSB_FIRST - LSB is shifted out first
 // MSB_FIRST - MSB is shifted out first
 
-typedef enum {
+typedef enum bit {
   LSB_FIRST = 1'b0,
   MSB_FIRST = 1'b1
 } shift_direction_e;
@@ -34,7 +34,7 @@ typedef enum {
 // CPOL1_CPHA0 - Polarity is 1 and Phase is 0
 // CPOL1_CPHA1 - Polarity is 1 and Phase is 1
 
-typedef enum {
+typedef enum bit[1:0] {
   CPOL0_CPHA0 = 2'b00,
   CPOL0_CPHA1 = 2'b01,
   CPOL1_CPHA0 = 2'b10,
@@ -49,10 +49,10 @@ typedef enum {
 // DUAL_SPI   - In this, mosi[1:0] and miso[1:0] are used
 // QUAD_SPI   - In this, mosi[3:0] and miso[3:0] are used
 
-typedef enum {
-  SIMPLE_SPI = 2'd1,
-  DUAL_SPI   = 2'd2,
-  QUAD_SPI   = 2'd4
+typedef enum bit [2:0] {
+  SIMPLE_SPI = 3'd1,
+  DUAL_SPI   = 3'd2,
+  QUAD_SPI   = 3'd4
 } spi_type_e;
 
 endpackage: spi_globals_pkg
