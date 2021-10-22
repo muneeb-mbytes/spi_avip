@@ -13,7 +13,7 @@ module hvl_top;
   // Declaring SPI Interface
   //-------------------------------------------------------
   spi_if vif();
-
+  master_monitor_bfm m_mon_bfm_h(vif.MON_MP);
   //-------------------------------------------------------
   // run_test for simulation
   //-------------------------------------------------------
