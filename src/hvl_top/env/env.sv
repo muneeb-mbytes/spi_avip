@@ -18,13 +18,12 @@ class env extends uvm_env;
   // declaring master handles
   //-------------------------------------------------------
   master_agent ma_h;
-  master_virtual_sequencer m_v_sqr_h;
   
+  virtual_sequencer vseqr;
   //-------------------------------------------------------
   // Declaring slave handles
   //-------------------------------------------------------
   slave_agent slave_agent_h[];
-  slave_virtual_sequencer s_v_sqr_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -88,6 +87,9 @@ endfunction : build_phase
 //--------------------------------------------------------------------------------------------
 function void env::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
+
+   vseqr.m_seqr_h = ma_h.m_sqr_h;
+   vseqr.s_seqr_h = sa_h.s_sqr_h;
 endfunction : connect_phase
 
 `endif

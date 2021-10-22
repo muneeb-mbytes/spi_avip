@@ -10,6 +10,8 @@
 class virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
   `uvm_component_utils(virtual_sequencer)
 
+  master_sequencer m_seqr_h;
+  slave_sequencer  s_seqr_h;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
