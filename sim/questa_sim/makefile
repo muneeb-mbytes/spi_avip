@@ -4,6 +4,7 @@ all:
 compile:
 	vlib work; 
 	vlog -sv \
+	-l spi_compile.log \
 	+incdir+../../src/globals/ \
 	+incdir+../../src/hvl_top/master/ \
 	+incdir+../../src/hdl_top/master_agent_bfm/  \
@@ -29,7 +30,7 @@ compile:
 # TODO 
 # Add the master HDL files when done
 simulate:
-	vsim -novopt work.hvl_top work.hdl_top -c -do "log -r /*; add wave -r /*; run -all;" \
+	vsim -novopt work.hvl_top work.hdl_top -l spi_simulate.log -c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf waveform.wlf
 	# To open the waveform use the below command 
 	# vsim -view waveform.wlf &
