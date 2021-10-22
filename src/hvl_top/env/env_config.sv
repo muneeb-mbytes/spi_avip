@@ -3,14 +3,19 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: env_config
-// <Description_here>
+// This class is used as configuration class for environment and its components
 //--------------------------------------------------------------------------------------------
 class env_config extends uvm_object;
   `uvm_object_utils(env_config)
-  
+ 
+  // Variable: no_of_sagent
+  // Declaring no of slave agents 
   int no_of_sagent = 1;
 
+  // Variable: sa_cfg_h
+  // Handle for slave_agent_config 
   slave_agent_config sa_cfg_h[];
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------

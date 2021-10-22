@@ -13,13 +13,15 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   // Creating the handle for driver bfm
   //-------------------------------------------------------
   virtual slave_driver_bfm v_drv_bfm;
-  
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "slave_driver_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  // extern virtual function void connect_phase(uvm_phase phase);
+
+//  extern virtual function void connect_phase(uvm_phase phase);
+
   extern virtual task run_phase(uvm_phase phase);
   
 endclass : slave_driver_proxy
@@ -46,11 +48,12 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  // if(!uvm_config_db #(slave_agent_config)::get(this,"","sa_cfg_h",sa_cfg_h))
-  // `uvm_fatal("CONFIG","cannot get() sa_cfg_h")
-  
-  // if(!uvm_config_db #(slave_driver_bfm)::get(this,"","v_drv_bfm",v_drv_bfm))
-  // `uvm_fatal("CONFIG","cannot get() v_drv_bfm")
+
+//  if(!uvm_config_db #(slave_agent_config)::get(this,"","sa_cfg_h",sa_cfg_h))
+//		`uvm_fatal("CONFIG","cannot get() sa_cfg_h")
+    
+//  if(!uvm_config_db #(slave_driver_bfm)::get(this,"","v_drv_bfm",v_drv_bfm))
+//  	`uvm_fatal("CONFIG","cannot get() v_drv_bfm")
 endfunction : build_phase
 
 
@@ -60,11 +63,12 @@ endfunction : build_phase
 // Connects driver_proxy and driver_bfm
 //
 // Parameters:
-// phase - stores the current phase
+
+//  phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::connect_phase(uvm_phase phase);
-super.connect_phase(phase);
-// v_drv_bfm = sa_cfg_h.v_drv_bfm;
+  super.connect_phase(phase);
+ // v_drv_bfm = sa_cfg_h.v_drv_bfm;
 
 endfunction : connect_phase
 */
@@ -75,23 +79,22 @@ endfunction : connect_phase
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
 
-  // slave_tx tx = new();
-  // repeat(2) begin
-  // tx.randomize();
-  // v_drv_bfm.drive_mosi_pos_miso_neg();
-  // tx.print();
-  // end  
-  
+
+//  slave_tx tx = new();
+//  repeat(2) begin
+//    tx.randomize();
+//    v_drv_bfm.drive_mosi_pos_miso_neg();
+//    tx.print();
+//  end
+
   forever begin
-  seq_item_port.get_next_item(req);
-  v_drv_bfm.mosi_pos_miso_neg (req);
-  seq_item_port.item_done();
+    seq_item_port.get_next_item(req);
+    
+    drive_to_dut();
+        
+    seq_item_port.item_done();
   end
-
-endtask : run_phase
-
-
-
+  
   /*
   task slave_driver_proxy::over_all_task;
   repeat(2) begin
@@ -106,4 +109,35 @@ endtask : run_phase
   end
   */
   
+task drive_to_dut();
+  foreach(req.master_out_slave_in[i]) begin
+    bit[7:0] data;
+    
+    data = req.master_out_slave_in[i];
+    
+      case: {cpol,cpha}
+        2'b00: v_drv_bfm.drive_mosi_pos_miso_neg(data);
+        2'b01: v_drv_bfm.drive_mosi_neg_miso_pos(data);
+        2'b10: v_drv_bfm.drive_mosi_pos_miso_neg(data);
+        2'b11: v_drv_bfm.drive_mosi_neg_miso_pos(data);
+      endcase
+    end
+    
+  end
+endtask
+    
+/*
+task slave_driver_proxy::over_all_task;
+  repeat(2) begin
+    if (cs == 0) begin
+      case: {cpol,cpha}
+        2'b00: v_drv_bfm.drive_mosi_pos_miso_neg();
+        2'b01: v_drv_bfm.drive_mosi_neg_miso_pos();
+        2'b10: v_drv_bfm.drive_mosi_pos_miso_neg();
+        2'b11: v_drv_bfm.drive_mosi_neg_miso_pos();
+      endcase
+    end
+end
+*/
+    
 `endif

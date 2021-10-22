@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: slave_sequence
-// Slave_sequence is extended from uvm_sequence to create sequence items
+//  Slave_sequence is extended from uvm_sequence to create sequence item
 //--------------------------------------------------------------------------------------------
 class slave_sequence extends uvm_sequence #(slave_tx);
   `uvm_object_utils(slave_sequence)
@@ -60,11 +60,11 @@ endfunction : new
 task s_seq_1::body();
   repeat(1) begin
     req = slave_tx::type_id::create("req");
-    start_item(req);
-    if(req.randomize () with {cpol==0; cpha==0; data_master_in_slave_out == 8'b10010010;});
-    `uvm_info("slave_sequence",$sformatf("printing from sequence %s", req.sprint()),UVM_LOW)
-    finish_item(req);
-  end
+     start_item(req);
+     if(req.randomize () with {cpol==0; cpha==0; data_master_in_slave_out == 8'b10010010;});
+       `uvm_info("slave_sequence",$sformatf("printing from sequence %s", req.sprint()),UVM_LOW) 
+	   finish_item(req); 
+end
 
 endtask : body
 

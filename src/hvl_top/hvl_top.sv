@@ -10,7 +10,7 @@ module hvl_top;
   import uvm_pkg::*;
 
   //-------------------------------------------------------
-  // Declaring SPI Interface
+  // Declaring SPI and Slave_driver_bfm Interface
   //-------------------------------------------------------
   spi_if vif();
   slave_monitor_bfm s_mon_bfm_h(vif.MON_MP);
@@ -21,8 +21,9 @@ module hvl_top;
     //-------------------------------------------------------
     // Setting SPI Interface
     //-------------------------------------------------------
-    uvm_config_db #(virtual spi_if)::set(null,"*","vif",vif); 
-    uvm_config_db #(virtual slave_monitor_bfm)::set(null,"*","s_mon_bfm_h",s_mon_bfm_h); 
+
+    uvm_config_db #(virtual spi_if)::set(null,"*","spi_if",vif); 
+    
     run_test("base_test");
   end
 
