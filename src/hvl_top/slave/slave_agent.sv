@@ -18,7 +18,7 @@ class slave_agent extends uvm_agent;
 
   // Variable: sdrv_proxy_h
   // Handle for slave driver proxy
-  slave_driver_proxy sdrv_proxy_h;
+  slave_driver_proxy s_drv_proxy_h;
 
   // Variable: smon_proxy_h
   // Handle for slave monitor proxy
@@ -60,7 +60,7 @@ function void slave_agent::build_phase(uvm_phase phase);
   end
 
    if(sa_cfg_h.is_active == UVM_ACTIVE) begin
-     sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);
+     s_drv_proxy_h = slave_driver_proxy::type_id::create("s_drv_proxy_h",this);
      s_sqr_h = slave_sequencer::type_id::create("s_sqr_h",this);
      smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
    end
@@ -78,7 +78,7 @@ endfunction : build_phase
 //--------------------------------------------------------------------------------------------
 function void slave_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  sdrv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
+  s_drv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
 endfunction : connect_phase
 
 `endif
