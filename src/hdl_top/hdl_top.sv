@@ -1,12 +1,11 @@
-// TODO(mshariff): 
+`ifndef HDL_TOP_INCLUDED_
+`define HDL_TOP_INCLUDED_
+
 //--------------------------------------------------------------------------------------------
 // Module      : HDL Top
 // Description : Has a interface and slave agent bfm.
 //--------------------------------------------------------------------------------------------
 
-//-------------------------------------------------------
-// Including SPI interface and Slave Agent BFM Files
-//-------------------------------------------------------
 module hdl_top;
 
   //-------------------------------------------------------
@@ -34,9 +33,9 @@ module hdl_top;
   // System Reset Generation
   //-------------------------------------------------------
   initial begin
-    rst = 1'b0;
-    #80;
     rst = 1'b1;
+    repeat (2) @(posedge clk)
+    rst = 1'b0;
   end
 
   //-------------------------------------------------------
@@ -50,3 +49,6 @@ module hdl_top;
   slave_agent_bfm slave_agent_bfm_h(intf);
 
 endmodule : hdl_top
+
+`endif
+
