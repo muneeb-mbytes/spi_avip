@@ -33,6 +33,7 @@ module slave_agent_bfm(spi_if intf);
   initial begin
     $display("Slave Agent BFM");
   end
+
 endmodule : slave_agent_bfm
 
 `endif

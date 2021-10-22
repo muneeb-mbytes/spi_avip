@@ -92,10 +92,8 @@ endtask : run_phase
 task slave_driver_proxy::drive_to_dut();
   foreach(req.data_master_in_slave_out[i]) begin
     bit [7:0] data;
-//    bit cpol;
-//    bit cpha;
-    
-    data = req.data_master_out_slave_in[i];
+
+    data = req.data_master_in_slave_out[i];
     
     case ({tx.cpol,tx.cpha})
       2'b00: s_drv_bfm_h.drive_mosi_pos_miso_neg_cpol_0_cpha_0(data);
