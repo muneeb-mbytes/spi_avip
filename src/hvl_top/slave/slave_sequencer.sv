@@ -8,10 +8,6 @@
 class slave_sequencer extends uvm_sequencer#(slave_tx);
   `uvm_component_utils(slave_sequencer)
 
-  // Variable: sa_cfg_h;
-  // Handle for slave agent configuration
-  slave_agent_config sa_cfg_h;
-
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------

@@ -1,5 +1,10 @@
- `include "master_drv.sv"
- `include "master_mon.sv"
+`ifndef MASTER_AGENT_BFM_INCLUDED_
+`define MASTER_AGENT_BFM_INCLUDED_
+
+  //--------------------------------------------------------------------------------------------
+  // Module : Master_agent_bfm
+  // Description : Instantiate driver and monitor
+  //--------------------------------------------------------------------------------------------
 
   module master_agent_bfm(spi_if intf);
 
@@ -7,8 +12,16 @@
    begin
       $display("Master Agent BFM");
    end
-   
-   master_drv master_drv_h(intf);
-   master_mon master_mon_h(intf);
+  //--------------------------------------------------------------------------------------------
+  // Master Driver bfm 
+  //--------------------------------------------------------------------------------------------
+   master_driver_bfm master_driver_bfm_h(intf.MON_DRV_MP,intf.MON_MP);
+  
+  //--------------------------------------------------------------------------------------------
+  // Master Monitor bfm
+  //--------------------------------------------------------------------------------------------
+   master_monitor_bfm master_monitor_bfm_h(intf.MON_MP);
 
-  endmodule
+  endmodule : master_agent_bfm
+
+`endif

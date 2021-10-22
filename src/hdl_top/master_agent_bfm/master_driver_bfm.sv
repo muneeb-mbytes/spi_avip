@@ -1,11 +1,13 @@
 //-------------------------------------------------------
-//master monitor
+// master driver BFM
 //-------------------------------------------------------
-module master_mon(spi_intf);
 
-  initial
+module master_drv(spi_if intf);
+
+virtual spi_if vif;
+
+initial 
   begin
-    $display("Master Monitor BFM");
+    $display("Master driver BFM");
   end
-
 endmodule
