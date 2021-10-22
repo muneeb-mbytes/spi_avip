@@ -2,23 +2,34 @@
 `define SLAVE_AGENT_BFM_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Module      : Slave Agent BFM
-// Contains Slave driver bfm and slave monitor bfm interfaces
+// Module      : Slave Agent BFM 
+//  This module is used as the configuration class for slave agent bfm and its components
 //--------------------------------------------------------------------------------------------
 module slave_agent_bfm(spi_if intf);
- 
-  //import uvm_pkg::*;
-  
+
+  //-------------------------------------------------------
+  // Package : Importing Uvm Pakckage and Test Package
+  //-------------------------------------------------------
+  import uvm_pkg::*;
+  `include "uvm_macros.svh"
+
+
   //-------------------------------------------------------
   //Slave driver bfm instantiation
   //-------------------------------------------------------
-  slave_driver_bfm slave_driver_bfm_h (intf.SLV_DRV_MP, intf.MON_MP);
+  slave_driver_bfm s_drv_bfm_h (intf.SLV_DRV_MP, intf.MON_MP);
+
+  //-------------------------------------------------------
+  // Setting Slave_driver_bfm config
+  //-------------------------------------------------------
+  initial begin
+    uvm_config_db#(virtual slave_driver_bfm)::set(null,"*", "slave_driver_bfm", s_drv_bfm_h); 
+  end
 
   //-------------------------------------------------------
   //Slave driver bfm instantiation
   //-------------------------------------------------------
   slave_monitor_bfm slave_monitor_bfm_h (intf.MON_MP);
-
 
   //-------------------------------------------------------
   // Setting Slave_moitor_bfm interface in config db
@@ -27,7 +38,6 @@ module slave_agent_bfm(spi_if intf);
     $display("Slave Agent BFM");
     //uvm_config_db #(slave_monitor_bfm)::set(null,"*","slave_monitor_bfm",slave_monitor_bfm);
   end
-
 
 endmodule : slave_agent_bfm
 
