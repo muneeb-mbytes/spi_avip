@@ -22,7 +22,7 @@ package spi_master_pkg;
   `include "master_tx.sv"
   `include "master_agent_config.sv"
   `include "master_sequencer.sv"
-  `include "master_sequence.sv"
+//`include "master_sequence.sv"
   `include "master_driver_proxy.sv"
   `include "master_monitor_proxy.sv"
   `include "master_agent.sv"
