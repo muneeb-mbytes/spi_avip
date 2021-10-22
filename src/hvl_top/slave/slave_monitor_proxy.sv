@@ -63,7 +63,7 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_monitor_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  if(!uvm_config_db#(virtual slave_monitor_bfm)::get(this,"","s_mon_bfm_h",s_mon_bfm_h)) begin
+  if(!uvm_config_db#(virtual slave_monitor_bfm)::get(this,"","slave_monitor_bfm",s_mon_bfm_h)) begin
     `uvm_fatal("FATAL_SMP_MON_BFM",$sformatf("Couldn't get S_MON_BFM in Slave_Monitor_proxy"));
   end
 

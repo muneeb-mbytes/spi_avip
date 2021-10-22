@@ -33,7 +33,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   task drive_msb_first_pos_edge (input bit[7:0] data);
     for(int i=DATA_WIDTH; i>0 ; i--) begin
       @(s_drv_intf.sample_mosi_pos_cb);
-        s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i-1];
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA:   s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i-1];
     end
   endtask : drive_msb_first_pos_edge
   
@@ -43,7 +46,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   task drive_lsb_first_pos_edge (input bit[7:0] data);
     for(int i=0; i < DATA_WIDTH; i++) begin
       @(s_drv_intf.sample_mosi_pos_cb);
-      s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i];
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i];
     end
   endtask : drive_lsb_first_pos_edge
   
@@ -53,7 +59,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   task drive_msb_first_neg_edge (input bit[7:0] data);
     for(int i=DATA_WIDTH; i>0 ; i--) begin
      @(s_drv_intf.sample_mosi_neg_cb);
-     s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i-1];
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA:  s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i-1];
    end
   endtask : drive_msb_first_neg_edge
   
@@ -63,7 +72,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   task drive_lsb_first_neg_edge (input bit[7:0] data);
     for(int i=0; i < DATA_WIDTH; i++) begin
       @(s_drv_intf.sample_mosi_neg_cb);
-      s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i];
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i];
     end
   endtask : drive_lsb_first_neg_edge
   
@@ -78,7 +90,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
     drive_msb_first_neg_edge(data);
     drive_lsb_first_neg_edge(data);
 
-    s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
 
   endtask : drive_mosi_pos_miso_neg_cpol_0_cpha_0
   
@@ -92,7 +107,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
     drive_msb_first_neg_edge(data);
     drive_lsb_first_neg_edge(data);
     
-    s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
 
   endtask : drive_mosi_neg_miso_pos_cpol_0_cpha_1
   
@@ -107,7 +125,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
     drive_msb_first_neg_edge(data);
     drive_lsb_first_neg_edge(data);
     
-    s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
 
   endtask : drive_mosi_pos_miso_neg_cpol_1_cpha_0
   
@@ -122,7 +143,10 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
     drive_msb_first_neg_edge(data);
     drive_lsb_first_neg_edge(data);
     
-    s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
+      // TODO(mshariff): 
+      // Slave drives MISO data
+      // and samples MOSI data. Thus, mosi cannot come on left hand side
+      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
 
   endtask : drive_mosi_neg_miso_pos_cpol_1_cpha_1
   

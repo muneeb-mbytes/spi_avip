@@ -41,7 +41,6 @@ endclass : slave_driver_proxy
 //--------------------------------------------------------------------------------------------
 function slave_driver_proxy::new(string name = "slave_driver_proxy", uvm_component parent = null);
   super.new(name, parent);
-  s_drv_bfm_h.s_drv_proxy_h = this;
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -58,6 +57,8 @@ function void slave_driver_proxy::build_phase(uvm_phase phase);
     
   if(!uvm_config_db #(virtual slave_driver_bfm)::get(this,"","slave_driver_bfm",s_drv_bfm_h))
   	`uvm_fatal("CONFIG","cannot get() s_drv_bfm_h")
+
+  s_drv_bfm_h.s_drv_proxy_h = this;
 endfunction : build_phase
 
 

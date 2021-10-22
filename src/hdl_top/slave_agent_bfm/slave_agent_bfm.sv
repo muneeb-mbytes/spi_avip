@@ -14,21 +14,22 @@ module slave_agent_bfm(spi_if intf);
   `include "uvm_macros.svh"
 
   //-------------------------------------------------------
-  //Slave driver bfm instantiation
+  // Slave driver bfm instantiation
   //-------------------------------------------------------
   slave_driver_bfm s_drv_bfm_h (intf.SLV_DRV_MP, intf.MON_MP);
 
   //-------------------------------------------------------
-  // Setting Slave_driver_bfm config
+  // Slave monitor bfm instantiation
+  //-------------------------------------------------------
+  slave_monitor_bfm slave_monitor_bfm_h (intf.MON_MP);
+
+  //-------------------------------------------------------
+  // Setting Slave_driver_bfm and monitor_bfm
   //-------------------------------------------------------
   initial begin
     uvm_config_db#(virtual slave_driver_bfm)::set(null,"*", "slave_driver_bfm", s_drv_bfm_h); 
+    uvm_config_db#(virtual slave_monitor_bfm)::set(null,"*", "slave_monitor_bfm", slave_monitor_bfm_h); 
   end
-
-  //-------------------------------------------------------
-  //Slave driver bfm instantiation
-  //-------------------------------------------------------
-  slave_monitor_bfm slave_monitor_bfm_h (intf.MON_MP);
 
   initial begin
     $display("Slave Agent BFM");

@@ -4,6 +4,7 @@ all:
 compile:
 	vlib work; 
 	vlog -sv \
+	-l spi_compile.log \
 	+incdir+../../src/globals/ \
 	+incdir+../../src/hvl_top/master/ \
 	+incdir+../../src/hdl_top/master_agent_bfm/  \
