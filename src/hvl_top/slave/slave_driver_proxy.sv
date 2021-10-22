@@ -19,17 +19,19 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   //-------------------------------------------------------
   extern function new(string name = "slave_driver_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-//  extern virtual function void connect_phase(uvm_phase phase);
-  extern virtual task run_phase(uvm_phase phase);
 
+//  extern virtual function void connect_phase(uvm_phase phase);
+
+  extern virtual task run_phase(uvm_phase phase);
+  
 endclass : slave_driver_proxy
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-// // TODO(mshariff): add comments
+// Description: It's creates the components and objects
 // Parameters:
-//  name - slave_driver_proxy
-//  parent - parent under which this component is created
+// name - slave_driver_proxy
+// parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
 function slave_driver_proxy::new(string name = "slave_driver_proxy", uvm_component parent = null);
   super.new(name, parent);
@@ -38,14 +40,15 @@ endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
-// // TODO(mshariff): COmments
-// <Description_here>
+// 
+//Description: It will create memory for required classes
 //
 // Parameters:
-//  phase - uvm phase
+// phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
+
 //  if(!uvm_config_db #(slave_agent_config)::get(this,"","sa_cfg_h",sa_cfg_h))
 //		`uvm_fatal("CONFIG","cannot get() sa_cfg_h")
     
@@ -53,12 +56,14 @@ function void slave_driver_proxy::build_phase(uvm_phase phase);
 //  	`uvm_fatal("CONFIG","cannot get() v_drv_bfm")
 endfunction : build_phase
 
+
 /*
 //--------------------------------------------------------------------------------------------
 // Function: connect_phase
 // Connects driver_proxy and driver_bfm
 //
 // Parameters:
+
 //  phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::connect_phase(uvm_phase phase);
@@ -70,9 +75,10 @@ endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
-// // TODO(mshariff): 
+// Description:In this phase we are getting the sequence_item from sequencer
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
+
 
 //  slave_tx tx = new();
 //  repeat(2) begin
@@ -88,9 +94,21 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
         
     seq_item_port.item_done();
   end
-
-endtask : run_phase 
-
+  
+  /*
+  task slave_driver_proxy::over_all_task;
+  repeat(2) begin
+  if (cs == 0) begin
+  case: {cpol,cpha}
+  2'b00: v_drv_bfm.drive_mosi_pos_miso_neg();
+  2'b01: v_drv_bfm.drive_mosi_neg_miso_pos();
+  2'b10: v_drv_bfm.drive_mosi_pos_miso_neg();
+  2'b11: v_drv_bfm.drive_mosi_neg_miso_pos();
+  endcase
+  end
+  end
+  */
+  
 task drive_to_dut();
   foreach(req.master_out_slave_in[i]) begin
     bit[7:0] data;
