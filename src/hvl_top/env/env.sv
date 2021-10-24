@@ -64,15 +64,16 @@ function void env::build_phase(uvm_phase phase);
 
   ma_h=master_agent::type_id::create("master_agent",this);
 
+      vseqr = virtual_sequencer::type_id::create("vseqr", this);
   slave_agent_h = new[e_cfg_h.no_of_slaves];
   foreach(slave_agent_h[i]) begin
     slave_agent_h[i] = slave_agent::type_id::create($sformatf("slave_agent_h[%0d]",i),this);
   end
 
-  if(e_cfg_h.has_virtual_sqr) begin
-    m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
-    s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
-  end
+//  if(e_cfg_h.has_virtual_sqr) begin
+  //  m_v_sqr_h = master_virtual_sequencer::type_id::create("master_virtual_sequencer",this);
+   // s_v_sqr_h = slave_virtual_sequencer::type_id::create("slave_virtual_sequencer",this);
+//  end
 
 
 endfunction : build_phase
@@ -89,8 +90,9 @@ function void env::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 
    vseqr.m_seqr_h = ma_h.m_sqr_h;
-   vseqr.s_seqr_h = sa_h.s_sqr_h;
-endfunction : connect_phase
 
-`endif
+  foreach(slave_agent_h[i]) begin
+   vseqr.s_seqr_h = slave_agent_h[i].s_sqr_h;
+ end
+endfunction : connect_phase
 

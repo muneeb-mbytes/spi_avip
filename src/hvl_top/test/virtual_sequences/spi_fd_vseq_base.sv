@@ -58,7 +58,7 @@ task spi_fd_vseq_base::body();
                 
   if(!$cast(v_seqr_h,m_sequencer))begin
       `uvm_error(get_full_name(),"Virtual sequencer pointer cast failed")
-     end
+    end
             
   //connecting master sequenver and slave sequencer in env to
   //master sequencer and slave sequencer in virtual sequencer
@@ -66,5 +66,5 @@ task spi_fd_vseq_base::body();
   m_seqr_h=v_seqr_h.m_seqr_h;
   s_seqr_h=v_seqr_h.s_seqr_h;
 
-endtask:body
+endtask : body
 `endif

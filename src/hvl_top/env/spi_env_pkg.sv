@@ -1,5 +1,5 @@
-`ifndef SPI_ENV_PKG_INCLUDED_
-`define SPI_ENV_PKG_INCLUDED_
+`ifndef SPI_ENV_PKG_INCLUDED
+`define SPI_ENV_PKG_INCLUDED
 
 //--------------------------------------------------------------------------------------------
 // Package: spi_env_pkg
@@ -25,8 +25,8 @@ package spi_env_pkg;
   //-------------------------------------------------------
   `include "env_config.sv"
 
-  `include "master_virtual_sequencer.sv"
-  `include "slave_virtual_sequencer.sv"
+//  `include "master_virtual_sequencer.sv"
+//  `include "slave_virtual_sequencer.sv"
   `include "virtual_sequencer.sv"
 
   // SCOREBOARD
@@ -35,5 +35,4 @@ package spi_env_pkg;
   `include "env.sv"
 
 endpackage : spi_env_pkg
-
 `endif
