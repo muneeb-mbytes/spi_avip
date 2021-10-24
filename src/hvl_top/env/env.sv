@@ -90,6 +90,10 @@ function void env::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 
    vseqr.m_seqr_h = ma_h.m_sqr_h;
+   vseqr.s_seqr_h = sa_h.s_sqr_h;
+endfunction : connect_phase
+
+   vseqr.m_seqr_h = ma_h.m_sqr_h;
 
   foreach(slave_agent_h[i]) begin
    vseqr.s_seqr_h = slave_agent_h[i].s_sqr_h;

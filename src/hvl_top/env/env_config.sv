@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: env_config
-// Used for setting various configurations for the environment
+// This class is used as configuration class for environment and its components
 //--------------------------------------------------------------------------------------------
 class env_config extends uvm_object;
   `uvm_object_utils(env_config)

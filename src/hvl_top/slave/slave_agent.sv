@@ -16,9 +16,9 @@ class slave_agent extends uvm_agent;
   // Handle for slave sequencer
   slave_sequencer s_sqr_h;
 
-  // Variable: sdrv_proxy_h
+  // Variable: s_drv_proxy_h
   // Handle for slave driver proxy
-  slave_driver_proxy sdrv_proxy_h;
+  slave_driver_proxy s_drv_proxy_h;
 
   // Variable: smon_proxy_h
   // Handle for slave monitor proxy
@@ -35,14 +35,12 @@ endclass : slave_agent
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
-// Initializes the slave_agent class object
 //
 // Parameters:
 //  name - instance name of the  slave_agent
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function slave_agent::new(string name = "slave_agent",
-                               uvm_component parent);
+function slave_agent::new(string name = "slave_agent", uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
@@ -65,7 +63,7 @@ function void slave_agent::build_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("The slave_agent_config.slave_id = %0d", sa_cfg_h.slave_id), UVM_LOW);
 
    if(sa_cfg_h.is_active == UVM_ACTIVE) begin
-     sdrv_proxy_h = slave_driver_proxy::type_id::create("sdrv_proxy_h",this);
+     s_drv_proxy_h = slave_driver_proxy::type_id::create("s_drv_proxy_h",this);
      s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
    end
 
@@ -80,15 +78,18 @@ endfunction : build_phase
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void slave_agent::connect_phase(uvm_phase phase);
+  super.connect_phase(phase);
+  
   if(sa_cfg_h.is_active == UVM_ACTIVE) begin
-    sdrv_proxy_h.sa_cfg_h = sa_cfg_h;
+    s_drv_proxy_h.sa_cfg_h = sa_cfg_h;
     s_sqr_h.sa_cfg_h = sa_cfg_h;
+    
+    // Connecting the ports
+    s_drv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
   end
 
   smon_proxy_h.sa_cfg_h = sa_cfg_h;
 
-  //sdrv_proxy_h.seq_item_port.connect(s_sqr_h.seq_item_export);
 endfunction: connect_phase
 
 `endif
-
