@@ -15,7 +15,7 @@ class slave_tx extends uvm_sequence_item;
   // Instantiating SPI signals
   //-------------------------------------------------------
   bit sclk;
-  bit cs;
+//  bit cs;
   bit cpol;
   bit cpha;
   
@@ -120,6 +120,7 @@ function void slave_tx::do_print(uvm_printer printer);
        printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
 endfunction:do_print
 
+/*
 //-------------------------------------------------------
 // Function: do_copy
 //  Copying transaction to another object
@@ -198,5 +199,5 @@ function void slave_tx::do_print(uvm_printer printer);
   printer.print_field ("mosi3", mosi3, 1, UVM_DEC);
 
 endfunction : do_print
-
+*/
 `endif

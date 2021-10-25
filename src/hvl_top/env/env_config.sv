@@ -30,9 +30,11 @@ class env_config extends uvm_object;
 
   // Variable: ma_cfg_h
   // Handle for master agent configuration
+    master_agent_config ma_cfg_h;
 
   // Variable: sa_cfg_h
   // Dynamic array of slave agnet configuration handles
+    slave_agent_config sa_cfg_h[];
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

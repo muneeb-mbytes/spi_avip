@@ -7,9 +7,10 @@
 //  Sequences are created and started in the test
 //--------------------------------------------------------------------------------------------
 class base_test extends uvm_test;
+  
+  //factory registration
   `uvm_component_utils(base_test)
 
-   virtual spi_if vif;
 
    // Variable: e_cfg_h
    // Declaring environment config handle
@@ -25,14 +26,6 @@ class base_test extends uvm_test;
    // Environment Handles
    //.....................................................
    env env_h;
-
-   //-------------------------------------------------------
-   // Assigning values
-   //-------------------------------------------------------
-   int no_of_sagent = 1;
-   int no_of_magent = 1;
-   int has_m_agt = 1;
-   int has_s_agt = 1;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

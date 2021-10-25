@@ -46,6 +46,8 @@ endclass : virtual_sequencer
     // MSHA:  `uvm_error("VSEQR","COULDNT GET")
     // MSHA:  
     // MSHA:  s_sqr_h = new[e_cfg_h.no_of_sagent];
+    m_seqr_h = master_sequencer::type_id::create("m_seqr_h",this);
+    s_seqr_h = slave_sequencer::type_id::create("s_seqr_h",this);
   
   endfunction : build_phase
 
