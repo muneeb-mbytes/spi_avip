@@ -19,7 +19,7 @@ class base_test extends uvm_test;
    // Declaring Agent Config Handles
    //-------------------------------------------------------
    slave_agent_config sa_cfg_h[];
-   master_agent_config ma_cfg_h[];
+   master_agent_config ma_cfg_h;
 
    //-------------------------------------------------------
    // Environment Handles
@@ -78,12 +78,12 @@ function void base_test::build_phase(uvm_phase phase);
     sa_cfg_h = new[no_of_sagent];
     ma_cfg_h = new[no_of_magent];
 
-    foreach(ma_cfg_h[i]) begin
+  
 
-    ma_cfg_h[i]=master_agent_config::type_id::create($sformatf("ma_cfg_h[%0d]",i));
-    e_cfg_h.ma_cfg_h[i]=ma_cfg_h[i];
+    ma_cfg_h=master_agent_config::type_id::create("ma_cfg_h",this));
+    e_cfg_h.ma_cfg_h=ma_cfg_h;
 
-    uvm_config_db #(master_agent_config)::set(this,"*","master_agent_config",e_cfg_h.ma_cfg_h[i]);
+//    uvm_config_db #(master_agent_config)::set(this,"*","master_agent_config",e_cfg_h.ma_cfg_h[i]);
     if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
       `uvm_fatal("TEST","COULDNT GET")
     end
@@ -93,7 +93,7 @@ function void base_test::build_phase(uvm_phase phase);
     sa_cfg_h[i]=slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
     e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
 
-    uvm_config_db #(slave_agent_config)::set(this,"*","slave_agent_config",e_cfg_h.sa_cfg_h[i]);
+  //  uvm_config_db #(slave_agent_config)::set(this,"*","slave_agent_config",e_cfg_h.sa_cfg_h[i]);
     if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
       `uvm_fatal("TEST","COULDNT GET")
     end
