@@ -7,19 +7,14 @@
 //  Sequences are created and started in the test
 //--------------------------------------------------------------------------------------------
 class base_test extends uvm_test;
-  
-  //factory registration
   `uvm_component_utils(base_test)
-
 
    // Variable: e_cfg_h
    // Declaring environment config handle
    env_config e_cfg_h;
 
-
-   //-------------------------------------------------------
-   // Environment Handles
-   //.....................................................
+   // Variable: env_h
+   // Handle for environment 
    env env_h;
 
   //-------------------------------------------------------
@@ -57,7 +52,7 @@ function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
   // Setup the environemnt cfg 
-      setup_env_cfg();
+  setup_env_cfg();
 
   // Create the environment
   env_h = env::type_id::create("env",this);
@@ -82,7 +77,7 @@ function void base_test::setup_env_cfg();
   // Setup the slave agent(s) cfg 
   setup_slave_agents_cfg();
 
-   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
+  uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
  endfunction: setup_env_cfg
 
