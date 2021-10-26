@@ -38,7 +38,7 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
+  extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA);
   extern virtual task read(bit [DATA_LENGTH-1:0]data);
 
 endclass : slave_monitor_proxy
@@ -101,7 +101,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     
     //Signal : Mosi
     //Master-in Slave-Out
-    bit mosi;
+    //bit mosi;
 
     //Signal : Miso
     //Master-in Slave-out
@@ -114,7 +114,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     //-------------------------------------------------------
     // Calling the tasks from monitor bfm
     //-------------------------------------------------------
-    read_from_mon_bfm(CPOL,CPHA,mosi);    
+    read_from_mon_bfm(CPOL,CPHA);    
   end
 
 endtask : run_phase 
@@ -124,12 +124,12 @@ endtask : run_phase
 // Task : read_from_mon_bfm
 // Used to call the tasks from moitor bfm
 //-------------------------------------------------------
-task slave_monitor_proxy::read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
+task slave_monitor_proxy::read_from_mon_bfm(bit CPOL,bit CPHA);
     case({CPOL,CPHA})
-      2'b00 : s_mon_bfm_h.sample_cpol_0_cpha_0(mosi);
-      2'b01 : s_mon_bfm_h.sample_cpol_0_cpha_1(mosi);
-      2'b10 : s_mon_bfm_h.sample_cpol_1_cpha_0(mosi);
-      2'b11 : s_mon_bfm_h.sample_cpol_1_cpha_1(mosi);
+      2'b00 : s_mon_bfm_h.sample_cpol_0_cpha_0();
+      2'b01 : s_mon_bfm_h.sample_cpol_0_cpha_1();
+      2'b10 : s_mon_bfm_h.sample_cpol_1_cpha_0();
+      2'b11 : s_mon_bfm_h.sample_cpol_1_cpha_1();
     endcase
 endtask : read_from_mon_bfm
 
