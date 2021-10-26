@@ -24,9 +24,6 @@ package spi_env_pkg;
   // Include all other files
   //-------------------------------------------------------
   `include "env_config.sv"
-
-  `include "master_virtual_sequencer.sv"
-  `include "slave_virtual_sequencer.sv"
   `include "virtual_sequencer.sv"
 
   // SCOREBOARD

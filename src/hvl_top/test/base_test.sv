@@ -58,13 +58,12 @@ function void base_test::build_phase(uvm_phase phase);
   env_h = env::type_id::create("env",this);
 
 endfunction : build_phase
-
 //--------------------------------------------------------------------------------------------
 // Function: setup_env_cfg
 // Setup the environment configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test:: setup_env_cfg();
+function void base_test::setup_env_cfg();
 
   e_cfg_h = env_config::type_id::create("e_cfg_h");
  
@@ -80,7 +79,7 @@ function void base_test:: setup_env_cfg();
 
   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
-endfunction: setup_env_cfg
+ endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------
 // Function: setup_master_agent_cfg
@@ -88,9 +87,9 @@ endfunction: setup_env_cfg
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
 function void base_test::setup_master_agent_cfg();
-
+  
   e_cfg_h.ma_cfg_h = master_agent_config::type_id::create("ma_cfg_h");
-
+  
   // Configure the Master agent configuration
   e_cfg_h.ma_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
   e_cfg_h.ma_cfg_h.no_of_slaves         = NO_OF_SLAVES;
