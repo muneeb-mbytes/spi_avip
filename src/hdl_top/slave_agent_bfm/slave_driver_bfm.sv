@@ -9,7 +9,7 @@
 // Parameters:
 // intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf);
+interface slave_driver_bfm(input SCLK, CS, MOSI, output MISO);
 
   parameter int DATA_WIDTH = 8;
 
@@ -31,12 +31,11 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   // MSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_msb_first_pos_edge (input bit[7:0] data);
-    for(int i=DATA_WIDTH; i>0 ; i--) begin
-      @(s_drv_intf.sample_mosi_pos_cb);
-      // TODO(mshariff): 
+    @(posedge slave_drv_intf.SCLK);
+    for(int i=DATA_WIDTH; i>0; i--) begin
       // Slave drives MISO data
       // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA:   s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i-1];
+      slave_drv_intf.MISO <= data[i-1];
     end
   endtask : drive_msb_first_pos_edge
   
@@ -83,7 +82,7 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
   //--------------------------------------------------------------------------------------------
   // Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==0
   //--------------------------------------------------------------------------------------------
-  task drive_mosi_pos_miso_neg_cpol_0_cpha_0 (bit[7:0] data);
+  task drive_cpol_0_cpha_0 (bit[7:0] data);
     
     drive_msb_first_pos_edge(data);
     drive_lsb_first_pos_edge(data);
@@ -95,12 +94,12 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
       // and samples MOSI data. Thus, mosi cannot come on left hand side
       // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
 
-  endtask : drive_mosi_pos_miso_neg_cpol_0_cpha_0
+  endtask : drive_cpol_0_cpha_0
   
   //--------------------------------------------------------------------------------------------
   // Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==1
   //--------------------------------------------------------------------------------------------
-  task drive_mosi_neg_miso_pos_cpol_0_cpha_1 (bit[7:0] data);
+  task drive_cpol_0_cpha_1 (bit[7:0] data);
     
     drive_msb_first_pos_edge(data);
     drive_lsb_first_pos_edge(data);
@@ -112,13 +111,13 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
       // and samples MOSI data. Thus, mosi cannot come on left hand side
       // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
 
-  endtask : drive_mosi_neg_miso_pos_cpol_0_cpha_1
+  endtask : drive_cpol_0_cpha_1
   
  
   //--------------------------------------------------------------------------------------------
   // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
   //--------------------------------------------------------------------------------------------
-  task drive_mosi_pos_miso_neg_cpol_1_cpha_0 (bit[7:0] data);
+  task drive_cpol_1_cpha_0 (bit[7:0] data);
     
     drive_msb_first_pos_edge(data);
     drive_lsb_first_pos_edge(data);
@@ -130,13 +129,13 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
       // and samples MOSI data. Thus, mosi cannot come on left hand side
       // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
 
-  endtask : drive_mosi_pos_miso_neg_cpol_1_cpha_0
+  endtask : drive_cpol_1_cpha_0
   
   
   //--------------------------------------------------------------------------------------------
   // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
   //--------------------------------------------------------------------------------------------
-  task drive_mosi_neg_miso_pos_cpol_1_cpha_1 (bit[7:0] data);
+  task drive_cpol_1_cpha_1 (bit[7:0] data);
     
     drive_msb_first_pos_edge(data);
     drive_lsb_first_pos_edge(data);
@@ -148,7 +147,7 @@ interface slave_driver_bfm(spi_if.SLV_DRV_MP s_drv_intf, spi_if.MON_MP mon_intf)
       // and samples MOSI data. Thus, mosi cannot come on left hand side
       // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
 
-  endtask : drive_mosi_neg_miso_pos_cpol_1_cpha_1
+  endtask : drive_cpol_1_cpha_1
   
 endinterface : slave_driver_bfm
 

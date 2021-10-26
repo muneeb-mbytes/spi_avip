@@ -16,7 +16,7 @@ module slave_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   // Slave driver bfm instantiation
   //-------------------------------------------------------
-  slave_driver_bfm s_drv_bfm_h (intf.SLV_DRV_MP, intf.MON_MP);
+  slave_driver_bfm s_drv_bfm_h (intf);
 
   //-------------------------------------------------------
   // Slave monitor bfm instantiation

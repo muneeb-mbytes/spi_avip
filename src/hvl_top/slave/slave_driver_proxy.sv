@@ -115,10 +115,10 @@ task slave_driver_proxy::drive_to_dut();
     data = req.data_master_in_slave_out[i];
     
     case ({tx.cpol,tx.cpha})
-      2'b00: s_drv_bfm_h.drive_mosi_pos_miso_neg(data);
-      2'b01: s_drv_bfm_h.drive_mosi_neg_miso_pos(data);
-      2'b10: s_drv_bfm_h.drive_mosi_pos_miso_neg(data);
-      2'b11: s_drv_bfm_h.drive_mosi_neg_miso_pos(data);
+      2'b00: s_drv_bfm_h.drive_cpol_0_cpha_0(data);
+      2'b01: s_drv_bfm_h.drive_cpol_0_cpha_1(data);
+      2'b10: s_drv_bfm_h.drive_cpol_1_cpha_0(data);
+      2'b11: s_drv_bfm_h.drive_cpol_1_cpha_1(data);
     endcase
   end
 endtask : drive_to_dut
