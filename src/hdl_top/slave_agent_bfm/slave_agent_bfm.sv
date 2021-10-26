@@ -16,12 +16,14 @@ module slave_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   // Slave driver bfm instantiation
   //-------------------------------------------------------
-  slave_driver_bfm slave_drv_bfm_h (.sclk(intf.sclk),.cs(intf.cs),.mosi(intf.mosi),.miso(intf.miso));
+  //slave_driver_bfm slave_drv_bfm_h (.sclk(intf.sclk),.cs(intf.cs),.mosi(intf.mosi),.miso(intf.miso));
+  slave_driver_bfm slave_drv_bfm_h (intf);
 
  //-------------------------------------------------------
   // Slave monitor bfm instantiation
   //-------------------------------------------------------
-  slave_monitor_bfm slave_mon_bfm_h (.sclk(intf.sclk),.mosi(intf.miso));
+  //slave_monitor_bfm slave_mon_bfm_h (.sclk(intf.sclk),.mosi(intf.miso));
+  slave_monitor_bfm slave_mon_bfm_h (intf);
 
   //-------------------------------------------------------
   // Setting Slave_driver_bfm and monitor_bfm

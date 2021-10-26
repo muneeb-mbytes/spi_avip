@@ -64,7 +64,7 @@ task vseq1_fd_16b_seq::body();
     // MSHA: end
 
     //starting master sequencer
-    m_spi_fd_16b_h.start(m_seqr_h);
+    m_spi_fd_16b_h.start(master_seqr_h);
   end
     begin
       // TODO(mshariff): We need to connect the slaves with caution
@@ -81,7 +81,7 @@ task vseq1_fd_16b_seq::body();
       // MSHA: end
 
       //starting slave sequencer
-      s_spi_fd_16b_h.start(s_seqr_h);
+      s_spi_fd_16b_h.start(slave_seqr_h);
      end
  join
 

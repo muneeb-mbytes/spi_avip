@@ -29,7 +29,7 @@ class master_agent extends uvm_agent;
 //-------------------------------------------------------
   extern function new(string name = "master_agent", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  extern virtual function void connect_phase(uvm_phase phase);
+  //extern virtual function void connect_phase(uvm_phase phase);
 endclass : master_agent
 
 //--------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ endfunction : build_phase
 // Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-function void master_agent::connect_phase(uvm_phase phase);
+/*function void master_agent::connect_phase(uvm_phase phase);
   if(master_agent_cfg_h.is_active == UVM_ACTIVE) begin
   
     master_drv_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
@@ -88,6 +88,6 @@ function void master_agent::connect_phase(uvm_phase phase);
   master_mon_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
 
 endfunction: connect_phase
-
+*/
 `endif
 
