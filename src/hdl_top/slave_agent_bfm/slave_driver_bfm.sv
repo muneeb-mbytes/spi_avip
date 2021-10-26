@@ -11,15 +11,15 @@
 // Parameters:
 // intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-//interface slave_driver_bfm(input sclk, cs, mosi0, output miso0);
-interface slave_driver_bfm(spi_if intf);
+interface slave_driver_bfm(input sclk, cs, mosi0, output miso0);
+//interface slave_driver_bfm(spi_if intf);
   
   parameter int DATA_WIDTH = 8;
 
-  logic sclk;
-  logic [`cs_length-1:0] cs;
-  logic mosi0;
-  logic miso0;
+  //logic sclk;
+  //logic [`cs_length-1:0] cs;
+  //logic mosi0;
+  //logic miso0;
 
   //-------------------------------------------------------
   // Creating the handle for proxy driver
@@ -39,10 +39,11 @@ interface slave_driver_bfm(spi_if intf);
   // MSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_msb_first_pos_edge (input bit[7:0] data);
-    @(posedge intf.sclk);
+    @(posedge sclk);
 
     for(int i=DATA_WIDTH; i>0; i--) begin
-      intf.miso0 <= data[i-1];
+     bit miso0;
+      miso0 <= data[i-1];
     end
   endtask : drive_msb_first_pos_edge
   
@@ -50,10 +51,11 @@ interface slave_driver_bfm(spi_if intf);
   // LSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_lsb_first_pos_edge (input bit[7:0] data);
-    @(negedge intf.sclk);
+    bit miso0;
+    @(negedge sclk);
 
     for(int i=0; i < DATA_WIDTH; i++) begin
-      intf.miso0 <= data[i];
+      miso0 <= data[i];
     end
   endtask : drive_lsb_first_pos_edge
   
@@ -61,10 +63,11 @@ interface slave_driver_bfm(spi_if intf);
   // MSB is driven first for neg edge
   //-------------------------------------------------------
   task drive_msb_first_neg_edge (input bit[7:0] data);
-    @(negedge intf.sclk);
+    bit miso0;
+    @(negedge sclk);
 
     for(int i=DATA_WIDTH; i>0; i--) begin
-      intf.miso0 <= data[i-1];
+      miso0 <= data[i-1];
     end
   endtask : drive_msb_first_neg_edge
   
@@ -72,10 +75,11 @@ interface slave_driver_bfm(spi_if intf);
   // LSB is driven first for neg edge
   //-------------------------------------------------------
   task drive_lsb_first_neg_edge (input bit[7:0] data);
-    @(negedge intf.sclk);
+    bit miso0;
+    @(negedge sclk);
 
     for(int i=DATA_WIDTH; i>0; i--) begin
-      intf.miso0 <= data[i];
+      miso0 <= data[i];
     end
   endtask : drive_lsb_first_neg_edge
   
@@ -87,7 +91,7 @@ interface slave_driver_bfm(spi_if intf);
   //--------------------------------------------------------------------------------------------
   // Task for driving miso0 signal for condition cpol==0,cpha==0
   //--------------------------------------------------------------------------------------------
-//  if (!intf.cs) begin
+//  if (!cs) begin
   
     task drive_cpol_0_cpha_0 (bit[7:0] data);
       drive_msb_first_pos_edge(data);
@@ -95,7 +99,7 @@ interface slave_driver_bfm(spi_if intf);
   //  drive_msb_first_neg_edge(data);
   //  drive_lsb_first_neg_edge(data);
   
-      intf.miso0 <= data;
+     // miso0 <= data;
     endtask : drive_cpol_0_cpha_0
     
     //--------------------------------------------------------------------------------------------
@@ -107,7 +111,7 @@ interface slave_driver_bfm(spi_if intf);
       drive_msb_first_neg_edge(data);
       drive_lsb_first_neg_edge(data);
       
-      intf.miso0 <= data;
+     // miso0 <= data;
     endtask : drive_cpol_0_cpha_1
     
     //--------------------------------------------------------------------------------------------
@@ -119,7 +123,7 @@ interface slave_driver_bfm(spi_if intf);
 //    drive_msb_first_neg_edge(data);
 //    drive_lsb_first_neg_edge(data);
       
-      intf.miso0 <= data;
+     // miso0 <= data;
     endtask : drive_cpol_1_cpha_0
     
     //--------------------------------------------------------------------------------------------
@@ -131,7 +135,7 @@ interface slave_driver_bfm(spi_if intf);
       drive_msb_first_neg_edge(data);
       drive_lsb_first_neg_edge(data);
       
-      intf.miso0 <= data;
+    //  miso0 <= data;
     endtask : drive_cpol_1_cpha_1
 
  // end
