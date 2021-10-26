@@ -2,8 +2,8 @@
 `define MASTER_DRIVER_PROXY_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: master_driver_proxy
-// <Description of the class
+//Class: master_driver_proxy
+//Description of the class
 //Driver is written by extending uvm_driver,uvm_driver is inherited from uvm_component, 
 //Methods and TLM port (seq_item_port) are defined for communication between sequencer and driver,
 //uvm_driver is a parameterized class and it is parameterized with the type of the request 
@@ -12,14 +12,14 @@
 class master_driver_proxy extends uvm_driver;
   `uvm_component_utils(master_driver_proxy)
    
-  // Variable: m_cfg
+  // Variable: master_agent_cfg_h
   // Declaring handle for master agent config class 
-  master_agent_config m_cfg;
+  master_agent_config master_agent_cfg_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "master_driver_proxy", uvm_component parent = null);
+  extern function new(string name = "master_driver_proxy", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
   //extern virtual function void connect_phase(uvm_phase phase);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -35,13 +35,12 @@ endclass : master_driver_proxy
 //  name - master_driver_proxy
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function master_driver_proxy::new(string name = "master_driver_proxy",uvm_component parent = null);
+function master_driver_proxy::new(string name = "master_driver_proxy",uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
-// <Description_here>
 //
 // Parameters:
 //  phase - uvm phase
@@ -59,7 +58,7 @@ endfunction : build_phase
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 /*function void master_driver_proxy::connect_phase(uvm_phase phase);
-      vif = m_cfg.vif;
+      vif = master_agent_cfg_h.vif;
 endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
