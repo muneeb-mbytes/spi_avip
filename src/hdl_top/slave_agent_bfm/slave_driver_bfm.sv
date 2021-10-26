@@ -11,7 +11,8 @@
 // Parameters:
 // intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(input sclk, cs, mosi0, output miso0);
+interface slave_driver_bfm(input sclk, cs, mosi0, output reg miso0);
+
 //interface slave_driver_bfm(spi_if intf);
   
   parameter int DATA_WIDTH = 8;
@@ -42,7 +43,7 @@ interface slave_driver_bfm(input sclk, cs, mosi0, output miso0);
     @(posedge sclk);
 
     for(int i=DATA_WIDTH; i>0; i--) begin
-     bit miso0;
+     // MSHA: bit miso0;
       miso0 <= data[i-1];
     end
   endtask : drive_msb_first_pos_edge
