@@ -4,7 +4,7 @@
 // to call the tasks and functions from monitor bfm to monitor proxy
 //--------------------------------------------------------------------------------------------
  
-interface slave_monitor_bfm (spi_if intf);
+interface slave_monitor_bfm (input sclk,cs,mosi0,miso0);
   //variable DATA_WIDTH
   //DATA_WIDTH of data_mosi
   parameter DATA_WIDTH=8;
@@ -24,12 +24,14 @@ interface slave_monitor_bfm (spi_if intf);
 //loop is used to iterate the data
 //considering the first bit as most significant bit
 //--------------------------------------------------------------------------------------------
-task mon_msb_first_pos(bit mosi);
+task mon_msb_first_pos();
+  bit mosi;
   bit[7:0]data_mosi;
   for(int i=DATA_WIDTH-1;i>0;i--) begin
-    @(posedge intf.sclk);
+    @(posedge sclk);
+    mosi=mosi0;
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=mosi0;
     data_mosi[i] = mosi;
   end
   s_mon_proxy_h.read(data_mosi);
@@ -41,12 +43,14 @@ endtask : mon_msb_first_pos
 //loop is used to iterate the data
 //considering the first bit as most significant bit
 //--------------------------------------------------------------------------------------------
-task mon_msb_first_neg(bit mosi);
+task mon_msb_first_neg();
+  bit mosi;
   bit[7:0]data_mosi;
   for(int i=DATA_WIDTH-1;i>0;i--) begin
-    @(negedge intf.sclk);
+    @(negedge sclk);
+    mosi=mosi0;
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=mosi0;
     data_mosi[i] = mosi;
   end
   s_mon_proxy_h.read(data_mosi);
@@ -59,12 +63,14 @@ endtask : mon_msb_first_neg
 //data tranfering first bit as least significant bit
 //--------------------------------------------------------------------------------------------
 
-task mon_lsb_first_pos(bit mosi);
+task mon_lsb_first_pos();
+  bit mosi;
   bit[7:0]data_mosi;
   for(int i=0;i<DATA_WIDTH;i++) begin
-    @(posedge intf.sclk)
+    @(posedge sclk)
+    mosi=mosi0;
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=mosi0;
     data_mosi[i] = mosi;
   end
   s_mon_proxy_h.read(data_mosi);
@@ -77,12 +83,14 @@ endtask : mon_lsb_first_pos
 //data tranfering first bit as least significant bit
 //--------------------------------------------------------------------------------------------
 
-task mon_lsb_first_neg(bit mosi);
+task mon_lsb_first_neg();
+  bit mosi;
   bit[7:0]data_mosi;
   for(int i=0;i<DATA_WIDTH;i++) begin
-    @(negedge intf.sclk)
+    @(negedge sclk)
+    mosi=mosi0;
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.mosi0;
+    data_mosi[i]=mosi0;
     data_mosi[i] = mosi;
   end
   s_mon_proxy_h.read(data_mosi);
@@ -98,13 +106,12 @@ endtask : mon_lsb_first_neg
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_0_cpha_0 (bit mosi);
-  if(!intf.cs) begin
-    @(posedge intf.sclk)
-    mosi=intf.mosi0;
-    mon_msb_first_pos(mosi);
+task sample_cpol_0_cpha_0 ();
+  if(!cs) begin
+    @(posedge sclk)
+    mon_msb_first_pos();
     //mon_msb_first_neg(mosi);
-    mon_lsb_first_pos(mosi);
+    mon_lsb_first_pos();
    // mon_msb_first_neg(mosi);
   
   end
@@ -118,14 +125,13 @@ endtask : sample_cpol_0_cpha_0
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_0_cpha_1 (bit mosi);
-  if(!intf.cs)begin
-  @(negedge intf.sclk)
-  mosi=intf.mosi0;
+task sample_cpol_0_cpha_1 ();
+  if(!cs)begin
+  @(negedge sclk)
   // mon_msb_first_pos(mosi);
-   mon_msb_first_neg(mosi);
+   mon_msb_first_neg();
  //  mon_lsb_first_pos(mosi);
-   mon_msb_first_neg(mosi);
+   mon_msb_first_neg();
 
 end
 endtask : sample_cpol_0_cpha_1
@@ -138,13 +144,12 @@ endtask : sample_cpol_0_cpha_1
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_1_cpha_0 (bit mosi);
-  if(!intf.cs)begin
-  @(posedge intf.sclk)
-  mosi=intf.mosi0;
-  mon_msb_first_pos(mosi);
+task sample_cpol_1_cpha_0 ();
+  if(!cs)begin
+  @(posedge sclk)
+  mon_msb_first_pos();
  // mon_msb_first_neg(mosi);
-  mon_lsb_first_pos(mosi);
+  mon_lsb_first_pos();
  // mon_msb_first_neg(mosi);
 end
 endtask : sample_cpol_1_cpha_0 
@@ -157,14 +162,13 @@ endtask : sample_cpol_1_cpha_0
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_1_cpha_1 (bit mosi);
-  if(!intf.cs)begin
-  @(negedge intf.sclk)
-  mosi=intf.mosi0;
+task sample_cpol_1_cpha_1 ();
+  if(!cs)begin
+  @(negedge sclk)
  // mon_msb_first_pos(mosi);
  // mon_lsb_first_pos(mosi);
-  mon_msb_first_neg(mosi);
-  mon_msb_first_neg(mosi);
+  mon_msb_first_neg();
+  mon_msb_first_neg();
 
 end
 endtask : sample_cpol_1_cpha_1 
