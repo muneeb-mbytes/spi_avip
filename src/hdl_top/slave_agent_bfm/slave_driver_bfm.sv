@@ -1,6 +1,8 @@
 `ifndef SLAVE_DRIVER_BFM_INCLUDED_
 `define SLAVE_DRIVER_BFM_INCLUDED_
 
+`define cs_length 2
+
 //--------------------------------------------------------------------------------------------
 // Interface : slave_driver_bfm
 // Used as the HDL driver for SPI
@@ -9,9 +11,15 @@
 // Parameters:
 // intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(input SCLK, CS, MOSI, output MISO);
-
+//interface slave_driver_bfm(input sclk, cs, mosi0, output miso0);
+interface slave_driver_bfm(spi_if intf);
+  
   parameter int DATA_WIDTH = 8;
+
+  logic sclk;
+  logic [`cs_length-1:0] cs;
+  logic mosi0;
+  logic miso0;
 
   //-------------------------------------------------------
   // Creating the handle for proxy driver
@@ -24,18 +32,17 @@ interface slave_driver_bfm(input SCLK, CS, MOSI, output MISO);
   end
 
   //--------------------------------------------------------------------------------------------
-  // Tasks for MSB and LSB first
+  // Tasks for MSB and LSB first for both posedge and negedge clock
   //--------------------------------------------------------------------------------------------
 
   //-------------------------------------------------------
   // MSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_msb_first_pos_edge (input bit[7:0] data);
-    @(posedge slave_drv_intf.SCLK);
+    @(posedge intf.sclk);
+
     for(int i=DATA_WIDTH; i>0; i--) begin
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      slave_drv_intf.MISO <= data[i-1];
+      intf.miso0 <= data[i-1];
     end
   endtask : drive_msb_first_pos_edge
   
@@ -43,12 +50,10 @@ interface slave_driver_bfm(input SCLK, CS, MOSI, output MISO);
   // LSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_lsb_first_pos_edge (input bit[7:0] data);
+    @(negedge intf.sclk);
+
     for(int i=0; i < DATA_WIDTH; i++) begin
-      @(s_drv_intf.sample_mosi_pos_cb);
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data[i];
+      intf.miso0 <= data[i];
     end
   endtask : drive_lsb_first_pos_edge
   
@@ -56,99 +61,81 @@ interface slave_driver_bfm(input SCLK, CS, MOSI, output MISO);
   // MSB is driven first for neg edge
   //-------------------------------------------------------
   task drive_msb_first_neg_edge (input bit[7:0] data);
-    for(int i=DATA_WIDTH; i>0 ; i--) begin
-     @(s_drv_intf.sample_mosi_neg_cb);
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA:  s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i-1];
-   end
+    @(negedge intf.sclk);
+
+    for(int i=DATA_WIDTH; i>0; i--) begin
+      intf.miso0 <= data[i-1];
+    end
   endtask : drive_msb_first_neg_edge
   
   //-------------------------------------------------------
   // LSB is driven first for neg edge
   //-------------------------------------------------------
   task drive_lsb_first_neg_edge (input bit[7:0] data);
-    for(int i=0; i < DATA_WIDTH; i++) begin
-      @(s_drv_intf.sample_mosi_neg_cb);
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data[i];
+    @(negedge intf.sclk);
+
+    for(int i=DATA_WIDTH; i>0; i--) begin
+      intf.miso0 <= data[i];
     end
   endtask : drive_lsb_first_neg_edge
   
   
   //--------------------------------------------------------------------------------------------
-  // Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==0
+  // Tasks for driving miso0 signal for 4 conditions of cpol and cpha
   //--------------------------------------------------------------------------------------------
-  task drive_cpol_0_cpha_0 (bit[7:0] data);
-    
-    drive_msb_first_pos_edge(data);
-    drive_lsb_first_pos_edge(data);
-    drive_msb_first_neg_edge(data);
-    drive_lsb_first_neg_edge(data);
-
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
-
-  endtask : drive_cpol_0_cpha_0
   
   //--------------------------------------------------------------------------------------------
-  // Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==1
+  // Task for driving miso0 signal for condition cpol==0,cpha==0
   //--------------------------------------------------------------------------------------------
-  task drive_cpol_0_cpha_1 (bit[7:0] data);
+//  if (!intf.cs) begin
+  
+    task drive_cpol_0_cpha_0 (bit[7:0] data);
+      drive_msb_first_pos_edge(data);
+      drive_lsb_first_pos_edge(data);
+  //  drive_msb_first_neg_edge(data);
+  //  drive_lsb_first_neg_edge(data);
+  
+      intf.miso0 <= data;
+    endtask : drive_cpol_0_cpha_0
     
-    drive_msb_first_pos_edge(data);
-    drive_lsb_first_pos_edge(data);
-    drive_msb_first_neg_edge(data);
-    drive_lsb_first_neg_edge(data);
+    //--------------------------------------------------------------------------------------------
+    // Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==1
+    //--------------------------------------------------------------------------------------------
+    task drive_cpol_0_cpha_1 (bit[7:0] data);
+  //  drive_msb_first_pos_edge(data);
+  //  drive_lsb_first_pos_edge(data);
+      drive_msb_first_neg_edge(data);
+      drive_lsb_first_neg_edge(data);
+      
+      intf.miso0 <= data;
+    endtask : drive_cpol_0_cpha_1
     
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
+    //--------------------------------------------------------------------------------------------
+    // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
+    //--------------------------------------------------------------------------------------------
+    task drive_cpol_1_cpha_0 (bit[7:0] data);
+      drive_msb_first_pos_edge(data);
+      drive_lsb_first_pos_edge(data);
+//    drive_msb_first_neg_edge(data);
+//    drive_lsb_first_neg_edge(data);
+      
+      intf.miso0 <= data;
+    endtask : drive_cpol_1_cpha_0
+    
+    //--------------------------------------------------------------------------------------------
+    // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
+    //--------------------------------------------------------------------------------------------
+    task drive_cpol_1_cpha_1 (bit[7:0] data);
+//    drive_msb_first_pos_edge(data);
+//    drive_lsb_first_pos_edge(data);
+      drive_msb_first_neg_edge(data);
+      drive_lsb_first_neg_edge(data);
+      
+      intf.miso0 <= data;
+    endtask : drive_cpol_1_cpha_1
 
-  endtask : drive_cpol_0_cpha_1
-  
- 
-  //--------------------------------------------------------------------------------------------
-  // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
-  //--------------------------------------------------------------------------------------------
-  task drive_cpol_1_cpha_0 (bit[7:0] data);
+ // end
     
-    drive_msb_first_pos_edge(data);
-    drive_lsb_first_pos_edge(data);
-    drive_msb_first_neg_edge(data);
-    drive_lsb_first_neg_edge(data);
-    
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_pos_cb.mosi0 = data;
-
-  endtask : drive_cpol_1_cpha_0
-  
-  
-  //--------------------------------------------------------------------------------------------
-  // Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
-  //--------------------------------------------------------------------------------------------
-  task drive_cpol_1_cpha_1 (bit[7:0] data);
-    
-    drive_msb_first_pos_edge(data);
-    drive_lsb_first_pos_edge(data);
-    drive_msb_first_neg_edge(data);
-    drive_lsb_first_neg_edge(data);
-    
-      // TODO(mshariff): 
-      // Slave drives MISO data
-      // and samples MOSI data. Thus, mosi cannot come on left hand side
-      // MSHA: s_drv_intf.sample_mosi_neg_cb.mosi0 = data;
-
-  endtask : drive_cpol_1_cpha_1
-  
 endinterface : slave_driver_bfm
 
 `endif

@@ -84,9 +84,8 @@ endfunction : connect_phase
 //-------------------------------------------------------
 function void slave_driver_proxy::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-  s_drv_bfm_h.s_drv_proxy_h = this;
+//  s_drv_bfm_h.s_drv_proxy_h = this;
 endfunction : end_of_elaboration_phase
-
 
 
 //--------------------------------------------------------------------------------------------
@@ -94,9 +93,6 @@ endfunction : end_of_elaboration_phase
 //   Tasks for driving data to dut from transaction
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
-
-//  bit cpol;
-//  bit cpha;
 
   forever begin
     seq_item_port.get_next_item(req);
@@ -109,10 +105,10 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
 endtask : run_phase 
 
 task slave_driver_proxy::drive_to_dut();
-  foreach(req.data_master_in_slave_out[i]) begin
+  foreach(req.master_out_slave_in[i]) begin
     bit [7:0] data;
 
-    data = req.data_master_in_slave_out[i];
+    data = req.master_out_slave_in[i];
     
     case ({tx.cpol,tx.cpha})
       2'b00: s_drv_bfm_h.drive_cpol_0_cpha_0(data);
