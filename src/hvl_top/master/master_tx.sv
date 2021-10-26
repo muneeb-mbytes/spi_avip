@@ -4,13 +4,14 @@
 `define cs_length 2
 `define DW 2**`SIZE
 `define SIZE 3
- //--------------------------------------------------------------------------------------------
- // Class: master_tx.
- // Description of the class.
- // This class holds the data items required to drive stimulus to dut
- // and also holds methods that manipulatethose data items
- //--------------------------------------------------------------------------------------------
- class master_tx extends uvm_sequence_item;
+
+//--------------------------------------------------------------------------------------------
+// Class: master_tx.
+// Description of the class.
+// This class holds the data items required to drive stimulus to dut
+// and also holds methods that manipulatethose data items
+//--------------------------------------------------------------------------------------------
+class master_tx extends uvm_sequence_item;
   
   //register with factory so we can override with uvm method in future if necessary.
 
@@ -36,7 +37,7 @@ constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
   extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
  
   extern function void do_print(uvm_printer printer);
- endclass : master_tx
+endclass : master_tx
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
@@ -139,7 +140,7 @@ function void spi_seq_item_converter::to_class(output master_tx output_conv_h,in
   output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
   //output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
   end
- endfunction: to_class
+endfunction: to_class
 
 `endif
 

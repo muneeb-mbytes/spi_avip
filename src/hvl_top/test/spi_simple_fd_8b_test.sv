@@ -54,7 +54,7 @@ task spi_simple_fd_8b_test::run_phase(uvm_phase phase);
 
   phase.raise_objection(this);
 
-  vseq1_fd_8b_h.start(env_h.vseqr);
+  vseq1_fd_8b_h.start(env_h.v_seqr_h);
 
   phase.drop_objection(this);
 

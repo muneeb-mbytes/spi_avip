@@ -4,6 +4,7 @@
 `define cs_length 2
 `define DW 2**`SIZE
 `define SIZE 3
+
 //--------------------------------------------------------------------------------------------
 // Class: slave_tx
 // It's a transaction class that holds the SPI data items for generating the stimulus
@@ -71,7 +72,6 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 // do_copy method
 //--------------------------------------------------------------------------------------------
-
 function void slave_tx::do_copy (uvm_object rhs);
   slave_tx rhs_;
 
@@ -101,8 +101,8 @@ function bit  slave_tx::do_compare (uvm_object rhs,uvm_comparer comparer);
   return super.do_compare(rhs,comparer) &&
   master_in_slave_out== rhs_.master_in_slave_out &&
   master_out_slave_in== rhs_.master_out_slave_in;
-endfunction:do_compare
 
+endfunction:do_compare
 
 //--------------------------------------------------------------------------------------------
 // Function: do_print method
@@ -151,7 +151,6 @@ endfunction: from_class
 // function:to_class
 // converting struct data items into seq_item transactions
 //--------------------------------------------------------------------------------------------
-
 function void spi_seq_item_converter::to_class(output slave_tx output_conv_h,input spi_transfer_char_s input_conv_h);
   foreach(input_conv_h.no_of_bits_transfer[i]) begin
   output_conv_h = new();

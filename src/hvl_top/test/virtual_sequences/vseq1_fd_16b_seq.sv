@@ -66,24 +66,24 @@ task vseq1_fd_16b_seq::body();
     //starting master sequencer
     m_spi_fd_16b_h.start(m_seqr_h);
   end
-    begin
-      // TODO(mshariff): We need to connect the slaves with caution
-      // as only ONe slave can drive on MISO line
-      // so the sequences need to be started based on the System configurations
+  begin
+    // TODO(mshariff): We need to connect the slaves with caution
+    // as only ONe slave can drive on MISO line
+    // so the sequences need to be started based on the System configurations
 
-      // MSHA: //has_s_agt should be declared in env_config file
-      // MSHA: if(e_cfg_h.has_s_agt) begin 
-      // MSHA:   //no_of_sagent should be declared in env_config file
-      // MSHA: for(int i=0; i<e_cfg_h.no_of_sagent; i++)begin
-      // MSHA:   //starting slave sequencer
-      // MSHA:  s_spi_fd_16b_h.start(s_seqr_h);
-      // MSHA:  end
-      // MSHA: end
+    // MSHA: //has_s_agt should be declared in env_config file
+    // MSHA: if(e_cfg_h.has_s_agt) begin 
+    // MSHA:   //no_of_sagent should be declared in env_config file
+    // MSHA: for(int i=0; i<e_cfg_h.no_of_sagent; i++)begin
+    // MSHA:   //starting slave sequencer
+    // MSHA:  s_spi_fd_16b_h.start(s_seqr_h);
+    // MSHA:  end
+    // MSHA: end
 
-      //starting slave sequencer
-      s_spi_fd_16b_h.start(s_seqr_h);
-     end
- join
+    //starting slave sequencer
+    s_spi_fd_16b_h.start(s_seqr_h);
+  end
+join
 
 endtask: body
 
