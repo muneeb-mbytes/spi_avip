@@ -15,7 +15,7 @@ class slave_monitor_proxy extends uvm_monitor;
   `uvm_component_utils(slave_monitor_proxy)
   
   //Declaring Monitor Analysis Import
-  //uvm_analysis_port #(slave_txn) ap;
+  uvm_analysis_port #(slave_tx) ap;
 
   //Declaring Virtual Monitor BFM Handle
   virtual slave_monitor_bfm s_mon_bfm_h;
@@ -38,7 +38,6 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA);
   extern virtual task read(bit [DATA_LENGTH-1:0]data);
 
 endclass : slave_monitor_proxy
@@ -52,7 +51,7 @@ endclass : slave_monitor_proxy
 //--------------------------------------------------------------------------------------------
 function slave_monitor_proxy::new(string name = "slave_monitor_proxy",uvm_component parent = null);
   super.new(name, parent);
-  //ap = new("ap",this);
+  ap = new("ap",this);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -67,6 +66,9 @@ function void slave_monitor_proxy::build_phase(uvm_phase phase);
     `uvm_fatal("FATAL_SMP_MON_BFM",$sformatf("Couldn't get S_MON_BFM in Slave_Monitor_proxy"));
   end
 
+  if(!uvm_config_db#(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) begin
+    `uvm_fatal("FATAL_S_AGENT_CFG",$sformatf("Couldn't get S_AGENT_CFG in Slave_Monitor_proxy"));
+  end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -83,66 +85,40 @@ endfunction : end_of_elaboration_phase
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
-  
+  $display("SPI Mode is = %b",sa_cfg_h.spi_mode);
   //Will be using this when transaction object in connected
-  //forever begin 
-  //end
-
-  
+  //forever begin
   repeat(1) begin
-    
-    //Variable : CPOL
-    //Clock Polarity 
-    bit CPOL=0;
-
-    //Signal : CPHA
-    //Clock Phase
-    bit CPHA=0;
-    
-    //Signal : Mosi
-    //Master-in Slave-Out
-    //bit mosi;
-
-    //Signal : Miso
-    //Master-in Slave-out
-    //bit miso;
-    
-    //Signal : CS
-    //Chip Select
-    //bit cs;
-    
-    //-------------------------------------------------------
-    // Calling the tasks from monitor bfm
-    //-------------------------------------------------------
-    read_from_mon_bfm(CPOL,CPHA);    
+    case(sa_cfg_h.spi_mode)
+      2'b00 : s_mon_bfm_h.sample_cpol_0_cpha_0();
+      2'b01 : s_mon_bfm_h.sample_cpol_0_cpha_1();
+      2'b10 : s_mon_bfm_h.sample_cpol_1_cpha_0();
+      2'b11 : s_mon_bfm_h.sample_cpol_1_cpha_1();
+    endcase
   end
 
 endtask : run_phase 
 
 
 //-------------------------------------------------------
-// Task : read_from_mon_bfm
-// Used to call the tasks from moitor bfm
-//-------------------------------------------------------
-task slave_monitor_proxy::read_from_mon_bfm(bit CPOL,bit CPHA);
-    case({CPOL,CPHA})
-      2'b00 : s_mon_bfm_h.sample_cpol_0_cpha_0();
-      2'b01 : s_mon_bfm_h.sample_cpol_0_cpha_1();
-      2'b10 : s_mon_bfm_h.sample_cpol_1_cpha_0();
-      2'b11 : s_mon_bfm_h.sample_cpol_1_cpha_1();
-    endcase
-endtask : read_from_mon_bfm
-
-//-------------------------------------------------------
-// Task : Write
+// Task : Read
 // Captures the 8 bit MOSI data sampled.
 //-------------------------------------------------------
 task slave_monitor_proxy::read(bit [DATA_LENGTH-1:0]data);
-
+  
+  //Uncomment the below three lines when we use slave_tx object.
+  slave_tx slave_tx_h;
+  slave_tx_h = slave_tx::type_id::create("slave_tx_h");
+  slave_tx_h.data_master_out_slave_in = data;
+  
   data_mosi = data;
   $display("WRITE__data_mosi=%0d",data_mosi);
+  
+  //Uncomment the below three lines when we use slave_tx object.
+  slave_tx_h.master_out_slave_in.push_front(data);
   data_mosi_q.push_front(data_mosi);
-  //ap.write(data_mosi_q);
+  ap.write(slave_tx_h);
+  
   foreach(data_mosi_q[i])
   begin
     $display(data_mosi_q[i]);
