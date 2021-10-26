@@ -27,7 +27,7 @@ class master_agent extends uvm_agent;
 //-------------------------------------------------------
 // Externally defined Tasks and Functions
 //-------------------------------------------------------
-  extern function new(string name = "master_agent", uvm_component parent = null);
+  extern function new(string name = "master_agent", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
   //extern virtual function void connect_phase(uvm_phase phase);
 endclass : master_agent

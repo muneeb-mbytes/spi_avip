@@ -27,6 +27,7 @@ package spi_env_pkg;
   `include "virtual_sequencer.sv"
 
   // SCOREBOARD
+  `include "spi_scoreboard.sv"
   // Coverage 
 
   `include "env.sv"

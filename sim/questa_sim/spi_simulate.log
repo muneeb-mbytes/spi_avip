@@ -1,5 +1,5 @@
 # vsim -novopt work.hvl_top work.hdl_top -l spi_simulate.log -c -do "log -r /*; add wave -r /*; run -all;" -wlf waveform.wlf 
-# Start time: 00:09:57 on Oct 27,2021
+# Start time: 01:00:31 on Oct 27,2021
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
 # //  Questa Sim
 # //  Version 10.6c linux Jul 25 2017
@@ -15,37 +15,37 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.hvl_top
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.test_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_virtual_seq_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_env_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_slave_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_globals_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.hvl_top
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.test_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_virtual_seq_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_env_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_slave_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_globals_pkg
 # Loading sv_std.std
 # Loading work.spi_globals_pkg
 # Loading mtiUvm.uvm_pkg
 # Loading work.spi_slave_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_master_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_master_pkg
 # Loading work.spi_master_pkg
 # Loading work.spi_env_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.s_spi_seq_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.s_spi_seq_pkg
 # Loading work.s_spi_seq_pkg
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.m_spi_seq_pkg
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.m_spi_seq_pkg
 # Loading work.m_spi_seq_pkg
 # Loading work.spi_virtual_seq_pkg
 # Loading work.test_pkg
 # Loading work.hvl_top
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.spi_if
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.spi_if
 # Loading work.spi_if
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.master_monitor_bfm
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.master_monitor_bfm
 # Loading work.master_monitor_bfm
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.slave_monitor_bfm
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.slave_monitor_bfm
 # Loading work.slave_monitor_bfm
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.hdl_top
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.hdl_top
 # Loading work.hdl_top
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.slave_agent_bfm
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.slave_agent_bfm
 # Loading work.slave_agent_bfm
-# Refreshing /hwetools/work_area/frontend/mukul/spi_avip/sim/questa_sim/work.slave_driver_bfm
+# Refreshing /hwetools/work_area/frontend/vandana/spi_avip/sim/questa_sim/work.slave_driver_bfm
 # Loading work.slave_driver_bfm
 # Loading mtiUvm.questa_uvm_pkg
 # ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(61): Virtual interface element 'this.slave_drv_bfm_h.slave_drv_proxy_h' uses an interface with interface ports.
@@ -83,7 +83,7 @@
 # Slave Driver BFM
 # Slave Monitor BFM
 # Slave Agent BFM
-# UVM_INFO ../../src/hvl_top/env/env.sv(59) @ 0: uvm_test_top.env [uvm_test_top.env] ENV: build_phase
+# UVM_INFO ../../src/hvl_top/env/env.sv(65) @ 0: uvm_test_top.env [uvm_test_top.env] ENV: build_phase
 # UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
 # --------------------------------------------------------------
 # Name                       Type                    Size  Value
@@ -91,42 +91,43 @@
 # uvm_test_top               base_test               -     @476 
 #   env                      env                     -     @506 
 #     master_agent_h         master_agent            -     @514 
-#       master_drv_proxy_h   master_driver_proxy     -     @639 
-#         rsp_port           uvm_analysis_port       -     @654 
-#         seq_item_port      uvm_seq_item_pull_port  -     @646 
-#       master_mon_proxy_h   master_monitor_proxy    -     @771 
-#       master_seqr_h        master_sequencer        -     @662 
-#         rsp_export         uvm_analysis_export     -     @669 
-#         seq_item_export    uvm_seq_item_pull_imp   -     @763 
+#       master_drv_proxy_h   master_driver_proxy     -     @646 
+#         rsp_port           uvm_analysis_port       -     @661 
+#         seq_item_port      uvm_seq_item_pull_port  -     @653 
+#       master_mon_proxy_h   master_monitor_proxy    -     @778 
+#       master_seqr_h        master_sequencer        -     @669 
+#         rsp_export         uvm_analysis_export     -     @676 
+#         seq_item_export    uvm_seq_item_pull_imp   -     @770 
 #         arbitration_queue  array                   0     -    
 #         lock_queue         array                   0     -    
 #         num_last_reqs      integral                32    'd1  
 #         num_last_rsps      integral                32    'd1  
+#     scoreboard_h           spi_scoreboard          -     @637 
 #     slave_agent_h[0]       slave_agent             -     @521 
-#       slave_drv_proxy_h    slave_driver_proxy      -     @786 
-#         rsp_port           uvm_analysis_port       -     @801 
-#         seq_item_port      uvm_seq_item_pull_port  -     @793 
-#       slave_mon_proxy_h    slave_monitor_proxy     -     @918 
-#       slave_seqr_h         slave_sequencer         -     @809 
-#         rsp_export         uvm_analysis_export     -     @816 
-#         seq_item_export    uvm_seq_item_pull_imp   -     @910 
+#       slave_drv_proxy_h    slave_driver_proxy      -     @793 
+#         rsp_port           uvm_analysis_port       -     @808 
+#         seq_item_port      uvm_seq_item_pull_port  -     @800 
+#       slave_mon_proxy_h    slave_monitor_proxy     -     @925 
+#       slave_seqr_h         slave_sequencer         -     @816 
+#         rsp_export         uvm_analysis_export     -     @823 
+#         seq_item_export    uvm_seq_item_pull_imp   -     @917 
 #         arbitration_queue  array                   0     -    
 #         lock_queue         array                   0     -    
 #         num_last_reqs      integral                32    'd1  
 #         num_last_rsps      integral                32    'd1  
 #     virtual_seqr_h         virtual_sequencer       -     @528 
-#       master_seqr_h        master_sequencer        -     @937 
-#         rsp_export         uvm_analysis_export     -     @944 
-#         seq_item_export    uvm_seq_item_pull_imp   -     @1038
+#       master_seqr_h        master_sequencer        -     @944 
+#         rsp_export         uvm_analysis_export     -     @951 
+#         seq_item_export    uvm_seq_item_pull_imp   -     @1045
 #         arbitration_queue  array                   0     -    
 #         lock_queue         array                   0     -    
 #         num_last_reqs      integral                32    'd1  
 #         num_last_rsps      integral                32    'd1  
 #       rsp_export           uvm_analysis_export     -     @535 
 #       seq_item_export      uvm_seq_item_pull_imp   -     @629 
-#       slave_seqr_h         slave_sequencer         -     @1046
-#         rsp_export         uvm_analysis_export     -     @1053
-#         seq_item_export    uvm_seq_item_pull_imp   -     @1147
+#       slave_seqr_h         slave_sequencer         -     @1053
+#         rsp_export         uvm_analysis_export     -     @1060
+#         seq_item_export    uvm_seq_item_pull_imp   -     @1154
 #         arbitration_queue  array                   0     -    
 #         lock_queue         array                   0     -    
 #         num_last_reqs      integral                32    'd1  
@@ -152,5 +153,5 @@
 # [uvm_test_top.env]     1
 # ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
 #    Time: 0 ns  Iteration: 215  Instance: /hvl_top
-# End time: 00:10:06 on Oct 27,2021, Elapsed time: 0:00:09
+# End time: 01:00:39 on Oct 27,2021, Elapsed time: 0:00:08
 # Errors: 0, Warnings: 2

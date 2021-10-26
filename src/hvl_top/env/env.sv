@@ -18,7 +18,13 @@ class env extends uvm_env;
   // declaring master handles
   //-------------------------------------------------------
   master_agent master_agent_h;
-  
+  //-------------------------------------------------------
+  // declaring scoreboard handle
+  //-------------------------------------------------------
+  spi_scoreboard scoreboard_h;
+  //-------------------------------------------------------
+  // declaring handle for virtual sequencer
+  //-------------------------------------------------------
   virtual_sequencer virtual_seqr_h;
   //-------------------------------------------------------
   // Declaring slave handles
@@ -30,7 +36,7 @@ class env extends uvm_env;
   //-------------------------------------------------------
   extern function new(string name = "env", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  extern virtual function void connect_phase(uvm_phase phase);
+  //extern virtual function void connect_phase(uvm_phase phase);
 
 endclass : env
 
@@ -72,7 +78,11 @@ function void env::build_phase(uvm_phase phase);
   if(env_cfg_h.has_virtual_seqr) begin
     virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
   end
-   
+  
+
+  if(env_cfg_h.has_scoreboard) begin
+    scoreboard_h = spi_scoreboard::type_id::create("scoreboard_h",this);
+  end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -83,16 +93,16 @@ endfunction : build_phase
 // Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-function void env::connect_phase(uvm_phase phase);
-  super.connect_phase(phase);
-
-  if(env_cfg_h.has_virtual_seqr) begin
-    virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
-    foreach(slave_agent_h[i]) begin
-      virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
-    end
-  end
-endfunction : connect_phase
+//function void env::connect_phase(uvm_phase phase);
+//  super.connect_phase(phase);
+//
+//  if(env_cfg_h.has_virtual_seqr) begin
+//    virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
+//    foreach(slave_agent_h[i]) begin
+//      virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
+//    end
+//  end
+//endfunction : connect_phase
 
 `endif
 

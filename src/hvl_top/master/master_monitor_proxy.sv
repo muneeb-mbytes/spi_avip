@@ -25,7 +25,7 @@ class master_monitor_proxy extends uvm_component;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "master_monitor_proxy", uvm_component parent = null);
+  extern function new(string name = "master_monitor_proxy", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
   //extern virtual function void connect_phase(uvm_phase phase);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
