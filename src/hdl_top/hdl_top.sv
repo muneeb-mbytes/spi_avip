@@ -44,9 +44,14 @@ module hdl_top;
   spi_if intf();
 
   //-------------------------------------------------------
-  // SPI BFM Agent Instantiation
+  // SPI Slave BFM Agent Instantiation
   //-------------------------------------------------------
   slave_agent_bfm slave_agent_bfm_h(intf);
+
+  //--------------------------------------------------------------------------------------------
+  //SPI Master BFM Agent Instantiation 
+  //--------------------------------------------------------------------------------------------
+  master_agent_bfm master_agent_bfm_h(intf); 
 
 endmodule : hdl_top
 
