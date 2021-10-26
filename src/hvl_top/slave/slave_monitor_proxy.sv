@@ -6,7 +6,7 @@
 // It gets the sampled data from the HDL slave monitor and 
 // converts them into transaction items
 //--------------------------------------------------------------------------------------------
-  class slave_monitor_proxy extends uvm_monitor;
+class slave_monitor_proxy extends uvm_monitor;
     //Parameter : Data length
     //Data length of Data_MOSI
     parameter DATA_LENGTH = 8;
@@ -33,11 +33,11 @@
     //-------------------------------------------------------
     extern function new(string name = "slave_monitor_proxy", uvm_component parent = null);
     extern virtual function void build_phase(uvm_phase phase);
-    extern virtual task run_phase(uvm_phase phase);
-    extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
-    extern virtual task write(bit [DATA_LENGTH-1:0]data);
+    //extern virtual task run_phase(uvm_phase phase);
+    //extern virtual task read_from_mon_bfm(bit CPOL,bit CPHA,bit mosi);
+    //extern virtual task write(bit [DATA_LENGTH-1:0]data);
   
-  endclass : slave_monitor_proxy
+endclass : slave_monitor_proxy
 
   //--------------------------------------------------------------------------------------------
   // Construct: new
@@ -69,7 +69,7 @@
   // Task: run_phase
   // Calls tasks defined in Slave_Monitor_BFM 
   //--------------------------------------------------------------------------------------------
-  task slave_monitor_proxy::run_phase(uvm_phase phase);
+/*  task slave_monitor_proxy::run_phase(uvm_phase phase);
     `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
   
     //Will be using this when transaction object in connected
@@ -153,5 +153,5 @@ task slave_monitor_proxy::write(bit [DATA_LENGTH-1:0]data);
 
 endtask
 
-
+*/
 `endif

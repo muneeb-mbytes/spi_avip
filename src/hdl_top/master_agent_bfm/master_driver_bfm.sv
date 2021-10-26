@@ -26,7 +26,7 @@ interface master_driver_bfm(spi_if intf);
   master_driver_proxy master_drv_proxy_h;
 
   initial begin
-    $display("Master driver BFM")
+    $display("Master driver BFM");
   end
 
 endinterface : master_driver_bfm

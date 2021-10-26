@@ -60,7 +60,7 @@ function void slave_agent::build_phase(uvm_phase phase);
 
   // TODO(mshariff): Print the values of the slave_agent_config
   // Have a print method in master_agent_config class and call it from here
-  `uvm_info(get_type_name(), $sformatf("The slave_agent_config.slave_id = %0d", slave_agent_cfg_h.slave_id), UVM_LOW);
+  //`uvm_info(get_type_name(), $sformatf("The slave_agent_config.slave_id = %0d", slave_agent_cfg_h.slave_id), UVM_LOW);
 
    if(slave_agent_cfg_h.is_active == UVM_ACTIVE) begin
      slave_drv_proxy_h = slave_driver_proxy::type_id::create("slave_drv_proxy_h",this);

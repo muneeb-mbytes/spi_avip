@@ -13,7 +13,8 @@ module hvl_top;
   // Declaring SPI and Slave_driver_bfm Interface
   //-------------------------------------------------------
   spi_if vif();
-  slave_monitor_bfm s_mon_bfm_h(vif.MON_MP);
+  master_monitor_bfm master_mon_bfm_h(vif);
+  slave_monitor_bfm slave_mon_bfm_h(vif);
   //-------------------------------------------------------
   // run_test for simulation
   //-------------------------------------------------------
