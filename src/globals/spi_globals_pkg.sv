@@ -55,6 +55,16 @@ typedef enum bit [2:0] {
   QUAD_SPI   = 3'd4
 } spi_type_e;
 
+// struct: spi_transfer_char_s
+//
+// master_out_slave_in: queue which holds the mosi seq_item transactions
+// master_in_slave_out: queue which holds the miso seq_item transactions
+typedef struct {
+  bit [7:0] master_out_slave_in[$:16];
+  bit [7:0] master_in_slave_out[$:16];
+  int no_of_bits_transfer;
+} spi_transfer_char_s;
+
 endpackage: spi_globals_pkg
 
 `endif

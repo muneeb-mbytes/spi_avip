@@ -29,12 +29,9 @@ class slave_tx extends uvm_sequence_item;
   rand bit miso2;
   rand bit miso3;
 
-  //-------------------------------------------------------
-  // Instantiation of Data Signals
-  //-------------------------------------------------------
-  bit [7:0] data_master_out_slave_in;
-  bit [7:0] data_master_in_slave_out;
-
+  bit [7:0]data_master_out_slave_in;
+  bit [7:0]data_master_in_slave_out;
+  
   //input signals
   rand bit [`DW-1:0]master_in_slave_out[$];
        bit [`cs_length-1:0] cs;
@@ -120,84 +117,48 @@ function void slave_tx::do_print(uvm_printer printer);
        printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
 endfunction:do_print
 
-/*
-//-------------------------------------------------------
-// Function: do_copy
-//  Copying transaction to another object
-//
-// Parameters: 
-//  name - rhs
-//-------------------------------------------------------
-function void slave_tx::do_copy (uvm_object rhs);
+//--------------------------------------------------------------------------------------------
+// class : spi_seq_item_converter
+// Description:
+// class converting seq_item transactions into struct data items and viceversa
+//--------------------------------------------------------------------------------------------
+
+class spi_seq_item_converter;
+
+  //-------------------------------------------------------
+  // Externally defined Tasks and Functions
+  //-------------------------------------------------------
+  extern static function void from_class(input slave_tx input_conv_h,output spi_transfer_char_s output_conv_h);
+  extern static function void to_class(output slave_tx output_conv_h,input spi_transfer_char_s input_conv_h);
   
-  // Variable: rhs_h
-  // New handle used to copy
-  slave_tx rhs_h;
-  
-  if(!$cast(rhs_h,rhs)) begin
-    `uvm_fatal("do_copy","cast of the rhs object failed")
+endclass : spi_seq_item_converter
+
+//--------------------------------------------------------------------------------------------
+// function: from_class
+// converting seq_item transactions into struct data items
+//--------------------------------------------------------------------------------------------
+
+function void spi_seq_item_converter::from_class(input slave_tx input_conv_h,output spi_transfer_char_s output_conv_h);
+  foreach(output_conv_h.no_of_bits_transfer[i]) begin
+  output_conv_h.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];
+  output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
+//output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
   end
-  super.do_copy(rhs);
+endfunction: from_class
 
-  cs    = rhs_h.cs;
-  mosi0 = rhs_h.mosi0;
-  miso0 = rhs_h.miso0;
 
-endfunction : do_copy
+//--------------------------------------------------------------------------------------------
+// function:to_class
+// converting struct data items into seq_item transactions
+//--------------------------------------------------------------------------------------------
 
-//-------------------------------------------------------
-// Function: do_compare
-//  Comparing transaction from another object
-//
-// Parameters: 
-//  name - rhs
-//-------------------------------------------------------
-function bit slave_tx::do_compare (uvm_object rhs, uvm_comparer comparer);
-  
-  // Variable: rhs_h
-  // New handle used to copy
-  slave_tx rhs_h;
-  
-  if(!$cast(rhs_h,rhs)) begin
-    `uvm_fatal("do_compare","cast of the rhs object failed")
-    return 0;
+function void spi_seq_item_converter::to_class(output slave_tx output_conv_h,input spi_transfer_char_s input_conv_h);
+  foreach(input_conv_h.no_of_bits_transfer[i]) begin
+  output_conv_h = new();
+  output_conv_h.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];
+  output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
+//output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
   end
-  
-  return super.do_compare(rhs,comparer) &&
-  cs    == rhs_h.cs &&
-  miso0 == rhs_h.miso0 &&
-  mosi0 == rhs_h.mosi0;
+endfunction : to_class
 
-endfunction:do_compare 
-
-//-------------------------------------------------------
-// Function: do_print
-//  Comparing transaction from another object
-//
-// Parameters: 
-//  name - printer
-//-------------------------------------------------------
-function void slave_tx::do_print(uvm_printer printer);
-  super.do_print(printer);
-         
-  printer.print_field ("sclk",  sclk, 1, UVM_DEC);
-  printer.print_field ("cs",    cs,   1, UVM_DEC);
-  printer.print_field ("cpol",  cpol, 1, UVM_DEC);
-  printer.print_field ("cpha",  cpha, 1, UVM_DEC);
-  
-  printer.print_field ("master_out_slave_in", data_master_out_slave_in, 8, UVM_HEX);
-  printer.print_field ("master_in_slave_out", data_master_in_slave_out, 8, UVM_HEX);
-  
-  printer.print_field ("miso0", miso0, 1, UVM_DEC);
-  printer.print_field ("miso1", miso1, 1, UVM_DEC);
-  printer.print_field ("miso2", miso2, 1, UVM_DEC);
-  printer.print_field ("miso3", miso3, 1, UVM_DEC);
-  
-  printer.print_field ("mosi0", mosi0, 1, UVM_DEC);
-  printer.print_field ("mosi1", mosi1, 1, UVM_DEC);
-  printer.print_field ("mosi2", mosi2, 1, UVM_DEC);
-  printer.print_field ("mosi3", mosi3, 1, UVM_DEC);
-
-endfunction : do_print
-*/
 `endif
