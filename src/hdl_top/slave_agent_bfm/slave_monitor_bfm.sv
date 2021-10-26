@@ -98,7 +98,7 @@ endtask : mon_lsb_first_neg
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_0_cpha_0 (input bit cs,input bit mosi0,output bit mosi);
+task sample_cpol_0_cpha_0 (bit mosi);
   if(!intf.cs) begin
     @(posedge intf.sclk)
     mosi=intf.mosi0;
@@ -118,7 +118,7 @@ endtask : sample_cpol_0_cpha_0
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_0_cpha_1 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
+task sample_cpol_0_cpha_1 (bit mosi);
   if(!intf.cs)begin
   @(negedge intf.sclk)
   mosi=intf.mosi0;
@@ -138,7 +138,7 @@ endtask : sample_cpol_0_cpha_1
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_1_cpha_0 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
+task sample_cpol_1_cpha_0 (bit mosi);
   if(!intf.cs)begin
   @(posedge intf.sclk)
   mosi=intf.mosi0;
@@ -157,7 +157,7 @@ endtask : sample_cpol_1_cpha_0
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_cpol_1_cpha_1 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
+task sample_cpol_1_cpha_1 (bit mosi);
   if(!intf.cs)begin
   @(negedge intf.sclk)
   mosi=intf.mosi0;
