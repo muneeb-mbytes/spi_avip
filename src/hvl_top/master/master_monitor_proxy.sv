@@ -9,25 +9,18 @@
 //converts the signal level activity to transaction level,monitor samples DUT signals but does not drive them.
 //Monitor should have analysis port (TLM port) and virtual interface handle that points to DUT signal
 //--------------------------------------------------------------------------------------------
-class master_monitor_proxy extends uvm_component;
-  
-  //register with factory so can use create uvm_method and
-  //override in future if necessary
-  
+class master_monitor_proxy extends uvm_component; 
   `uvm_component_utils(master_monitor_proxy)
   
-  // Variable: m_cfg
+  // Variable: master_agent_cfg_h
   // Declaring handle for master agent config class 
-  master_agent_config m_cfg;
+  master_agent_config master_agent_cfg_h;
 
-   //declaring virtual interface
-   //virtual spi_if.MMON_CB vif;
-   
-   //declaring handle for master config class
-//     master_agent_config  m_cfg;
-   
-   //declaring analysis port for the monitor port
-   //uvm_analysis_port #(master_tx)monitor_port;
+  //declaring virtual interface
+  //virtual spi_if.MMON_CB vif;
+     
+  //declaring analysis port for the monitor port
+  //uvm_analysis_port #(master_tx)monitor_port;
   
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -49,7 +42,7 @@ endclass : master_monitor_proxy
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
 function master_monitor_proxy::new(string name = "master_monitor_proxy",
-                                 uvm_component parent = null);
+                                 uvm_component parent);
   super.new(name, parent);
   
   //creating monitor port
@@ -67,10 +60,9 @@ endfunction : new
 function void master_monitor_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
- /*       if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",m_cfg))
-        begin
-        `uvm_fatal("TB CONFIG","cannot get() m_cfg from uvm_config");
-        end */
+  if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",master_agent_cfg_h)) begin
+  `uvm_fatal("TB CONFIG","cannot get() master_agent_cfg_h from uvm_config_db");
+  end 
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -81,7 +73,7 @@ endfunction : build_phase
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 /*function void master_monitor_proxy::connect_phase(uvm_phase phase);
-      vif = m_cfg.vif;
+      vif = master_agent_cfg_h.vif;
 endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
