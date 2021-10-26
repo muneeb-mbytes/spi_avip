@@ -129,4 +129,4 @@ interface slave_monitor_bfm (spi_if intf);
 
 endinterface : slave_monitor_bfm
 
-
+`endif

@@ -59,7 +59,7 @@ function void master_agent::build_phase(uvm_phase phase);
 
   // Print the values of the master_agent_config
   // Have a print method in master_agent_config class and call it from here
-  `uvm_info(get_type_name(), $sformat("The master_agent_config.master_id =%d",master_agent_cfg_h.master_id),UVM_LOW);
+  //`uvm_info(get_type_name(), $sformat("The master_agent_config.master_id =%d",master_agent_cfg_h.master_id),UVM_LOW);
   
   if(master_agent_cfg_h.is_active == UVM_ACTIVE) begin
     master_drv_proxy_h=master_driver_proxy::type_id::create("master_drv_proxy_h",this);

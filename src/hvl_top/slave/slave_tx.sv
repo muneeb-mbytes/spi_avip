@@ -48,9 +48,9 @@
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "slave_tx");
-  extern function void do_copy(uvm_object rhs);
-  extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
-  extern function void do_print(uvm_printer printer);
+  //extern function void do_copy(uvm_object rhs);
+  //extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
+  //extern function void do_print(uvm_printer printer);
 
   endclass : slave_tx
 
@@ -71,7 +71,7 @@
   //--------------------------------------------------------------------------------------------
   // do_copy method
   //--------------------------------------------------------------------------------------------
-
+ /*
   function void slave_tx::do_copy (uvm_object rhs);
     slave_tx rhs_;
     
@@ -186,5 +186,5 @@
     printer.print_field ("mosi3", mosi3, 1, UVM_DEC);
 
   endfunction: do_print
-
+*/
 `endif
