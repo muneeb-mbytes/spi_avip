@@ -13,13 +13,13 @@ class env extends uvm_env;
   //-------------------------------------------------------
   `uvm_component_utils(env)
   
-  env_config e_cfg_h;
+  env_config env_cfg_h;
   //-------------------------------------------------------
   // declaring master handles
   //-------------------------------------------------------
-  master_agent ma_h;
+  master_agent master_agent_h;
   
-  virtual_sequencer vseqr;
+  virtual_sequencer virtual_seqr_h;
   //-------------------------------------------------------
   // Declaring slave handles
   //-------------------------------------------------------
@@ -58,19 +58,19 @@ function void env::build_phase(uvm_phase phase);
 
   `uvm_info(get_full_name(),"ENV: build_phase",UVM_LOW);
 
-  if(!uvm_config_db #(env_config)::get(this,"","env_config",e_cfg_h)) begin
+  if(!uvm_config_db #(env_config)::get(this,"","env_config",env_cfg_h)) begin
    `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
   end
 
-  ma_h=master_agent::type_id::create("master_agent",this);
+  master_agent_h=master_agent::type_id::create("master_agent_h",this);
 
-  slave_agent_h = new[e_cfg_h.no_of_slaves];
+  slave_agent_h = new[env_cfg_h.no_of_slaves];
   foreach(slave_agent_h[i]) begin
     slave_agent_h[i] = slave_agent::type_id::create($sformatf("slave_agent_h[%0d]",i),this);
   end
 
-  if(e_cfg_h.has_virtual_sqr) begin
-    vseqr = virtual_sequencer::type_id::create("vseqr",this);
+  if(env_cfg_h.has_virtual_seqr) begin
+    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
   end
    
 endfunction : build_phase
@@ -86,10 +86,10 @@ endfunction : build_phase
 function void env::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 
-  if(e_cfg_h.has_virtual_sqr) begin
-    vseqr.m_seqr_h = ma_h.m_sqr_h;
+  if(env_cfg_h.has_virtual_seqr) begin
+    virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
     foreach(slave_agent_h[i]) begin
-      vseqr.s_seqr_h = slave_agent_h[i].s_sqr_h;
+      virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
     end
   end
 endfunction : connect_phase

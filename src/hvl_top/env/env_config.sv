@@ -14,7 +14,7 @@ class env_config extends uvm_object;
 
   // Variable: has_virtual_sqr
   // Enables the virtual sequencer. Default value is 1
-  bit has_virtual_sqr = 1;
+  bit has_virtual_seqr = 1;
 
   // Variable: no_of_slaves
   // Number of slaves connected to the SPI interface
@@ -22,11 +22,11 @@ class env_config extends uvm_object;
 
   // Variable: ma_cfg_h
   // Handle for master agent configuration
-  master_agent_config ma_cfg_h;
+  master_agent_config master_agent_cfg_h;
 
   // Variable: sa_cfg_h
   // Dynamic array of slave agnet configuration handles
-  slave_agent_config sa_cfg_h[];
+  slave_agent_config slave_agent_cfg_h[];
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
