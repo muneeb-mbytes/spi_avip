@@ -4,7 +4,7 @@
 // to call the tasks and functions from monitor bfm to monitor proxy
 //--------------------------------------------------------------------------------------------
  
-interface slave_monitor_bfm (spi_if.MON_MP intf);
+interface slave_monitor_bfm (spi_if intf);
   //variable DATA_WIDTH
   //DATA_WIDTH of data_mosi
   parameter DATA_WIDTH=8;
@@ -13,116 +13,161 @@ interface slave_monitor_bfm (spi_if.MON_MP intf);
   // Creating the handle for proxy driver
   //-------------------------------------------------------
   import spi_slave_pkg::slave_monitor_proxy;
-  slave_monitor_proxy mon_proxy;
+  slave_monitor_proxy s_mon_proxy_h;
 
   initial begin
     $display("Slave Monitor BFM");
   end
-
-   //variable data_mosi
-   //data of master-out slave-in
-   bit[7:0]data_mosi;
 
 //--------------------------------------------------------------------------------------------
 //Task : mon_msb_first
 //loop is used to iterate the data
 //considering the first bit as most significant bit
 //--------------------------------------------------------------------------------------------
-task mon_msb_first(bit mosi);
+task mon_msb_first_pos(bit mosi);
+  bit[7:0]data_mosi;
   for(int i=DATA_WIDTH-1;i>0;i--) begin
-    @(intf.sample_mosi_pos_cb);
+    @(posedge intf.sclk);
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
+    data_mosi[i]=intf.mosi0;
     data_mosi[i] = mosi;
   end
-  // mon_proxy.write(data_mosi);
+  s_mon_proxy_h.read(data_mosi);
 
-endtask : mon_msb_first
+endtask : mon_msb_first_pos
+
+//--------------------------------------------------------------------------------------------
+//Task : mon_msb_first
+//loop is used to iterate the data
+//considering the first bit as most significant bit
+//--------------------------------------------------------------------------------------------
+task mon_msb_first_neg(bit mosi);
+  bit[7:0]data_mosi;
+  for(int i=DATA_WIDTH-1;i>0;i--) begin
+    @(negedge intf.sclk);
+    data_mosi = data_mosi << 1;
+    data_mosi[i]=intf.mosi0;
+    data_mosi[i] = mosi;
+  end
+  s_mon_proxy_h.read(data_mosi);
+
+endtask : mon_msb_first_neg
+
 //--------------------------------------------------------------------------------------------
 //Task : mon_lsb_first
 //loop is used to iterate the data
 //data tranfering first bit as least significant bit
 //--------------------------------------------------------------------------------------------
 
-task mon_lsb_first(bit mosi);
-  //mosi = 1;
+task mon_lsb_first_pos(bit mosi);
+  bit[7:0]data_mosi;
   for(int i=0;i<DATA_WIDTH;i++) begin
-    @(intf.sample_mosi_pos_cb);
+    @(posedge intf.sclk)
     data_mosi = data_mosi << 1;
-    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
+    data_mosi[i]=intf.mosi0;
     data_mosi[i] = mosi;
   end
-  // mon_proxy.write(data_mosi);
+  s_mon_proxy_h.read(data_mosi);
 
-endtask : mon_lsb_first
+endtask : mon_lsb_first_pos
 
 //--------------------------------------------------------------------------------------------
-//Task  : sample_mosi_pos_00
+//Task : mon_lsb_first
+//loop is used to iterate the data
+//data tranfering first bit as least significant bit
+//--------------------------------------------------------------------------------------------
+
+task mon_lsb_first_neg(bit mosi);
+  bit[7:0]data_mosi;
+  for(int i=0;i<DATA_WIDTH;i++) begin
+    @(negedge intf.sclk)
+    data_mosi = data_mosi << 1;
+    data_mosi[i]=intf.mosi0;
+    data_mosi[i] = mosi;
+  end
+  s_mon_proxy_h.read(data_mosi);
+
+endtask : mon_lsb_first_neg
+
+
+//--------------------------------------------------------------------------------------------
+//Task  : sample_cpol_0_cpha_0 
 //assigning the sampled_mosi_neg_cb signal to proxy mosi
 //sampling happen on the posedge
 //calling the mon_msb_first and mon_lsb_first tasks inside 
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_pos_00 (bit mosi);
+task sample_cpol_0_cpha_0 (input bit cs,input bit mosi0,output bit mosi);
   if(!intf.cs) begin
-    @(intf.sample_mosi_pos_cb)
-    mosi=intf.sample_mosi_pos_cb.mosi0;
-    mon_msb_first(mosi);
-    //  mon_lsb_first(mosi);
+    @(posedge intf.sclk)
+    mosi=intf.mosi0;
+    mon_msb_first_pos(mosi);
+    //mon_msb_first_neg(mosi);
+    mon_lsb_first_pos(mosi);
+   // mon_msb_first_neg(mosi);
+  
   end
-endtask : sample_mosi_pos_00
+endtask : sample_cpol_0_cpha_0
 
 //--------------------------------------------------------------------------------------------
-//Task  : sample_mosi_neg_01
+//Task  : sample_cpol_0_cpha_1 
 //assigning the sampled_mosi_neg_cb signal to proxy mosi
 //sampling happen on the negedge
 //calling the mon_msb_first and mon_lsb_first tasks inside 
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_neg_01 (bit mosi);
+task sample_cpol_0_cpha_1 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
   if(!intf.cs)begin
-  @(intf.sample_mosi_neg_cb)
-  mosi=intf.sample_mosi_neg_cb.mosi0;
-  mon_msb_first(mosi);
-  mon_lsb_first(mosi);
+  @(negedge intf.sclk)
+  mosi=intf.mosi0;
+  // mon_msb_first_pos(mosi);
+   mon_msb_first_neg(mosi);
+ //  mon_lsb_first_pos(mosi);
+   mon_msb_first_neg(mosi);
+
 end
-endtask : sample_mosi_neg_01
+endtask : sample_cpol_0_cpha_1
 
 //--------------------------------------------------------------------------------------------
-//Task  :sample_mosi_pos_10
+//Task  :sample_cpol_1_cpha_0 
 //assigning the sample_mosi_pos_cb signal to proxy mosi
 //sampling happen on the posedge
 //calling the mon_msb_first and mon_lsb_first tasks inside 
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_pos_10 (bit mosi);
+task sample_cpol_1_cpha_0 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
   if(!intf.cs)begin
-  @(intf.sample_mosi_pos_cb)
-  mosi=intf.sample_mosi_pos_cb.mosi0;
-  mon_msb_first(mosi);
-  mon_lsb_first(mosi);
+  @(posedge intf.sclk)
+  mosi=intf.mosi0;
+  mon_msb_first_pos(mosi);
+ // mon_msb_first_neg(mosi);
+  mon_lsb_first_pos(mosi);
+ // mon_msb_first_neg(mosi);
 end
-endtask : sample_mosi_pos_10
+endtask : sample_cpol_1_cpha_0 
 
 //--------------------------------------------------------------------------------------------
-////Task  : sample_mosi_neg_11
+////Task  : sample_cpol_1_cpha_1
 //assigning the sample_mosi_pos_cb.miso signal to proxy mosi
 //sampling happens on the negedge
 //calling the mon_msb_first and mon_lsb_first tasks inside 
 //to do the data sampling based on clock polarity and clock phase 
 //--------------------------------------------------------------------------------------------
 
-task sample_mosi_neg_11 (bit mosi);
+task sample_cpol_1_cpha_1 (input bit cs, input bit sclk,input bit mosi0,output bit mosi);
   if(!intf.cs)begin
-  @(intf.sample_mosi_neg_cb)
-  mosi=intf.sample_mosi_neg_cb.mosi0;
-  mon_msb_first(mosi);
-  mon_lsb_first(mosi);
+  @(negedge intf.sclk)
+  mosi=intf.mosi0;
+ // mon_msb_first_pos(mosi);
+ // mon_lsb_first_pos(mosi);
+  mon_msb_first_neg(mosi);
+  mon_msb_first_neg(mosi);
+
 end
-endtask : sample_mosi_neg_11
+endtask : sample_cpol_1_cpha_1 
 
 endinterface : slave_monitor_bfm
 
