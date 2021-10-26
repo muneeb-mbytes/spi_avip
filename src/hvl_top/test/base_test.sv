@@ -7,32 +7,20 @@
 //  Sequences are created and started in the test
 //--------------------------------------------------------------------------------------------
 class base_test extends uvm_test;
+  
+  //factory registration
   `uvm_component_utils(base_test)
 
-   virtual spi_if vif;
 
    // Variable: e_cfg_h
    // Declaring environment config handle
    env_config e_cfg_h;
 
-   //-------------------------------------------------------
-   // Declaring Agent Config Handles
-   //-------------------------------------------------------
-   slave_agent_config sa_cfg_h[];
-   master_agent_config ma_cfg_h[];
 
    //-------------------------------------------------------
    // Environment Handles
    //.....................................................
    env env_h;
-
-   //-------------------------------------------------------
-   // Assigning values
-   //-------------------------------------------------------
-   int no_of_sagent = 1;
-   int no_of_magent = 1;
-   int has_m_agt = 1;
-   int has_s_agt = 1;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -70,34 +58,6 @@ function void base_test::build_phase(uvm_phase phase);
 
   // Setup the environemnt cfg 
       setup_env_cfg();
-
-    e_cfg_h = env_config::type_id::create("e_cfg_h");
-    e_cfg_h.sa_cfg_h = new[no_of_sagent];
-    e_cfg_h.ma_cfg_h = new[no_of_magent];
-
-    sa_cfg_h = new[no_of_sagent];
-    ma_cfg_h = new[no_of_magent];
-
-    foreach(ma_cfg_h[i]) begin
-
-    ma_cfg_h[i]=master_agent_config::type_id::create($sformatf("ma_cfg_h[%0d]",i));
-    e_cfg_h.ma_cfg_h[i]=ma_cfg_h[i];
-
-    uvm_config_db #(master_agent_config)::set(this,"*","master_agent_config",e_cfg_h.ma_cfg_h[i]);
-    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
-      `uvm_fatal("TEST","COULDNT GET")
-    end
-  end
-    foreach(sa_cfg_h[i]) begin
-
-    sa_cfg_h[i]=slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
-    e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
-
-    uvm_config_db #(slave_agent_config)::set(this,"*","slave_agent_config",e_cfg_h.sa_cfg_h[i]);
-    if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
-      `uvm_fatal("TEST","COULDNT GET")
-    end
-  end
 
   // Create the environment
   env_h = env::type_id::create("env",this);
