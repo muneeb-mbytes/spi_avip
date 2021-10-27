@@ -1,0 +1,210 @@
+# vsim -novopt work.hvl_top work.hdl_top -c -do "log -r /*; add wave -r /*; run -all;" -wlf waveform.wlf 
+# Start time: 00:31:02 on Oct 26,2021
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# //  Questa Sim
+# //  Version 10.6c linux Jul 25 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.hvl_top
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.test_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_virtual_seq_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_env_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_slave_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_globals_pkg
+# Loading sv_std.std
+# Loading work.spi_globals_pkg
+# Loading mtiUvm.uvm_pkg
+# Loading work.spi_slave_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_master_pkg
+# Loading work.spi_master_pkg
+# Loading work.spi_env_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.s_spi_seq_pkg
+# Loading work.s_spi_seq_pkg
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.m_spi_seq_pkg
+# Loading work.m_spi_seq_pkg
+# Loading work.spi_virtual_seq_pkg
+# Loading work.test_pkg
+# Loading work.hvl_top
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.spi_if
+# Loading work.spi_if
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.slave_monitor_bfm
+# Loading work.slave_monitor_bfm
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.hdl_top
+# Loading work.hdl_top
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.slave_agent_bfm
+# Loading work.slave_agent_bfm
+# Refreshing /hwetools/work_area/frontend/jyoshnalakshmi/spi_avip/sim/questa_sim/work.slave_driver_bfm
+# Loading work.slave_driver_bfm
+# Loading mtiUvm.questa_uvm_pkg
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(125): Virtual interface element 'this.s_mon_bfm_h.data_mosi' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(129): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_neg_01' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(137): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_neg_11' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(124): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_pos_00' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(133): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_pos_10' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(137): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_neg_11' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(137): Virtual interface element 'this.s_mon_bfm_h.mosi' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(133): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_pos_10' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(133): Virtual interface element 'this.s_mon_bfm_h.mosi' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(129): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_neg_01' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(129): Virtual interface element 'this.s_mon_bfm_h.mosi' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(124): Virtual interface element 'this.s_mon_bfm_h.sample_mosi_pos_00' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_monitor_proxy.sv(124): Virtual interface element 'this.s_mon_bfm_h.mosi' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(107): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_neg_miso_pos_cpol_1_cpha_1' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(106): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_pos_miso_neg_cpol_1_cpha_0' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(105): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_neg_miso_pos_cpol_0_cpha_1' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(104): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_pos_miso_neg_cpol_0_cpha_0' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(61): Virtual interface element 'this.s_drv_bfm_h.s_drv_proxy_h' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(104): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_pos_miso_neg_cpol_0_cpha_0' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(104): Virtual interface element 'this.s_drv_bfm_h.data' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(105): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_neg_miso_pos_cpol_0_cpha_1' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(105): Virtual interface element 'this.s_drv_bfm_h.data' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(106): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_pos_miso_neg_cpol_1_cpha_0' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(106): Virtual interface element 'this.s_drv_bfm_h.data' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(107): Virtual interface element 'this.s_drv_bfm_h.drive_mosi_neg_miso_pos_cpol_1_cpha_1' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# ** Warning: (vsim-8887) ../../src/hvl_top/slave/slave_driver_proxy.sv(107): Virtual interface element 'this.s_drv_bfm_h.data' uses an interface with interface ports.
+#    Time: 0 ns  Iteration: 0  Region: /spi_slave_pkg::slave_driver_proxy File: ../../src/hvl_top/slave/spi_slave_pkg.sv
+# Loading /tools/mentor/questasim_10.6c/questasim/uvm-1.1d/linux/uvm_dpi.so
+# log -r /*
+#  add wave -r /*
+#  run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# Slave Monitor BFM
+# UVM_INFO @ 0: reporter [RNTST] Running test base_test...
+# HDL_TOP
+# Slave Driver BFM
+# Slave Monitor BFM
+# Slave Agent BFM
+# UVM_INFO ../../src/hvl_top/env/env.sv(59) @ 0: uvm_test_top.env [uvm_test_top.env] ENV: build_phase
+# UVM_INFO ../../src/hvl_top/slave/slave_agent.sv(63) @ 0: uvm_test_top.env.slave_agent_h[0] [slave_agent] The slave_agent_config.slave_id = 0
+# UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+# ---------------------------------------------------------------
+# Name                        Type                    Size  Value
+# ---------------------------------------------------------------
+# uvm_test_top                base_test               -     @476 
+#   env                       env                     -     @506 
+#     master_agent            master_agent            -     @514 
+#       master_driver_proxy   master_driver_proxy     -     @639 
+#         rsp_port            uvm_analysis_port       -     @654 
+#         seq_item_port       uvm_seq_item_pull_port  -     @646 
+#       master_monitor_proxy  master_monitor_proxy    -     @771 
+#       master_sequencer      master_sequencer        -     @662 
+#         rsp_export          uvm_analysis_export     -     @669 
+#         seq_item_export     uvm_seq_item_pull_imp   -     @763 
+#         arbitration_queue   array                   0     -    
+#         lock_queue          array                   0     -    
+#         num_last_reqs       integral                32    'd1  
+#         num_last_rsps       integral                32    'd1  
+#     slave_agent_h[0]        slave_agent             -     @521 
+#       s_drv_proxy_h         slave_driver_proxy      -     @785 
+#         rsp_port            uvm_analysis_port       -     @800 
+#         seq_item_port       uvm_seq_item_pull_port  -     @792 
+#       s_sqr_h               slave_sequencer         -     @808 
+#         rsp_export          uvm_analysis_export     -     @815 
+#         seq_item_export     uvm_seq_item_pull_imp   -     @909 
+#         arbitration_queue   array                   0     -    
+#         lock_queue          array                   0     -    
+#         num_last_reqs       integral                32    'd1  
+#         num_last_rsps       integral                32    'd1  
+#       smon_proxy_h          slave_monitor_proxy     -     @917 
+#     vseqr                   virtual_sequencer       -     @528 
+#       m_seqr_h              master_sequencer        -     @936 
+#         rsp_export          uvm_analysis_export     -     @943 
+#         seq_item_export     uvm_seq_item_pull_imp   -     @1037
+#         arbitration_queue   array                   0     -    
+#         lock_queue          array                   0     -    
+#         num_last_reqs       integral                32    'd1  
+#         num_last_rsps       integral                32    'd1  
+#       rsp_export            uvm_analysis_export     -     @535 
+#       s_seqr_h              slave_sequencer         -     @1045
+#         rsp_export          uvm_analysis_export     -     @1052
+#         seq_item_export     uvm_seq_item_pull_imp   -     @1146
+#         arbitration_queue   array                   0     -    
+#         lock_queue          array                   0     -    
+#         num_last_reqs       integral                32    'd1  
+#         num_last_rsps       integral                32    'd1  
+#       seq_item_export       uvm_seq_item_pull_imp   -     @629 
+#       arbitration_queue     array                   0     -    
+#       lock_queue            array                   0     -    
+#       num_last_reqs         integral                32    'd1  
+#       num_last_rsps         integral                32    'd1  
+# ---------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hvl_top/slave/slave_monitor_proxy.sv(77) @ 0: uvm_test_top.env.slave_agent_h[0].smon_proxy_h [slave_monitor_proxy] Inside the slave_monitor_proxy
+# data_mosi=  0
+# WRITE__data_mosi=0
+#   0
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :    7
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [Questa UVM]     2
+# [RNTST]     1
+# [UVMTOP]     1
+# [slave_agent]     1
+# [slave_monitor_proxy]     1
+# [uvm_test_top.env]     1
+# ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 0 ns  Iteration: 215  Instance: /hvl_top
+# End time: 00:31:10 on Oct 26,2021, Elapsed time: 0:00:08
+# Errors: 0, Warnings: 27
