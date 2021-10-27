@@ -1,0 +1,30 @@
+U can debug the Assertions using ATV (Assertions Thread view) in Questasim.
+Add timescale in xbus_tb_top.sv file as follows
+`timescale 1ns/1ns
+
+1) Compile the file with +acc option
+vlog +acc -f compile_questa_sv.f
+
+2) Simulate xbus_tb_top with -assertdebug option
+vsim -assertdebug +OVM_TESTNAME=test_read_modify_write -suppress 3829 xbus_tb_top
+
+3) Add the signals log
+add log -r sim:/xbus_tb_top/*
+
+4) Add the require assertions to the Assertion Thread viewer (ATV).
+atv log -enable /xbus_tb_top/xi0/*
+
+5) Run the simulation
+run -all
+
+6) Now from Top menu open the assertion window as follows.
+view -> coverage -> assertions.
+
+7) At the end of window select any concurrent assertion(example: assertAddrUnknown) and right click and select view ATV.
+or
+Add the required assertion using following command.
+add atv /xbus_tb_top/xi0/assertAddrUnknown 135ns
+
+Now u can see the Assertion thread and allows easy debug.
+
+If u find any doubt go to the Questasim help and search for ATV
