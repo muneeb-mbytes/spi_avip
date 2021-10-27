@@ -66,7 +66,6 @@ function void slave_driver_proxy::build_phase(uvm_phase phase);
 
 endfunction : build_phase
 
-
 //--------------------------------------------------------------------------------------------
 // Function: connect_phase
 // Connects driver_proxy and driver_bfm
@@ -78,7 +77,6 @@ function void slave_driver_proxy::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 //  s_drv_bfm_h = sa_cfg_h.s_drv_bfm_h;
 endfunction : connect_phase
-
 
 //-------------------------------------------------------
 //Function: end_of_elaboration_phase
@@ -171,7 +169,8 @@ task slave_driver_proxy::drive_to_dut();
   end
 endtask : drive_to_dut
 
-  
+
+
 ////--------------------------------------------------------------------------------------------
 //// Task for driving miso0 signal for condition cpol==0,cpha==0
 ////--------------------------------------------------------------------------------------------
