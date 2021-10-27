@@ -65,7 +65,7 @@ function void env::build_phase(uvm_phase phase);
    `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
   end
 
-  master_agent_h=master_agent::type_id::create("master_agent",this);
+  master_agent_h=master_agent::type_id::create("master_agent_h",this);
 
   slave_agent_h = new[env_cfg_h.no_of_slaves];
   foreach(slave_agent_h[i]) begin
@@ -73,12 +73,12 @@ function void env::build_phase(uvm_phase phase);
   end
 
   if(env_cfg_h.has_virtual_seqr) begin
-    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr",this);
+    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
   end
   
 
   if(env_cfg_h.has_scoreboard) begin
-    scoreboard_h = spi_scoreboard::type_id::create("scoreboard",this);
+    scoreboard_h = spi_scoreboard::type_id::create("scoreboard_h",this);
   end
 endfunction : build_phase
 

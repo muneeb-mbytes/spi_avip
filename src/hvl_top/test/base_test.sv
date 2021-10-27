@@ -51,7 +51,7 @@ function void base_test::build_phase(uvm_phase phase);
   // Setup the environemnt cfg 
   setup_env_cfg();
   // Create the environment
-  env_h = env::type_id::create("env",this);
+  env_h = env::type_id::create("env_h",this);
 
 endfunction : build_phase
 //--------------------------------------------------------------------------------------------

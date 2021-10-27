@@ -14,7 +14,7 @@ class spi_simple_fd_8b_test extends base_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  vseq1_fd_8b_seq vseq1_fd_8b_h;
+  spi_fd_8b_virtual_seq spi_fd_8b_virtual_seq_h;
 
 
   //-------------------------------------------------------
@@ -50,12 +50,12 @@ endfunction : build_phase
 // Responsible for starting the transactions
 //--------------------------------------------------------------------------------------------
 task spi_simple_fd_8b_test::run_phase(uvm_phase phase);
-  vseq1_fd_8b_h = vseq1_fd_8b_seq::type_id::create("vseq1_fd_8b_h");
+  spi_fd_8b_virtual_seq_h = spi_fd_8b_virtual_seq::type_id::create("spi_fd_8b_virtual_seq_h");
 
   phase.raise_objection(this);
 
   //vseq1_fd_8b_h.start(env_h.vseqr);
-  vseq1_fd_8b_h.start(env_h.virtual_seqr_h); //added by the team 3
+  spi_fd_8b_virtual_seq_h.start(env_h.virtual_seqr_h); //added by the team 3
 
   phase.drop_objection(this);
 
