@@ -40,7 +40,7 @@ compile:
 # TODO 
 # Add the master HDL files when done
 simulate:
-	vsim -novopt work.hvl_top work.hdl_top -l ./logfiles_and_waveforms/spi_simulate.log -c -do "log -r /*; add ./logfiles_and_waveforms/wave -r /*; run -all;" \
+	vsim -novopt work.hvl_top work.hdl_top -l ./logfiles_and_waveforms/spi_simulate.log -c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf ./logfiles_and_waveforms/waveform.wlf
 	# To open the waveform use the below command 
 	# vsim -view waveform.wlf &
