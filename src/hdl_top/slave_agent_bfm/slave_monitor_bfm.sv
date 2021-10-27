@@ -7,19 +7,32 @@
 // to call the tasks and functions from monitor bfm to monitor proxy
 //--------------------------------------------------------------------------------------------
  
-interface slave_monitor_bfm (spi_if intf);
+interface slave_monitor_bfm ( sclk, cs, mosi0, mosi1, mosi2, mosi3, miso0, miso1, miso2, miso3);
+ 
+  input sclk;
+  input cs;
+  input mosi0;
+  input mosi1;
+  input mosi2;
+  input mosi3;
+  input miso0;
+  input miso1;
+  input miso2;
+  input miso3;
+  
   //variable DATA_WIDTH
   //DATA_WIDTH of data_mosi
-  parameter DATA_WIDTH=8;
-  
-  //-------------------------------------------------------
-  // Creating the handle for proxy driver
-  //-------------------------------------------------------
+  //parameter DATA_WIDTH=8;
+   
   import spi_slave_pkg::slave_monitor_proxy;
+  
+  //Variable : slave_monitor_proxy_h
+  // Creating the handle for proxy driver
   slave_monitor_proxy slave_mon_proxy_h;
 
   initial begin
     $display("Slave Monitor BFM");
+
   end
 
    //variable data_mosi

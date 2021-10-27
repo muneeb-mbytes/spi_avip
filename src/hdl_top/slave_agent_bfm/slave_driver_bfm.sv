@@ -5,20 +5,17 @@
 // Interface : slave_driver_bfm
 // Used as the HDL driver for SPI
 // It connects with the HVL driver_proxy for driving the stimulus
-//
-// Parameters:
-// intf - SPI Interface
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(spi_if intf);
+interface slave_driver_bfm(input sclk, cs, mosi0, mosi1, mosi2, mosi3, output miso0, miso1 ,
+  miso2, miso3 );
   
 
   import spi_slave_pkg::slave_driver_proxy;
 
-  parameter int DATA_WIDTH = 8;
+  //parameter int DATA_WIDTH = 8;
 
-  //-------------------------------------------------------
-  // Creating the handle for proxy driver
-  //-------------------------------------------------------
+  //Variable : slave_driver_proxy
+  //Creating the handle for proxy driver
   slave_driver_proxy slave_drv_proxy_h;
   
   initial begin

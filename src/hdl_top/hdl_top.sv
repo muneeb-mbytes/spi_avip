@@ -37,21 +37,18 @@ module hdl_top;
     repeat (2) @(posedge clk)
     rst = 1'b0;
   end
-
-  //-------------------------------------------------------
+  
+  // Variable : intf
   // SPI Interface Instantiation
-  //-------------------------------------------------------
   spi_if intf();
-
-  //-------------------------------------------------------
+  
+  // Variable : slave_agent_bfm_h
   // SPI Slave BFM Agent Instantiation
-  //-------------------------------------------------------
   slave_agent_bfm slave_agent_bfm_h(intf);
 
-  //--------------------------------------------------------------------------------------------
+  // Variable : master_agent_bfm_h
   //SPI Master BFM Agent Instantiation 
-  //--------------------------------------------------------------------------------------------
-  //master_agent_bfm master_agent_bfm_h(intf); 
+  master_agent_bfm master_agent_bfm_h(intf); 
 
 endmodule : hdl_top
 
