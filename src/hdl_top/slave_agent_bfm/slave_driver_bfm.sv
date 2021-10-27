@@ -15,10 +15,10 @@ interface slave_driver_bfm(sclk, cs, mosi0, mosi1, mosi2, mosi3, miso0, miso1 ,
   input mosi1;
   input mosi2;
   input mosi3;
-  output miso0;
-  output miso1;
-  output miso2;
-  output miso3;
+  output reg miso0;
+  output reg miso1;
+  output reg miso2;
+  output reg miso3;
   
 
   import spi_slave_pkg::slave_driver_proxy;
