@@ -96,13 +96,13 @@ function void env::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 
   if(env_cfg_h.has_virtual_seqr) begin
-  virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
-  foreach(slave_agent_h[i]) begin
-  virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
+    virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
+    foreach(slave_agent_h[i]) begin
+      virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
   
-  //will be used in future
-  //slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
-  end
+      //will be used in future
+      //slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
+    end
   end
 
   //connecting analysis port to analysis fifo
