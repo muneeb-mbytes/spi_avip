@@ -68,9 +68,9 @@ function void slave_monitor_proxy::build_phase(uvm_phase phase);
    end 
   //slave_analysis_port = new("slave_analysis_port",this);
 
-  if(!uvm_config_db#(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) begin
-    `uvm_fatal("FATAL_S_AGENT_CFG",$sformatf("Couldn't get S_AGENT_CFG in Slave_Monitor_proxy"));
-  end
+  // MSHA: if(!uvm_config_db#(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) begin
+  // MSHA:   `uvm_fatal("FATAL_S_AGENT_CFG",$sformatf("Couldn't get S_AGENT_CFG in Slave_Monitor_proxy"));
+  // MSHA: end
 
 endfunction : build_phase
 
@@ -185,7 +185,7 @@ endfunction : connect_phase
 // Used to connect the slave_monitor_proxy defined in slave_monitor_bfm
 //--------------------------------------------------------------------------------------------
 function void slave_monitor_proxy::end_of_elaboration_phase(uvm_phase phase);
-  s_mon_bfm_h.s_mon_proxy_h = this;
+  slave_mon_bfm_h.s_mon_proxy_h = this;
 endfunction : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
@@ -194,19 +194,19 @@ endfunction : end_of_elaboration_phase
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
-  `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",sa_cfg_h.spi_mode), UVM_LOW)
+  // MSHA: `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",sa_cfg_h.spi_mode), UVM_LOW)
   //case(sa_cfg_h.spi_mode)
-  //  2'b00 : forever begin s_mon_bfm_h.sample_cpol_0_cpha_0(); end
-  //  2'b01 : forever begin s_mon_bfm_h.sample_cpol_0_cpha_1(); end
-  //  2'b10 : forever begin s_mon_bfm_h.sample_cpol_1_cpha_0(); end
-  //  2'b11 : forever begin s_mon_bfm_h.sample_cpol_1_cpha_1(); end
+  //  2'b00 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+  //  2'b01 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_1(); end
+  //  2'b10 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_0(); end
+  //  2'b11 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_1(); end
   //endcase
 
   case(sa_cfg_h.spi_mode)
-    2'b00 : repeat(1) begin s_mon_bfm_h.sample_cpol_0_cpha_0(); end
-    2'b01 : repeat(1) begin s_mon_bfm_h.sample_cpol_0_cpha_0(); end 
-    2'b10 : repeat(1) begin s_mon_bfm_h.sample_cpol_0_cpha_0(); end
-    2'b11 : repeat(1) begin s_mon_bfm_h.sample_cpol_0_cpha_0(); end
+    2'b00 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+    2'b01 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end 
+    2'b10 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+    2'b11 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
   endcase
 
 endtask : run_phase 

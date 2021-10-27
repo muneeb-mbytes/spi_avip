@@ -99,7 +99,7 @@ endfunction : end_of_elaboration_phase
 //  Task: run_phase
 //  Tasks for driving data to dut from transaction
 //--------------------------------------------------------------------------------------------
-//task slave_driver_proxy::run_phase(uvm_phase phase);
+task slave_driver_proxy::run_phase(uvm_phase phase);
 
 
 //  bit cpol;
