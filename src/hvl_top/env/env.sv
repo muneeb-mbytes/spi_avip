@@ -9,6 +9,7 @@
 class env extends uvm_env;
   `uvm_component_utils(env)
   
+  int i;
   // Variable: env_cfg_h
   // Declaring environment configuration handle
   env_config env_cfg_h;
@@ -28,7 +29,12 @@ class env extends uvm_env;
   // Variable: master_agent_h
   // declaring master agent handle
   master_agent master_agent_h;
-//-------------------------------------------------------
+
+  slave_monitor_proxy slave_mon_proxy_h;
+ 
+  master_monitor_proxy master_mon_proxy_h;
+  
+  //-------------------------------------------------------
 // Externally defined Tasks and Functions
 //-------------------------------------------------------
   extern function new(string name = "env", uvm_component parent = null);
@@ -65,7 +71,7 @@ function void env::build_phase(uvm_phase phase);
    `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
   end
 
-  master_agent_h=master_agent::type_id::create("master_agent",this);
+  master_agent_h=master_agent::type_id::create("master_agent_h",this);
 
   slave_agent_h = new[env_cfg_h.no_of_slaves];
   foreach(slave_agent_h[i]) begin
@@ -73,12 +79,12 @@ function void env::build_phase(uvm_phase phase);
   end
 
   if(env_cfg_h.has_virtual_seqr) begin
-    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr",this);
+    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
   end
   
 
   if(env_cfg_h.has_scoreboard) begin
-    scoreboard_h = spi_scoreboard::type_id::create("scoreboard",this);
+    scoreboard_h = spi_scoreboard::type_id::create("scoreboard_h",this);
   end
 endfunction : build_phase
 
@@ -99,6 +105,11 @@ function void env::connect_phase(uvm_phase phase);
   virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
   end
   end
+
+  //connecting analysis port to analysis fifo
+  slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
+
+  master_agent_h.master_mon_proxy_h.master_analysis_port.connect(scoreboard_h.master_analysis_fifo.analysis_export);
 endfunction : connect_phase
 
 `endif

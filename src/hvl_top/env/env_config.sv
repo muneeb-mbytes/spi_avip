@@ -9,7 +9,7 @@ class env_config extends uvm_object;
   `uvm_object_utils(env_config)
   
   //int no_of_magent = 1;
-  //in no_of_sagent = 1;
+  //int no_of_sagent = 1;
 
   // Variable: has_scoreboard
   // Enables the scoreboard. Default value is 1
