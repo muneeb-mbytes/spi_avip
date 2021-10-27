@@ -1,5 +1,3 @@
-// `include "master_drv.sv"
-// `include "master_mon.sv"
 `ifndef MASTER_AGENT_BFM_INCLUDED_
 `define MASTER_AGENT_BFM_INCLUDED_
 
@@ -18,14 +16,17 @@ module master_agent_bfm(spi_if intf);
   //--------------------------------------------------------------------------------------------
   // Master Driver bfm instantiation
   //--------------------------------------------------------------------------------------------
-  master_driver_bfm master_drv_bfm_h (.sclk(intf.sclk),.cs(intf.cs),.mosi(intf.mosi),.miso(intf.miso));
+  master_driver_bfm master_drv_bfm_h (.sclk(intf.sclk),.cs(intf.cs),.mosi0(intf.mosi0),
+              .mosi1(intf.mosi1),.mosi2(intf.mosi2),.mosi3(intf.mosi3),.miso0(intf.miso0),
+              .miso1(intf.miso1),.miso2(intf.miso2),.miso3(intf.miso3));
  
    
   //--------------------------------------------------------------------------------------------
   // Master monitor  bfm instantiation
   //--------------------------------------------------------------------------------------------
-  master_monitor_bfm master_mon_bfm_h (.sclk(intf.sclk),.mosi(intf.mosi));
-
+  master_monitor_bfm master_mon_bfm_h (.sclk(intf.sclk),.cs(intf.cs),.mosi0(intf.mosi0),
+              .mosi1(intf.mosi1),.mosi2(intf.mosi2),.mosi3(intf.mosi3),.miso0(intf.miso0),
+              .miso1(intf.miso1),.miso2(intf.miso2),.miso3(intf.miso3));
   initial begin
     uvm_config_db#(virtual master_driver_bfm)::set(null,"*", "master_driver_bfm", master_drv_bfm_h); 
     uvm_config_db#(virtual master_monitor_bfm)::set(null,"*", "master_monitor_bfm", master_mon_bfm_h);

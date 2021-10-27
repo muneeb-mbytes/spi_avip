@@ -18,57 +18,60 @@ interface spi_if;
   
   //Variable: mosi
   //SPI Master Out Slave In signal
-  logic mosi;
+  //logic mosi;
 
   
   //Variable: miso
   //SPI Master In Slave Out signal
-  logic miso;
+  //logic miso;
   
-  //Team3 commented below lines because modports and 
-  //clocking blocks are not synthesizable
   //-------------------------------------------------------
   // Master Out Slave In signals
   //-------------------------------------------------------
+  
   // Variable: mosi0
   // Master-out slave-in 0
-  //logic mosi0;
+  logic mosi0;
 
-  //// Variable: mosi0
-  //// Master-out slave-in 1
-  //logic mosi1;
+  // Variable: mosi0
+  // Master-out slave-in 1
+  logic mosi1;
 
-  //// Variable: mosi0
-  //// Master-out slave-in 2
-  //logic mosi2;
+  // Variable: mosi0
+  // Master-out slave-in 2
+  logic mosi2;
 
-  //// Variable: mosi0
-  //// Master-out slave-in 3
-  //logic mosi3;
+  // Variable: mosi0
+  // Master-out slave-in 3
+  logic mosi3;
 
-  ////-------------------------------------------------------
-  //// Master In Slave Out signals
-  ////-------------------------------------------------------
-  //// Variable: miso0
-  //// Master-in slave-out 0
-  //logic miso0;
+  //-------------------------------------------------------
+  // Master In Slave Out signals
+  //-------------------------------------------------------
+  
+  // Variable: miso0
+  // Master-in slave-out 0
+  logic miso0;
 
-  //// Variable: miso0
-  //// Master-in slave-out 1
-  //logic miso1;
+  // Variable: miso0
+  // Master-in slave-out 1
+  logic miso1;
 
-  //// Variable: miso0
-  //// Master-in slave-out 2
-  //logic miso2;
+  // Variable: miso0
+  // Master-in slave-out 2
+  logic miso2;
 
-  //// Variable: miso0
-  //// Master-in slave-out 3
-  //logic miso3;
+  // Variable: miso0
+  // Master-in slave-out 3
+  logic miso3;
 
-  ////-------------------------------------------------------
-  //// Clocking : m_pos_drv_cb
-  //// Used for driving the MOSI signals at posedge of sclk
-  ////-------------------------------------------------------
+  //TEAM 3 commented below lines becasue modports 
+  //and clocking blocks are not synthesizable
+  
+  //-------------------------------------------------------
+  // Clocking : m_pos_drv_cb
+  // Used for driving the MOSI signals at posedge of sclk
+  //-------------------------------------------------------
   //clocking m_pos_drv_cb @(posedge sclk);
   //  // Input and output skews
   //  default input #1 output #0;

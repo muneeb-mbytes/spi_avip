@@ -5,14 +5,21 @@
 //Interface : master_driver_bfm
 //Used as the HDL driver for SPI
 //It connects with the HVL driver_proxy for driving the stimulus
-//
-//Parameters:
-//intf - SPI Interface
 //--------------------------------------------------------------------------------------------
 
-
-interface master_driver_bfm(spi_if intf);
+interface master_driver_bfm(sclk, cs, miso0, miso1, miso2, miso3, mosi0, mosi1, mosi2, mosi3 );
   
+  input sclk;
+  input cs;
+  input miso0;
+  input miso1;
+  input miso2;
+  input miso3;
+  output mosi0;
+  output mosi1;
+  output mosi2;
+  output mosi3;
+ 
   import spi_master_pkg::master_driver_proxy;
 
   //--------------------------------------------------------------------------------------------
@@ -20,9 +27,8 @@ interface master_driver_bfm(spi_if intf);
   //--------------------------------------------------------------------------------------------
   // virtual spi_if v_intf;
  
-  //--------------------------------------------------------------------------------------------
+  //Variable : master_driver_proxy_h
   //Creating the handle for proxy driver
-  //--------------------------------------------------------------------------------------------
   master_driver_proxy master_drv_proxy_h;
 
   initial begin

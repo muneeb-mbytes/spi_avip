@@ -1,13 +1,13 @@
-`ifndef SPI_FD_VSEQ_BASE_INCLUDED_
-`define SPI_FD_VSEQ_BASE_INCLUDED_
+`ifndef SPI_FD_VIRTUAL_SEQ_BASE_INCLUDED_
+`define SPI_FD_VIRTUAL_SEQ_BASE_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 //Class:SPI Virtual sequence
 // Description:
 // This class contains the handle of actual sequencer pointing towards them
 //--------------------------------------------------------------------------------------------
-class spi_fd_vseq_base extends uvm_sequence#(uvm_sequence_item);
-  `uvm_object_utils(spi_fd_vseq_base)
+class spi_fd_virtual_seq_base extends uvm_sequence#(uvm_sequence_item);
+  `uvm_object_utils(spi_fd_virtual_seq_base)
 
   //declaring virtual sequencer handle
   virtual_sequencer  virtual_seqr_h;
@@ -22,10 +22,10 @@ class spi_fd_vseq_base extends uvm_sequence#(uvm_sequence_item);
   //--------------------------------------------------------------------------------------------
   // Externally defined tasks and functions
   //--------------------------------------------------------------------------------------------
-  extern function new(string name="spi_fd_vseq_base");
+  extern function new(string name="spi_fd_virtual_seq_base");
   extern task body();
 
-endclass:spi_fd_vseq_base
+endclass:spi_fd_virtual_seq_base
 
 //--------------------------------------------------------------------------------------------
 //Constructor:new
@@ -35,7 +35,7 @@ endclass:spi_fd_vseq_base
 //parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
   
-function spi_fd_vseq_base::new(string name="spi_fd_vseq_base");
+function spi_fd_virtual_seq_base::new(string name="spi_fd_virtual_seq_base");
   super.new(name);
 endfunction:new
 
@@ -46,7 +46,7 @@ endfunction:new
 //Parameters:
 // phase - stores the current phase
 //--------------------------------------------------------------------------------------------
-task spi_fd_vseq_base::body();
+task spi_fd_virtual_seq_base::body();
   if(!uvm_config_db#(env_config) ::get(null,get_full_name(),"env_config",env_cfg_h)) begin
     `uvm_fatal("CONFIG","cannot get() env_cfg from uvm_config_db.Have you set() it?")
   end

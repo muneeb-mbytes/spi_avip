@@ -1,12 +1,12 @@
-`ifndef M_SPI_SEQ_PKG_INCLUDED
-`define M_SPI_SEQ_PKG_INCLUDED
+`ifndef SPI_MASTER_SEQ_PKG_INCLUDED
+`define SPI_MASTER_SEQ_PKG_INCLUDED
 
 //-----------------------------------------------------------------------------------------
 // Package: m_spi_seq
 // Description:
 // Includes all the files written to run the simulation
 //-------------------------------------------------------------------------------------------
-  package m_spi_seq_pkg;
+  package spi_master_seq_pkg;
 
 //-------------------------------------------------------
 // Import uvm package
@@ -19,10 +19,10 @@
 // Importing the required packages
 //-------------------------------------------------------
  `include "master_base_seq.sv"
- `include "m_spi_fd_8b_seq.sv"
- `include "m_spi_fd_16b_seq.sv"
+ `include "spi_fd_8b_master_seq.sv"
+ `include "spi_fd_16b_master_seq.sv"
 
-endpackage :m_spi_seq_pkg
+endpackage :spi_master_seq_pkg
 
 `endif
 
