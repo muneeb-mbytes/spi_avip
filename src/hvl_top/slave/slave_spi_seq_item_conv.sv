@@ -37,7 +37,7 @@ endfunction: from_class
 //--------------------------------------------------------------------------------------------
 function void slave_spi_seq_item_converter::to_class(output slave_tx output_conv_h,input spi_transfer_char_s input_conv_h);
   output_conv_h = new();
-//output_conv_h.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];
+  output_conv_h.master_out_slave_in = input_conv_h.master_out_slave_in;
   output_conv_h.master_in_slave_out = input_conv_h.master_in_slave_out;
 //output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
 endfunction : to_class
