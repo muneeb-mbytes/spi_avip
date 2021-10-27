@@ -7,36 +7,33 @@
 // Environment contains slave_agent_top and slave_virtual_sequencer
 //--------------------------------------------------------------------------------------------
 class env extends uvm_env;
-
-  //-------------------------------------------------------
-  // Factory registration to create uvm_method and override it
-  //-------------------------------------------------------
   `uvm_component_utils(env)
   
+  // Variable: env_cfg_h
+  // Declaring environment configuration handle
   env_config env_cfg_h;
-  //-------------------------------------------------------
-  // declaring master handles
-  //-------------------------------------------------------
-  master_agent master_agent_h;
-  //-------------------------------------------------------
+  
+  // Variable: scoreboard_h
   // declaring scoreboard handle
-  //-------------------------------------------------------
   spi_scoreboard scoreboard_h;
-  //-------------------------------------------------------
+  
+  // Variable: virtual_seqr_h
   // declaring handle for virtual sequencer
-  //-------------------------------------------------------
   virtual_sequencer virtual_seqr_h;
-  //-------------------------------------------------------
+  
+  // Variable: slave_agent_h
   // Declaring slave handles
-  //-------------------------------------------------------
   slave_agent slave_agent_h[];
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
+  // Variable: master_agent_h
+  // declaring master agent handle
+  master_agent master_agent_h;
+//-------------------------------------------------------
+// Externally defined Tasks and Functions
+//-------------------------------------------------------
   extern function new(string name = "env", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  //extern virtual function void connect_phase(uvm_phase phase);
+  extern virtual function void connect_phase(uvm_phase phase);
 
 endclass : env
 
@@ -44,8 +41,8 @@ endclass : env
 // Construct: new
 //
 // Parameters:
-//  name - env
-//  parent - parent under which this component is created
+// name - env
+// parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
 function env::new(string name = "env",uvm_component parent = null);
   super.new(name, parent);
@@ -54,10 +51,10 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
 // Description:
-//  Create required components
+// Create required components
 //
 // Parameters:
-//  phase - uvm phase
+// phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void env::build_phase(uvm_phase phase);
   super.build_phase(phase);
@@ -68,7 +65,7 @@ function void env::build_phase(uvm_phase phase);
    `uvm_fatal("FATAL_SA_AGENT_CONFIG", $sformatf("Couldn't get the slave_agent_config from config_db"))
   end
 
-  master_agent_h=master_agent::type_id::create("master_agent_h",this);
+  master_agent_h=master_agent::type_id::create("master_agent",this);
 
   slave_agent_h = new[env_cfg_h.no_of_slaves];
   foreach(slave_agent_h[i]) begin
@@ -76,33 +73,33 @@ function void env::build_phase(uvm_phase phase);
   end
 
   if(env_cfg_h.has_virtual_seqr) begin
-    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
+    virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr",this);
   end
   
 
   if(env_cfg_h.has_scoreboard) begin
-    scoreboard_h = spi_scoreboard::type_id::create("scoreboard_h",this);
+    scoreboard_h = spi_scoreboard::type_id::create("scoreboard",this);
   end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
 // Function: connect_phase
 // Description:
-//  To connect driver and sequencer
+// To connect driver and sequencer
 //
 // Parameters:
-//  phase - uvm phase
+// phase - uvm phase
 //--------------------------------------------------------------------------------------------
-//function void env::connect_phase(uvm_phase phase);
-//  super.connect_phase(phase);
-//
-//  if(env_cfg_h.has_virtual_seqr) begin
-//    virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
-//    foreach(slave_agent_h[i]) begin
-//      virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
-//    end
-//  end
-//endfunction : connect_phase
+function void env::connect_phase(uvm_phase phase);
+  super.connect_phase(phase);
+
+  if(env_cfg_h.has_virtual_seqr) begin
+  virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
+  foreach(slave_agent_h[i]) begin
+  virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
+  end
+  end
+endfunction : connect_phase
 
 `endif
 
