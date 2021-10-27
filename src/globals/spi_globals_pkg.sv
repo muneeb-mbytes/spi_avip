@@ -17,13 +17,13 @@ parameter int NO_OF_SLAVES = 1;
 //
 // Specifies the character length of the trasnfer
 
-parameter int char_length = 8;
+parameter int CHAR_LENGTH= 8;
 
 // Define: depth_arry
 //
 // Specifies the depth of an array
 
-parameter int depth_arry = 16;
+parameter int DEPTH_ARRY = 16;
 
 // Enum: shift_direction_e
 // 
@@ -77,11 +77,11 @@ typedef enum bit [2:0] {
 typedef struct {
   // mosi signals
   bit [NO_OF_SLAVES-1:0] cs;
-  bit [char_length-1:0] master_out_slave_in[depth_arry];
+  bit [CHAR_LENGTH-1:0] master_out_slave_in[DEPTH_ARRY];
   int no_of_mosi_bits_transfer;
   
   //miso signals
-  bit [char_length-1:0] master_in_slave_out[depth_arry];
+  bit [CHAR_LENGTH-1:0] master_in_slave_out[DEPTH_ARRY];
   int no_of_miso_bits_transfer;
 
 } spi_transfer_char_s;

@@ -54,7 +54,7 @@ function void env_config::do_print(uvm_printer printer);
   
   printer.print_field ("has_scoreboard",has_scoreboard,1, UVM_DEC);
   printer.print_field ("has_virtual_sqr",has_virtual_sqr,1, UVM_DEC);
-  printer.print_field ("no_of_slaves",no_of_slaves,2, UVM_HEX);
+  printer.print_field ("no_of_slaves",no_of_slaves,$bits(no_of_slaves), UVM_HEX);
 
   //commenting the lines because printing master and slave configuration in respective master
   //agent and slave agent classes

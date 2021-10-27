@@ -15,10 +15,10 @@ class master_tx extends uvm_sequence_item;
   `uvm_object_utils(master_tx)
 
   //input signals
-  rand bit [char_length-1:0]master_out_slave_in[$];
+  rand bit [CHAR_LENGTH-1:0]master_out_slave_in[];
   rand bit [NO_OF_SLAVES-1:0] cs;
 
-       bit [char_length-1:0] master_in_slave_out[$];
+       bit [CHAR_LENGTH-1:0] master_in_slave_out[$];
 
 //--------------------------------------------------------------------------------------------
 // Constraints for SPI

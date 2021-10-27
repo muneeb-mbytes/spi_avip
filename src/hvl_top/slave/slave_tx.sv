@@ -30,9 +30,9 @@ class slave_tx extends uvm_sequence_item;
   bit [7:0]data_master_in_slave_out;
   
   //input signals
-  rand bit [char_length-1:0]master_in_slave_out[$];
+  rand bit [CHAR_LENGTH-1:0]master_in_slave_out[];
 
-       bit [char_length-1:0] master_out_slave_in[$];
+       bit [CHAR_LENGTH-1:0] master_out_slave_in[$];
 
 //--------------------------------------------------------------------------------------------
 // Constraints for SPI
@@ -88,8 +88,8 @@ function bit  slave_tx::do_compare (uvm_object rhs,uvm_comparer comparer);
   slave_tx rhs_;
 
   if(!$cast(rhs_,rhs)) begin
-  `uvm_fatal("do_compare","cast of the rhs object failed")
-  return 0;
+    `uvm_fatal("do_compare","cast of the rhs object failed")
+     return 0;
   end
 
   return super.do_compare(rhs,comparer) &&
@@ -104,10 +104,10 @@ endfunction:do_compare
 //--------------------------------------------------------------------------------------------
 function void slave_tx::do_print(uvm_printer printer);
   super.do_print(printer);
-       foreach(master_in_slave_out[i])
-       printer.print_field($sformatf("master_in_slave_out[%0d]",i),this.master_in_slave_out[i],8,UVM_HEX);
-       foreach(master_out_slave_in[i])
-       printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
+  foreach(master_in_slave_out[i])
+  printer.print_field($sformatf("master_in_slave_out[%0d]",i),this.master_in_slave_out[i],8,UVM_HEX);
+  foreach(master_out_slave_in[i])
+   printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
 endfunction:do_print
 
 `endif
