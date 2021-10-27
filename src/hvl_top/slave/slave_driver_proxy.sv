@@ -25,10 +25,14 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   //-------------------------------------------------------
   extern function new(string name = "slave_driver_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
-  //extern virtual function void connect_phase(uvm_phase phase);
+  extern virtual function void connect_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_dut();;
+  extern virtual task drive_to_dut();
+  extern virtual task drive_cpol_0_cpha_0(bit [7:0] data);
+  extern virtual task drive_cpol_0_cpha_1(bit [7:0] data);
+  extern virtual task drive_cpol_1_cpha_0(bit [7:0] data);
+  extern virtual task drive_cpol_1_cpha_1(bit [7:0] data);
 
 endclass : slave_driver_proxy
 
@@ -53,15 +57,13 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-//  if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h))
-//		`uvm_fatal("CONFIG","cannot get() sa_cfg_h")
     
   if(!uvm_config_db #(virtual slave_driver_bfm)::get(this,"","slave_driver_bfm",s_drv_bfm_h))
-  	`uvm_fatal("CONFIG","cannot get() s_drv_bfm_h")
+  	`uvm_fatal("FATAL_SDP","Cannot get the handle s_drv_bfm_h")
 
 endfunction : build_phase
 
-/*
+
 //--------------------------------------------------------------------------------------------
 // Function: connect_phase
 // Connects driver_proxy and driver_bfm
@@ -73,7 +75,7 @@ function void slave_driver_proxy::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 //  s_drv_bfm_h = sa_cfg_h.s_drv_bfm_h;
 endfunction : connect_phase
-*/
+
 
 //-------------------------------------------------------
 //Function: end_of_elaboration_phase
@@ -110,13 +112,71 @@ task slave_driver_proxy::drive_to_dut();
 
     data = req.master_out_slave_in[i];
     
-    case ({tx.cpol,tx.cpha})
-      2'b00: s_drv_bfm_h.drive_cpol_0_cpha_0(data);
-      2'b01: s_drv_bfm_h.drive_cpol_0_cpha_1(data);
-      2'b10: s_drv_bfm_h.drive_cpol_1_cpha_0(data);
-      2'b11: s_drv_bfm_h.drive_cpol_1_cpha_1(data);
-    endcase
+    if(tx.cs == 1'b0) begin
+      case ({tx.cpol,tx.cpha})
+        2'b00: drive_cpol_0_cpha_0(data);
+        2'b01: drive_cpol_0_cpha_1(data);
+        2'b10: drive_cpol_1_cpha_0(data);
+        2'b11: drive_cpol_1_cpha_1(data);
+      endcase
+    end
   end
 endtask : drive_to_dut
 
+  
+//--------------------------------------------------------------------------------------------
+// Tasks for driving miso0 signal for 4 conditions of cpol and cpha
+//--------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------
+// Task for driving miso0 signal for condition cpol==0,cpha==0
+//--------------------------------------------------------------------------------------------
+
+task slave_driver_proxy::drive_cpol_0_cpha_0 (bit [7:0] data);
+  s_drv_bfm_h.drive_msb_first_pos_edge(data);
+  s_drv_bfm_h.drive_lsb_first_pos_edge(data);
+  s_drv_bfm_h.drive_msb_first_neg_edge(data);
+  s_drv_bfm_h.drive_lsb_first_neg_edge(data);
+
+  tx.miso0 <= data;
+endtask : drive_cpol_0_cpha_0
+
+//--------------------------------------------------------------------------------------------
+// Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==1
+//--------------------------------------------------------------------------------------------
+task slave_driver_proxy::drive_cpol_0_cpha_1 (bit [7:0] data);
+  s_drv_bfm_h.drive_msb_first_pos_edge(data);
+  s_drv_bfm_h.drive_lsb_first_pos_edge(data);
+  s_drv_bfm_h.drive_msb_first_neg_edge(data);
+  s_drv_bfm_h.drive_lsb_first_neg_edge(data);
+  
+  tx.miso0 <= data;
+endtask : drive_cpol_0_cpha_1
+
+//--------------------------------------------------------------------------------------------
+// Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
+//--------------------------------------------------------------------------------------------
+task slave_driver_proxy::drive_cpol_1_cpha_0 (bit [7:0] data);
+  s_drv_bfm_h.drive_msb_first_pos_edge(data);
+  s_drv_bfm_h.drive_lsb_first_pos_edge(data);
+  s_drv_bfm_h.drive_msb_first_neg_edge(data);
+  s_drv_bfm_h.drive_lsb_first_neg_edge(data);
+  
+  tx.miso0 <= data;
+endtask : drive_cpol_1_cpha_0
+
+//--------------------------------------------------------------------------------------------
+// Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
+//--------------------------------------------------------------------------------------------
+task slave_driver_proxy::drive_cpol_1_cpha_1 (bit [7:0] data);
+  s_drv_bfm_h.drive_msb_first_pos_edge(data);
+  s_drv_bfm_h.drive_lsb_first_pos_edge(data);
+  s_drv_bfm_h.drive_msb_first_neg_edge(data);
+  s_drv_bfm_h.drive_lsb_first_neg_edge(data);
+  
+  tx.miso0 <= data;
+endtask : drive_cpol_1_cpha_1
+
 `endif
+
+
