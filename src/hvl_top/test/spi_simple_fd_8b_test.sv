@@ -51,11 +51,9 @@ endfunction : build_phase
 //--------------------------------------------------------------------------------------------
 task spi_simple_fd_8b_test::run_phase(uvm_phase phase);
   vseq1_fd_8b_h = vseq1_fd_8b_seq::type_id::create("vseq1_fd_8b_h");
-
   phase.raise_objection(this);
-
   vseq1_fd_8b_h.start(env_h.v_seqr_h);
-
+  vseq1_fd_8b_h.m_spi_fd_8b_h.req.print(); 
   phase.drop_objection(this);
 endtask : run_phase
 

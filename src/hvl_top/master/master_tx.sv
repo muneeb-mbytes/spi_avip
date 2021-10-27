@@ -91,9 +91,9 @@ function void master_tx::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field( "cs", cs , 2,UVM_DEC);
   foreach(master_out_slave_in[i])
-    printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
-    foreach(master_in_slave_out[i])
-      printer.print_field($sformatf("master_in_slave_out[%0d]",i),this.master_in_slave_out[i],8,UVM_HEX);
+  printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
+  foreach(master_in_slave_out[i])
+  printer.print_field($sformatf("master_in_slave_out[%0d]",i),this.master_in_slave_out[i],8,UVM_HEX);
 endfunction : do_print
 
 `endif

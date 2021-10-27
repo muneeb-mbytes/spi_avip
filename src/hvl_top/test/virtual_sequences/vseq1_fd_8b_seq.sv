@@ -46,7 +46,10 @@ task vseq1_fd_8b_seq::body();
    //crearions master and slave sequence handles here  
    m_spi_fd_8b_h=m_spi_fd_8b_seq::type_id::create("m_spi_fd_8b_h");
    s_spi_fd_8b_h=s_spi_fd_8b_seq::type_id::create("s_spi_fd_8b_h");
+
+   m_spi_fd_8b_h.req.print();
   
+ 
    //configuring no of masters and starting master sequencers
 
   fork 

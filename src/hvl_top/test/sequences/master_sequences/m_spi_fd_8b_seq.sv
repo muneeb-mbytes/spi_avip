@@ -11,6 +11,8 @@ class m_spi_fd_8b_seq extends master_base_seq;
   //and override in future if necessary 
   `uvm_object_utils(m_spi_fd_8b_seq)
 
+  // master_tx req;
+
   //---------------------------------------------
   // Externally defined tasks and functions
   //---------------------------------------------
@@ -44,6 +46,7 @@ task m_spi_fd_8b_seq::body();
   if(!req.randomize () with { master_out_slave_in.size()==1;
                               });
   `uvm_fatal(get_type_name,"Randomization failed")
+  req.print();
   finish_item(req);
   end
 endtask:body
