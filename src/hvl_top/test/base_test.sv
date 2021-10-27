@@ -78,7 +78,7 @@ function void base_test::setup_env_cfg();
   setup_slave_agents_cfg();
 
   uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
-
+  e_cfg_h.print();
  endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ function void base_test::setup_master_agent_cfg();
   e_cfg_h.ma_cfg_h.secondary_prescalar  = 0;
 
   uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",e_cfg_h.ma_cfg_h);
-
+  e_cfg_h.ma_cfg_h.print();
 endfunction: setup_master_agent_cfg
 
 //--------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ function void base_test::setup_slave_agents_cfg();
     uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
                                              "slave_agent_config", e_cfg_h.sa_cfg_h[i]);
   end
-
+   //e_cfg_h.sa_cfg_h[i].print();
 endfunction: setup_slave_agents_cfg
 
 //--------------------------------------------------------------------------------------------

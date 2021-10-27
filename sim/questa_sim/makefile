@@ -43,3 +43,5 @@ simulate:
 
 clean:
 	rm -rf work/ transcript waveform.wlf
+	rm -rf spi_compile.log
+	rm -rf spi_simulate.log

@@ -8,9 +8,13 @@
 //--------------------------------------------------------------------------------------------
 class spi_fd_vseq_base extends uvm_sequence#(uvm_sequence_item);
   `uvm_object_utils(spi_fd_vseq_base)
-
+  //p sequencer macro declaration 
+  `uvm_declare_p_sequencer(virtual_sequencer)
+  
+  //TO_DO commenting the lines because of p_sequencer macro declaration of virtual seqeuncer
+  
   //declaring virtual sequencer handle
-  virtual_sequencer  v_seqr_h;
+  //virtual_sequencer  v_seqr_h;
 
   //--------------------------------------------------------------------------------------------
   // declaring handles for master and slave sequencer and environment config
@@ -55,16 +59,18 @@ task spi_fd_vseq_base::body();
   //and slave sequencer in slave agent
   // MSHA: m_seqr_h=new[e_cfg_h.no_of_magent];
   // MSHA: s_seqr_h=new[e_cfg_h.no_of_sagent];
-                
-  if(!$cast(v_seqr_h,m_sequencer))begin
+
+  //dynamic casting of p_sequncer and m_sequencer
+  if(!$cast(p_sequencer,m_sequencer))begin
       `uvm_error(get_full_name(),"Virtual sequencer pointer cast failed")
      end
             
-  //connecting master sequenver and slave sequencer in env to
-  //master sequencer and slave sequencer in virtual sequencer
+  //connecting master sequencer and slave sequencer present in p_sequencer to
+  // local master sequencer and slave sequencer 
 
-  m_seqr_h=v_seqr_h.m_seqr_h;
-  s_seqr_h=v_seqr_h.s_seqr_h;
+  m_seqr_h=p_sequencer.m_seqr_h;
+  s_seqr_h=p_sequencer.s_seqr_h;
 
 endtask:body
+
 `endif

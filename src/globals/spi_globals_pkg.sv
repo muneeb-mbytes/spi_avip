@@ -13,6 +13,18 @@ package spi_globals_pkg;
 
 parameter int NO_OF_SLAVES = 1;
 
+// Define: char_length
+//
+// Specifies the character length of the trasnfer
+
+parameter int char_length = 8;
+
+// Define: depth_arry
+//
+// Specifies the depth of an array
+
+parameter int depth_arry = 16;
+
 // Enum: shift_direction_e
 // 
 // Specifies the shift direction
@@ -60,9 +72,15 @@ typedef enum bit [2:0] {
 // master_out_slave_in: queue which holds the mosi seq_item transactions
 // master_in_slave_out: queue which holds the miso seq_item transactions
 typedef struct {
-  bit [7:0] master_out_slave_in[$:16];
-  bit [7:0] master_in_slave_out[$:16];
-  int no_of_bits_transfer;
+  // mosi signals
+  bit [NO_OF_SLAVES-1:0] cs;
+  bit [char_length-1:0] master_out_slave_in[depth_arry];
+  int no_of_mosi_bits_transfer;
+  
+  //miso signals
+  bit [char_length-1:0] master_in_slave_out[depth_arry];
+  int no_of_miso_bits_transfer;
+
 } spi_transfer_char_s;
 
 endpackage: spi_globals_pkg
