@@ -51,8 +51,9 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void master_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  if(!uvm_config_db #(virtual master_driver_bfm)::get(this,"","master_driver_bfm",master_drv_bfm_h)
-    `uvm_fatal("FATAL_MDP_CANNOT_GET_MASTER_DRIVER_BFM","cannot get() master_drv_bfm_h")
+  if(!uvm_config_db #(virtual master_driver_bfm)::get(this,"","master_driver_bfm",master_drv_bfm_h)) begin
+    `uvm_fatal("FATAL_MDP_CANNOT_GET_MASTER_DRIVER_BFM","cannot get() master_drv_bfm_h");
+  end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
