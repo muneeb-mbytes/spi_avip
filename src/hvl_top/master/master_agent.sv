@@ -3,7 +3,8 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: master_agent
-// This agent has sequencer,driver_proxy and monitor_proxy for SPI
+// This agent is a configurable with respect to configuration which can create active and passive components
+// It contains testbench components like sequencer,driver_proxy and monitor_proxy for SPI
 //--------------------------------------------------------------------------------------------
 class master_agent extends uvm_agent;
   `uvm_component_utils(master_agent)
@@ -24,37 +25,37 @@ class master_agent extends uvm_agent;
   //Declaring a handle for master monitor proxy 
   master_monitor_proxy master_mon_proxy_h;
     
-//-------------------------------------------------------
-// Externally defined Tasks and Functions
-//-------------------------------------------------------
+  //-------------------------------------------------------
+  // Externally defined Tasks and Functions
+  //-------------------------------------------------------
   extern function new(string name = "master_agent", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
-  //extern virtual function void connect_phase(uvm_phase phase);
+  extern virtual function void connect_phase(uvm_phase phase);
 endclass : master_agent
 
 //--------------------------------------------------------------------------------------------
-//Construct: new
+//  Construct: new
 //
-//Parameters:
-//name - instance name of the master_agent
-//parent - parent under which this component is created
+//  Parameters:
+//  name - instance name of the master_agent
+//  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
 function master_agent::new(string name="master_agent", uvm_component parent);
   super.new(name,parent);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// Function: build_phase
-// Creates the required ports, gets the required configuration from confif_db
+//  Function: build_phase
+//  Creates the required ports, gets the required configuration from confif_db
 //
-// Parameters:
+//  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void master_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
   if(!uvm_config_db #(master_agent_config)::get(this,"","master_agent_config",master_agent_cfg_h)) begin
-    `uvm_fatal("FATAL_MASTER_CFG_NOT_FOUND_CONFIG_DB","cannot get master_agent_cfg_h from uvm_config_db");
+    `uvm_fatal("FATAL_MA_CANNOT_GET_MASTER_AGENT_CONFIG","cannot get master_agent_cfg_h from uvm_config_db");
   end
 
   // Print the values of the master_agent_config
@@ -70,24 +71,23 @@ function void master_agent::build_phase(uvm_phase phase);
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
-// Function: connect_phase 
-// Connecting master driver, master monitor and master sequencer for configuration
+//  Function: connect_phase 
+//  Connecting master driver, master monitor and master sequencer for configuration
 //
-// Parameters:
+//  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-/*function void master_agent::connect_phase(uvm_phase phase);
+function void master_agent::connect_phase(uvm_phase phase);
   if(master_agent_cfg_h.is_active == UVM_ACTIVE) begin
-  
     master_drv_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
     master_seqr_h.master_agent_cfg_h = master_agent_cfg_h;
     //Connecting the ports
-    master_drv_proxy_h.seq_item_port.connect(master_seqr_h.seq_item_export);
+    //master_drv_proxy_h.seq_item_port.connect(master_seqr_h.seq_item_export);
   end
-
+  
   master_mon_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
 
 endfunction: connect_phase
-*/
+
 `endif
 

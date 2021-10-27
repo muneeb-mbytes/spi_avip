@@ -4,13 +4,13 @@
 `define cs_length 2
 `define DW 2**`SIZE
 `define SIZE 3
- //--------------------------------------------------------------------------------------------
- // Class: master_tx.
- // Description of the class.
- // This class holds the data items required to drive stimulus to dut
- // and also holds methods that manipulatethose data items
- //--------------------------------------------------------------------------------------------
- class master_tx extends uvm_sequence_item;
+//--------------------------------------------------------------------------------------------
+// Class: master_tx.
+// Description of the class.
+// This class holds the data items required to drive stimulus to dut
+// and also holds methods that manipulatethose data items
+//--------------------------------------------------------------------------------------------
+class master_tx extends uvm_sequence_item;
   
   //register with factory so we can override with uvm method in future if necessary.
 
@@ -20,13 +20,13 @@
   rand bit [`DW-1:0]master_out_slave_in[$];
   rand bit [`cs_length-1:0] cs;
 
-       bit [`DW-1:0] master_in_slave_out[$];
+  bit [`DW-1:0] master_in_slave_out[$];
 
-//--------------------------------------------------------------------------------------------
-// Constraints for SPI
-//--------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------
+  // Constraints for SPI
+  //--------------------------------------------------------------------------------------------
 
-constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
+  constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -34,20 +34,19 @@ constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
   extern function new(string name = "master_tx");
   extern function void do_copy(uvm_object rhs);
   extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
- 
   extern function void do_print(uvm_printer printer);
- endclass : master_tx
+endclass : master_tx
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
-// initializes the class object
+//  Construct: new
+//  initializes the class object
 //
-// Parameters:
+//  Parameters:
 //  name - master_tx
 //--------------------------------------------------------------------------------------------
-  function master_tx::new(string name = "master_tx");
-    super.new(name);
-  endfunction : new
+function master_tx::new(string name = "master_tx");
+  super.new(name);
+endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // do_copy method
@@ -75,7 +74,7 @@ function bit  master_tx::do_compare (uvm_object rhs,uvm_comparer comparer);
   master_tx rhs_;
 
   if(!$cast(rhs_,rhs)) begin
-  `uvm_fatal("do_compare","cast of the rhs object failed")
+  `uvm_fatal("FATAL_MASTER_TX_DO_COMPARE_FAILED","cast of the rhs object failed")
   return 0;
   end
 

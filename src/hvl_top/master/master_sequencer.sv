@@ -2,7 +2,7 @@
 `define MASTER_SEQUENCER_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: master_sequencer
+//  Class: master_sequencer
 //--------------------------------------------------------------------------------------------
 class master_sequencer extends uvm_sequencer #(master_tx);
   `uvm_component_utils(master_sequencer)
