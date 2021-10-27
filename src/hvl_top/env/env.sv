@@ -9,7 +9,6 @@
 class env extends uvm_env;
   `uvm_component_utils(env)
   
-  int i;
   // Variable: env_cfg_h
   // Declaring environment configuration handle
   env_config env_cfg_h;
@@ -30,13 +29,10 @@ class env extends uvm_env;
   // declaring master agent handle
   master_agent master_agent_h;
 
-  slave_monitor_proxy slave_mon_proxy_h;
- 
-  master_monitor_proxy master_mon_proxy_h;
   
   //-------------------------------------------------------
-// Externally defined Tasks and Functions
-//-------------------------------------------------------
+  // Externally defined Tasks and Functions
+  //-------------------------------------------------------
   extern function new(string name = "env", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
@@ -103,11 +99,15 @@ function void env::connect_phase(uvm_phase phase);
   virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
   foreach(slave_agent_h[i]) begin
   virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
+  
+  //will be used in future
+  //slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
   end
   end
 
   //connecting analysis port to analysis fifo
-  slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
+  
+  slave_agent_h[0].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
 
   master_agent_h.master_mon_proxy_h.master_analysis_port.connect(scoreboard_h.master_analysis_fifo.analysis_export);
 endfunction : connect_phase

@@ -102,17 +102,29 @@ endfunction : connect_phase
 endtask : run_phase*/
 
 //--------------------------------------------------------------------------------------------
+// Function: check_phase
+// Display the result of simulation
+//
+// Parameters:
+// phase - uvm phase
+//--------------------------------------------------------------------------------------------
+//function void spi_scoreboard::check_phase(uvm_phase phase);
+//  super.check_phase(phase);
+//  `uvm_info("scoreboard",$sformatf("")  
+//endfunction : check_phase
+
+//--------------------------------------------------------------------------------------------
 // Function: report_phase
 // Display the result of simulation
 //
 // Parameters:
-//  phase - uvm phase
+// phase - uvm phase
 //--------------------------------------------------------------------------------------------
-/*function void spi_scoreboard::report_phase(uvm_phase phase);
-  //super.report_phase(phase);
-  `uvm_info("scoreboard",$sformatf(" )
+//function void spi_scoreboard::report_phase(uvm_phase phase);
+//  super.report_phase(phase);
+//  `uvm_info("scoreboard",$sformatf("")
   
-endfunction : report_phase
-*/
+//endfunction : report_phase
+
 `endif
 
