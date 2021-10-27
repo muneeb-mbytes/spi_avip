@@ -82,7 +82,7 @@ function void master_agent::connect_phase(uvm_phase phase);
     master_drv_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
     master_seqr_h.master_agent_cfg_h = master_agent_cfg_h;
     //Connecting the ports
-    //master_drv_proxy_h.seq_item_port.connect(master_seqr_h.seq_item_export);
+    master_drv_proxy_h.seq_item_port.connect(master_seqr_h.seq_item_export);
   end
   
   master_mon_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
