@@ -20,7 +20,7 @@ module slave_agent_bfm(spi_if intf);
 
   // Variable: is_active
   // Used for creating the agent in either passive or active mode
-  uvm_active_passive_enum is_active;  
+  //uvm_active_passive_enum is_active;  
 
   //-------------------------------------------------------
   // Slave driver bfm instantiation
@@ -57,13 +57,13 @@ module slave_agent_bfm(spi_if intf);
   initial begin
 //  if (SLAVE_AGENT_ACTIVE == 1'b1) begin
 //    slave_agent_bfm_h.is_active = UVM_ACTIVE;
-    if(slave_agent_bfm_h.is_active == UVM_ACTIVE) 
+    //if(slave_agent_bfm_h.is_active == UVM_ACTIVE) 
       uvm_config_db #(virtual slave_driver_bfm)::set(null,"*", "slave_driver_bfm", s_drv_bfm_h); 
 //    end
 
 //  else if (SLAVE_AGENT_ACTIVE == 1'b0) begin
 //    slave_agent_bfm_h.is_active = UVM_PASSIVE;
-    else if(slave_agent_bfm_h.is_active == UVM_PASSIVE)
+    //else if(slave_agent_bfm_h.is_active == UVM_PASSIVE)
       uvm_config_db #(virtual slave_monitor_bfm)::set(null,"*", "slave_monitor_bfm", slave_monitor_bfm_h); 
 //    end
   end
