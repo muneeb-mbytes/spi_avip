@@ -19,9 +19,9 @@ class spi_fd_vseq_base extends uvm_sequence#(uvm_sequence_item);
   //--------------------------------------------------------------------------------------------
   // declaring handles for master and slave sequencer and environment config
   //--------------------------------------------------------------------------------------------
-  master_sequencer  m_seqr_h;
-  slave_sequencer   s_seqr_h;
-  env_config e_cfg_h;
+  master_sequencer  master_seqr_h;
+  slave_sequencer   slave_seqr_h;
+  env_config env_cfg_h;
 
   //--------------------------------------------------------------------------------------------
   // Externally defined tasks and functions
@@ -51,7 +51,7 @@ endfunction:new
 // phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 task spi_fd_vseq_base::body();
-  if(!uvm_config_db#(env_config) ::get(null,get_full_name(),"env_config",e_cfg_h)) begin
+  if(!uvm_config_db#(env_config) ::get(null,get_full_name(),"env_config",env_cfg_h)) begin
     `uvm_fatal("CONFIG","cannot get() e_cfg from uvm_config_db.Have you set() it?")
   end
 
@@ -62,14 +62,13 @@ task spi_fd_vseq_base::body();
 
   //dynamic casting of p_sequncer and m_sequencer
   if(!$cast(p_sequencer,m_sequencer))begin
-      `uvm_error(get_full_name(),"Virtual sequencer pointer cast failed")
-     end
+    `uvm_error(get_full_name(),"Virtual sequencer pointer cast failed")
+  end
             
   //connecting master sequencer and slave sequencer present in p_sequencer to
   // local master sequencer and slave sequencer 
-
-  m_seqr_h=p_sequencer.m_seqr_h;
-  s_seqr_h=p_sequencer.s_seqr_h;
+  master_seqr_h=p_sequencer.master_seqr_h;
+  slave_seqr_h=p_sequencer.slave_seqr_h;
 
 endtask:body
 
