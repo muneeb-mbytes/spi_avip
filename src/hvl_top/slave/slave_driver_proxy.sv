@@ -2,21 +2,19 @@
 `define SLAVE_DRIVER_PROXY_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: slave_driver_proxy
-// This is the proxy driver on the HVL side
-// It receives the transactions and converts them to task calls for the HDL driver
+//  Class: slave_driver_proxy
+//  This is the proxy driver on the HVL side
+//  It receives the transactions and converts them to task calls for the HDL driver
 //--------------------------------------------------------------------------------------------
 class slave_driver_proxy extends uvm_driver#(slave_tx);
   `uvm_component_utils(slave_driver_proxy)
-
   slave_tx tx;
 
-  //-------------------------------------------------------
-  // Creating the handle for driver bfm
-  //-------------------------------------------------------
+  // Variable: slave_driver_bfm_h;
+  // Handle for slave driver bfm
   virtual slave_driver_bfm slave_drv_bfm_h;
 
-  // Variable: sa_cfg_h;
+  // Variable: slave_agent_cfg_h;
   // Handle for slave agent configuration
   slave_agent_config slave_agent_cfg_h;
 
@@ -32,10 +30,10 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
 endclass : slave_driver_proxy
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
+//  Construct: new
 //  Initializes memory for new object
 //
-// Parameters:
+//  Parameters:
 //  name - slave_driver_proxy
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
@@ -44,29 +42,29 @@ function slave_driver_proxy::new(string name = "slave_driver_proxy", uvm_compone
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// Function: build_phase
-//   Slave_driver_bfm congiguration is obtained in build phase
+//  Function: build_phase
+//  Slave_driver_bfm congiguration is obtained in build phase
 //
-// Parameters:
+//  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
 //  if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h))
 //		`uvm_fatal("CONFIG","cannot get() sa_cfg_h")
-    
+//		if(!uvm_config_db #(virtual slave_driver_bfm)::get(this,"","slave_driver_bfm",slave_drv_bfm_h))
+  		
   if(!uvm_config_db #(virtual slave_driver_bfm)::get(this,"","slave_driver_bfm",slave_drv_bfm_h))
-  	`uvm_fatal("CONFIG","cannot get() slave_drv_bfm_h")
-
-  slave_drv_bfm_h.slave_drv_proxy_h = this;
+  	`uvm_fatal("FATAL_SDP_CANNOT_GET_SLAVE_DRIVER_BFM","cannot get() slave_drv_bfm_h")
+    //slave_drv_bfm_h.slave_drv_proxy_h = this;
 endfunction : build_phase
 
 
 //--------------------------------------------------------------------------------------------
-// Function: connect_phase
-// Connects driver_proxy and driver_bfm
+//  Function: connect_phase
+//  Connects driver_proxy and driver_bfm
 //
-// Parameters:
+//  Parameters:
 //  phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 function void slave_driver_proxy::connect_phase(uvm_phase phase);
@@ -76,8 +74,8 @@ endfunction : connect_phase
 
 
 //--------------------------------------------------------------------------------------------
-// Task: run_phase
-//   Tasks for driving data to dut from transaction
+//  Task: run_phase
+//  Tasks for driving data to dut from transaction
 //--------------------------------------------------------------------------------------------
 //task slave_driver_proxy::run_phase(uvm_phase phase);
 

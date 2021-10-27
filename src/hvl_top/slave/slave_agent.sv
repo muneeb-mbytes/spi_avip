@@ -2,8 +2,8 @@
 `define SLAVE_AGENT_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: slave_agent
-// This agent has sequencer, driver_proxy, monitor_proxy for SPI  
+//  Class: slave_agent
+//  This agent has sequencer, driver_proxy, monitor_proxy for SPI  
 //--------------------------------------------------------------------------------------------
 class slave_agent extends uvm_agent;
   `uvm_component_utils(slave_agent)
@@ -29,14 +29,14 @@ class slave_agent extends uvm_agent;
   //-------------------------------------------------------
   extern function new(string name = "slave_agent", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
-  //extern virtual function void connect_phase(uvm_phase phase);
+  extern virtual function void connect_phase(uvm_phase phase);
 
 endclass : slave_agent
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
+//  Construct: new
 //
-// Parameters:
+//  Parameters:
 //  name - instance name of the  slave_agent
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
@@ -45,10 +45,10 @@ function slave_agent::new(string name = "slave_agent", uvm_component parent);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// Function: build_phase
-// Creates the required ports, gets the required configuration from config_db
+//  Function: build_phase
+//  Creates the required ports, gets the required configuration from config_db
 //
-// Parameters:
+//  Parameters:
 //  phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 function void slave_agent::build_phase(uvm_phase phase);
@@ -68,16 +68,17 @@ function void slave_agent::build_phase(uvm_phase phase);
    end
 
    slave_mon_proxy_h = slave_monitor_proxy::type_id::create("slave_mon_proxy_h",this);
+
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
-// Function: connect_phase 
-// <Description_here>
+//  Function: connect_phase 
+//  <Description_here>
 //
-// Parameters:
+//  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-/*function void slave_agent::connect_phase(uvm_phase phase);
+function void slave_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   
   if(slave_agent_cfg_h.is_active == UVM_ACTIVE) begin
@@ -91,5 +92,5 @@ endfunction : build_phase
   slave_mon_proxy_h.slave_agent_cfg_h = slave_agent_cfg_h;
 
 endfunction: connect_phase
-*/
+
 `endif
