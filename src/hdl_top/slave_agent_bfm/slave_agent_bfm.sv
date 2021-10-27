@@ -18,8 +18,10 @@ module slave_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   import spi_globals_pkg::*;
 
+  // Variable: is_active
+  // Used for creating the agent in either passive or active mode
+  uvm_active_passive_enum is_active;  
 
-  if (SLAVE_DRIVER_ACTIVE == 1) begin
   //-------------------------------------------------------
   // Slave driver bfm instantiation
   //-------------------------------------------------------
@@ -34,8 +36,6 @@ module slave_agent_bfm(spi_if intf);
                                 .miso2(intf.miso2),
                                 .miso3(intf.miso3)
                               );
-  end
-
 
   //-------------------------------------------------------
   // Slave monitor bfm instantiation
@@ -51,20 +51,25 @@ module slave_agent_bfm(spi_if intf);
                                          .miso2(intf.miso2),
                                          .miso3(intf.miso3)
                                        );
-
   //-------------------------------------------------------
   // Setting Slave_driver_bfm and monitor_bfm
   //-------------------------------------------------------
   initial begin
-    if (SLAVE_DRIVER_ACTIVE == 1) begin
-    uvm_config_db#(virtual slave_driver_bfm)::set(null,"*", "slave_driver_bfm", s_drv_bfm_h); 
-  end
-    uvm_config_db#(virtual slave_monitor_bfm)::set(null,"*", "slave_monitor_bfm", slave_monitor_bfm_h); 
+//  if (SLAVE_AGENT_ACTIVE == 1'b1) begin
+//    slave_agent_bfm_h.is_active = UVM_ACTIVE;
+    if(slave_agent_bfm_h.is_active == UVM_ACTIVE) 
+      uvm_config_db #(virtual slave_driver_bfm)::set(null,"*", "slave_driver_bfm", s_drv_bfm_h); 
+//    end
+
+//  else if (SLAVE_AGENT_ACTIVE == 1'b0) begin
+//    slave_agent_bfm_h.is_active = UVM_PASSIVE;
+    else if(slave_agent_bfm_h.is_active == UVM_PASSIVE)
+      uvm_config_db #(virtual slave_monitor_bfm)::set(null,"*", "slave_monitor_bfm", slave_monitor_bfm_h); 
+//    end
   end
 
   initial begin
     $display("Slave Agent BFM");
-    $display("Slave_driver_active=%0d", SLAVE_DRIVER_ACTIVE);
   end
 
 endmodule : slave_agent_bfm
