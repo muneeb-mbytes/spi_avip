@@ -7,9 +7,19 @@
 //It connects with the HVL driver_proxy for driving the stimulus
 //--------------------------------------------------------------------------------------------
 
-interface master_driver_bfm(input sclk, cs, miso0, miso1, miso2, miso3, output mosi0,
-  mosi1, mosi2, mosi3 );
+interface master_driver_bfm(sclk, cs, miso0, miso1, miso2, miso3, mosi0, mosi1, mosi2, mosi3 );
   
+  input sclk;
+  input cs;
+  input miso0;
+  input miso1;
+  input miso2;
+  input miso3;
+  output mosi0;
+  output mosi1;
+  output mosi2;
+  output mosi3;
+ 
   import spi_master_pkg::master_driver_proxy;
 
   //--------------------------------------------------------------------------------------------

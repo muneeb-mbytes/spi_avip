@@ -6,8 +6,19 @@
 // Used as the HDL driver for SPI
 // It connects with the HVL driver_proxy for driving the stimulus
 //--------------------------------------------------------------------------------------------
-interface slave_driver_bfm(input sclk, cs, mosi0, mosi1, mosi2, mosi3, output miso0, miso1 ,
+interface slave_driver_bfm(sclk, cs, mosi0, mosi1, mosi2, mosi3, miso0, miso1 ,
   miso2, miso3 );
+
+  input sclk;
+  input cs;
+  input mosi0;
+  input mosi1;
+  input mosi2;
+  input mosi3;
+  output miso0;
+  output miso1;
+  output miso2;
+  output miso3;
   
 
   import spi_slave_pkg::slave_driver_proxy;
