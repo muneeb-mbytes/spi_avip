@@ -37,7 +37,7 @@ task mon_msb_first_pos();
   data_miso[count]=miso0;
   count++;
 end
- // s_mon_proxy_h.read(data_mosi,data_miso,count);
+s_mon_proxy_h.read(data_mosi,data_miso,count);
 
 endtask : mon_msb_first_pos
 
@@ -59,7 +59,7 @@ task mon_msb_first_neg();
   data_miso[count]=miso0;
   count++;
 end
-  //s_mon_proxy_h.read(data_mosi,data_miso,count);
+s_mon_proxy_h.read(data_mosi,data_miso,count);
   
 
 endtask : mon_msb_first_neg
@@ -83,7 +83,7 @@ task mon_lsb_first_pos();
   data_miso[count]=miso0;
   count++;
 end
-  //s_mon_proxy_h.read(data_mosi,data_miso,count); 
+s_mon_proxy_h.read(data_mosi,data_miso,count); 
 
 endtask : mon_lsb_first_pos
 
@@ -106,7 +106,7 @@ task mon_lsb_first_neg();
   data_miso[count]=miso0;
   count++;
 end
-//  s_mon_proxy_h.read(data_mosi,data_miso,count); 
+s_mon_proxy_h.read(data_mosi,data_miso,count); 
   
 endtask : mon_lsb_first_neg
 
