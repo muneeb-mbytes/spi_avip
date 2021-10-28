@@ -25,6 +25,7 @@ class base_test extends uvm_test;
   extern virtual function void setup_master_agent_cfg();
   extern virtual function void setup_slave_agents_cfg();
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
+  extern virtual task run_phase(uvm_phase phase);
 
 endclass : base_test
 
@@ -133,5 +134,28 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
 endfunction : end_of_elaboration_phase
 
+//--------------------------------------------------------------------------------------------
+// Task: run_phase
+// Used for giving basic delay for simulation 
+//
+// Parameters:
+//  phase - uvm phase
+//--------------------------------------------------------------------------------------------
+task base_test::run_phase(uvm_phase phase);
+
+  phase.raise_objection(this, "base_test");
+
+  `uvm_info(get_type_name(), $sformatf("Inside BASE_TEST"), UVM_NONE);
+  super.run_phase(phase);
+
+  // TODO(mshariff): 
+  // Need to be replaced with delay task in BFM interface
+  // in-order to get rid of time delays in HVL side
+  #100;
+  
+  `uvm_info(get_type_name(), $sformatf("Done BASE_TEST"), UVM_NONE);
+  phase.drop_objection(this);
+
+endtask : run_phase
 `endif
 
