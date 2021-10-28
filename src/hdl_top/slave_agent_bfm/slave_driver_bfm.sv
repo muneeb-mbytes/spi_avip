@@ -46,7 +46,7 @@ interface slave_driver_bfm(input sclk, cs, mosi0, mosi1, mosi2, mosi3,
   // LSB is driven first for pos edge
   //-------------------------------------------------------
   task drive_lsb_first_pos_edge (input bit[7:0] data);
-    @(negedge sclk);
+    @(posedge sclk);
 
     for(int i=0; i < DATA_WIDTH; i++) begin
       miso0 <= data[i];
