@@ -28,7 +28,9 @@ class master_driver_proxy extends uvm_driver#(master_tx);
   extern virtual function void connect_phase(uvm_phase phase);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
-  // extern virtual task run_phase(uvm_phase phase);
+  extern virtual task run_phase(uvm_phase phase);
+  extern virtual task drive_to_bfm(req);
+  extern virtual function reset_detected();
 
 endclass : master_driver_proxy
 
@@ -65,7 +67,6 @@ endfunction : build_phase
 //--------------------------------------------------------------------------------------------
 function void master_driver_proxy::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  //  master_drv_bfm_h = master_agent_cfg_h.master_drv_bfm_h;
 endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
@@ -91,21 +92,112 @@ endfunction : connect_phase
 //endfunction : start_of_simulation_phase
 
 //--------------------------------------------------------------------------------------------
-//  Task: run_phase
-//  <Description_here>
+// Task: run_phase
+// Gets the sequence_item, converts them to struct compatible transactions
+// and sends them to the BFM to drive the data over the interface
 //
-//  Parameters:
+// Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-//task master_driver_proxy::run_phase(uvm_phase phase);
+task master_driver_proxy::run_phase(uvm_phase phase);
+  bit cpol, cpha;
 
-//  phase.raise_objection(this, "master_driver_proxy");
+  super.run_phase(phase);
 
-//  super.run_phase(phase);
+  // TODO(mshariff): Decide one among this
+  // $cast(cpol_cpha, master_agent_cfg_h.spi_mode);
+  {cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
 
-//  phase.drop_objection(this);
+  // Wait for system reset
+  master_drv_bfm_h.wait_for_reset(cpol);
 
-//endtask : run_phase
+  // Wait for IDLE state on SPI interface
+  master_drv_bfm_h.wait_for_idle_state();
+
+  // Driving logic
+  forever begin
+    spi_transfer_char_s struc_packet;
+
+    seq_item_port.get_next_item(req);
+
+    master_spi_seq_item_converter::from_class(req, struc_packet); 
+    drive_to_bfm(struc_packet);
+    master_spi_seq_item_converter::to_class(struc_packet, req); 
+
+    seq_item_port.item_done();
+  end
+endtask : run_phase
+
+//--------------------------------------------------------------------------------------------
+// Task: drive_to_bfm
+// This task converts the transcation data packet to struct type and send
+// it to the master_driver_bfm
+//--------------------------------------------------------------------------------------------
+task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
+
+  case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
+    {CPOL0_CPHA0,MSB_FIRST}: master_drv_bfm_h.drive_msb_first_pos_edge(packet);
+
+      // MSHA:if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
+      // MSHA:  master_drv_bfm_h.drive_msb_first_pos_edge(data);
+      // MSHA:  master_drv_bfm_h.drive_msb_first_neg_edge(data);
+      // MSHA:end
+      // MSHA:
+      // MSHA:else if (master_agent_cfg_h.shift_dir == LSB_FIRST) begin
+      // MSHA:  master_drv_bfm_h.drive_lsb_first_pos_edge(data);
+      // MSHA:  master_drv_bfm_h.drive_lsb_first_neg_edge(data);
+      // MSHA:end
+
+    // MSHA:CPOL0_CPHA1:
+    // MSHA:  if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_msb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_msb_first_neg_edge(data);
+    // MSHA:  end
+    // MSHA:  
+    // MSHA:  else if (master_agent_cfg_h.shift_dir == LSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_neg_edge(data);
+    // MSHA:  end
+
+    // MSHA:CPOL1_CPHA0:
+    // MSHA:  if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_msb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_msb_first_neg_edge(data);
+    // MSHA:  end
+    // MSHA:  
+    // MSHA:  else if (master_agent_cfg_h.shift_dir == LSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_neg_edge(data);
+    // MSHA:  end
+
+    // MSHA:CPOL1_CPHA1:
+    // MSHA:  if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_msb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_msb_first_neg_edge(data);
+    // MSHA:  end
+    // MSHA:  
+    // MSHA:  else if (master_agent_cfg_h.shift_dir == LSB_FIRST) begin
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_pos_edge(data);
+    // MSHA:    master_drv_bfm_h.drive_lsb_first_neg_edge(data);
+    // MSHA:  end
+
+//   CPOL0_CPHA0: drive_cpol_0_cpha_0(data);
+//   CPOL0_CPHA1: drive_cpol_0_cpha_1(data);
+//   CPOL1_CPHA0: drive_cpol_1_cpha_0(data);
+//   CPOL1_CPHA1: drive_cpol_1_cpha_1(data);
+  endcase
+
+endtask: drive_to_bfm
+
+//--------------------------------------------------------------------------------------------
+// Function reset_detected
+// This task detect the system reset appliction
+//--------------------------------------------------------------------------------------------
+function master_driver_proxy::reset_detected();
+  `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
+
+  // TODO(mshariff): 
+  // Clear the data queues and kill the required threads
+endfunction: reset_detected
 
 `endif
-

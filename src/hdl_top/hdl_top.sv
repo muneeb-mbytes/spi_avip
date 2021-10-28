@@ -26,21 +26,31 @@ module hdl_top;
   //-------------------------------------------------------
   initial begin
     clk = 1'b0;
-    forever #40 clk = ~clk;
+    forever #10 clk = ~clk;
   end
 
   //-------------------------------------------------------
   // System Reset Generation
+  // Active low reset
   //-------------------------------------------------------
   initial begin
     rst = 1'b1;
-    repeat (2) @(posedge clk)
+
+    repeat (2) begin
+      @(posedge clk);
+    end
     rst = 1'b0;
+
+    repeat (2) begin
+      @(posedge clk);
+    end
+    rst = 1'b1;
   end
   
   // Variable : intf
   // SPI Interface Instantiation
-  spi_if intf();
+  spi_if intf(.pclk(clk),
+              .areset(rst));
   
   // Variable : slave_agent_bfm_h
   // SPI Slave BFM Agent Instantiation

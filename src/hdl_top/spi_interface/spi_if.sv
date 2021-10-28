@@ -5,7 +5,7 @@
 // Interface : spi_if
 // Declaration of pin level signals for SPI interface
 //--------------------------------------------------------------------------------------------
-interface spi_if;
+interface spi_if(input pclk, input areset);
 
   // Variable: sclk
   // SPI clock signal
