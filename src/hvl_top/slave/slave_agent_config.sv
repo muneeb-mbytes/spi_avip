@@ -10,7 +10,7 @@ class slave_agent_config extends uvm_object;
 
   // Variable: is_active
   // Used for creating the agent in either passive or active mode
-  uvm_active_passive_enum is_active=UVM_ACTIVE;  
+  uvm_active_passive_enum is_active;  
 
   // Variable: slave_id
   // Used for indicating the ID of this slave
