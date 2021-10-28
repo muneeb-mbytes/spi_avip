@@ -15,7 +15,7 @@ parameter int NO_OF_SLAVES = 1;
   
 parameter int DATA_WIDTH = 8;
 
-//parameter SLAVE_DRIVER_ACTIVE = 0;
+parameter SLAVE_DRIVER_ACTIVE = 0;
 
 // Enum: shift_direction_e
 // 
