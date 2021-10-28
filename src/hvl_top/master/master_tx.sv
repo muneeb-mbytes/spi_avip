@@ -90,7 +90,7 @@ endfunction:do_compare
 //--------------------------------------------------------------------------------------------
 function void master_tx::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field( "cs", cs , 2,UVM_DEC);
+  printer.print_field( "cs", cs , 2,UVM_BIN);
   foreach(master_out_slave_in[i]) begin
     printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
   end
