@@ -7,11 +7,12 @@
 // converts them into transaction items
 //--------------------------------------------------------------------------------------------
 class slave_monitor_proxy extends uvm_monitor;
-
-  //Parameter : Data length
-  //Data length of Data_MOSI
-  parameter DATA_LENGTH = 8;
   
+  //-------------------------------------------------------
+  // Package : Importing SPI Global Package 
+  //-------------------------------------------------------
+//  import spi_globals_pkg::*;
+
   `uvm_component_utils(slave_monitor_proxy)
   //Declaring Monitor Analysis Import
   uvm_analysis_port #(slave_tx) slave_analysis_port;
@@ -19,13 +20,6 @@ class slave_monitor_proxy extends uvm_monitor;
   //Declaring Virtual Monitor BFM Handle
   virtual slave_monitor_bfm slave_mon_bfm_h;
     
-  //Signal : MOSI Data-Input
-  bit [DATA_LENGTH-1:0]data_mosi;
-
-  //Queue : data_mosi_q
-  //Sets of Data_mosi data
-  bit [DATA_LENGTH-1:0]data_mosi_q[$];
-  
   // Variable: slave_agent_cfg_h;
   // Handle for slave agent configuration
   slave_agent_config slave_agent_cfg_h;
@@ -65,15 +59,14 @@ function void slave_monitor_proxy::build_phase(uvm_phase phase);
 
   if(!uvm_config_db#(virtual slave_monitor_bfm)::get(this,"","slave_monitor_bfm",slave_mon_bfm_h)) begin
      `uvm_fatal("FATAL_SMP_MON_BFM",$sformatf("Couldn't get S_MON_BFM in Slave_Monitor_proxy"));  
-   end 
+  end 
   //slave_analysis_port = new("slave_analysis_port",this);
 
-  // MSHA: if(!uvm_config_db#(slave_agent_config)::get(this,"","slave_agent_config",sa_cfg_h)) begin
+  // MSHA: if(!uvm_config_db#(slave_agent_config)::get(this,"","slave_agent_config",slave_agent_cfg_h)) begin
   // MSHA:   `uvm_fatal("FATAL_S_AGENT_CFG",$sformatf("Couldn't get S_AGENT_CFG in Slave_Monitor_proxy"));
   // MSHA: end
 
 endfunction : build_phase
-
 
 
 //--------------------------------------------------------------------------------------------
@@ -166,7 +159,7 @@ endfunction : connect_phase
 ////// Task : Write
 ////// Captures the 8 bit MOSI data sampled.
 //////-------------------------------------------------------
-//task slave_monitor_proxy::write(bit [DATA_LENGTH-1:0]data);
+//task slave_monitor_proxy::write(bit [DATA_WIDTH-1:0]data);
 //
 //  data_mosi = data;
 //  $display("WRITE__data_mosi=%0d",data_mosi);
@@ -185,7 +178,7 @@ endfunction : connect_phase
 // Used to connect the slave_monitor_proxy defined in slave_monitor_bfm
 //--------------------------------------------------------------------------------------------
 function void slave_monitor_proxy::end_of_elaboration_phase(uvm_phase phase);
-  slave_mon_bfm_h.s_mon_proxy_h = this;
+  slave_mon_bfm_h.slave_monitor_proxy_h = this;
 endfunction : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
@@ -194,15 +187,15 @@ endfunction : end_of_elaboration_phase
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
-  // MSHA: `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",sa_cfg_h.spi_mode), UVM_LOW)
-  //case(sa_cfg_h.spi_mode)
+  // MSHA: `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",slave_agent_cfg_h.spi_mode), UVM_LOW)
+  //case(slave_agent_cfg_h.spi_mode)
   //  2'b00 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
   //  2'b01 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_1(); end
   //  2'b10 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_0(); end
   //  2'b11 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_1(); end
   //endcase
 
-  case(sa_cfg_h.spi_mode)
+  case(slave_agent_cfg_h.spi_mode)
     2'b00 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
     2'b01 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end 
     2'b10 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
