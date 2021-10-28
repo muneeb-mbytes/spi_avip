@@ -41,7 +41,7 @@ interface master_driver_bfm(input pclk, input areset,
   task wait_for_reset(bit cpol);
     @(negedge areset);
     
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_NONE);
+  //  `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_NONE)
 
     @(posedge pclk);
     sclk <= cpol;
@@ -64,7 +64,7 @@ interface master_driver_bfm(input pclk, input areset,
     while (cs !== 1'b1)
       @(negedge pclk);
 
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("IDLE condition has been detected"), UVM_NONE);
+  //  `uvm_info("MASTER_DRIVER_BFM", $sformatf("IDLE condition has been detected"), UVM_NONE);
   endtask: wait_for_idle_state
  
   //-------------------------------------------------------
@@ -84,16 +84,17 @@ interface master_driver_bfm(input pclk, input areset,
    
     // Driving CS, SCLK and MOSI
     // and sampling MISO
-    for(int i=0; i<data_packet.no_of_mosi_bits; i++) begin
+    for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
       @(posedge pclk);
       sclk <= ~sclk;
       // For simple SPI
       // MSHA: mosi0 <= data_packet.data[B0];
-      mosi0 <= data_packet.data[i];
-
+      // mosi0 <= data_packet.data[i];
+         mosi0 <= data_packet.master_out_slave_in[i];
       @(posedge pclk);
       sclk <= ~sclk;
-      data_packet.miso[i] = miso0;
+      //data_packet.miso[i] = miso0;
+      data_packet.master_in_slave_out[i] = miso0;
     end
 
     // Generate T2C delay

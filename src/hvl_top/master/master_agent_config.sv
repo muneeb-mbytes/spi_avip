@@ -50,6 +50,7 @@ class master_agent_config extends uvm_object;
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "master_agent_config");
+  extern function void do_print(uvm_printer printer);
 endclass : master_agent_config
 
 //--------------------------------------------------------------------------------------------
@@ -61,6 +62,25 @@ endclass : master_agent_config
 function master_agent_config::new(string name = "master_agent_config");
   super.new(name);
 endfunction : new
+
+//--------------------------------------------------------------------------------------------
+// Function: do_print method
+// Print method can be added to display the data members values
+//--------------------------------------------------------------------------------------------
+function void master_agent_config::do_print(uvm_printer printer);
+  super.do_print(printer);
+
+
+  printer.print_field ("is_active",is_active,1, UVM_DEC);
+  printer.print_field ("no_of_slaves",no_of_slaves,$bits(no_of_slaves), UVM_DEC);
+  printer.print_field ("spi_mode",spi_mode, 2, UVM_ENUM);
+  printer.print_field ("shift_dir",shift_dir, 1, UVM_ENUM);
+  printer.print_field ("c2tdelay",c2tdelay, 1, UVM_DEC);
+  printer.print_field ("t2cdelay",t2cdelay, 1, UVM_DEC);
+  printer.print_field ("primary_prescalar",primary_prescalar, 3, UVM_DEC);
+  printer.print_field ("secondary_prescalar",secondary_prescalar, 3, UVM_HEX);
+  
+endfunction : do_print
 
 `endif
 

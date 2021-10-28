@@ -8,8 +8,8 @@
 class slave_sequencer extends uvm_sequencer#(slave_tx);
   `uvm_component_utils(slave_sequencer)
   
-  // Variable: slave_agent_cfg_h;
-  // Handle for slave agent configuration
+    // Variable: slave_agent_cfg_h;
+    // Handle for slave agent configuration
      slave_agent_config slave_agent_cfg_h;
 
      //-------------------------------------------------------

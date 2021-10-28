@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------------------------
 // Class: env
 // Description:
-// Environment contains slave_agent_top and slave_virtual_sequencer
+// Environment contains slave_agent_top,master_agent_top and virtual_sequencer
 //--------------------------------------------------------------------------------------------
 class env extends uvm_env;
   `uvm_component_utils(env)
@@ -77,7 +77,6 @@ function void env::build_phase(uvm_phase phase);
   if(env_cfg_h.has_virtual_seqr) begin
     virtual_seqr_h = virtual_sequencer::type_id::create("virtual_seqr_h",this);
   end
-  
 
   if(env_cfg_h.has_scoreboard) begin
     scoreboard_h = spi_scoreboard::type_id::create("scoreboard_h",this);
@@ -99,9 +98,6 @@ function void env::connect_phase(uvm_phase phase);
     virtual_seqr_h.master_seqr_h = master_agent_h.master_seqr_h;
     foreach(slave_agent_h[i]) begin
       virtual_seqr_h.slave_seqr_h = slave_agent_h[i].slave_seqr_h;
-  
-      //will be used in future
-      //slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
     end
   end
 
