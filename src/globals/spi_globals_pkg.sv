@@ -12,6 +12,10 @@ package spi_globals_pkg;
 // Specifies the number of slaves connected over the SPI interface
 
 parameter int NO_OF_SLAVES = 1;
+  
+parameter int DATA_WIDTH = 8;
+
+//parameter SLAVE_DRIVER_ACTIVE = 0;
 
 // Enum: shift_direction_e
 // 

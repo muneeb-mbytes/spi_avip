@@ -66,7 +66,8 @@ function void slave_agent::build_phase(uvm_phase phase);
      s_drv_proxy_h = slave_driver_proxy::type_id::create("s_drv_proxy_h",this);
      s_sqr_h=slave_sequencer::type_id::create("s_sqr_h",this);
    end
-
+    
+  //else if(sa_cfg_h.is_active == UVM_PASSIVE)
    smon_proxy_h = slave_monitor_proxy::type_id::create("smon_proxy_h",this);
 endfunction : build_phase
 
