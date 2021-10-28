@@ -43,7 +43,7 @@ endfunction: new
 task vseq1_fd_8b_seq::body();
  super.body(); //Sets up the sub-sequencer pointer
 
-   //crearions master and slave sequence handles here  
+   //crearions master and slave sequence handles here
    m_spi_fd_8b_h=m_spi_fd_8b_seq::type_id::create("m_spi_fd_8b_h");
    s_spi_fd_8b_h=s_spi_fd_8b_seq::type_id::create("s_spi_fd_8b_h");
 
@@ -65,7 +65,7 @@ task vseq1_fd_8b_seq::body();
       // MSHA:end
 
       //starting master sequencer with respective to p_sequencer declared in virtual seq base
-      m_spi_fd_8b_h.start(p_sequencer.m_seqr_h);
+      m_spi_fd_8b_h.start(p_sequencer.master_seqr_h);
     end
 
     begin : SLAVE_SEQ_START
@@ -83,7 +83,7 @@ task vseq1_fd_8b_seq::body();
       // MSHA: end
 
       //starting slave sequencer with respective to p_sequencer declared in virtual seq base
-      s_spi_fd_8b_h.start(p_sequencer.s_seqr_h);
+      s_spi_fd_8b_h.start(p_sequencer.slave_seqr_h);
     end
   join
 
