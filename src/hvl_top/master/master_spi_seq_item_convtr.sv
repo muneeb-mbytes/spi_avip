@@ -1,5 +1,5 @@
-`ifndef MASTER_SPI_SEQ_ITEM_INCLUDED_
-`define MASTER_SPI_SEQ_ITEM_INCLUDED_
+`ifndef MASTER_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
+`define MASTER_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
 //--------------------------------------------------------------------------------------------
 // class : master_spi_seq_item_converter
 // Description:
@@ -40,7 +40,7 @@ function void master_spi_seq_item_converter::to_class(output master_tx output_co
   output_conv_h = new();
   output_conv_h.master_out_slave_in = input_conv_h.master_out_slave_in;
   output_conv_h.cs = input_conv_h.cs;
-  //output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
+  output_conv_h.master_in_slave_out = input_conv_h.master_in_slave_out;
   //output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
 endfunction: to_class
 

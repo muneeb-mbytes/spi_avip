@@ -69,8 +69,11 @@ typedef enum bit [2:0] {
 
 // struct: spi_transfer_char_s
 //
-// master_out_slave_in: queue which holds the mosi seq_item transactions
-// master_in_slave_out: queue which holds the miso seq_item transactions
+// master_out_slave_in: array which holds the mosi seq_item transactions
+// master_in_slave_out: array which holds the miso seq_item transactions
+// cs : chip select
+// no_of_mosi_bits_transfer: specifies how many mosi bits to trasnfer 
+// no_of_miso_bits_transfer: specifies how many miso bits to trasnfer 
 typedef struct {
   // mosi signals
   bit [NO_OF_SLAVES-1:0] cs;

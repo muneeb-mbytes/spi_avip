@@ -130,8 +130,8 @@ function void base_test::setup_slave_agents_cfg();
 
     uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
                                              "slave_agent_config", e_cfg_h.sa_cfg_h[i]);
+   e_cfg_h.sa_cfg_h[i].print();
   end
-   //e_cfg_h.sa_cfg_h[i].print();
 endfunction: setup_slave_agents_cfg
 
 //--------------------------------------------------------------------------------------------
