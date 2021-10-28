@@ -21,8 +21,8 @@ package test_pkg;
   import spi_master_pkg::*;
   import spi_slave_pkg::*;
   import spi_env_pkg::*;
-  import m_spi_seq_pkg::*;
-  import s_spi_seq_pkg::*;
+  import spi_master_seq_pkg::*;
+  import spi_slave_seq_pkg::*;
   import spi_virtual_seq_pkg::*;
 
  //including base_test for testing

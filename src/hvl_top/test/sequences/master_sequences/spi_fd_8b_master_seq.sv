@@ -1,25 +1,25 @@
-`ifndef M_SPI_FD_8B_SEQ_INCLUDED_
-`define M_SPI_FD_8B_SEQ_INCLUDED_
+`ifndef SPI_FD_8B_MASTER_SEQ_INCLUDED_
+`define SPI_FD_8B_MASTER_SEQ_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // class: extended class from base class
 //--------------------------------------------------------------------------------------------
-class m_spi_fd_8b_seq extends master_base_seq;
+class spi_fd_8b_master_seq extends master_base_seq;
 
   
   //register with factory so can use create uvm_method 
   //and override in future if necessary 
-  `uvm_object_utils(m_spi_fd_8b_seq)
+  `uvm_object_utils(spi_fd_8b_master_seq)
 
   //---------------------------------------------
   // Externally defined tasks and functions
   //---------------------------------------------
 
-  extern function new (string name="m_spi_fd_8b_seq");
+  extern function new (string name="spi_fd_8b_master_seq");
 
   extern virtual task body();
 
-endclass:m_spi_fd_8b_seq
+endclass:spi_fd_8b_master_seq
 
 //-----------------------------------------------------------------------------
 // Constructor: new
@@ -29,7 +29,7 @@ endclass:m_spi_fd_8b_seq
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
 
-function m_spi_fd_8b_seq::new(string name="m_spi_fd_8b_seq");
+function spi_fd_8b_master_seq::new(string name="spi_fd_8b_master_seq");
   super.new(name);
 endfunction:new
 
@@ -37,7 +37,7 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task m_spi_fd_8b_seq::body(); 
+task spi_fd_8b_master_seq::body(); 
   req=master_tx::type_id::create("req");
   repeat(2) begin
   start_item(req);

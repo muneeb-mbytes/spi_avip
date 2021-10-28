@@ -2,10 +2,11 @@
 `define SLAVE_AGENT_CONFIG_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: slave_agent_config
-// Used as the configuration class for slave agent and it's components
+//  Class: slave_agent_config
+//  Used as the configuration class for slave agent and it's components
 //--------------------------------------------------------------------------------------------
 class slave_agent_config extends uvm_object;
+  
   `uvm_object_utils(slave_agent_config)
 
   // Variable: is_active
@@ -31,9 +32,9 @@ class slave_agent_config extends uvm_object;
 endclass : slave_agent_config
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
+//  Construct: new
 //
-// Parameters:
+//  Parameters:
 //  name - slave_agent_config
 //--------------------------------------------------------------------------------------------
 function slave_agent_config::new(string name = "slave_agent_config");

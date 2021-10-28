@@ -3,7 +3,8 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: master_agent_config
-// Used as the configuration class for master agent and it's components
+// Used as the configuration class for master agent, for configuring number of slaves and number
+// of active passive agents to be created
 //--------------------------------------------------------------------------------------------
 class master_agent_config extends uvm_object;
   `uvm_object_utils(master_agent_config)
