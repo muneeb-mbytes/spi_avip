@@ -29,7 +29,7 @@ class master_driver_proxy extends uvm_driver#(master_tx);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(req);
+  extern virtual task drive_to_bfm(spi_transfer_char_s packet);
   extern virtual function reset_detected();
 
 endclass : master_driver_proxy

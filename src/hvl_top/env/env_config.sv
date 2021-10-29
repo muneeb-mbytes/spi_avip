@@ -35,6 +35,7 @@ class env_config extends uvm_object;
 // Externally defined Tasks and Functions
 //-------------------------------------------------------
   extern function new(string name = "env_config");
+  extern function void do_print(uvm_printer printer);
 
 endclass : env_config
 
@@ -47,6 +48,25 @@ endclass : env_config
 function env_config::new(string name = "env_config");
   super.new(name);
 endfunction : new
+
+//--------------------------------------------------------------------------------------------
+// Function: do_print method
+// Print method can be added to display the data members values
+//--------------------------------------------------------------------------------------------
+function void env_config::do_print(uvm_printer printer);
+  super.do_print(printer);
+  
+  printer.print_field ("has_scoreboard",has_scoreboard,1, UVM_DEC);
+  printer.print_field ("has_virtual_sqr",has_virtual_seqr,1, UVM_DEC);
+  printer.print_field ("no_of_slaves",no_of_slaves,$bits(no_of_slaves), UVM_HEX);
+
+  //commenting the lines because printing master and slave configuration in respective master
+  //agent and slave agent classes
+
+  //printer.print_field ("ma_cfg_h",ma_cfg_h,1,UVM_HEX);
+  //foreach(sa_cfg_h[i])
+  //printer.print_field($sformatf("sa_cfg_h[%0d]",i),this.sa_cfg_h[i],8,UVM_HEX);
+endfunction : do_print
 
 `endif
 

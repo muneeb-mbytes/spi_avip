@@ -47,6 +47,9 @@ task spi_fd_8b_virtual_seq::body();
    spi_fd_8b_master_seq_h=spi_fd_8b_master_seq::type_id::create("spi_fd_8b_master_seq_h");
    spi_fd_8b_slave_seq_h=spi_fd_8b_slave_seq::type_id::create("spi_fd_8b_slave_seq_h");
 
+   spi_fd_8b_master_seq_h.req.print();
+  
+ 
    //configuring no of masters and starting master sequencers
 
   fork 
@@ -61,8 +64,8 @@ task spi_fd_8b_virtual_seq::body();
       // MSHA:  end
       // MSHA:end
 
-      //starting master sequencer
-      spi_fd_8b_master_seq_h.start(master_seqr_h);
+      //starting master sequencer with respective to p_sequencer declared in virtual seq base
+      spi_fd_8b_master_seq_h.start(p_sequencer.master_seqr_h);
     end
 
     begin : SLAVE_SEQ_START
@@ -79,8 +82,8 @@ task spi_fd_8b_virtual_seq::body();
       // MSHA:   end
       // MSHA: end
 
-      //starting slave sequencer
-      spi_fd_8b_slave_seq_h.start(slave_seqr_h);
+      //starting slave sequencer with respective to p_sequencer declared in virtual seq base
+      spi_fd_8b_slave_seq_h.start(p_sequencer.slave_seqr_h);
     end
   join
 

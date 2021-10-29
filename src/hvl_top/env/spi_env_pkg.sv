@@ -3,10 +3,10 @@
 
 //--------------------------------------------------------------------------------------------
 // Package: spi_env_pkg
-//  Includes all the files related to SPI env
+// Includes all the files related to SPI env
 //--------------------------------------------------------------------------------------------
 package spi_env_pkg;
-
+  
   // Import uvm package
   `include "uvm_macros.svh"
   import uvm_pkg::*;

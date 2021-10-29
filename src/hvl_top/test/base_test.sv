@@ -72,8 +72,8 @@ function void base_test::setup_env_cfg();
   setup_slave_agents_cfg();
 
   uvm_config_db #(env_config)::set(this,"*","env_config",env_cfg_h);
-
-endfunction: setup_env_cfg
+  env_cfg_h.print();
+ endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------
 // Function: setup_master_agent_cfg
@@ -91,9 +91,10 @@ function void base_test::setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.t2cdelay             = 1;
   env_cfg_h.master_agent_cfg_h.primary_prescalar    = 0;
   env_cfg_h.master_agent_cfg_h.secondary_prescalar  = 0;
+
   uvm_config_db
   #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
-
+  env_cfg_h.master_agent_cfg_h.print();
 endfunction: setup_master_agent_cfg
 
 //--------------------------------------------------------------------------------------------
@@ -112,13 +113,13 @@ function void base_test::setup_slave_agents_cfg();
     env_cfg_h.slave_agent_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
     env_cfg_h.slave_agent_cfg_h[i].shift_dir    = shift_direction_e'(LSB_FIRST);
 
-    // MSHA:uvm_config_db #(slave_agent_config)::set(this,"*slave_agent*",
+    // MSHAdb #(slave_agent_config)::set(this,"*slave_agent*",
     // MSHA:                                         $sformatf("slave_agent_config[%0d]",i),
     // MSHA:                                         env_cfg_h.salve_agent_cfg_h[i]);
 
     uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
-                                                              "slave_agent_config",
-                                                              env_cfg_h.slave_agent_cfg_h[i]);
+                                             "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
+   env_cfg_h.slave_agent_cfg_h[i].print();
   end
 
 endfunction: setup_slave_agents_cfg
