@@ -109,19 +109,44 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   {cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
 
   // Wait for system reset
-  master_drv_bfm_h.wait_for_reset(cpol);
+  master_drv_bfm_h.wait_for_reset();
 
-  // Wait for IDLE state on SPI interface
-  master_drv_bfm_h.wait_for_idle_state();
+  // Drive the IDLE state for SPI interface
+  master_drv_bfm_h.drive_idle_state(cpol);
 
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;
 
     seq_item_port.get_next_item(req);
+    `uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
+                                        req.sprint()),UVM_HIGH)
+
+    // Wait for IDLE state on SPI interface
+    master_drv_bfm_h.wait_for_idle_state();
+
+    // MSHA:1010_1011 (AB)
+
+    // MSHA:LSB first - 1 1 0 1 0 1 0 1 
+    // MSHA:MSB FIrts - 1 0 1 0 1 0 1 1
+    // MSHA:
+    // MSHA:req.mosi_data = AB;
+
+    // MSHA:converting to struct 
+
+    // MSHA:bit[no_of_bits_transfer-1:0] mosi_s;
+
+    // MSHA:if(MSB_FIRST)
+    // MSHA:  D5
+    // MSHA:  mosi_s = flip_version_of(req.mosi_data);
+
+    // MSHA:// LSB First
+    // MSHA:for(int i=0; i< no_of_mosi_bits_transfer; i++) begin
+    // MSHA:  mosi_dat[i]
+    // MSHA:end
 
     master_spi_seq_item_converter::from_class(req, struc_packet); 
-    drive_to_bfm(struc_packet);
+    drive_to_bfm(struc_packet, struct_cfg);
     master_spi_seq_item_converter::to_class(struc_packet, req); 
 
     seq_item_port.item_done();
@@ -134,6 +159,12 @@ endtask : run_phase
 // it to the master_driver_bfm
 //--------------------------------------------------------------------------------------------
 task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
+
+  // TODO(mshariff): Have a way to print the struct values
+  // master_spi_seq_item_converter::display_struct(packet);
+  // string s;
+  // s = master_spi_seq_item_converter::display_struct(packet);
+  // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
   case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
     {CPOL0_CPHA0,MSB_FIRST}: master_drv_bfm_h.drive_msb_first_pos_edge(packet);

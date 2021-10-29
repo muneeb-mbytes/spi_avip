@@ -6,7 +6,6 @@
 // Scoreboard the data getting from monitor port that goes into the implementation port
 //--------------------------------------------------------------------------------------------
 class spi_scoreboard extends uvm_scoreboard;
- 
   `uvm_component_utils(spi_scoreboard)
   
   //Variable : master_tx_h
@@ -23,7 +22,6 @@ class spi_scoreboard extends uvm_scoreboard;
 
   //Variable : master_analysis_fifo
   //declaring analysis fifo
-
   uvm_tlm_analysis_fifo#(master_tx)master_analysis_fifo;
  
   //Variable : slave_analysis_fifo
@@ -81,25 +79,40 @@ endfunction : connect_phase
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
-// <Description_here>
+// All the comparision are done
 //
 // Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-/*task spi_scoreboard::run_phase(uvm_phase phase);
-  phase.raise_objection(this, "spi_scoreboard");
+task spi_scoreboard::run_phase(uvm_phase phase);
 
-  super.run_phase(phase);
+  // MSHA: super.run_phase(phase);
 
-  `uvm_info(get_type_name(),$sformatf("before calling analysis fifo get method"),UVM_LOW)
-  master_analysis_fifo.get(master_tx_h);
-  slave_analysis_fifo .get(slave_tx_h);
+  // MSHA: forever begin
+  // MSHA:   `uvm_info(get_type_name(),$sformatf("before calling analysis fifo get method"),UVM_LOW)
+  // MSHA:   master_analysis_fifo.get(master_tx_h);
+  // MSHA:   // TODO(mshariff): Keep a track on master transaction
+  // MSHA:   `uvm_info(get_type_name(),$sformatf("after calling analysis fifo get method"),UVM_LOW) 
+  // MSHA:   `uvm_info(get_ype_name(),$sformatf("printing master_tx_h, \n %s",master_tx_h.sprint()),UVM_LOW)
 
-  `uvm_info(get_type_name(),$sformatf("after calling analysis fifo get method"),UVM_LOW) 
-    `uvm_info(get_ype_name(),$sformatf("printing master_tx_h, \n %s",master_tx_h.sprint()),UVM_LOW
-  phase.drop_objection(this);
+  // MSHA:   slave_analysis_fifo .get(slave_tx_h);
+  // MSHA:   // TODO(mshariff): Keep a track on slave transaction
+  // MSHA:   `uvm_info(get_type_name(),$sformatf("after calling analysis fifo get method"),UVM_LOW) 
+  // MSHA:   `uvm_info(get_ype_name(),$sformatf("printing slave_tx_h, \n %s",slave_tx_h.sprint()),UVM_LOW)
+  // MSHA:   Displpay even the SLave id - it must be in the packet 
+  //
 
-endtask : run_phase*/
+  // MSHA:   // TODO(mshariff): 
+  // MSHA:   // Once you get the transcations, do the comparisio per byte basis
+  // MSHA:   // Master MOSI with Slave MISO and
+  // MSHA:   // SLave MISO with Master MOSI
+  // MSHA:   // Also, no_of_mosi_bits and no_of_miso_bits
+
+
+  // MSHA:   // TODO(mshariff): After comparisions, keep a track of the sno of comparisions done
+  // MSHA: end
+
+endtask : run_phase
 
 //--------------------------------------------------------------------------------------------
 // Function: check_phase
@@ -110,7 +123,13 @@ endtask : run_phase*/
 //--------------------------------------------------------------------------------------------
 //function void spi_scoreboard::check_phase(uvm_phase phase);
 //  super.check_phase(phase);
-//  `uvm_info("scoreboard",$sformatf("")  
+// TODO(mshariff): Check the following:
+// 1. Check if the comparisions counter is NON-zero
+//    A non-zero value indicates that the comparisions never happened and throw error
+// 2. Check if master packets received are same as slave packets received
+//    To Make sure that we have equal number of master and slave packets
+// 3. Analyis fifos must be zero - This wil indicate that all the packets have been compared
+//    This is to make sure that we have taken al packets from both FIFOs and made the comparisions
 //endfunction : check_phase
 
 //--------------------------------------------------------------------------------------------
@@ -123,7 +142,12 @@ endtask : run_phase*/
 //function void spi_scoreboard::report_phase(uvm_phase phase);
 //  super.report_phase(phase);
 //  `uvm_info("scoreboard",$sformatf("")
-  
+//  // TODO(mshariff): Print the below items:
+//  Total number of packets received from the Master
+//  Total number of packets received from the Slave (with their ID)
+//  Number of comparisions done
+//  Number of comparisios passed
+//  Number of compariosn failed
 //endfunction : report_phase
 
 `endif

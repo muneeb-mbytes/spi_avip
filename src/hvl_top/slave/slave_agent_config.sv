@@ -25,6 +25,10 @@ class slave_agent_config extends uvm_object;
   // Shifts the data, LSB first or MSB first
   shift_direction_e shift_dir;
 
+  // Variable: has_coverage
+  // Used for enabling the slave agent coverage
+  bit has_coverage;
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -54,6 +58,7 @@ function void slave_agent_config::do_print(uvm_printer printer);
   printer.print_field ("slave_id",slave_id,2, UVM_DEC);
   printer.print_field ("spi_mode",spi_mode, 2, UVM_ENUM);
   printer.print_field ("shift_dir",shift_dir, 1, UVM_ENUM);
+  printer.print_field ("has_coverage",has_coverage, 1, UVM_DEC);
   
 endfunction : do_print
 

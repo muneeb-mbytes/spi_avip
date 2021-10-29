@@ -13,18 +13,22 @@ class master_agent extends uvm_agent;
   // Declaring handle for master agent configuration class 
   master_agent_config master_agent_cfg_h;
 
-  //Varible: master_seqr_h 
-  //Handle for slave seuencer
+  // Varible: master_seqr_h 
+  // Handle for slave seuencer
   master_sequencer master_seqr_h;
   
-  //Variable: master_drv_proxy_h
-  //Creating a Handle formaster driver proxy 
+  // Variable: master_drv_proxy_h
+  // Creating a Handle formaster driver proxy 
   master_driver_proxy master_drv_proxy_h;
 
-  //Variable: master_mon_proxy_h
-  //Declaring a handle for master monitor proxy 
+  // Variable: master_mon_proxy_h
+  // Declaring a handle for master monitor proxy 
   master_monitor_proxy master_mon_proxy_h;
-    
+  
+  // MSHA: // Variable: master_coverage
+  // MSHA: // Decalring a handle for master_coverage
+  // MSHA: master_coverage master_cov_h;
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -68,6 +72,10 @@ function void master_agent::build_phase(uvm_phase phase);
   end
 
   master_mon_proxy_h=master_monitor_proxy::type_id::create("master_mon_proxy_h",this);
+
+  // MSHA: if(master_agent_cfg_h.has_coverage) begin
+  // MSHA:   master_cov_h = master_coverage::type_id::create("master_cov_h",this);
+  // MSHA: end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -81,10 +89,17 @@ function void master_agent::connect_phase(uvm_phase phase);
   if(master_agent_cfg_h.is_active == UVM_ACTIVE) begin
     master_drv_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
     master_seqr_h.master_agent_cfg_h = master_agent_cfg_h;
+
     //Connecting the ports
     master_drv_proxy_h.seq_item_port.connect(master_seqr_h.seq_item_export);
   end
   
+  if(master_agent_cfg_h.has_coverage) begin
+    // MSHA: master_cov_h.master_agent_cfg_h = master_agent_cfg_h;
+    // TODO(mshariff): 
+    // connect monitor port to coverage
+  end
+
   master_mon_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
 
 endfunction: connect_phase

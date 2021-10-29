@@ -91,9 +91,10 @@ function void base_test::setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.t2cdelay             = 1;
   env_cfg_h.master_agent_cfg_h.primary_prescalar    = 0;
   env_cfg_h.master_agent_cfg_h.secondary_prescalar  = 0;
+  env_cfg_h.master_agent_cfg_h.has_coverage         = 1;
 
-  uvm_config_db
-  #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
+
+  uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
   env_cfg_h.master_agent_cfg_h.print();
 endfunction: setup_master_agent_cfg
 
@@ -112,6 +113,7 @@ function void base_test::setup_slave_agents_cfg();
     env_cfg_h.slave_agent_cfg_h[i].is_active    = uvm_active_passive_enum'(UVM_ACTIVE);
     env_cfg_h.slave_agent_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
     env_cfg_h.slave_agent_cfg_h[i].shift_dir    = shift_direction_e'(LSB_FIRST);
+    env_cfg_h.slave_agent_cfg_h[i].has_coverage = 1;
 
     // MSHAdb #(slave_agent_config)::set(this,"*slave_agent*",
     // MSHA:                                         $sformatf("slave_agent_config[%0d]",i),

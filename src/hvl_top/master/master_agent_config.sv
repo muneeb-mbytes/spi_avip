@@ -38,6 +38,13 @@ class master_agent_config extends uvm_object;
   // Default value is 1
   int t2cdelay = 1;
 
+  // Variable: wdelay
+  // Delay between the transfers 
+  // Used for setting the time required between 2 transfers 
+  // in terms of SCLK 
+  // Default value is 1
+  int wdelay = 1;
+  
   // Variable: primary_prescalar
   // Used for setting the primary prescalar value for baudrate
   bit[2:0] primary_prescalar;
@@ -45,6 +52,10 @@ class master_agent_config extends uvm_object;
   // Variable: secondary_prescalar
   // Used for setting the secondary prescalar value for baudrate
   bit[2:0] secondary_prescalar;
+
+  // Variable: has_coverage
+  // Used for enabling the master agent coverage
+  bit has_coverage;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -75,10 +86,12 @@ function void master_agent_config::do_print(uvm_printer printer);
   printer.print_field ("no_of_slaves",no_of_slaves,$bits(no_of_slaves), UVM_DEC);
   printer.print_field ("spi_mode",spi_mode, 2, UVM_ENUM);
   printer.print_field ("shift_dir",shift_dir, 1, UVM_ENUM);
-  printer.print_field ("c2tdelay",c2tdelay, 1, UVM_DEC);
-  printer.print_field ("t2cdelay",t2cdelay, 1, UVM_DEC);
+  printer.print_field ("c2tdelay",c2tdelay, $bits(c2tdelay), UVM_DEC);
+  printer.print_field ("t2cdelay",t2cdelay, $bits(t2cdelay), UVM_DEC);
+  printer.print_field ("wdelay",wdelay, $bits(wdelay), UVM_DEC);
   printer.print_field ("primary_prescalar",primary_prescalar, 3, UVM_DEC);
   printer.print_field ("secondary_prescalar",secondary_prescalar, 3, UVM_HEX);
+  printer.print_field ("has_coverage",has_coverage, 1, UVM_DEC);
   
 endfunction : do_print
 
