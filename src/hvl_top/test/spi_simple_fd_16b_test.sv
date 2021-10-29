@@ -58,8 +58,8 @@ task spi_simple_fd_16b_test::run_phase(uvm_phase phase);
 
   phase.raise_objection(this);
   // MSHA:fork
-  // MSHA:    m_spi_fd_16b_h.start(env_h.v_sqr_h);
-  // MSHA:    s_spi_fd_16b_h.start(env_h.v_sqr_h);
+  // MSHA:    m_spi_fd_16b_h.start(env_h.v_seqr_h);
+  // MSHA:    s_spi_fd_16b_h.start(env_h.v_seqr_h);
   // MSHA:join
   phase.drop_objection(this);
 
