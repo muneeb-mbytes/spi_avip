@@ -31,7 +31,9 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task read(bit [DATA_WIDTH-1:0]data_mosi, bit [DATA_WIDTH-1:0]data_miso, bit [DATA_WIDTH-1:0]count);
+  extern virtual task read_from_bfm(spi_transfer_char_s packet);
+  extern virtual function reset_detected();
+  extern virtual task read(spi_transfer_char_s data_packet);
 
 endclass : slave_monitor_proxy
                                                           
@@ -173,7 +175,7 @@ endfunction : connect_phase
 //  end
 //endtask
 //
-
+//-------------------------------------------------------------------------------------------
 // Function : End of Elobaration Phase
 // Used to connect the slave_monitor_proxy defined in slave_monitor_bfm
 //--------------------------------------------------------------------------------------------
@@ -182,11 +184,91 @@ function void slave_monitor_proxy::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
+// Task: read_from_bfm
+// This task receieves the data_packet from slave_monitor_bfm 
+// and converts into the transaction object
+//--------------------------------------------------------------------------------------------
+//task slave_monitor_proxy::read_from_bfm(spi_transfer_char_s packet);
+//
+//  // TODO(mshariff): Have a way to print the struct values
+//  // slave_spi_seq_item_converter::display_struct(packet);
+//  // string s;
+//  // s = slave_spi_seq_item_converter::display_struct(packet);
+//  // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
+//
+//  case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
+//
+//    {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.drive_the_miso_data();
+//
+//  endcase
+//
+//endtask: read_from_bfm
+
+//--------------------------------------------------------------------------------------------
+// Function reset_detected
+// This task detect the system reset appliction
+//--------------------------------------------------------------------------------------------
+function slave_driver_proxy::reset_detected();
+  `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
+
+  // TODO(mshariff): 
+  // Clear the data queues and kill the required threads
+endfunction: reset_detected
+
+
+//--------------------------------------------------------------------------------------------
 // Task: run_phase
 // Calls tasks defined in Slave_Monitor_BFM 
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
+  
+  bit cpol,cpha;
+  // TODO(mshariff): Decide one among this
+  // $cast(cpol_cpha, slave_agent_cfg_h.spi_mode);
+  {cpol,cpha} = operation_modes_e'(slave_agent_cfg_h.spi_mode);
+
+  // Wait for system reset
+  slave_mon_bfm_h.wait_for_reset();
+
+  // Drive the IDLE state for SPI interface
+  slave_mon_bfm_h.drive_idle_state(cpol);
+
+    // Sampling logic
+  forever begin
+    spi_transfer_char_s struc_packet;
+
+    // Wait for IDLE state on SPI interface
+    slave_mon_bfm_h.wait_for_idle_state();
+
+    // MSHA:1010_1011 (AB)
+
+    // MSHA:LSB first - 1 1 0 1 0 1 0 1 
+    // MSHA:MSB FIrts - 1 0 1 0 1 0 1 1
+    // MSHA:
+    // MSHA:req.mosi_data = AB;
+
+    // MSHA:converting to struct 
+
+    // MSHA:bit[no_of_bits_transfer-1:0] mosi_s;
+
+    // MSHA:if(MSB_FIRST)
+    // MSHA:  D5
+    // MSHA:  mosi_s = flip_version_of(req.mosi_data);
+
+    // MSHA:// LSB First
+    // MSHA:for(int i=0; i< no_of_mosi_bits_transfer; i++) begin
+    // MSHA:  mosi_dat[i]
+    // MSHA:end
+    case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
+      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(packet);
+    endcase
+    //slave_spi_seq_item_converter::to_class(struc_packet, ); 
+
+  end
+
+  
+  
   // MSHA: `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",slave_agent_cfg_h.spi_mode), UVM_LOW)
   //case(slave_agent_cfg_h.spi_mode)
   //  2'b00 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
@@ -195,12 +277,12 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
   //  2'b11 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_1(); end
   //endcase
 
-  case(slave_agent_cfg_h.spi_mode)
-    2'b00 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
-    2'b01 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end 
-    2'b10 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
-    2'b11 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
-  endcase
+ // case(slave_agent_cfg_h.spi_mode)
+ //   2'b00 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+ //   2'b01 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end 
+ //   2'b10 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+ //   2'b11 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
+ // endcase
 
 endtask : run_phase 
 
@@ -209,24 +291,26 @@ endtask : run_phase
 // Task : Read
 // Captures the MOSI and MISO data sampled.
 //-------------------------------------------------------
-task slave_monitor_proxy::read(bit [DATA_WIDTH-1:0]data_mosi,
-                               bit [DATA_WIDTH-1:0]data_miso,
-                               bit [DATA_WIDTH-1:0]count);
+//task slave_monitor_proxy::read(bit [DATA_WIDTH-1:0]data_mosi,
+//                               bit [DATA_WIDTH-1:0]data_miso,
+//                               bit [DATA_WIDTH-1:0]count);
+task slave_monitor_proxy::read(spi_transfer_char_s data_packet);
   
-  if(count >= DATA_WIDTH && count >= DATA_WIDTH ) begin
-    `uvm_info(get_type_name(), $sformatf("MOSI is = %d",data_mosi), UVM_LOW);
-    `uvm_info(get_type_name(), $sformatf("MISO is = %d",data_miso), UVM_LOW);     
-  end
-  else begin
-    `uvm_error(get_type_name(),"Either MOSI data or MISO data is less than the charachter length mentioned");
-  end
+ // if(count >= DATA_WIDTH && count >= DATA_WIDTH ) begin
+ //   `uvm_info(get_type_name(), $sformatf("MOSI is = %d",data_mosi), UVM_LOW);
+ //   `uvm_info(get_type_name(), $sformatf("MISO is = %d",data_miso), UVM_LOW);     
+ // end
+ // else begin
+ //   `uvm_error(get_type_name(),"Either MOSI data or MISO data is less than the charachter length mentioned");
+ // end
+ 
 
   //slave_tx slave_tx_h;
   //slave_tx_h = slave_tx::type_id::create("slave_tx_h");
-  //slave_spi_seq_item_converter slave_spi_seq_item_conv_h;
-  //slave_spi_seq_item_conv_h = slave_spi_seq_item_converter::type_id::create("slave_spi_seq_item_conv_h");
-  //slave_spi_seq_item_conv_h.to_class(slave_tx_h,data_mosi,data_miso);
-  //ap.write(slave_tx_h);
+  slave_spi_seq_item_converter slave_spi_seq_item_conv_h;
+  slave_spi_seq_item_conv_h = slave_spi_seq_item_converter::type_id::create("slave_spi_seq_item_conv_h");
+  slave_spi_seq_item_conv_h.to_class(slave_tx_h,data_packet);
+  ap.write(slave_tx_h);
                             
 endtask : read
 
