@@ -31,7 +31,7 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task read_from_bfm(spi_transfer_char_s packet);
+  //extern virtual task read_from_bfm(spi_transfer_char_s packet);
   extern virtual function reset_detected();
   extern virtual task read(spi_transfer_char_s data_packet);
 
@@ -208,7 +208,7 @@ endfunction : end_of_elaboration_phase
 // Function reset_detected
 // This task detect the system reset appliction
 //--------------------------------------------------------------------------------------------
-function slave_driver_proxy::reset_detected();
+function slave_monitor_proxy::reset_detected();
   `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
 
   // TODO(mshariff): 
@@ -221,7 +221,7 @@ endfunction: reset_detected
 // Calls tasks defined in Slave_Monitor_BFM 
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
-  `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW)
+  //`uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW);
   
   bit cpol,cpha;
   // TODO(mshariff): Decide one among this
@@ -261,7 +261,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     // MSHA:  mosi_dat[i]
     // MSHA:end
     case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
-      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(packet);
+      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(struc_packet);
     endcase
     //slave_spi_seq_item_converter::to_class(struc_packet, ); 
 
@@ -308,9 +308,9 @@ task slave_monitor_proxy::read(spi_transfer_char_s data_packet);
   //slave_tx slave_tx_h;
   //slave_tx_h = slave_tx::type_id::create("slave_tx_h");
   slave_spi_seq_item_converter slave_spi_seq_item_conv_h;
-  slave_spi_seq_item_conv_h = slave_spi_seq_item_converter::type_id::create("slave_spi_seq_item_conv_h");
-  slave_spi_seq_item_conv_h.to_class(slave_tx_h,data_packet);
-  ap.write(slave_tx_h);
+  //slave_spi_seq_item_conv_h = slave_spi_seq_item_converter::type_id::create("slave_spi_seq_item_conv_h");
+  //slave_spi_seq_item_conv_h.to_class(slave_tx_h,data_packet);
+  //ap.write(slave_tx_h);
                             
 endtask : read
 

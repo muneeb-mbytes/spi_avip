@@ -18,6 +18,8 @@ class slave_tx extends uvm_sequence_item;
   bit mosi1;
   bit mosi2;
   bit mosi3;
+  
+  bit cs;
 
   rand bit miso0;
   rand bit miso1;
