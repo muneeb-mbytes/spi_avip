@@ -29,7 +29,7 @@ class master_driver_proxy extends uvm_driver#(master_tx);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(spi_transfer_char_s packet);
+  extern virtual task drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s packet1);
   extern virtual function reset_detected();
 
 endclass : master_driver_proxy
@@ -117,6 +117,7 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;
+    spi_transfer_cfg_s struct_cfg;
 
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
@@ -158,7 +159,7 @@ endtask : run_phase
 // This task converts the transcation data packet to struct type and send
 // it to the master_driver_bfm
 //--------------------------------------------------------------------------------------------
-task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
+task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet,spi_transfer_cfg_s packet1);
 
   // TODO(mshariff): Have a way to print the struct values
   // master_spi_seq_item_converter::display_struct(packet);
@@ -167,7 +168,7 @@ task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
   // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
   case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
-    {CPOL0_CPHA0,MSB_FIRST}: master_drv_bfm_h.drive_msb_first_pos_edge(packet);
+    {CPOL0_CPHA0,MSB_FIRST}: master_drv_bfm_h.drive_msb_first_pos_edge(packet,packet1);
 
       // MSHA:if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
       // MSHA:  master_drv_bfm_h.drive_msb_first_pos_edge(data);

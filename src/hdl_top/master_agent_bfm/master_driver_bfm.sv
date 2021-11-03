@@ -93,22 +93,23 @@ interface master_driver_bfm(input pclk, input areset,
   // Task: drive_msb_first_pos_edge
   //-------------------------------------------------------
   // TODO(mshariff): Reconsider the logic with different baudrates
-  task drive_msb_first_pos_edge(spi_transfer_char_s data_packet);
+  //task drive_msb_first_pos_edge(spi_transfer_char_s data_packet);
 
+  task drive_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt);
     // Asserting CS and driving SCLK with initial value
     @(posedge pclk);
     cs <= data_packet.cs; 
-    sclk <= data_packet.cpol;
+    sclk <= cfg_pkt.cpol;
  
     // Adding half-SCLK delay for CPHA=1
-    if(data_packet.cpha) begin
+    if(cfg_pkt.cpha) begin
       mosi0 <= data_packet.master_out_slave_in[0];
       @(posedge pclk);
     end
 
     // Generate C2T delay
     // Delay between negedge of CS to posedge of SCLK
-    repeat((data_packet.c2t * data_packet.baudrate) - 1) begin
+    repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
       @(posedge pclk);
     end
    
@@ -116,10 +117,10 @@ interface master_driver_bfm(input pclk, input areset,
     // and sampling MISO
     for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
 
-      if(data_packet.cpha == 0) begin : CPHA_IS_0
+      if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
         // Driving MOSI at posedge of SCLK for CPOL=0 and CPHA=0  OR
         // Driving MOSI at negedge of SCLK for CPOL=1 and CPHA=0
-        drive_sclk(data_packet.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate/2);
 
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
@@ -128,20 +129,20 @@ interface master_driver_bfm(input pclk, input areset,
 
         // Sampling MISO at negedge of SCLK for CPOL=0 and CPHA=0  OR
         // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
-        drive_sclk(data_packet.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
       end
       else begin : CPHA_IS_1
         // Sampling MISO at posedge of SCLK for CPOL=0 and CPHA=1  OR
         // Sampling MISO at negedge of SCLK for CPOL=1 and CPHA=1
-        drive_sclk(data_packet.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
 
         // Driving MOSI at negedge of SCLK for CPOL=0 and CPHA=1  OR
         // Driving MOSI at posedge of SCLK for CPOL=1 and CPHA=1
-        drive_sclk(data_packet.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate/2);
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
         // mosi0 <= data_packet.data[i];
@@ -157,7 +158,7 @@ interface master_driver_bfm(input pclk, input areset,
 
     // Generate T2C delay
     // Delay between last edge of SLCK to posedge of CS
-    repeat(data_packet.t2c * data_packet.baudrate) begin
+    repeat(cfg_pkt.t2c * cfg_pkt.baudrate) begin
       @(posedge pclk);
     end
 
@@ -168,7 +169,7 @@ interface master_driver_bfm(input pclk, input areset,
     // Generates WDELAY
     // Delay between 2 transfers 
     // This is the time for which CS is de-asserted between the transfers 
-    repeat(data_packet.wdelay * data_packet.baudrate) begin
+    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate) begin
       @(posedge pclk);
     end
     
