@@ -232,12 +232,12 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
   slave_mon_bfm_h.wait_for_reset();
 
   // Drive the IDLE state for SPI interface
-  slave_mon_bfm_h.drive_idle_state(cpol);
+  //slave_mon_bfm_h.drive_idle_state(cpol);
 
     // Sampling logic
   forever begin
-    spi_transfer_char_s struc_packet;
-
+    spi_transfer_char_s struct_packet;
+    spi_transfer_cfg_s struct_cfg;
     // Wait for IDLE state on SPI interface
     slave_mon_bfm_h.wait_for_idle_state();
 
@@ -261,7 +261,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
     // MSHA:  mosi_dat[i]
     // MSHA:end
     case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
-      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(struc_packet);
+      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(struct_packet,struct_cfg);
     endcase
     //slave_spi_seq_item_converter::to_class(struc_packet, ); 
 

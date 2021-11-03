@@ -6,16 +6,22 @@
 // Connects the slave monitor bfm with the monitor proxy
 // to call the tasks and functions from monitor bfm to monitor proxy
 //--------------------------------------------------------------------------------------------
+
+import spi_globals_pkg::*;
 interface slave_monitor_bfm(input pclk, input areset, 
                             input sclk, 
                             input [NO_OF_SLAVES-1:0] cs, 
                             input mosi0, mosi1, mosi2, mosi3,
                             input miso0, miso1, miso2, miso3);
-    
+
+  //-------------------------------------------------------
+  // 
+  //-------------------------------------------------------
+  import uvm_pkg::*;
+  `include "uvm_macros.svh"
   //-------------------------------------------------------
   // Package : Importing SPI Global Package and SPI Slave Package
   //-------------------------------------------------------
-  import spi_globals_pkg::*;
   import spi_slave_pkg::*;
 
   //Variable : slave_monitor_proxy_h
@@ -43,19 +49,19 @@ interface slave_monitor_bfm(input pclk, input areset,
   // Parameters:
   //  cpol - Clock polarity of SCLK
   //-------------------------------------------------------
-  task drive_idle_state(bit cpol);
+  //task drive_idle_state(bit cpol);
 
-   `uvm_info("MASTER_DRIVER_BFM", $sformatf("Strting to drive the IDLE state"), UVM_NONE);
+  // `uvm_info("MASTER_DRIVER_BFM", $sformatf("Strting to drive the IDLE state"), UVM_NONE);
+  //  //bit cs;
+  //  @(posedge pclk);
+  //  cpol = sclk;
+  //  // TODO(mshariff):
+  //  // Use of replication operator 
+  //  // cs <= 'b1;
+  //  // cs   <= NO_OF_SLAVES{1};
+  //  cs <= 'b1;
 
-    @(posedge pclk);
-    cpol = sclk;
-    // TODO(mshariff):
-    // Use of replication operator 
-    // cs <= 'b1;
-    // cs   <= NO_OF_SLAVES{1};
-    cs <= 'b1;
-
-  endtask: drive_idle_state
+  //endtask: drive_idle_state
 
   //-------------------------------------------------------
   // Task: wait_for_idle_state
@@ -75,36 +81,36 @@ interface slave_monitor_bfm(input pclk, input areset,
   // Task: drive_sclk
   // Used for generating the SCLK with regards to baudrate 
   //-------------------------------------------------------
-  task drive_sclk(int delay);
-    @(posedge pclk);
-    sclk <= ~sclk;
+  //task drive_sclk(int delay);
+  //  @(posedge pclk);
+  //  sclk <= ~sclk;
 
-    repeat(delay - 1) begin
-      @(posedge pclk);
-      sclk <= ~sclk;
-    end
-  endtask: drive_sclk
+  //  repeat(delay - 1) begin
+  //    @(posedge pclk);
+  //    sclk <= ~sclk;
+  //  end
+  //endtask: drive_sclk
  
   //-------------------------------------------------------
   // Task: drive_msb_first_pos_edge
   //-------------------------------------------------------
   // TODO(mshariff): Reconsider the logic with different baudrates
-  task sample_msb_first_pos_edge(spi_transfer_char_s data_packet);
+  task sample_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt);
 
     // Asserting CS and driving SCLK with initial value
     @(posedge pclk);
     data_packet.cs = cs; 
-    data_packet.cpol = sclk;
+    cfg_pkt.cpol = sclk;
  
     // Adding half-SCLK delay for CPHA=1
-    if(data_packet.cpha) begin
+    if(cfg_pkt.cpha) begin
       data_packet.master_out_slave_in[0] = mosi0;
       @(posedge pclk);
     end
 
     // Generate C2T delay
     // Delay between negedge of CS to posedge of SCLK
-    repeat((data_packet.c2t * data_packet.baudrate) - 1) begin
+    repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
       @(posedge pclk);
     end
    
@@ -112,10 +118,10 @@ interface slave_monitor_bfm(input pclk, input areset,
     // and sampling MISO
     for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
 
-      if(data_packet.cpha == 0) begin : CPHA_IS_0
+      if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
         // Driving MOSI at posedge of SCLK for CPOL=0 and CPHA=0  OR
         // Driving MOSI at negedge of SCLK for CPOL=1 and CPHA=0
-        drive_sclk(data_packet.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate/2);
 
         // For simple SPI
         // MSHA: data_packet.data[B0] = mois0;
@@ -124,20 +130,20 @@ interface slave_monitor_bfm(input pclk, input areset,
 
         // Sampling MISO at negedge of SCLK for CPOL=0 and CPHA=0  OR
         // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
-        drive_sclk(data_packet.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
       end
       else begin : CPHA_IS_1
         // Sampling MISO at posedge of SCLK for CPOL=0 and CPHA=1  OR
         // Sampling MISO at negedge of SCLK for CPOL=1 and CPHA=1
-        drive_sclk(data_packet.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
 
         // Driving MOSI at negedge of SCLK for CPOL=0 and CPHA=1  OR
         // Driving MOSI at posedge of SCLK for CPOL=1 and CPHA=1
-        drive_sclk(data_packet.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate/2);
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
         // mosi0 <= data_packet.data[i];
@@ -153,25 +159,26 @@ interface slave_monitor_bfm(input pclk, input areset,
 
     // Generate T2C delay
     // Delay between last edge of SLCK to posedge of CS
-    repeat(data_packet.t2c * data_packet.baudrate) begin
+    repeat(cfg_pkt.t2c * cfg_pkt.baudrate) begin
       @(posedge pclk);
     end
-
+    
+    //******************CS is not reg here don't know how to implement here******so,commented it?
     // TODO(mshariff): Make it work for more slaves
     // CS is de-asserted
-    cs = 'b1;
+    //cs = 'b1;
 
     // Generates WDELAY
     // Delay between 2 transfers 
     // This is the time for which CS is de-asserted between the transfers 
-    repeat(data_packet.wdelay * data_packet.baudrate) begin
+    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate) begin
       @(posedge pclk);
     end
 
     slave_monitor_proxy_h.read(data_packet);
 
     
-  endtask: drive_msb_first_pos_edge
+  endtask: sample_msb_first_pos_edge
 
 
    //variable data_mosi

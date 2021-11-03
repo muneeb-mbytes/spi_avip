@@ -12,7 +12,11 @@ interface master_driver_bfm(input pclk, input areset,
                             output reg [NO_OF_SLAVES-1:0] cs, 
                             output reg mosi0, mosi1, mosi2, mosi3,
                             input miso0, miso1, miso2, miso3);
-  
+  //-------------------------------------------------------
+  // 
+  //-------------------------------------------------------
+  import uvm_pkg::*;
+  `include "uvm_macros.svh" 
   //-------------------------------------------------------
   // Importing SPI Global Package and Slave package
   //-------------------------------------------------------

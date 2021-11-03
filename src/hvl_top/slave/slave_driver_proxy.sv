@@ -18,7 +18,7 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
 
   // Variable: slave_agent_cfg_h;
   // Handle for slave agent configuration
-//  slave_agent_config slave_agent_cfg_h;
+  slave_agent_config slave_agent_cfg_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -27,9 +27,9 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
-  extern virtual function void start_of_simulation_phase(uvm_phase phase);
+  //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(spi_transfer_char_s packet);
+  extern virtual task drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s struct_cfg);
   extern virtual function reset_detected();
 
 endclass : slave_driver_proxy
@@ -124,6 +124,7 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;
+    spi_transfer_cfg_s struct_cfg;
 
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
@@ -145,7 +146,7 @@ endtask : run_phase
 // This task converts the transcation data packet to struct type and send
 // it to the slave_driver_bfm
 //--------------------------------------------------------------------------------------------
-task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
+task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s struct_cfg);
 
   // TODO(mshariff): Have a way to print the struct values
   // slave_spi_seq_item_converter::display_struct(packet);
@@ -155,7 +156,7 @@ task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
 
   case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
 
-    {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet);
+    {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
 
   endcase
 
