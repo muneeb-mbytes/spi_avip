@@ -47,7 +47,7 @@ task spi_fd_8b_virtual_seq::body();
    spi_fd_8b_master_seq_h=spi_fd_8b_master_seq::type_id::create("spi_fd_8b_master_seq_h");
    spi_fd_8b_slave_seq_h=spi_fd_8b_slave_seq::type_id::create("spi_fd_8b_slave_seq_h");
 
-   spi_fd_8b_master_seq_h.req.print();
+   //spi_fd_8b_master_seq_h.req.print();
   
  
    //configuring no of masters and starting master sequencers

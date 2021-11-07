@@ -80,7 +80,7 @@ compile:
 
 # Setting a default test as base_test
 ifndef test
-override test = base_test
+override test = spi_simple_fd_8b_test
 endif
 
 simulate:

@@ -39,9 +39,9 @@ task spi_fd_8b_slave_seq::body();
   req=slave_tx::type_id::create("req");
   repeat(2) begin
   start_item(req);
-  if(!req.randomize () with { master_in_slave_out.size()==1;
-                            });
-  `uvm_fatal(get_type_name,"Randomization failed")
+  if(!req.randomize() with { req.master_in_slave_out.size()==1;}) 
+    `uvm_fatal(get_type_name(),"Randomization FAILED")
+  req.print();
   finish_item(req);
   end
 endtask : body

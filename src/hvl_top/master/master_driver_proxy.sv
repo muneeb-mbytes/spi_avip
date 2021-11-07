@@ -128,8 +128,8 @@ task master_driver_proxy::run_phase(uvm_phase phase);
     //tx.master_out_slave_in = new [2];
     //`uvm_info(get_type_name(),$sformatf("MASTER_TX = \n %s", tx.sprint),UVM_LOW)
     seq_item_port.get_next_item(req);
-    `uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
-                                        req.sprint),UVM_LOW);
+    //`uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
+    //                                    req.sprint),UVM_LOW);
 
     // Wait for IDLE state on SPI interface
     master_drv_bfm_h.wait_for_idle_state();
