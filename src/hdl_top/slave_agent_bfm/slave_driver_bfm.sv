@@ -42,7 +42,7 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   //-------------------------------------------------------
   task wait_for_reset();
     @(negedge areset);
-    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("System reset detected"), UVM_NONE);
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("System reset detected"), UVM_LOW);
   endtask: wait_for_reset
 
   //-------------------------------------------------------
@@ -50,11 +50,11 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   // This task drives the SPI interface to it's IDLE state
   //
   // Parameters:
-  //  cpol - Clock polarity of SCLK
+  //  cpol - Clock polarity of sclk
   //-------------------------------------------------------
   task drive_idle_state(bit cpol);
 
-   `uvm_info("SLAVE_DRIVER_BFM", $sformatf("Starting to drive the IDLE state"), UVM_NONE);
+   `uvm_info("SLAVE_DRIVER_BFM", $sformatf("Starting to drive the IDLE state"), UVM_LOW);
 
     @(posedge pclk);
     sclk <= cpol;
@@ -77,7 +77,7 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
 
   //-------------------------------------------------------
   // Task: drive_sclk
-  // Used for generating the SCLK with regards to baudrate 
+  // Used for generating the sclk with regards to baudrate 
   //-------------------------------------------------------
   task drive_sclk(int delay);
     @(posedge pclk);
@@ -95,29 +95,30 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   // TODO(mshariff): Reconsider the logic with different baudrates
   task drive_the_miso_data (spi_transfer_char_s data_packet,spi_transfer_cfg_s cfg_pkt);
 
-    // Driving SCLK with initial value
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("TASK: DRIVING THE MISO DATA"), UVM_LOW);
+    // Driving sclk with initial value
     @(posedge pclk);
 //    cs <= data_packet.cs; 
     sclk <= cfg_pkt.cpol;
  
-    // Adding half-SCLK delay for CPHA=1
+    // Adding half-sclk delay for CPHA=1
     if(cfg_pkt.cpha) begin
       miso0 <= data_packet.master_in_slave_out[0];
       @(posedge pclk);
     end
 
     // Generate C2T delay
-    // Delay between negedge of CS to posedge of SCLK
+    // Delay between negedge of CS to posedge of sclk
     repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
       @(posedge pclk);
     end
    
-    // Driving SCLK and MISO and sampling MOSI
+    // Driving sclk and MISO and sampling MOSI
     for(int i=0; i<data_packet.no_of_miso_bits_transfer; i++) begin
 
       if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
-        // Driving MISO at posedge of SCLK for CPOL=0 and CPHA=0  OR
-        // Driving MISO at negedge of SCLK for CPOL=1 and CPHA=0
+        // Driving MISO at posedge of sclk for CPOL=0 and CPHA=0  OR
+        // Driving MISO at negedge of sclk for CPOL=1 and CPHA=0
         drive_sclk(cfg_pkt.baudrate/2);
 
         // For simple SPI
@@ -125,7 +126,7 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
         // miso0 <= data_packet.data[i];
         miso0 <= data_packet.master_in_slave_out[i];
 
-        // Sampling MOSI at negedge of SCLK for CPOL=0 and CPHA=0  OR
+        // Sampling MOSI at negedge of sclk for CPOL=0 and CPHA=0  OR
         // Sampling MOSI at posedge of SLCK for CPOL=1 and CPHA=0
         drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
@@ -133,14 +134,14 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
       end
 
       else begin : CPHA_IS_1
-        // Sampling MOSI at negedge of SCLK for CPOL=0 and CPHA=1  OR
+        // Sampling MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
         // Sampling MOSI at posedge of SLCK for CPOL=1 and CPHA=1
         drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_out_slave_in[i] = mosi0;
 
-        // Driving MISO at posedge of SCLK for CPOL=0 and CPHA=1  OR
-        // Driving MISO at negedge of SCLK for CPOL=1 and CPHA=1
+        // Driving MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
+        // Driving MISO at negedge of sclk for CPOL=1 and CPHA=1
         drive_sclk(cfg_pkt.baudrate/2);
         // For simple SPI
         // MSHA: miso0 <= data_packet.data[B0];

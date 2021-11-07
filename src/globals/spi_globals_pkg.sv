@@ -32,7 +32,7 @@ parameter int CHAR_LENGTH= 8;
 //
 // Specifies the no of rows of an array
 
-parameter int NO_OF_ROWS = 17;
+parameter int NO_OF_ROWS = 16;
 
 
 // Enum: shift_direction_e

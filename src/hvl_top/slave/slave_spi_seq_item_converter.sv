@@ -48,7 +48,7 @@ function void slave_spi_seq_item_converter::from_class(input slave_tx input_conv
   for(int i=0; i<output_conv.no_of_mosi_bits_transfer; i++) begin
     //output_conv.slave_out_slave_in[i][j] = input_conv_h.slave_out_slave_in[i];
     //{<<byte{output_conv.slave_out_slave_in[i]}} = input_conv_h.slave_out_slave_in[i];
-    {{output_conv.master_out_slave_in[i]}} = input_conv_h.master_out_slave_in[i];
+    output_conv.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];
     output_conv.cs = input_conv_h.cs;
     //output_conv_h.slave_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
   end
@@ -76,12 +76,12 @@ endfunction: from_class_msb_first
 //--------------------------------------------------------------------------------------------
 function void slave_spi_seq_item_converter::to_class(input spi_transfer_char_s input_conv, 
                                                       output slave_tx output_conv_h);
+  output_conv_h = new();
   for(int i=0; i<DATA_WIDTH; i++) begin
-    output_conv_h = new();
-    {{output_conv_h.master_out_slave_in[i]}} = input_conv.master_out_slave_in[i];   
+    output_conv_h.master_out_slave_in[i] = input_conv.master_out_slave_in[i];   
     output_conv_h.cs = input_conv.cs;
     //<< shifts input lsb first to lsb of output
-    {{output_conv_h.master_in_slave_out[i]}} = input_conv.master_in_slave_out[i];
+    output_conv_h.master_in_slave_out[i] = input_conv.master_in_slave_out[i];
     //output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
   end
   

@@ -154,11 +154,13 @@ task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet, spi_transfer_c
   // s = slave_spi_seq_item_converter::display_struct(packet);
   // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
-  case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
+//  case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
 
-    {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+   // {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+    
+   slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
 
-  endcase
+//  endcase
 
 endtask: drive_to_bfm
 

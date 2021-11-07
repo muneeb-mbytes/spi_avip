@@ -105,10 +105,11 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   bit cpol, cpha;
 
   super.run_phase(phase);
-  `uvm_info(get_type_name(),"Hey ! It's master dirver porxy-RUN PHASE",UVM_LOW)
+  `uvm_info(get_type_name(),"Hey ! It's master dirver proxy-RUN PHASE",UVM_LOW)
   // TODO(mshariff): Decide one among this
   // $cast(cpol_cpha, master_agent_cfg_h.spi_mode);
-  {cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
+  //{cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
+  cpol = operation_modes_e'(master_agent_cfg_h.spi_mode);
 
   // Wait for system reset
   master_drv_bfm_h.wait_for_reset();
@@ -117,7 +118,7 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   // Drive the IDLE state for SPI interface
   master_drv_bfm_h.drive_idle_state(cpol);
 
-  `uvm_info(get_type_name(),"Driving Idle STate",UVM_LOW)
+  `uvm_info(get_type_name(),"Driving Idle State",UVM_LOW)
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;

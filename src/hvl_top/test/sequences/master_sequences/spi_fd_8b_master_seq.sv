@@ -41,9 +41,9 @@ endfunction:new
 //-----------------------------------------------------------------------------
 task spi_fd_8b_master_seq::body();
   req = master_tx::type_id::create("req");
-  repeat(1) begin
+  repeat(5) begin
   start_item(req);
-  if(!req.randomize())
+  if(!req.randomize() with {req.master_out_slave_in.size() == 1;})
     `uvm_fatal(get_type_name(),"Randomization failed")
   req.print();
   finish_item(req);

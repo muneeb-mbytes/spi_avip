@@ -76,12 +76,14 @@ endfunction: from_class_msb_first
 //--------------------------------------------------------------------------------------------
 function void master_spi_seq_item_converter::to_class(input spi_transfer_char_s input_conv, 
                                                       output master_tx output_conv_h);
+  output_conv_h = new();
   for(int i=0; i<DATA_WIDTH; i++) begin
-    output_conv_h = new();
-    {{output_conv_h.master_out_slave_in[i]}} = input_conv.master_out_slave_in[i];   
+    //{{output_conv_h.master_out_slave_in[i]}} = input_conv.master_out_slave_in[i];   
+    output_conv_h.master_out_slave_in[i] = input_conv.master_out_slave_in[i];   
     output_conv_h.cs = input_conv.cs;
     //<< shifts input lsb first to lsb of output
-    {{output_conv_h.master_in_slave_out[i]}} = input_conv.master_in_slave_out[i];
+    //{{output_conv_h.master_in_slave_out[i]}} = input_conv.master_in_slave_out[i];
+    output_conv_h.master_in_slave_out[i] = input_conv.master_in_slave_out[i];
     //output_conv_h.no_of_bits_transfer = input_conv_h.no_of_bits_transfer;
   end
   

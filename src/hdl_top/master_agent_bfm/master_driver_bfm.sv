@@ -49,7 +49,7 @@ interface master_driver_bfm(input pclk, input areset,
   // This task drives the SPI interface to it's IDLA state
   //
   // Parameters:
-  //  cpol - Clock polarity of SCLK
+  //  cpol - Clock polarity of sclk
   //-------------------------------------------------------
   task drive_idle_state(bit cpol);
 
@@ -81,7 +81,7 @@ interface master_driver_bfm(input pclk, input areset,
 
   //-------------------------------------------------------
   // Task: drive_sclk
-  // Used for generating the SCLK with regards to baudrate 
+  // Used for generating the sclk with regards to baudrate 
   //-------------------------------------------------------
   task drive_sclk(int delay);
     @(posedge pclk);
@@ -102,12 +102,12 @@ interface master_driver_bfm(input pclk, input areset,
   task drive_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt); 
     `uvm_info("CS VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.cs = \n %s",data_packet.cs),UVM_LOW)
     `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.mosi = \n %s",data_packet.master_out_slave_in),UVM_LOW)
-    // Asserting CS and driving SCLK with initial value
+    // Asserting CS and driving sclk with initial value
     @(posedge pclk);
     cs <= data_packet.cs; 
     sclk <= cfg_pkt.cpol;
  
-    // Adding half-SCLK delay for CPHA=1
+    // Adding half-sclk delay for CPHA=1
     if(cfg_pkt.cpha) begin
       `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[0]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
       mosi0 <= data_packet.master_out_slave_in[0];
@@ -115,18 +115,18 @@ interface master_driver_bfm(input pclk, input areset,
     end
 
     // Generate C2T delay
-    // Delay between negedge of CS to posedge of SCLK
+    // Delay between negedge of CS to posedge of sclk
     repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
       @(posedge pclk);
     end
    
-    // Driving CS, SCLK and MOSI
+    // Driving CS, sclk and MOSI
     // and sampling MISO
     for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
 
       if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
-        // Driving MOSI at posedge of SCLK for CPOL=0 and CPHA=0  OR
-        // Driving MOSI at negedge of SCLK for CPOL=1 and CPHA=0
+        // Driving MOSI at posedge of sclk for CPOL=0 and CPHA=0  OR
+        // Driving MOSI at negedge of sclk for CPOL=1 and CPHA=0
         drive_sclk(cfg_pkt.baudrate/2);
 
         // For simple SPI
@@ -135,21 +135,21 @@ interface master_driver_bfm(input pclk, input areset,
         `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[i]=%b",data_packet.master_out_slave_in[0]),UVM_LOW)
         mosi0 <= data_packet.master_out_slave_in[i];
 
-        // Sampling MISO at negedge of SCLK for CPOL=0 and CPHA=0  OR
+        // Sampling MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
         // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
         drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
       end
       else begin : CPHA_IS_1
-        // Sampling MISO at posedge of SCLK for CPOL=0 and CPHA=1  OR
-        // Sampling MISO at negedge of SCLK for CPOL=1 and CPHA=1
+        // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
+        // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
         drive_sclk(cfg_pkt.baudrate/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
 
-        // Driving MOSI at negedge of SCLK for CPOL=0 and CPHA=1  OR
-        // Driving MOSI at posedge of SCLK for CPOL=1 and CPHA=1
+        // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
+        // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
         drive_sclk(cfg_pkt.baudrate/2);
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
