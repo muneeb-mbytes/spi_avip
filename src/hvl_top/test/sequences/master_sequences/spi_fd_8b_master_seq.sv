@@ -39,13 +39,12 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task spi_fd_8b_master_seq::body(); 
-  req=master_tx::type_id::create("req");
-  repeat(2) begin
+task spi_fd_8b_master_seq::body();
+  req = master_tx::type_id::create("req");
+  repeat(1) begin
   start_item(req);
-  if(!req.randomize () with { master_out_slave_in.size()==1;
-                              });
-  `uvm_fatal(get_type_name,"Randomization failed")
+  if(!req.randomize())
+    `uvm_fatal(get_type_name(),"Randomization failed")
   req.print();
   finish_item(req);
   end

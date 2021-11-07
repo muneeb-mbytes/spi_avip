@@ -9,11 +9,11 @@
 import spi_globals_pkg::*;
 interface master_driver_bfm(input pclk, input areset, 
                             output reg sclk, 
-                            output reg [NO_OF_SLAVES-1:0] cs, 
+                            output reg [NO_OF_SLAVES-1:0]cs, 
                             output reg mosi0, mosi1, mosi2, mosi3,
                             input miso0, miso1, miso2, miso3);
   //-------------------------------------------------------
-  // 
+  // Importing UVM Package 
   //-------------------------------------------------------
   import uvm_pkg::*;
   `include "uvm_macros.svh" 
@@ -99,7 +99,9 @@ interface master_driver_bfm(input pclk, input areset,
   // TODO(mshariff): Reconsider the logic with different baudrates
   //task drive_msb_first_pos_edge(spi_transfer_char_s data_packet);
 
-  task drive_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt);
+  task drive_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt); 
+    `uvm_info("CS VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.cs = \n %s",data_packet.cs),UVM_LOW)
+    `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.mosi = \n %s",data_packet.master_out_slave_in),UVM_LOW)
     // Asserting CS and driving SCLK with initial value
     @(posedge pclk);
     cs <= data_packet.cs; 
@@ -107,6 +109,7 @@ interface master_driver_bfm(input pclk, input areset,
  
     // Adding half-SCLK delay for CPHA=1
     if(cfg_pkt.cpha) begin
+      `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[0]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
       mosi0 <= data_packet.master_out_slave_in[0];
       @(posedge pclk);
     end
@@ -129,6 +132,7 @@ interface master_driver_bfm(input pclk, input areset,
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
         // mosi0 <= data_packet.data[i];
+        `uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[i]=%b",data_packet.master_out_slave_in[0]),UVM_LOW)
         mosi0 <= data_packet.master_out_slave_in[i];
 
         // Sampling MISO at negedge of SCLK for CPOL=0 and CPHA=0  OR
@@ -154,6 +158,7 @@ interface master_driver_bfm(input pclk, input areset,
         // Since first bit in CPHA=1 is driven at CS=0, 
         // we don't have to drive the last bit twice
         if(i < (data_packet.no_of_mosi_bits_transfer-1)) begin
+          `uvm_info("CS VALUE IS MASTER_DRIVER_BFM",$sformatf("mosi[i]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
           mosi0 <= data_packet.master_out_slave_in[i];
         end
       end

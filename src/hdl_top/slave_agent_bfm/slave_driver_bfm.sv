@@ -11,7 +11,7 @@
 //-------------------------------------------------------
 import spi_globals_pkg::*;
 
-interface slave_driver_bfm(input pclk, input cs,input areset, 
+interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset, 
                            output reg sclk, 
                     //     output reg [NO_OF_SLAVES-1:0] cs, 
                            input mosi0, mosi1, mosi2, mosi3, 

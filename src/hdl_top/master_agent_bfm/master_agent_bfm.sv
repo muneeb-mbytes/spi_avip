@@ -16,7 +16,8 @@ module master_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   // Master Driver bfm instantiation
   //-------------------------------------------------------
-  master_driver_bfm master_drv_bfm_h (.pclk(intf.pclk), .areset(intf.areset),
+  master_driver_bfm master_drv_bfm_h (.pclk(intf.pclk), 
+                                      .areset(intf.areset),
                                       .sclk(intf.sclk),
                                       .cs(intf.cs),
                                       .mosi0(intf.mosi0),
@@ -33,7 +34,8 @@ module master_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   // Master monitor  bfm instantiation
   //-------------------------------------------------------
-  master_monitor_bfm master_mon_bfm_h (.pclk(intf.pclk), .areset(intf.areset),
+  master_monitor_bfm master_mon_bfm_h (.pclk(intf.pclk), 
+                                       .areset(intf.areset),
                                        .sclk(intf.sclk),
                                        .cs(intf.cs),
                                        .mosi0(intf.mosi0),

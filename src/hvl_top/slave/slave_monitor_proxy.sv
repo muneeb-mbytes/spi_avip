@@ -32,7 +32,7 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   //extern virtual task read_from_bfm(spi_transfer_char_s packet);
-  extern virtual function reset_detected();
+  extern virtual function void reset_detected();
   extern virtual task read(spi_transfer_char_s data_packet);
 
 endclass : slave_monitor_proxy
@@ -208,7 +208,7 @@ endfunction : end_of_elaboration_phase
 // Function reset_detected
 // This task detect the system reset appliction
 //--------------------------------------------------------------------------------------------
-function slave_monitor_proxy::reset_detected();
+function void slave_monitor_proxy::reset_detected();
   `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
 
   // TODO(mshariff): 

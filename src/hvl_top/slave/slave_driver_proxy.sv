@@ -30,7 +30,7 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   extern virtual task drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s struct_cfg);
-  extern virtual function reset_detected();
+  extern virtual function void reset_detected();
 
 endclass : slave_driver_proxy
 
@@ -84,7 +84,7 @@ endfunction : connect_phase
 //-------------------------------------------------------
 function void slave_driver_proxy::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-//  slave_drv_bfm_h.s_drv_proxy_h = this;
+  slave_drv_bfm_h.slave_drv_proxy_h = this;
 endfunction : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
@@ -166,8 +166,8 @@ endtask: drive_to_bfm
 // Function reset_detected
 // This task detect the system reset appliction
 //--------------------------------------------------------------------------------------------
-function slave_driver_proxy::reset_detected();
-  `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
+function void slave_driver_proxy::reset_detected();
+  `uvm_info(get_type_name(), "System reset is detected", UVM_NONE);
 
   // TODO(mshariff): 
   // Clear the data queues and kill the required threads
