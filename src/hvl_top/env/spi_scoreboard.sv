@@ -82,7 +82,9 @@ function void spi_scoreboard::build_phase(uvm_phase phase);
 
   master_analysis_fifo = new("master_analysis_fifo",this);
   slave_analysis_fifo = new("slave_analysis_fifo",this);
-
+  
+  master_tx_h = new("master_tx_h");
+  slave_tx_h = new("slave_tx_h");
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -159,7 +161,8 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 // 2. Check if master packets received are same as slave packets received
 //    To Make sure that we have equal number of master and slave packets
    
-  if (master_tx_h.master_out_slave_in == slave_tx_h.master_in_slave_out)begin 
+   if (master_tx_h.master_out_slave_in == slave_tx_h.master_in_slave_out)begin 
+ // if (master_tx_h.mosi0 == slave_tx_h.miso0)begin 
     `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_LOW);
     data_cmp_verified_count++;
   end   
@@ -195,7 +198,8 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 //    data_cmp_failed_count++;
 //  end
 
-  if (slave_tx_h.master_in_slave_out == master_tx_h.master_out_slave_in ) begin
+  if (slave_tx_h.master_in_slave_out == master_tx_h.master_out_slave_in) begin
+  // if (slave_tx_h.miso == master_tx_h.mosi ) begin
     `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_LOW);
     data_cmp_verified_count++;
   end
@@ -204,7 +208,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
     data_cmp_failed_count++;
   end
   
-// if (slave_tx_h. master_in_slave_out1 == master_tx_h.master_out_slave_in1) begin
+// if (slave_tx_h.master_in_slave_out1 == master_tx_h.master_out_slave_in1) begin
 //    `uvm_info (get_type_name(), $sformatf ("data1 comparision is successfull"),UVM_LOW);
 //    data_cmp_verified_count++;
 //  end
@@ -212,8 +216,8 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 //    `uvm_error (get_type_name(),$sformatf( "data1 comparision failed"));
 //    data_cmp_failed_count++;
 //  end
-  
-//  if (slave_tx_h. master_in_slave_out2 == master_tx_h.master_out_slave_in2) begin 
+//
+//  if (slave_tx_h.master_in_slave_out2 == master_tx_h.master_out_slave_in2) begin 
 //    `uvm_info (get_type_name(), $sformatf ("data2 comparision is successfull"),UVM_LOW);
 //    data_cmp_verified_count++;
 //  end
@@ -221,7 +225,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 //    `uvm_error (get_type_name(),$sformatf( "data2 comparision failed"));
 //     data_cmp_failed_count++;
 //  end 
-//  if (slave_tx_h. master_in_slave_out3 == master_tx_h.master_out_slave_in3) begin
+//  if (slave_tx_h.master_in_slave_out3 == master_tx_h.master_out_slave_in3) begin
 //    `uvm_info (get_type_name(), $sformatf ("data3 comparision is successfull"),UVM_LOW);
 //    data_cmp_verified_count++;
 //  end 
