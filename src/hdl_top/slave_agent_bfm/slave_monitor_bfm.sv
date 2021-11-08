@@ -39,7 +39,7 @@ interface slave_monitor_bfm(input pclk, input areset,
   //-------------------------------------------------------
   task wait_for_reset();
     @(negedge areset);
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_NONE);
+    `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_HIGH);
   endtask: wait_for_reset
 
   //-------------------------------------------------------
@@ -74,7 +74,7 @@ interface slave_monitor_bfm(input pclk, input areset,
     while (cs !== 'b1)
       @(negedge pclk);
 
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("IDLE condition has been detected"), UVM_NONE);
+    `uvm_info("MASTER_DRIVER_BFM", $sformatf("IDLE condition has been detected"), UVM_HIGH);
   endtask: wait_for_idle_state
 
   //-------------------------------------------------------

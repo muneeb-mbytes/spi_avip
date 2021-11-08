@@ -42,7 +42,7 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   //-------------------------------------------------------
   task wait_for_reset();
     @(negedge areset);
-    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("System reset detected"), UVM_LOW);
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("System reset detected"), UVM_HIGH);
   endtask: wait_for_reset
 
   //-------------------------------------------------------
@@ -54,7 +54,7 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   //-------------------------------------------------------
   task drive_idle_state(bit cpol);
 
-   `uvm_info("SLAVE_DRIVER_BFM", $sformatf("Starting to drive the IDLE state"), UVM_LOW);
+   `uvm_info("SLAVE_DRIVER_BFM", $sformatf("Starting to drive the IDLE state"), UVM_HIGH);
 
     @(posedge pclk);
     sclk <= cpol;
@@ -95,7 +95,8 @@ interface slave_driver_bfm(input pclk, input [NO_OF_SLAVES-1:0]cs,input areset,
   // TODO(mshariff): Reconsider the logic with different baudrates
   task drive_the_miso_data (spi_transfer_char_s data_packet,spi_transfer_cfg_s cfg_pkt);
 
-    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("TASK: DRIVING THE MISO DATA"), UVM_LOW);
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("TASK: DRIVING THE MISO DATA"), UVM_HIGH);
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("data_packet.miso =%d",data_packet.master_in_slave_out), UVM_LOW);
     // Driving sclk with initial value
     @(posedge pclk);
 //    cs <= data_packet.cs; 

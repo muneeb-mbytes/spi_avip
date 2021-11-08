@@ -43,12 +43,12 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void slave_spi_seq_item_converter::from_class(input slave_tx input_conv_h,
                                                         output spi_transfer_char_s output_conv);
-  output_conv.no_of_mosi_bits_transfer = input_conv_h.master_out_slave_in.size()*CHAR_LENGTH;
+  output_conv.no_of_miso_bits_transfer = input_conv_h.master_in_slave_out.size()*CHAR_LENGTH;
   //for(int i=0; i<input_conv_h.slave_out_slave_in.size(); i++) begin
-  for(int i=0; i<output_conv.no_of_mosi_bits_transfer; i++) begin
+  for(int i=0; i<output_conv.no_of_miso_bits_transfer; i++) begin
     //output_conv.slave_out_slave_in[i][j] = input_conv_h.slave_out_slave_in[i];
     //{<<byte{output_conv.slave_out_slave_in[i]}} = input_conv_h.slave_out_slave_in[i];
-    output_conv.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];
+    output_conv.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
     output_conv.cs = input_conv_h.cs;
     //output_conv_h.slave_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
   end

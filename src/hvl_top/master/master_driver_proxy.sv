@@ -105,7 +105,7 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   bit cpol, cpha;
 
   super.run_phase(phase);
-  `uvm_info(get_type_name(),"Hey ! It's master dirver proxy-RUN PHASE",UVM_LOW)
+  //`uvm_info(get_type_name(),"Hey ! It's master dirver proxy-RUN PHASE",UVM_LOW)
   // TODO(mshariff): Decide one among this
   // $cast(cpol_cpha, master_agent_cfg_h.spi_mode);
   //{cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
@@ -114,17 +114,17 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   // Wait for system reset
   master_drv_bfm_h.wait_for_reset();
 
-  `uvm_info(get_type_name(),"Waiting for Reset",UVM_LOW)
+  //`uvm_info(get_type_name(),"Waiting for Reset",UVM_LOW)
   // Drive the IDLE state for SPI interface
   master_drv_bfm_h.drive_idle_state(cpol);
 
-  `uvm_info(get_type_name(),"Driving Idle State",UVM_LOW)
+  //`uvm_info(get_type_name(),"Driving Idle State",UVM_LOW)
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;
     spi_transfer_cfg_s struct_cfg;
 
-    `uvm_info(get_type_name(),"Calling get next item",UVM_LOW)
+    //`uvm_info(get_type_name(),"Calling get next item",UVM_LOW)
     //tx = new();
     //tx.master_out_slave_in = new [2];
     //`uvm_info(get_type_name(),$sformatf("MASTER_TX = \n %s", tx.sprint),UVM_LOW)
@@ -157,7 +157,10 @@ task master_driver_proxy::run_phase(uvm_phase phase);
 
     master_spi_seq_item_converter::from_class(req, struc_packet); 
     drive_to_bfm(struc_packet, struct_cfg);
-    master_spi_seq_item_converter::to_class(struc_packet, req); 
+    master_spi_seq_item_converter::to_class(struc_packet, req);
+    
+    
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
 
     seq_item_port.item_done();
   end

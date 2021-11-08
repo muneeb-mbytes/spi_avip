@@ -123,19 +123,21 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
 
   // Driving logic
   forever begin
-    spi_transfer_char_s struc_packet;
+    spi_transfer_char_s struct_packet;
     spi_transfer_cfg_s struct_cfg;
 
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
-                                        req.sprint()),UVM_HIGH)
+                                        req.sprint()),UVM_LOW)
 
 //  // Wait for IDLE state on SPI interface
 //    slave_drv_bfm_h.wait_for_idle_state();
 
-    slave_spi_seq_item_converter::from_class(req, struc_packet); 
-    drive_to_bfm(struc_packet, struct_cfg);
-    slave_spi_seq_item_converter::to_class(struc_packet, req); 
+    slave_spi_seq_item_converter::from_class(req, struct_packet); 
+    drive_to_bfm(struct_packet, struct_cfg);
+    slave_spi_seq_item_converter::to_class(struct_packet, req);
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
+                                        struct_packet),UVM_LOW)
 
     seq_item_port.item_done();
   end

@@ -37,11 +37,11 @@ endfunction : new
 //-----------------------------------------------------------------------------
 task spi_fd_8b_slave_seq::body(); 
   req=slave_tx::type_id::create("req");
-  repeat(5) begin
+  repeat(1) begin
   start_item(req);
   if(!req.randomize() with { req.master_in_slave_out.size()==1;}) 
     `uvm_fatal(get_type_name(),"Randomization FAILED")
-  req.print();
+  //req.print();
   finish_item(req);
   end
 endtask : body
