@@ -1,5 +1,5 @@
-`ifndef MASTER_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
-`define MASTER_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
+`ifndef SLAVE_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
+`define SLAVE_SPI_SEQ_ITEM_CONVERTER_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // class : slave_spi_seq_item_converter
