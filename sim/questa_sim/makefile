@@ -94,7 +94,7 @@ simulate:
 	-voptargs=+acc=npr \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
-	+UVM_VERBOSITY=UVM_HIGH \ 
+	+UVM_VERBOSITY=UVM_HIGH \
 	-l $(test)/$(test).log \
 	-c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf $(test)/waveform.wlf
