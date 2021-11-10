@@ -156,11 +156,17 @@ task master_driver_proxy::run_phase(uvm_phase phase);
     // MSHA:end
 
     master_spi_seq_item_converter::from_class(req, struc_packet); 
+    
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("STRUCT CFG : , \n %p",struc_cfg),UVM_LOW);
+    
     drive_to_bfm(struc_packet, struct_cfg);
     master_spi_seq_item_converter::to_class(struc_packet, req);
     
     
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
+    //`uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
+    //`uvm_info(get_type_name(),$sformatf("STRUCT CFG : , \n %p",struc_cfg),UVM_LOW);
+
 
     seq_item_port.item_done();
   end
