@@ -80,7 +80,7 @@ compile:
 
 # Setting a default test as base_test
 ifndef test
-override test = spi_simple_fd_8b_test
+override test = base_test
 endif
 
 simulate:
@@ -94,6 +94,7 @@ simulate:
 	-voptargs=+acc=npr \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
+	+UVM_VERBOSITY=UVM_HIGH \ 
 	-l $(test)/$(test).log \
 	-c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf $(test)/waveform.wlf
