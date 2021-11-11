@@ -234,7 +234,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
   end
   else if (data_cmp_failed_count == 0) begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
-	  `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
   end
   else begin
     `uvm_error (get_type_name(), $sformatf ("comparisions not happened"));
@@ -249,7 +249,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
     `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of packets"),UVM_HIGH);
   end
   else begin
-	  `uvm_error (get_type_name(), $sformatf ("master and slave does have same no. of packets"));
+    `uvm_error (get_type_name(), $sformatf ("master and slave does have same no. of packets"));
   end 
 
 
