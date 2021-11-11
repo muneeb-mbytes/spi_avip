@@ -140,9 +140,9 @@ task spi_scoreboard::run_phase(uvm_phase phase);
   data_cmp_verified_count++;
  end   
  else begin
-   `uvm_error (get_type_name(),$sformatf( "data0 comparision failed"));
-    data_cmp_failed_count++;
-  end
+  `uvm_error (get_type_name(),$sformatf( "data0 comparision failed"));
+  data_cmp_failed_count++;
+ end
 
 //  if (master_tx_h.master_out_slave_in1 == slave_tx_h.master_in_slave_out1)begin
 //    `uvm_info (get_type_name(), $sformatf ("data1 comparision is successfull"),UVM_HIGH);
@@ -179,7 +179,6 @@ task spi_scoreboard::run_phase(uvm_phase phase);
   else begin
     `uvm_error (get_type_name(),$sformatf( "data0 comparision failed"));
     data_cmp_failed_count++;
-  
   end
   
 // if (slave_tx_h.master_in_slave_out1 == master_tx_h.master_out_slave_in1) begin
@@ -228,16 +227,15 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 // 1. Check if the comparisions counter is NON-zero
 //    A non-zero value indicates that the comparisions never happened and throw error
 
-  if (data_cmp_verified_count != 0 ) begin
+  if ((data_cmp_verified_count)&&(!data_cmp_failed_count) !== 0) begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("comparisions happened"),UVM_HIGH);
-  end
-  else if (data_cmp_failed_count == 0) begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("All comparisions succesfully happened"),UVM_HIGH);
   end
   else begin
-    `uvm_error (get_type_name(), $sformatf ("comparisions not happened"));
+    `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
+    `uvm_error (get_type_name(), $sformatf ("All comparisions have not happened"));
   end
 
 // 2. Check if master packets received are same as slave packets received
@@ -249,6 +247,8 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
     `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of packets"),UVM_HIGH);
   end
   else begin
+    `uvm_info (get_type_name(), $sformatf ("master_tx_count : %0d",master_tx_count ),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("slave_tx_count : %0d",slave_tx_count ),UVM_HIGH);
     `uvm_error (get_type_name(), $sformatf ("master and slave does have same no. of packets"));
   end 
 
@@ -256,10 +256,14 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 // 3. Analyis fifos must be zero - This will indicate that all the packets have been compared
 //    This is to make sure that we have taken all packets from both FIFOs and made the comparisions
   if ((master_analysis_fifo && slave_analysis_fifo) == 0)begin
-    `uvm_info (get_type_name(), $sformatf ("all packets are compared"),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo: %0d",master_analysis_fifo ),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo : %0d",slave_analysis_fifo ),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("all packets in FIFO are compared"),UVM_HIGH);
   end
   else begin
-    `uvm_error (get_type_name(),$sformatf( "all packets are not compared "));
+    `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo: %0d",master_analysis_fifo ),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo : %0d",slave_analysis_fifo ),UVM_HIGH);
+    `uvm_error (get_type_name(),$sformatf( "all packets in FIFO are not compared"));
   end
 endfunction : check_phase
 
