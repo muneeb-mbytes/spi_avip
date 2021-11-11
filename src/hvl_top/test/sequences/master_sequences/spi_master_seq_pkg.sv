@@ -22,7 +22,18 @@
  `include "master_base_seq.sv"
  `include "spi_fd_8b_master_seq.sv"
  `include "spi_fd_16b_master_seq.sv"
-
+ `include "spi_fd_32b_master_seq.sv"
+ `include "spi_fd_64b_master_seq.sv"
+ `include "spi_fd_8b_ct_master_seq.sv"
+ `include "spi_fd_8b_dct_master_seq.sv"
+ `include "spi_fd_cpol0_cpha0_master_seq.sv"
+ `include "spi_fd_cpol0_cpha1_master_seq.sv"
+ `include "spi_fd_cpol1_cpha0_master_seq.sv"
+ `include "spi_fd_cpol1_cpha1_master_seq.sv"
+ `include "spi_fd_msb_lsb_master_seq.sv"
+ `include "spi_fd_maximum_bits_master_seq.sv"
+ `include "spi_c2t_delay_master_seq.sv"
+ `include "spi_t2c_delay_master_seq.sv"
 endpackage :spi_master_seq_pkg
 
 `endif

@@ -19,7 +19,6 @@ class spi_fd_8b_virtual_seq extends spi_fd_virtual_seq_base;
 
 endclass : spi_fd_8b_virtual_seq
 
-
 //--------------------------------------------------------------------------------------------
 //Constructor:new
 //
@@ -27,7 +26,6 @@ endclass : spi_fd_8b_virtual_seq
 //name - Instance name of the virtual_sequence
 //parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-
 function spi_fd_8b_virtual_seq::new(string name="spi_fd_8b_virtual_seq");
   super.new(name);
 endfunction: new
@@ -39,7 +37,6 @@ endfunction: new
 //Parameters:
 // phase - stores the current phase
 //--------------------------------------------------------------------------------------------
-
 task spi_fd_8b_virtual_seq::body();
  super.body(); //Sets up the sub-sequencer pointer
 

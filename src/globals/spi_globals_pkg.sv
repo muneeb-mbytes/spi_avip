@@ -21,7 +21,10 @@ parameter int DATA_WIDTH = 8;
 //
 // Specifies the character length of the trasnfer
 
-parameter int CHAR_LENGTH= 8;
+parameter int CHAR_LENGTH = 8;
+
+// Define: max bits supported to transfer
+parameter int MAXIMUM_BITS = 1024;
 
 // Define: depth_arry
 //

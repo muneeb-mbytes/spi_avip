@@ -14,7 +14,6 @@ class spi_fd_16b_slave_seq extends slave_base_seq;
    // Externally defined tasks and functions
    //---------------------------------------------
    extern function new (string name="spi_fd_16b_slave_seq");
-
    extern virtual task body();
 
 endclass:spi_fd_16b_slave_seq
@@ -36,13 +35,14 @@ endfunction:new
 //-----------------------------------------------------------------------------
 task spi_fd_16b_slave_seq::body(); 
   req=slave_tx::type_id::create("req");
-  repeat(2) begin
-  start_item(req);
-  if(!req.randomize () with { master_in_slave_out.size()==2;
-                            });
-  `uvm_fatal(get_type_name,"Randomization failed")
-  finish_item(req);
-  end
+  repeat(1) begin
+    start_item(req);
+    if(!req.randomize () with {req.master_in_slave_out.size()==2;})
+      `uvm_fatal(get_type_name(),"Randomization failed")
+      req.print();
+      finish_item(req);
+    end
+
 endtask:body
 
 `endif

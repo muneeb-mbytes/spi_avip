@@ -38,7 +38,9 @@ class slave_tx extends uvm_sequence_item;
 // Constraints for SPI
 //--------------------------------------------------------------------------------------------
 
-constraint miso{master_in_slave_out.size()>0 && master_in_slave_out.size()<8;}
+constraint miso{master_in_slave_out.size()>0 && master_in_slave_out.size()<16;}
+constraint max_bits_miso{foreach(master_in_slave_out[i])
+                                  master_in_slave_out[i]%8 ==0;}
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

@@ -25,7 +25,18 @@ package spi_virtual_seq_pkg;
   `include "spi_fd_virtual_seq_base.sv"
   `include "spi_fd_8b_virtual_seq.sv"
   `include "spi_fd_16b_virtual_seq.sv"
-  
+  `include "spi_fd_32b_virtual_seq.sv"
+  `include "spi_fd_64b_virtual_seq.sv"
+  `include "spi_fd_8b_ct_virtual_seq.sv"
+  `include "spi_fd_8b_dct_virtual_seq.sv"
+  `include "spi_fd_cpol0_cpha0_virtual_seq.sv"
+  `include "spi_fd_cpol0_cpha1_virtual_seq.sv"
+  `include "spi_fd_cpol1_cpha0_virtual_seq.sv"
+  `include "spi_fd_cpol1_cpha1_virtual_seq.sv"
+  `include "spi_fd_msb_lsb_virtual_seq.sv"
+  `include "spi_fd_maximum_bits_virtual_seq.sv"
+  `include "spi_c2t_delay_virtual_seq.sv"
+  `include "spi_t2c_delay_virtual_seq.sv"
 endpackage : spi_virtual_seq_pkg
 
 `endif

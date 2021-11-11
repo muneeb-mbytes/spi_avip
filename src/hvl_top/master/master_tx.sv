@@ -22,7 +22,9 @@ class master_tx extends uvm_sequence_item;
   // Constraints for SPI
   //--------------------------------------------------------------------------------------------
 
-  constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
+ constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<16;}
+  constraint max_bits{foreach(master_out_slave_in[i])
+                              master_out_slave_in[i]%8==0;}
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

@@ -1,5 +1,6 @@
-`ifndef SPI_FD_16b_VIRTUAL_SEQ_INCLUDED_
-`define SPI_FD_16b_VIRTUAL_SEQ_INCLUDED_
+`ifndef SPI_FD_16B_VIRTUAL_SEQ_INCLUDED_
+`define SPI_FD_16B_VIRTUAL_SEQ_INCLUDED_
+
 //--------------------------------------------------------------------------------------------
 // Extended class from spi virtual sequence
 //--------------------------------------------------------------------------------------------
@@ -20,7 +21,6 @@ class spi_fd_16b_virtual_seq extends spi_fd_virtual_seq_base;
 
 endclass : spi_fd_16b_virtual_seq
 
-
 //--------------------------------------------------------------------------------------------
 //Constructor:new
 //
@@ -28,7 +28,6 @@ endclass : spi_fd_16b_virtual_seq
 //name - Instance name of the virtual_sequence
 //parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-
 function spi_fd_16b_virtual_seq::new(string name="spi_fd_16b_virtual_seq");
   super.new(name);
 endfunction: new
@@ -40,7 +39,6 @@ endfunction: new
 //Parameters:
 // phase - stores the current phase
 //--------------------------------------------------------------------------------------------
-
 task spi_fd_16b_virtual_seq::body();
  super.body(); //Sets up the sub-sequencer pointer
 
@@ -64,7 +62,7 @@ task spi_fd_16b_virtual_seq::body();
     // MSHA: end
 
     //starting master sequencer
-    spi_fd_16b_master_seq_h.start(master_seqr_h);
+    spi_fd_16b_master_seq_h.start(p_sequencer.master_seqr_h);
   end
     begin
       // TODO(mshariff): We need to connect the slaves with caution
@@ -81,7 +79,7 @@ task spi_fd_16b_virtual_seq::body();
       // MSHA: end
 
       //starting slave sequencer
-      spi_fd_16b_slave_seq_h.start(slave_seqr_h);
+      spi_fd_16b_slave_seq_h.start(p_sequencer.slave_seqr_h);
      end
  join
 

@@ -37,7 +37,6 @@ endclass:spi_fd_virtual_seq_base
 //name - Instance name of the virtual_sequence
 //parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-  
 function spi_fd_virtual_seq_base::new(string name="spi_fd_virtual_seq_base");
   super.new(name);
 endfunction:new

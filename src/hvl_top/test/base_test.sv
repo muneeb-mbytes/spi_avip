@@ -17,7 +17,6 @@ class base_test extends uvm_test;
   env env_h;
 
 
-  spi_fd_8b_master_seq spi_fd_8b_master_seq_h;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -52,27 +51,44 @@ endfunction : new
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   // Setup the environemnt cfg 
+  env_cfg_h = env_config::type_id::create("env_cfg_h");
+  env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   setup_env_cfg();
   // Create the environment
   env_h = env::type_id::create("env_h",this);
 
 endfunction : build_phase
+
 //--------------------------------------------------------------------------------------------
 // Function: setup_env_cfg
 // Setup the environment configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_env_cfg();
-  env_cfg_h = env_config::type_id::create("env_cfg_h");
+ function void base_test::setup_env_cfg();
+  //env_cfg_h = env_config::type_id::create("env_cfg_h");
   env_cfg_h.no_of_slaves = NO_OF_SLAVES;
   env_cfg_h.has_scoreboard = 1;
   env_cfg_h.has_virtual_seqr = 1;
   
   // Setup the master agent cfg 
+  //env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   setup_master_agent_cfg();
+  uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
+  env_cfg_h.master_agent_cfg_h.print();
+  
   // Setup the slave agent(s) cfg 
+  env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
+  foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
+    env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("slave_agent_cfg_h[%0d]",i));
+  end
   setup_slave_agents_cfg();
+  foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
+    uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
+                                             "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
+   env_cfg_h.slave_agent_cfg_h[i].print();
+  end
 
+  // set method for env_cfg
   uvm_config_db #(env_config)::set(this,"*","env_config",env_cfg_h);
   env_cfg_h.print();
  endfunction: setup_env_cfg
@@ -82,8 +98,8 @@ function void base_test::setup_env_cfg();
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_master_agent_cfg();
-  env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
+ function void base_test::setup_master_agent_cfg();
+  //env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   // Configure the Master agent configuration
   env_cfg_h.master_agent_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
   env_cfg_h.master_agent_cfg_h.no_of_slaves         = NO_OF_SLAVES;
@@ -96,8 +112,8 @@ function void base_test::setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.has_coverage         = 1;
 
 
-  uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
-  env_cfg_h.master_agent_cfg_h.print();
+ // uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
+ //env_cfg_h.master_agent_cfg_h.print();
 endfunction: setup_master_agent_cfg
 
 //--------------------------------------------------------------------------------------------
@@ -105,12 +121,12 @@ endfunction: setup_master_agent_cfg
 // Setup the slave agent(s) configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_slave_agents_cfg();
+ function void base_test::setup_slave_agents_cfg();
   // Create slave agent(s) configurations
-  env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
+  // env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
   // Setting the configuration for each slave
   foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
-    env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("salve_agent_cfg_h[%0d]",i));
+    //env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("salve_agent_cfg_h[%0d]",i));
     env_cfg_h.slave_agent_cfg_h[i].slave_id     = i;
     env_cfg_h.slave_agent_cfg_h[i].is_active    = uvm_active_passive_enum'(UVM_ACTIVE);
     env_cfg_h.slave_agent_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
@@ -121,9 +137,9 @@ function void base_test::setup_slave_agents_cfg();
     // MSHA:                                         $sformatf("slave_agent_config[%0d]",i),
     // MSHA:                                         env_cfg_h.salve_agent_cfg_h[i]);
 
-    uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
-                                             "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
-   env_cfg_h.slave_agent_cfg_h[i].print();
+   // uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
+   //                                          "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
+   // env_cfg_h.slave_agent_cfg_h[i].print();
   end
 
 endfunction: setup_slave_agents_cfg
@@ -164,5 +180,6 @@ task base_test::run_phase(uvm_phase phase);
   phase.drop_objection(this);
 
 endtask : run_phase
+
 `endif
 

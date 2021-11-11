@@ -16,15 +16,13 @@ class slave_base_seq extends uvm_sequence #(slave_tx);
   extern function new(string name = "slave_base_seq");
 endclass : slave_base_seq
 
-
 //-----------------------------------------------------------------------------
 // Constructor: new
 // Initializes the slave_base_sequence class object
 //
 // Parameters:
-//  name - instance name of the config_template
+// name - instance name of the config_template
 //-----------------------------------------------------------------------------
-
 function slave_base_seq::new(string name = "slave_base_seq");
   super.new(name);
 endfunction : new
