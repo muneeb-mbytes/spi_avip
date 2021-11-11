@@ -130,11 +130,14 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
     `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
                                         req.sprint()),UVM_LOW)
 
-//  // Wait for IDLE state on SPI interface
-//    slave_drv_bfm_h.wait_for_idle_state();
+    // Wait for IDLE state on SPI interface
+    slave_drv_bfm_h.wait_for_idle_state();
 
     slave_spi_seq_item_converter::from_class(req, struct_packet); 
+    // MSHA: slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
+
     drive_to_bfm(struct_packet, struct_cfg);
+
     slave_spi_seq_item_converter::to_class(struct_packet, req);
     `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
                                         struct_packet),UVM_LOW)
@@ -160,7 +163,7 @@ task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet, spi_transfer_c
 
    // {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
     
-   slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+   //slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
 
 //  endcase
 

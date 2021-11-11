@@ -46,9 +46,10 @@ function void master_spi_cfg_converter::from_class(input master_agent_config inp
     {cpol,cpha} = operation_modes_e'(input_conv_h.spi_mode);
     output_conv.c2t = input_conv_h.c2tdelay;
     output_conv.t2c = input_conv_h.t2cdelay;
-    output_conv.baudrate = input_conv_h.baudrate;
+    output_conv.baudrate_divisor = input_conv_h.baudrate_divisor;
     output_conv.cpol = cpol;
     output_conv.cpha = cpha;
+    output_conv.msb_first = shift_direction_e'(input_conv_h.shift_dir);
     output_conv.wdelay = input_conv_h.wdelay;
 
 endfunction: from_class 
@@ -63,7 +64,7 @@ function void master_spi_cfg_converter::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field( "c2t", spi_st.c2t , $bits(spi_st.c2t),UVM_DEC);
   printer.print_field( "t2c", spi_st.t2c , $bits(spi_st.t2c),UVM_DEC);
-  printer.print_field( "baudrate", spi_st.baudrate , $bits(spi_st.baudrate),UVM_DEC);
+  printer.print_field( "baudrate_divisor", spi_st.baudrate_divisor , $bits(spi_st.baudrate_divisor),UVM_DEC);
   printer.print_field( "cpol", spi_st.cpol , $bits(spi_st.cpol),UVM_DEC);
   printer.print_field( "cphase", spi_st.cpha , $bits(spi_st.cpha),UVM_DEC);
 

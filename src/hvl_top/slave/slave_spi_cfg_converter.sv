@@ -9,13 +9,6 @@
 class slave_spi_cfg_converter extends uvm_object;
   `uvm_object_utils(slave_spi_cfg_converter)
 
-  static int cpol;
-  static int cpha;
-  static int c2t;
-  static int t2c;
-  static int baudrate;
-  static int wdelay;
-
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -43,13 +36,16 @@ endfunction : new
 // converting slave_cfg configurations into structure configurations
 //--------------------------------------------------------------------------------------------
 
-function void slave_spi_cfg_converter::from_class(input slave_spi_cfg_converter input_conv_h,
-                                                        output spi_transfer_cfg_s output_conv);
-    output_conv.c2t = input_conv_h.c2t;
-    output_conv.t2c = input_conv_h.t2c;
-    output_conv.baudrate = input_conv_h.baudrate;
-    output_conv.cpol = input_conv_h.cpol;
-    output_conv.cpha = input_conv_h.cpha;
+function void slave_spi_cfg_converter::from_class(input master_agent_config input_conv_h,
+                                                  output spi_transfer_cfg_s output_conv);
+    bit cpol;
+    bit cpha;
+    {cpol,cpha} = operation_modes_e'(input_conv_h.spi_mode);
+    output_conv.c2t = input_conv_h.c2tdelay;
+    output_conv.t2c = input_conv_h.t2cdelay;
+    output_conv.baudrate_divisor = input_conv_h.baudrate_divisor;
+    output_conv.cpol = cpol;
+    output_conv.cpha = cpha;
     output_conv.wdelay = input_conv_h.wdelay;
 
 endfunction: from_class 
@@ -64,7 +60,8 @@ function void slave_spi_cfg_converter::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field( "c2t", spi_st.c2t , $bits(spi_st.c2t),UVM_DEC);
   printer.print_field( "t2c", spi_st.t2c , $bits(spi_st.t2c),UVM_DEC);
-  printer.print_field( "baudrate", spi_st.baudrate , $bits(spi_st.baudrate),UVM_DEC);
+  printer.print_field( "wdelay", spi_st.wdelay , $bits(spi_st.wdelay),UVM_DEC);
+  printer.print_field( "baudrate_divisor", spi_st.baudrate_divisor , $bits(spi_st.baudrate_divisor),UVM_DEC);
   printer.print_field( "cpol", spi_st.cpol , $bits(spi_st.cpol),UVM_DEC);
   printer.print_field( "cphase", spi_st.cpha , $bits(spi_st.cpha),UVM_DEC);
 

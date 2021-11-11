@@ -109,7 +109,7 @@ task master_driver_proxy::run_phase(uvm_phase phase);
   // TODO(mshariff): Decide one among this
   // $cast(cpol_cpha, master_agent_cfg_h.spi_mode);
   //{cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
-  cpol = operation_modes_e'(master_agent_cfg_h.spi_mode);
+  {cpol, cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
 
   // Wait for system reset
   master_drv_bfm_h.wait_for_reset();
@@ -157,11 +157,14 @@ task master_driver_proxy::run_phase(uvm_phase phase);
 
     master_spi_seq_item_converter::from_class(req, struc_packet); 
     master_spi_cfg_converter::from_class(master_agent_cfg_h, struct_cfg); 
+
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_HIGH);
+    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_HIGH);
     drive_to_bfm(struc_packet, struct_cfg);
+
     master_spi_seq_item_converter::to_class(struc_packet, req);
     
-    
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
 
     seq_item_port.item_done();
   end

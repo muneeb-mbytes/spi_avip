@@ -34,6 +34,7 @@ package test_pkg;
  `include "spi_fd_8b_ct_test.sv"
  `include "spi_fd_8b_dct_test.sv"
  `include "spi_simple_fd_msb_lsb_test.sv"
+ `include "spi_simple_fd_8b_cpol0_cpha1_test.sv"
  `include "spi_simple_fd_cpol0_cpha0_test.sv"
  `include "spi_simple_fd_cpol0_cpha1_test.sv"
  `include "spi_simple_fd_cpol1_cpha0_test.sv"

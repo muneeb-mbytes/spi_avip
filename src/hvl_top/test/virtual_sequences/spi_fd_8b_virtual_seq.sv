@@ -63,7 +63,9 @@ task spi_fd_8b_virtual_seq::body();
 
       //starting master sequencer with respective to p_sequencer declared in virtual seq base
       
-      spi_fd_8b_master_seq_h.start(p_sequencer.master_seqr_h);
+      repeat(5) begin
+       spi_fd_8b_master_seq_h.start(p_sequencer.master_seqr_h);
+      end
     end
 
     begin : SLAVE_SEQ_START
@@ -81,7 +83,9 @@ task spi_fd_8b_virtual_seq::body();
       // MSHA: end
 
       //starting slave sequencer with respective to p_sequencer declared in virtual seq base
-      spi_fd_8b_slave_seq_h.start(p_sequencer.slave_seqr_h);
+      repeat(5) begin
+        spi_fd_8b_slave_seq_h.start(p_sequencer.slave_seqr_h);
+      end
     end
   join
 

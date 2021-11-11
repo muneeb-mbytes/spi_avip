@@ -48,7 +48,10 @@ usage:
 	echo "make compile";
 	echo "";
 	echo "To simulate use:"
-	echo "make simulate test=<test_name>";
+	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL>";
+	echo "";
+	echo "Example:":
+	echo "make simulate test=base_test uvm_verbosity=UVM_HIGH";
 	echo "";
 	echo "-----------------------------------------------------------------";
 	echo "-----------------------------------------------------------------";
@@ -83,6 +86,11 @@ ifndef test
 override test = base_test
 endif
 
+# Setting the default uvm_verbosity to UVM_MEDIUM
+ifndef uvm_verbosity
+override uvm_verbosity = UVM_MEDIUM
+endif
+
 simulate:
 	make clean_simulate
 	mkdir $(test)
@@ -94,6 +102,7 @@ simulate:
 	-voptargs=+acc=npr \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
+	+UVM_VERBOSITY=$(uvm_verbosity) \
 	-l $(test)/$(test).log \
 	-c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf $(test)/waveform.wlf

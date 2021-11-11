@@ -107,10 +107,11 @@ endfunction : build_phase
   env_cfg_h.master_agent_cfg_h.shift_dir            = shift_direction_e'(LSB_FIRST);
   env_cfg_h.master_agent_cfg_h.c2tdelay             = 1;
   env_cfg_h.master_agent_cfg_h.t2cdelay             = 1;
-  env_cfg_h.master_agent_cfg_h.primary_prescalar    = 0;
-  env_cfg_h.master_agent_cfg_h.secondary_prescalar  = 0;
   env_cfg_h.master_agent_cfg_h.has_coverage         = 1;
 
+  // baudrate_divisor_divisor = (secondary_prescalar+1) * (2 ** (primary_prescalar+1))
+  // baudrate = busclock / baudrate_divisor_divisor;
+  env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(0), .secondary_prescalar(0));
 
  // uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
  //env_cfg_h.master_agent_cfg_h.print();

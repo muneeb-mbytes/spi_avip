@@ -34,13 +34,15 @@ class slave_tx extends uvm_sequence_item;
 
   bit [CHAR_LENGTH-1:0] master_out_slave_in[$];
 
-//--------------------------------------------------------------------------------------------
-// Constraints for SPI
-//--------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------
+  // Constraints for SPI
+  //--------------------------------------------------------------------------------------------
 
-constraint miso{master_in_slave_out.size()>0 && master_in_slave_out.size()<16;}
-constraint max_bits_miso{foreach(master_in_slave_out[i])
-                                  master_in_slave_out[i]%8 ==0;}
+  constraint miso_c { master_in_slave_out.size() > 0 ;
+                      master_in_slave_out.size() < MAXIMUM_BITS/CHAR_LENGHT;}
+
+  constraint max_bits_miso{foreach(master_in_slave_out[i])
+                                    master_in_slave_out[i]%8 ==0;}
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

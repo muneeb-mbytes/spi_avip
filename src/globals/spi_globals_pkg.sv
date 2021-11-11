@@ -17,13 +17,15 @@ parameter int DATA_WIDTH = 8;
 
 //parameter SLAVE_DRIVER_ACTIVE = 0;
 
-// Define: char_length
+// Define: CHAR_LENGTH
 //
 // Specifies the character length of the trasnfer
 
 parameter int CHAR_LENGTH = 8;
 
-// Define: max bits supported to transfer
+// Define: MAXIMUM_BITS
+//
+// max bits supported per transfer
 parameter int MAXIMUM_BITS = 1024;
 
 // Define: depth_arry
@@ -35,7 +37,7 @@ parameter int MAXIMUM_BITS = 1024;
 //
 // Specifies the no of rows of an array
 
-parameter int NO_OF_ROWS = 16;
+parameter int NO_OF_ROWS = MAXIMUM_BITS / CHAR_LENGTH;
 
 
 // Enum: shift_direction_e
@@ -92,32 +94,35 @@ typedef struct {
   bit [NO_OF_SLAVES-1:0] cs;
   //bit [CHAR_LENGTH-1:0] master_out_slave_in[DEPTH_ARRY];
   bit [NO_OF_ROWS-1:0][CHAR_LENGTH-1:0] master_out_slave_in;
+  // MSHA: bit [NO_OF_ROWS * CHAR_LENGTH -1 : 0] master_out_slave_in;
   int no_of_mosi_bits_transfer;
   
   //int c2t;
   //int t2c;
-  //int baudrate;
+  //int baudrate_divisor;
   
   //miso signals
   //bit [CHAR_LENGTH-1:0] master_in_slave_out[DEPTH_ARRY];
   bit [NO_OF_ROWS-1:0][CHAR_LENGTH-1:0] master_in_slave_out;  
+  // MSHA: bit [NO_OF_ROWS * CHAR_LENGTH -1 : 0] master_in_slave_out;  
   int no_of_miso_bits_transfer;
 
 } spi_transfer_char_s;
 //struct: spi_transfer_cfg_s
 //c2t : chip to transaction delay
 //t2c : transaction to chip delay
-//baudrate : specifies the speed of the transaction
+//baudrate_divisor : specifies the speed of the transaction
 //wdelay: delay between two tarnsactions
 //cpol: clock polarity
 //cpha: clock phase
 typedef struct {
   
+  bit cpol;
+  bit cpha;
+  bit msb_first;
   int c2t;
   int t2c;
-  int cpol;
-  int cpha;
-  int baudrate;
+  int baudrate_divisor;
   int wdelay;
 
 } spi_transfer_cfg_s;

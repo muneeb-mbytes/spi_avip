@@ -26,9 +26,9 @@ module slave_agent_bfm(spi_if intf);
   // Slave driver bfm instantiation
   //-------------------------------------------------------
   slave_driver_bfm slave_drv_bfm_h (.pclk(intf.pclk),
-                                    .cs(intf.cs),
                                     .areset(intf.areset),
                                     .sclk(intf.sclk),
+                                    .cs(intf.cs),
                                     .mosi0(intf.mosi0),
                                     .mosi1(intf.mosi1),
                                     .mosi2(intf.mosi2),

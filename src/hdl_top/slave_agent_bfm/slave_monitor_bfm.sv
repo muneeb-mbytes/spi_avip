@@ -110,7 +110,7 @@ interface slave_monitor_bfm(input pclk, input areset,
 
     // Generate C2T delay
     // Delay between negedge of CS to posedge of sclk
-    repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
+    repeat((cfg_pkt.c2t * cfg_pkt.baudrate_divisor) - 1) begin
       @(posedge pclk);
     end
    
@@ -121,7 +121,7 @@ interface slave_monitor_bfm(input pclk, input areset,
       if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
         // Driving MOSI at posedge of sclk for CPOL=0 and CPHA=0  OR
         // Driving MOSI at negedge of sclk for CPOL=1 and CPHA=0
-        //drive_sclk(cfg_pkt.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate_divisor/2);
 
         // For simple SPI
         // MSHA: data_packet.data[B0] = mois0;
@@ -130,20 +130,20 @@ interface slave_monitor_bfm(input pclk, input areset,
 
         // Sampling MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
         // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
-        //drive_sclk(cfg_pkt.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate_divisor/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
       end
       else begin : CPHA_IS_1
         // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
         // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
-        //drive_sclk(cfg_pkt.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate_divisor/2);
         //data_packet.miso[i] = miso0;
         data_packet.master_in_slave_out[i] = miso0;
 
         // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
         // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
-        //drive_sclk(cfg_pkt.baudrate/2);
+        //drive_sclk(cfg_pkt.baudrate_divisor/2);
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
         // mosi0 <= data_packet.data[i];
@@ -159,7 +159,7 @@ interface slave_monitor_bfm(input pclk, input areset,
 
     // Generate T2C delay
     // Delay between last edge of SLCK to posedge of CS
-    repeat(cfg_pkt.t2c * cfg_pkt.baudrate) begin
+    repeat(cfg_pkt.t2c * cfg_pkt.baudrate_divisor) begin
       @(posedge pclk);
     end
     
@@ -171,7 +171,7 @@ interface slave_monitor_bfm(input pclk, input areset,
     // Generates WDELAY
     // Delay between 2 transfers 
     // This is the time for which CS is de-asserted between the transfers 
-    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate) begin
+    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate_divisor) begin
       @(posedge pclk);
     end
 

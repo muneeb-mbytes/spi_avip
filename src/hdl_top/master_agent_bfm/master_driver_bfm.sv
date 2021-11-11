@@ -42,6 +42,8 @@ interface master_driver_bfm(input pclk, input areset,
   task wait_for_reset();
     @(negedge areset);
     `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_HIGH);
+    @(posedge areset);
+    `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset deactivated"), UVM_HIGH);
   endtask: wait_for_reset
 
   //-------------------------------------------------------
@@ -53,9 +55,9 @@ interface master_driver_bfm(input pclk, input areset,
   //-------------------------------------------------------
   task drive_idle_state(bit cpol);
 
-   `uvm_info("MASTER_DRIVER_BFM", $sformatf("Strting to drive the IDLE state"), UVM_HIGH);
-
     @(posedge pclk);
+
+    `uvm_info("MASTER_DRIVER_BFM", $sformatf("Driving the IDLE state"), UVM_HIGH);
     sclk <= cpol;
     // TODO(mshariff):
     // Use of replication operator 
@@ -107,67 +109,81 @@ interface master_driver_bfm(input pclk, input areset,
     cs <= data_packet.cs; 
     sclk <= cfg_pkt.cpol;
  
-    // Adding half-sclk delay for CPHA=1
-    if(cfg_pkt.cpha) begin
-      //`uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[0]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
-      mosi0 <= data_packet.master_out_slave_in[0];
-      @(posedge pclk);
-    end
-
     // Generate C2T delay
     // Delay between negedge of CS to posedge of sclk
-    repeat((cfg_pkt.c2t * cfg_pkt.baudrate) - 1) begin
+    repeat((cfg_pkt.c2t * cfg_pkt.baudrate_divisor) - 1) begin
       @(posedge pclk);
     end
-   
+      
+    `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi (8bits) =8'h%0x",data_packet.master_out_slave_in[0]),UVM_LOW)
+
     // Driving CS, sclk and MOSI
     // and sampling MISO
-    for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
+    for(int row_no=0; row_no<data_packet.no_of_mosi_bits_transfer/CHAR_LENGTH; row_no++) begin
 
-      if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
-        // Driving MOSI at posedge of sclk for CPOL=0 and CPHA=0  OR
-        // Driving MOSI at negedge of sclk for CPOL=1 and CPHA=0
-        drive_sclk(cfg_pkt.baudrate/2);
+      for(int k=0, bit_no=0; k<CHAR_LENGTH; k++) begin
 
-        // For simple SPI
-        // MSHA: mosi0 <= data_packet.data[B0];
-        // mosi0 <= data_packet.data[i];
-        //`uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[i]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
-        mosi0 <= data_packet.master_out_slave_in[i];
+        // Logic for MSB first or LSB first 
+        bit_no = cfg_pkt.msb_first ? ((CHAR_LENGTH - 1) - k) : k;
 
-        // Sampling MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
-        // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
-        drive_sclk(cfg_pkt.baudrate/2);
-        //data_packet.miso[i] = miso0;
-        data_packet.master_in_slave_out[i] = miso0;
-      end
-      else begin : CPHA_IS_1
+        if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
+
+          // Driving MOSI at posedge of sclk for CPOL=0 and CPHA=0  OR
+          // Driving MOSI at negedge of sclk for CPOL=1 and CPHA=0
+          drive_sclk(cfg_pkt.baudrate_divisor/2);
+
+          // For simple SPI
+          // MSHA: mosi0 <= data_packet.data[B0];
+          // mosi0 <= data_packet.data[i];
+          //`uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[i]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
+          mosi0 <= data_packet.master_out_slave_in[row_no][bit_no];
+          // MSHA: `uvm_info("DEBUG MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("mosi[i]=%d",data_packet.master_out_slave_in[i]),UVM_HIGH)
+
+          // Sampling MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
+          // Sampling MISO at posedge of sclk for CPOL=1 and CPHA=0
+          drive_sclk(cfg_pkt.baudrate_divisor/2);
+          //data_packet.miso[i] = miso0;
+          data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+        end
+        else begin : CPHA_IS_1
+          // Data is output half-cycle before the first rising edge of SCLK
+          // MSHA: mosi0 <= cfg_pkt.msb_first ? data_packet.master_out_slave_in[0][CHAR_LENGTH - 1] :  data_packet.master_out_slave_in[0][0];
+          mosi0 <= data_packet.master_out_slave_in[row_no][bit_no];
+          `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi[%0d][%0d]=%0b",
+                    row_no, k,
+                    data_packet.master_out_slave_in[row_no][bit_no]),UVM_LOW)
+
         // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
         // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
-        drive_sclk(cfg_pkt.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate_divisor/2);
         //data_packet.miso[i] = miso0;
-        data_packet.master_in_slave_out[i] = miso0;
+        data_packet.master_in_slave_out[row_no][bit_no] = miso0;
 
         // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
         // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
-        drive_sclk(cfg_pkt.baudrate/2);
+        drive_sclk(cfg_pkt.baudrate_divisor/2);
         // For simple SPI
         // MSHA: mosi0 <= data_packet.data[B0];
-        // mosi0 <= data_packet.data[i];
-        // 
-        // Since first bit in CPHA=1 is driven at CS=0, 
-        // we don't have to drive the last bit twice
-        if(i < (data_packet.no_of_mosi_bits_transfer-1)) begin
-          //`uvm_info("CS VALUE IS MASTER_DRIVER_BFM",$sformatf("mosi[i]=%d",data_packet.master_out_slave_in[0]),UVM_LOW)
-          mosi0 <= data_packet.master_out_slave_in[i];
+          // mosi0 <= data_packet.data[i];
+          // 
+          // Since first bit in CPHA=1 is driven at CS=0, 
+          // we don't have to drive the last bit twice
+          // MSHA: if( ((row_no+1) * (bit_no+1)) != data_packet.no_of_mosi_bits_transfer) begin
+          // MSHA:   int row_no_local, k_local;
+          // MSHA:   row_no_local = row_no + ((bit_no + 1) % CHAR_LENGTH);
+          // MSHA:   k_local = (bit_no + 1) / CHAR_LENGTH;
+          // MSHA:   mosi0 <= data_packet.master_out_slave_in[row_no_local][k_local];
+          // MSHA:   `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi[%0d][%0d]=%0b",
+          // MSHA:             row_no_local, k_local,
+          // MSHA:             data_packet.master_out_slave_in[row_no_local][k_local]),UVM_LOW)
+          // MSHA: end
         end
       end
-
     end
 
     // Generate T2C delay
     // Delay between last edge of SLCK to posedge of CS
-    repeat(cfg_pkt.t2c * cfg_pkt.baudrate) begin
+    repeat(cfg_pkt.t2c * cfg_pkt.baudrate_divisor) begin
       @(posedge pclk);
     end
 
@@ -178,7 +194,10 @@ interface master_driver_bfm(input pclk, input areset,
     // Generates WDELAY
     // Delay between 2 transfers 
     // This is the time for which CS is de-asserted between the transfers 
-    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate) begin
+    //
+    // We are having one pclk less because when the next transfer comes,
+    // then the posedg_pclk delay is added at the start of this task
+    repeat((cfg_pkt.wdelay * cfg_pkt.baudrate_divisor) - 1) begin
       @(posedge pclk);
     end
     

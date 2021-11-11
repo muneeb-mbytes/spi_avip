@@ -45,17 +45,22 @@ class master_agent_config extends uvm_object;
   // Default value is 1
   int wdelay = 1;
   
-  // Variable: baudrate
-  // Defines the date rate 
-  int baudrate;
-
   // Variable: primary_prescalar
-  // Used for setting the primary prescalar value for baudrate
-  bit[2:0] primary_prescalar;
+  // Used for setting the primary prescalar value for baudrate_divisor
+  protected bit[2:0] primary_prescalar;
 
   // Variable: secondary_prescalar
-  // Used for setting the secondary prescalar value for baudrate
-  bit[2:0] secondary_prescalar;
+  // Used for setting the secondary prescalar value for baudrate_divisor
+  protected bit[2:0] secondary_prescalar;
+
+  // Variable: baudrate_divisor_divisor
+  // Defines the date rate 
+  //
+  // baudrate_divisor_divisor = (secondary_prescalar+1) * (2 ** (primary_prescalar+1))
+  // baudrate = busclock / baudrate_divisor_divisor;
+  //
+  // Default value is 2
+  int baudrate_divisor = 2;
 
   // Variable: has_coverage
   // Used for enabling the master agent coverage
@@ -66,6 +71,7 @@ class master_agent_config extends uvm_object;
   //-------------------------------------------------------
   extern function new(string name = "master_agent_config");
   extern function void do_print(uvm_printer printer);
+  extern function void set_baudrate_divisor(int primary_prescalar, int secondary_prescalar);
 endclass : master_agent_config
 
 //--------------------------------------------------------------------------------------------
@@ -94,10 +100,30 @@ function void master_agent_config::do_print(uvm_printer printer);
   printer.print_field ("t2cdelay",t2cdelay, $bits(t2cdelay), UVM_DEC);
   printer.print_field ("wdelay",wdelay, $bits(wdelay), UVM_DEC);
   printer.print_field ("primary_prescalar",primary_prescalar, 3, UVM_DEC);
-  printer.print_field ("secondary_prescalar",secondary_prescalar, 3, UVM_HEX);
+  printer.print_field ("secondary_prescalar",secondary_prescalar, 3, UVM_DEC);
+  printer.print_field ("baudrate_divisor",baudrate_divisor, 32, UVM_DEC);
   printer.print_field ("has_coverage",has_coverage, 1, UVM_DEC);
   
 endfunction : do_print
+
+//--------------------------------------------------------------------------------------------
+// Function: set_baudrate_divisor
+// Sets the baudrate divisor value from primary_prescalar and secondary_prescalar
+
+// baudrate_divisor_divisor = (secondary_prescalar+1) * (2 ** (primary_prescalar+1))
+// baudrate = busclock / baudrate_divisor_divisor;
+//
+// Parameters:
+//  primary_prescalar - Primary prescalar value for baudrate calculation
+//  secondary_prescalar - Secondary prescalar value for baudrate calculation
+//--------------------------------------------------------------------------------------------
+function void master_agent_config::set_baudrate_divisor(int primary_prescalar, int secondary_prescalar);
+  this.primary_prescalar = primary_prescalar;
+  this.secondary_prescalar = secondary_prescalar;
+
+  baudrate_divisor = (this.secondary_prescalar + 1) * (2 ** (this.primary_prescalar + 1));
+
+endfunction : set_baudrate_divisor
 
 `endif
 

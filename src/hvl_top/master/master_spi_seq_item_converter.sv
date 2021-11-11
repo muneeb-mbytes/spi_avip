@@ -11,7 +11,7 @@ class master_spi_seq_item_converter extends uvm_object;
   
   //static int c2t;
   //static int t2c;
-  //static int baudrate;
+  //static int baudrate_divisor;
   
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -43,15 +43,22 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void master_spi_seq_item_converter::from_class(input master_tx input_conv_h,
                                                         output spi_transfer_char_s output_conv);
+
   output_conv.no_of_mosi_bits_transfer = input_conv_h.master_out_slave_in.size()*CHAR_LENGTH;
-  //for(int i=0; i<input_conv_h.master_out_slave_in.size(); i++) begin
-  for(int i=0; i<output_conv.no_of_mosi_bits_transfer; i++) begin
-    //output_conv.master_out_slave_in[i][j] = input_conv_h.master_out_slave_in[i];
-    //{<<byte{output_conv.master_out_slave_in[i]}} = input_conv_h.master_out_slave_in[i];
-    {{output_conv.master_out_slave_in[i]}} = input_conv_h.master_out_slave_in[i];
-    output_conv.cs = input_conv_h.cs;
-    //output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
+
+  for(int i=0; i<input_conv_h.master_out_slave_in.size(); i++) begin
+    output_conv.master_out_slave_in = output_conv.master_out_slave_in << CHAR_LENGTH;
+    output_conv.master_out_slave_in[CHAR_LENGTH-1:0] = input_conv_h.master_out_slave_in[i];    
   end
+
+  // MSHA: for(int i=0; i<output_conv.no_of_mosi_bits_transfer; i++) begin
+  // MSHA:   //output_conv.master_out_slave_in[i][j] = input_conv_h.master_out_slave_in[i];
+  // MSHA:   //{<<byte{output_conv.master_out_slave_in[i]}} = input_conv_h.master_out_slave_in[i];
+  // MSHA:   {{output_conv.master_out_slave_in[i]}} = input_conv_h.master_out_slave_in[i];
+  // MSHA:   //output_conv_h.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];
+  // MSHA: end
+
+  output_conv.cs = input_conv_h.cs;
 
 endfunction: from_class 
 
