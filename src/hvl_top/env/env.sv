@@ -103,8 +103,9 @@ function void env::connect_phase(uvm_phase phase);
 
   //connecting analysis port to analysis fifo
   
-  slave_agent_h[0].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
-
+  foreach(slave_agent_h[i]) begin
+  slave_agent_h[i].slave_mon_proxy_h.slave_analysis_port.connect(scoreboard_h.slave_analysis_fifo.analysis_export);
+  end
   master_agent_h.master_mon_proxy_h.master_analysis_port.connect(scoreboard_h.master_analysis_fifo.analysis_export);
 endfunction : connect_phase
 
