@@ -76,6 +76,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
     }
     
   
+
     // TODO(mshariff): 
     // Have illegal bins 
     // illegal_bins illegal_bin = 0;
