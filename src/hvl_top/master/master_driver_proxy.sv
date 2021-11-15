@@ -29,7 +29,7 @@ class master_driver_proxy extends uvm_driver#(master_tx);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s packet1);
+  extern virtual task drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s packet1);
   extern virtual function void reset_detected();
 
 endclass : master_driver_proxy
@@ -164,8 +164,8 @@ task master_driver_proxy::run_phase(uvm_phase phase);
 
     master_spi_seq_item_converter::to_class(struc_packet, req);
     
-    `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",struc_packet),UVM_LOW);
-
+    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+                                        req.sprint()),UVM_LOW)
     seq_item_port.item_done();
   end
 endtask : run_phase
@@ -175,7 +175,7 @@ endtask : run_phase
 // This task converts the transcation data packet to struct type and send
 // it to the master_driver_bfm
 //--------------------------------------------------------------------------------------------
-task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet,spi_transfer_cfg_s packet1);
+task master_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s packet1);
 
   // TODO(mshariff): Have a way to print the struct values
   // master_spi_seq_item_converter::display_struct(packet);
@@ -186,6 +186,7 @@ task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet,spi_transfer_c
   //case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
     //{CPOL0_CPHA0,MSB_FIRST}: begin  
   master_drv_bfm_h.drive_msb_first_pos_edge(packet,packet1); 
+  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",packet1),UVM_LOW);
 
       // MSHA:if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
       // MSHA:  master_drv_bfm_h.drive_msb_first_pos_edge(data);

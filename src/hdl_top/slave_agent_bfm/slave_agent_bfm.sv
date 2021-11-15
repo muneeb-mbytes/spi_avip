@@ -28,7 +28,8 @@ module slave_agent_bfm(spi_if intf);
   slave_driver_bfm slave_drv_bfm_h (.pclk(intf.pclk),
                                     .areset(intf.areset),
                                     .sclk(intf.sclk),
-                                    .cs(intf.cs),
+                                    // TODO(mshariff): Need to modify it for more slaves
+                                    .cs(intf.cs[0]),
                                     .mosi0(intf.mosi0),
                                     .mosi1(intf.mosi1),
                                     .mosi2(intf.mosi2),
@@ -45,7 +46,7 @@ module slave_agent_bfm(spi_if intf);
   slave_monitor_bfm slave_mon_bfm_h (.pclk(intf.pclk),
                                      .areset(intf.areset),
                                      .sclk(intf.sclk),
-                                     .cs(intf.cs),
+                                     .cs(intf.cs[0]),
                                      .mosi0(intf.mosi0),
                                      .mosi1(intf.mosi1),
                                      .mosi2(intf.mosi2),

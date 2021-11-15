@@ -13,8 +13,8 @@ class slave_spi_cfg_converter extends uvm_object;
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "slave_spi_cfg_converter");
-
-  extern static function void from_class(input slave_spi_cfg_converter input_conv_h,output spi_transfer_cfg_s output_conv);
+  extern static function void from_class(input slave_agent_config input_conv_h ,
+                                         output spi_transfer_cfg_s output_conv);
   //extern static function void to_class(input spi_transfer_cfg_s input_conv, output slave_tx output_conv_h);
   extern function void do_print(uvm_printer printer);
 
@@ -35,18 +35,11 @@ endfunction : new
 // function: from_class
 // converting slave_cfg configurations into structure configurations
 //--------------------------------------------------------------------------------------------
-
-function void slave_spi_cfg_converter::from_class(input master_agent_config input_conv_h,
+function void slave_spi_cfg_converter::from_class(input slave_agent_config input_conv_h ,
                                                   output spi_transfer_cfg_s output_conv);
-    bit cpol;
-    bit cpha;
-    {cpol,cpha} = operation_modes_e'(input_conv_h.spi_mode);
-    output_conv.c2t = input_conv_h.c2tdelay;
-    output_conv.t2c = input_conv_h.t2cdelay;
-    output_conv.baudrate_divisor = input_conv_h.baudrate_divisor;
-    output_conv.cpol = cpol;
-    output_conv.cpha = cpha;
-    output_conv.wdelay = input_conv_h.wdelay;
+
+  {output_conv.cpol, output_conv.cpha} = operation_modes_e'(input_conv_h.spi_mode);
+  output_conv.msb_first = shift_direction_e'(input_conv_h.shift_dir);
 
 endfunction: from_class 
 

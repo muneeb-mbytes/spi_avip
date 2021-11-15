@@ -87,6 +87,7 @@ interface slave_driver_bfm(input pclk, input areset,
   // TODO(mshariff): Reconsider the logic with different baudrates
   task drive_the_miso_data (inout spi_transfer_char_s data_packet,
                             input spi_transfer_cfg_s cfg_pkt);
+    bit premature_cs;
     int row_no;
 
     `uvm_info("DEBUG MOSI CPHA SLAVE_DRIVER_BFM",$sformatf("miso(8bits)=8'h%0x",data_packet.master_in_slave_out[0]),UVM_HIGH)
@@ -96,7 +97,8 @@ interface slave_driver_bfm(input pclk, input areset,
     //
     // This loop is forever because the slave will continue to operate 
     // till the CS is active-low
-    forever begin
+    while(1) begin
+    // MSHA: for(int row_no=0; row_no<data_packet.no_of_miso_bits_transfer/CHAR_LENGTH; row_no++) begin
 
       for(int k=0, bit_no=0; k<CHAR_LENGTH; k++) begin
 
@@ -107,14 +109,21 @@ interface slave_driver_bfm(input pclk, input areset,
 
           // Driving MISO at posedge of sclk for CPOL=0 and CPHA=0  OR
           // Driving MISO at negedge of sclk for CPOL=1 and CPHA=0
-          detect_sclk();
-          if(end_of_transfer) break; 
+          detect_sclk(premature_cs);
+          if(premature_cs) begin 
+            break; 
+          end
           miso0 <= data_packet.master_in_slave_out[row_no][bit_no];
+          `uvm_info("debug miso cpha slave_driver_bfm",$sformatf("miso[%0d][%0d]=%0b",
+                    row_no, k,
+                    data_packet.master_in_slave_out[row_no][bit_no]),UVM_LOW)
 
           // Sampling MOSI at negedge of sclk for CPOL=0 and CPHA=0  OR
           // Sampling MOSI at posedge of sclk for CPOL=1 and CPHA=0
-          detect_sclk();
-          if(end_of_transfer) break; 
+          detect_sclk(premature_cs);
+          if(premature_cs) begin 
+            break; 
+          end
           data_packet.master_out_slave_in[row_no][bit_no] = mosi0;
           data_packet.no_of_mosi_bits_transfer++;
         end
@@ -125,31 +134,35 @@ interface slave_driver_bfm(input pclk, input areset,
           // Driving MISO at negedge of sclk for CPOL=0 and CPHA=1  OR
           // Driving MISO at posedge of sclk for CPOL=1 and CPHA=1
           miso0 <= data_packet.master_in_slave_out[row_no][bit_no];
-          detect_sclk();
-          if(end_of_transfer) break; 
+          detect_sclk(premature_cs);
+          if(premature_cs) begin 
+            break; 
+          end
 
           // Sampling MOSI at posedge of sclk for CPOL=0 and CPHA=1  OR
           // Sampling MOSI at negedge of sclk for CPOL=1 and CPHA=1
-          detect_sclk();
-          if(end_of_transfer) break; 
+          detect_sclk(premature_cs);
+          if(premature_cs) begin 
+            break; 
+          end
           data_packet.master_out_slave_in[row_no][bit_no] = mosi0;
           data_packet.no_of_mosi_bits_transfer++;
         
         end
 
+        `uvm_info("debug mosi cpha slave_driver_bfm",$sformatf("mosi[%0d][%0d]=%0b",
+                  row_no, k,
+                  data_packet.master_out_slave_in[row_no][bit_no]),UVM_LOW)
+      end
+
+      // break will come out of inner-most loop
+      // This work-around is to come out of the nested loop
+      if(premature_cs) begin 
+        break; 
       end
 
       // Incrementing the row number
       row_no++;
-
-      // break will come out of inner-most loop
-      // This work-around is used to come out of the nested loop
-      if(end_of_transfer) begin 
-        end_of_transfer = 0;
-        row_no = 0; 
-        break; 
-      end
-
     end
     
   endtask: drive_the_miso_data
@@ -158,7 +171,7 @@ interface slave_driver_bfm(input pclk, input areset,
   // Task: detect_sclk
   // Detects the edge on sclk with regards to pclk
   //-------------------------------------------------------
-  task detect_sclk();
+  task detect_sclk(output bit premature_cs);
     // 2bit shift register to check the edge on sclk
     bit [1:0] sclk_local;
     bit [1:0] cs_local;
@@ -169,14 +182,14 @@ interface slave_driver_bfm(input pclk, input areset,
 
       @(negedge pclk);
       sclk_local = {sclk_local[0], sclk};
-      end_of_transfer = 0;
-
+      premature_cs = 0;
+  
       // Check for premature CS 
       // Stop the transfer when the CS is active-high
       cs_local = {cs_local[0], cs};
       if(cs_local == POSEDGE) begin
         `uvm_info("SLAVE_DRIVER_BFM", $sformatf("End of Transfer Detected"), UVM_NONE);
-        end_of_transfer = 1;
+        premature_cs = 1;
         return;
       end
 

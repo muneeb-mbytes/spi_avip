@@ -39,6 +39,17 @@ parameter int MAXIMUM_BITS = 1024;
 
 parameter int NO_OF_ROWS = MAXIMUM_BITS / CHAR_LENGTH;
 
+// Enum: edge_detect_e
+//
+// Used for detecting the edge on the signal
+//
+// POSEDGE - posedge on the signal, the transition from 0->1
+// NEGEDGE - negedge on the signal, the transition from 0->1
+//
+typedef enum bit[1:0] {
+  POSEDGE = 2'b01,
+  NEGEDGE = 2'b10
+} edge_detect_e;
 
 // Enum: shift_direction_e
 // 
@@ -46,7 +57,7 @@ parameter int NO_OF_ROWS = MAXIMUM_BITS / CHAR_LENGTH;
 //
 // LSB_FIRST - LSB is shifted out first
 // MSB_FIRST - MSB is shifted out first
-
+//
 typedef enum bit {
   LSB_FIRST = 1'b0,
   MSB_FIRST = 1'b1
@@ -60,7 +71,7 @@ typedef enum bit {
 // CPOL0_CPHA1 - Polarity is 0 and Phase is 1
 // CPOL1_CPHA0 - Polarity is 1 and Phase is 0
 // CPOL1_CPHA1 - Polarity is 1 and Phase is 1
-
+//
 typedef enum bit[1:0] {
   CPOL0_CPHA0 = 2'b00,
   CPOL0_CPHA1 = 2'b01,
@@ -75,7 +86,7 @@ typedef enum bit[1:0] {
 // SIMPLE_SPI - In this mosi0 and miso0 are used
 // DUAL_SPI   - In this, mosi[1:0] and miso[1:0] are used
 // QUAD_SPI   - In this, mosi[3:0] and miso[3:0] are used
-
+//
 typedef enum bit [2:0] {
   SIMPLE_SPI = 3'd1,
   DUAL_SPI   = 3'd2,
@@ -89,6 +100,7 @@ typedef enum bit [2:0] {
 // cs : chip select
 // no_of_mosi_bits_transfer: specifies how many mosi bits to trasnfer 
 // no_of_miso_bits_transfer: specifies how many miso bits to trasnfer 
+//
 typedef struct {
   // mosi signals
   bit [NO_OF_SLAVES-1:0] cs;
@@ -108,6 +120,7 @@ typedef struct {
   int no_of_miso_bits_transfer;
 
 } spi_transfer_char_s;
+
 //struct: spi_transfer_cfg_s
 //c2t : chip to transaction delay
 //t2c : transaction to chip delay
@@ -115,6 +128,7 @@ typedef struct {
 //wdelay: delay between two tarnsactions
 //cpol: clock polarity
 //cpha: clock phase
+//
 typedef struct {
   
   bit cpol;

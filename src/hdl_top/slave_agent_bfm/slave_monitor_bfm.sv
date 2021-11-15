@@ -10,9 +10,12 @@
 import spi_globals_pkg::*;
 interface slave_monitor_bfm(input pclk, input areset, 
                             input sclk, 
-                            input [NO_OF_SLAVES-1:0] cs, 
+                            input cs, 
                             input mosi0, mosi1, mosi2, mosi3,
                             input miso0, miso1, miso2, miso3);
+
+  // To indicate the end of transfer when CS is de-asserted (0->1)                           
+  bit end_of_transfer;
 
   //-------------------------------------------------------
   // 
@@ -32,36 +35,16 @@ interface slave_monitor_bfm(input pclk, input areset,
     $display("Slave Monitor BFM");
   end
 
-
   //-------------------------------------------------------
-  // Task: wait_for_reset
+  // Task: wait_for_system_reset
   // Waiting for system reset to be active
   //-------------------------------------------------------
-  task wait_for_reset();
+  task wait_for_system_reset();
     @(negedge areset);
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("System reset detected"), UVM_HIGH);
-  endtask: wait_for_reset
-
-  //-------------------------------------------------------
-  // Task: drive_idle_state 
-  // This task drives the SPI interface to it's IDLA state
-  //
-  // Parameters:
-  //  cpol - Clock polarity of sclk
-  //-------------------------------------------------------
-  //task drive_idle_state(bit cpol);
-
-  // `uvm_info("MASTER_DRIVER_BFM", $sformatf("Strting to drive the IDLE state"), UVM_NONE);
-  //  //bit cs;
-  //  @(posedge pclk);
-  //  cpol = sclk;
-  //  // TODO(mshariff):
-  //  // Use of replication operator 
-  //  // cs <= 'b1;
-  //  // cs   <= NO_OF_SLAVES{1};
-  //  cs <= 'b1;
-
-  //endtask: drive_idle_state
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("System reset detected"), UVM_HIGH);
+    @(posedge areset);
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("System reset deactivated"), UVM_HIGH);
+  endtask: wait_for_system_reset
 
   //-------------------------------------------------------
   // Task: wait_for_idle_state
@@ -70,359 +53,139 @@ interface slave_monitor_bfm(input pclk, input areset,
   task wait_for_idle_state();
     @(negedge pclk);
 
-    // TODO(mshariff): Need to modify this code for more slave
-    while (cs !== 'b1)
+    while (cs !== 1'b1) begin
       @(negedge pclk);
+    end
 
-    `uvm_info("MASTER_DRIVER_BFM", $sformatf("IDLE condition has been detected"), UVM_HIGH);
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("IDLE condition has been detected"), UVM_NONE);
   endtask: wait_for_idle_state
 
   //-------------------------------------------------------
-  // Task: drive_sclk
-  // Used for generating the sclk with regards to baudrate 
+  // Task: wait_for_transfer_start
+  // Waits for the CS to be active-low
   //-------------------------------------------------------
-  //task drive_sclk(int delay);
-  //  @(posedge pclk);
-  //  sclk <= ~sclk;
+  task wait_for_transfer_start();
+    // 2bit shift register to check the edge on CS
+    bit [1:0] cs_local;
 
-  //  repeat(delay - 1) begin
-  //    @(posedge pclk);
-  //    sclk <= ~sclk;
-  //  end
-  //endtask: drive_sclk
- 
+    // Detect the falling edge on CS
+    do begin
+      @(negedge pclk);
+      cs_local = {cs_local[0], cs};
+    end while(cs_local != NEGEDGE);
+
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("Transfer start is detected"), UVM_NONE);
+  endtask: wait_for_transfer_start
+
   //-------------------------------------------------------
-  // Task: drive_msb_first_pos_edge
+  // Task: detect_sclk
+  // Detects the edge on sclk with regards to pclk
   //-------------------------------------------------------
-  // TODO(mshariff): Reconsider the logic with different baudrates
-  task sample_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt);
+  task detect_sclk();
+    // 2bit shift register to check the edge on sclk
+    bit [1:0] sclk_local;
+    bit [1:0] cs_local;
+    edge_detect_e sclk_edge_value;
 
-    // Asserting CS and driving sclk with initial value
-    @(posedge pclk);
-    data_packet.cs = cs; 
-    cfg_pkt.cpol = sclk;
- 
-    // Adding half-sclk delay for CPHA=1
-    if(cfg_pkt.cpha) begin
-      data_packet.master_out_slave_in[0] = mosi0;
-      @(posedge pclk);
-    end
+    // Detect the edge on SCLK
+    do begin
 
-    // Generate C2T delay
-    // Delay between negedge of CS to posedge of sclk
-    repeat((cfg_pkt.c2t * cfg_pkt.baudrate_divisor) - 1) begin
-      @(posedge pclk);
-    end
-   
-    // Driving CS, sclk and MOSI
-    // and sampling MISO
-    for(int i=0; i<data_packet.no_of_mosi_bits_transfer; i++) begin
+      @(negedge pclk);
+      sclk_local = {sclk_local[0], sclk};
+      end_of_transfer = 0;
 
-      if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
-        // Driving MOSI at posedge of sclk for CPOL=0 and CPHA=0  OR
-        // Driving MOSI at negedge of sclk for CPOL=1 and CPHA=0
-        //drive_sclk(cfg_pkt.baudrate_divisor/2);
-
-        // For simple SPI
-        // MSHA: data_packet.data[B0] = mois0;
-        // data_packet.data[i] = mosi0;
-        data_packet.master_out_slave_in[i] = mosi0;
-
-        // Sampling MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
-        // Sampling MISO at posedge of SLCK for CPOL=1 and CPHA=0
-        //drive_sclk(cfg_pkt.baudrate_divisor/2);
-        //data_packet.miso[i] = miso0;
-        data_packet.master_in_slave_out[i] = miso0;
+      // Check for premature CS 
+      // Stop the transfer when the CS is active-high
+      cs_local = {cs_local[0], cs};
+      if(cs_local == POSEDGE) begin
+        `uvm_info("SLAVE_MONITOR_BFM", $sformatf("End of Transfer Detected"), UVM_NONE);
+        end_of_transfer = 1;
+        return;
       end
-      else begin : CPHA_IS_1
-        // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
-        // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
-        //drive_sclk(cfg_pkt.baudrate_divisor/2);
-        //data_packet.miso[i] = miso0;
-        data_packet.master_in_slave_out[i] = miso0;
 
-        // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
-        // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
-        //drive_sclk(cfg_pkt.baudrate_divisor/2);
-        // For simple SPI
-        // MSHA: mosi0 <= data_packet.data[B0];
-        // mosi0 <= data_packet.data[i];
-        // 
-        // Since first bit in CPHA=1 is driven at CS=0, 
-        // we don't have to drive the last bit twice
-        if(i < (data_packet.no_of_mosi_bits_transfer-1)) begin
-          data_packet.master_out_slave_in[i] = mosi0;
+    end while(! ((sclk_local == POSEDGE) || (sclk_local == NEGEDGE)) );
+
+    sclk_edge_value = edge_detect_e'(sclk_local);
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_HIGH);
+  
+  endtask: detect_sclk
+
+  //-------------------------------------------------------
+  // Task: sample_data
+  // Used for sampling the MOSI and MISO data
+  //-------------------------------------------------------
+  task sample_data(output spi_transfer_char_s data_packet, input spi_transfer_cfg_s cfg_pkt);
+    int row_no;
+
+    // Reset the counter values
+    data_packet.no_of_mosi_bits_transfer = 0;
+    data_packet.no_of_miso_bits_transfer = 0;
+
+    // Sampling of MISO data and MOSI data 
+    // with respect to master's SCLK
+    //
+    // This loop is forever because the monitor will continue to operate 
+    // till the CS is active-low
+    forever begin
+
+      for(int k=0, bit_no=0; k<CHAR_LENGTH; k++) begin
+
+        // Logic for MSB first or LSB first 
+        bit_no = cfg_pkt.msb_first ? ((CHAR_LENGTH - 1) - k) : k;
+
+        if(cfg_pkt.cpha == 0) begin : CPHA_IS_0
+
+          // Sampling MOSI, MISO at negedge of sclk for CPOL=0 and CPHA=0  OR
+          // Sampling MOSI, MISO at posedge of sclk for CPOL=1 and CPHA=0
+          //
+          // First edge is used for driving
+          detect_sclk();
+          if(end_of_transfer) break; 
+
+          // Second edge is used for sampling
+          detect_sclk();
+          if(end_of_transfer) break; 
+
+          data_packet.master_out_slave_in[row_no][bit_no] = mosi0;
+          data_packet.no_of_mosi_bits_transfer++;
+
+          data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+          data_packet.no_of_miso_bits_transfer++;
         end
+        else begin : CPHA_IS_1
+
+          // Sampling MOSI, MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
+          // Sampling MOSI, MISO at negedge of sclk for CPOL=1 and CPHA=1
+          detect_sclk();
+          if(end_of_transfer) break; 
+
+          data_packet.master_out_slave_in[row_no][bit_no] = mosi0;
+          data_packet.no_of_mosi_bits_transfer++;
+
+          data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+          data_packet.no_of_miso_bits_transfer++;
+
+          detect_sclk();
+          if(end_of_transfer) break; 
+        
+        end
+
+      end
+
+      // Incrementing the row number
+      row_no++;
+
+      // break will come out of inner-most loop
+      // This work-around is used to come out of the nested loop
+      if(end_of_transfer) begin 
+        end_of_transfer = 0;
+        row_no = 0; 
+        break; 
       end
 
     end
-
-    // Generate T2C delay
-    // Delay between last edge of SLCK to posedge of CS
-    repeat(cfg_pkt.t2c * cfg_pkt.baudrate_divisor) begin
-      @(posedge pclk);
-    end
     
-    //******************CS is not reg here don't know how to implement here******so,commented it?
-    // TODO(mshariff): Make it work for more slaves
-    // CS is de-asserted
-    //cs = 'b1;
-
-    // Generates WDELAY
-    // Delay between 2 transfers 
-    // This is the time for which CS is de-asserted between the transfers 
-    repeat(cfg_pkt.wdelay * cfg_pkt.baudrate_divisor) begin
-      @(posedge pclk);
-    end
-
-    slave_monitor_proxy_h.read(data_packet);
-
-    
-  endtask: sample_msb_first_pos_edge
-
-
-   //variable data_mosi
-   //data of master-out slave-in
-  // bit[7:0]data_mosi;
-
-  ////--------------------------------------------------------------------------------------------
-  ////Task : mon_msb_first
-  ////loop is used to iterate the data
-  ////considering the first bit as most significant bit
-  ////--------------------------------------------------------------------------------------------
-  //task mon_msb_first(bit mosi);
-  //  for(int i=DATA_WIDTH-1;i>0;i--) begin
-  //    @(intf.sample_mosi_pos_cb);
-  //    data_mosi = data_mosi << 1;
-  //    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
-  //    data_mosi[i] = mosi;
-  //  end
-  //  // mon_proxy.write(data_mosi);
-  //
-  //endtask : mon_msb_first
-  ////--------------------------------------------------------------------------------------------
-  ////Task : mon_lsb_first
-  ////loop is used to iterate the data
-  ////data tranfering first bit as least significant bit
-  ////--------------------------------------------------------------------------------------------
-  //
-  //task mon_lsb_first(bit mosi);
-  //  //mosi = 1;
-  //  for(int i=0;i<DATA_WIDTH;i++) begin
-  //    @(intf.sample_mosi_pos_cb);
-  //    data_mosi = data_mosi << 1;
-  //    data_mosi[i]=intf.sample_mosi_pos_cb.mosi0;
-  //    data_mosi[i] = mosi;
-  //  end
-  //  // mon_proxy.write(data_mosi);
-  //
-  //endtask : mon_lsb_first
-  //
-  ////--------------------------------------------------------------------------------------------
-  ////Task  : sample_mosi_pos_00
-  ////assigning the sampled_mosi_neg_cb signal to proxy mosi
-  ////sampling happen on the posedge
-  ////calling the mon_msb_first and mon_lsb_first tasks inside 
-  ////to do the data sampling based on clock polarity and clock phase 
-  ////--------------------------------------------------------------------------------------------
-  //
-  //task sample_mosi_pos_00 (bit mosi);
-  //  if(!intf.cs) begin
-  //    @(intf.sample_mosi_pos_cb)
-  //    mosi=intf.sample_mosi_pos_cb.mosi0;
-  //    mon_msb_first(mosi);
-  //    //  mon_lsb_first(mosi);
-  //  end
-  //endtask : sample_mosi_pos_00
-  //
-  ////--------------------------------------------------------------------------------------------
-  ////Task  : sample_mosi_neg_01
-  ////assigning the sampled_mosi_neg_cb signal to proxy mosi
-  ////sampling happen on the negedge
-  ////calling the mon_msb_first and mon_lsb_first tasks inside 
-  ////to do the data sampling based on clock polarity and clock phase 
-  ////--------------------------------------------------------------------------------------------
-  //
-  //task sample_mosi_neg_01 (bit mosi);
-  //  if(!intf.cs)begin
-  //  @(intf.sample_mosi_neg_cb)
-  //  mosi=intf.sample_mosi_neg_cb.mosi0;
-  //  mon_msb_first(mosi);
-  //  mon_lsb_first(mosi);
-  //end
-  //endtask : sample_mosi_neg_01
-  //
-  ////--------------------------------------------------------------------------------------------
-  ////Task  :sample_mosi_pos_10
-  ////assigning the sample_mosi_pos_cb signal to proxy mosi
-  ////sampling happen on the posedge
-  ////calling the mon_msb_first and mon_lsb_first tasks inside 
-  ////to do the data sampling based on clock polarity and clock phase 
-  ////--------------------------------------------------------------------------------------------
-  //
-  //task sample_mosi_pos_10 (bit mosi);
-  //  if(!intf.cs)begin
-  //  @(intf.sample_mosi_pos_cb)
-  //  mosi=intf.sample_mosi_pos_cb.mosi0;
-  //  mon_msb_first(mosi);
-  //  mon_lsb_first(mosi);
-  //end
-  //endtask : sample_mosi_pos_10
-  //
-  ////--------------------------------------------------------------------------------------------
-  //////Task  : sample_mosi_neg_11
-  ////assigning the sample_mosi_pos_cb.miso signal to proxy mosi
-  ////sampling happens on the negedge
-  ////calling the mon_msb_first and mon_lsb_first tasks inside 
-  ////to do the data sampling based on clock polarity and clock phase 
-  ////--------------------------------------------------------------------------------------------
-  //
-  //task sample_mosi_neg_11 (bit mosi);
-  //  if(!intf.cs)begin
-  //  @(intf.sample_mosi_neg_cb)
-  //  mosi=intf.sample_mosi_neg_cb.mosi0;
-  //  mon_msb_first(mosi);
-  //  mon_lsb_first(mosi);
-  //end
-  //endtask : sample_mosi_neg_11
-
-//--------------------------------------------------------------------------------------------
-//Task : mon_msb_first
-//sampling happen on posedge clk and shifting happen in negedge clk
-//considering the first bit as most significant bit
-//--------------------------------------------------------------------------------------------
-//task mon_msb_first_pos();
-//  bit[DATA_WIDTH-1:0]data_miso;
-//  bit[DATA_WIDTH-1:0]data_mosi;
-//  bit[DATA_WIDTH-1:0]count;
-//  
-//  if(!cs)begin
-//    @(posedge sclk);
-//      data_mosi = data_mosi << 1;
-//      data_mosi[count]=mosi0;
-//    @(negedge sclk);
-//     data_miso = data_miso << 1;
-//     data_miso[count]=miso0;
-//     count++;
-//  end
-//  
-//  slave_monitor_proxy_h.read(data_mosi,data_miso,count);
-//
-//endtask : mon_msb_first_pos
-//
-////--------------------------------------------------------------------------------------------
-////Task : mon_msb_first
-////sampling happen in negedge clk and shifting happen in posedge clk
-////considering the first bit as most significant bit
-////--------------------------------------------------------------------------------------------
-//task mon_msb_first_neg();
-//  bit[DATA_WIDTH-1:0]data_miso;
-//  bit[DATA_WIDTH-1:0]data_mosi;
-//  bit[DATA_WIDTH-1:0]count;
-//  
-//  if(!cs)begin
-//    @(negedge sclk);
-//      data_mosi = data_mosi << 1;
-//      data_mosi[count]=mosi0;
-//    @(posedge sclk);
-//      data_miso = data_miso << 1;
-//      data_miso[count]=miso0;
-//     count++;
-//  end
-//
-//  slave_monitor_proxy_h.read(data_mosi,data_miso,count);
-//  
-//endtask : mon_msb_first_neg
-//
-////--------------------------------------------------------------------------------------------
-////Task : mon_lsb_first
-////sampling happen in posedge clk and shifting happen in negedge clk
-////data tranfering first bit as least significant bit
-////--------------------------------------------------------------------------------------------
-//
-//task mon_lsb_first_pos();
-//  bit[DATA_WIDTH-1:0]data_miso;
-//  bit[DATA_WIDTH-1:0]data_mosi;
-//  bit[DATA_WIDTH-1:0]count;
-//  
-//  if(!cs)begin
-//    @(posedge sclk);
-//      data_mosi = data_mosi >>1;
-//      data_mosi[count]=mosi0;
-//    @(negedge sclk);
-//      data_miso = data_miso >> 1;
-//      data_miso[count]=miso0;
-//      count++;
-//  end
-//
-//  slave_monitor_proxy_h.read(data_mosi,data_miso,count); 
-//
-//endtask : mon_lsb_first_pos
-//
-////--------------------------------------------------------------------------------------------
-////Task : mon_lsb_first
-////sampling happen in negedge clk and shifting happen in posedge clk
-////data tranfering first bit as least significant bit
-////--------------------------------------------------------------------------------------------
-//task mon_lsb_first_neg();
-//  bit[DATA_WIDTH-1:0]data_miso;
-//  bit[DATA_WIDTH-1:0]data_mosi;
-//  bit[DATA_WIDTH-1:0]count;
-//  
-//  if(!cs)begin
-//    @(negedge sclk);
-//      data_mosi = data_mosi >> 1;
-//      data_mosi[count]=mosi0;
-//    @(posedge sclk);
-//      data_miso = data_miso >> 1;
-//     data_miso[count]=miso0;
-//     count++;
-//  end
-//
-//  slave_monitor_proxy_h.read(data_mosi,data_miso,count); 
-//  
-//endtask : mon_lsb_first_neg
-//
-//
-////--------------------------------------------------------------------------------------------
-////Task  : sample_cpol_0_cpha_0 
-////calling the mon_msb_first and mon_lsb_first tasks inside 
-////to do the data sampling based on clock polarity and clock phase 
-////--------------------------------------------------------------------------------------------
-//task sample_cpol_0_cpha_0 ();
-//  mon_msb_first_pos();
-//  mon_lsb_first_pos();
-//endtask : sample_cpol_0_cpha_0
-//
-////--------------------------------------------------------------------------------------------
-////Task  : sample_cpol_0_cpha_1 
-////calling the mon_msb_first and mon_lsb_first tasks inside 
-////to do the data sampling based on clock polarity and clock phase 
-////--------------------------------------------------------------------------------------------
-//task sample_cpol_0_cpha_1 ();
-//  mon_msb_first_neg();
-//  mon_lsb_first_neg();
-//endtask : sample_cpol_0_cpha_1
-//
-////--------------------------------------------------------------------------------------------
-////Task  :sample_cpol_1_cpha_0 
-////calling the mon_msb_first and mon_lsb_first tasks inside 
-////to do the data sampling based on clock polarity and clock phase 
-////--------------------------------------------------------------------------------------------
-//task sample_cpol_1_cpha_0 ();
-//  mon_msb_first_neg();
-//  mon_lsb_first_neg();
-//endtask : sample_cpol_1_cpha_0 
-//
-////--------------------------------------------------------------------------------------------
-////Task  : sample_cpol_1_cpha_1
-////calling the mon_msb_first and mon_lsb_first tasks inside 
-////to do the data sampling based on clock polarity and clock phase 
-////--------------------------------------------------------------------------------------------
-//task sample_cpol_1_cpha_1 ();
-//  mon_msb_first_pos();
-//  mon_msb_first_pos();
-//endtask : sample_cpol_1_cpha_1 
+  endtask: sample_data 
 
 endinterface : slave_monitor_bfm
 

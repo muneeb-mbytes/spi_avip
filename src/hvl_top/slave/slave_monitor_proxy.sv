@@ -7,13 +7,8 @@
 // converts them into transaction items
 //--------------------------------------------------------------------------------------------
 class slave_monitor_proxy extends uvm_monitor;
-  
-  //-------------------------------------------------------
-  // Package : Importing SPI Global Package 
-  //-------------------------------------------------------
-//  import spi_globals_pkg::*;
-
   `uvm_component_utils(slave_monitor_proxy)
+
   //Declaring Monitor Analysis Import
   uvm_analysis_port #(slave_tx) slave_analysis_port;
   
@@ -31,6 +26,7 @@ class slave_monitor_proxy extends uvm_monitor;
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
+  // MSHA: extern virtual task sample_from_bfm(slave_tx packet);
   //extern virtual task read_from_bfm(spi_transfer_char_s packet);
   extern virtual function void reset_detected();
   extern virtual task read(spi_transfer_char_s data_packet);
@@ -221,71 +217,53 @@ endfunction: reset_detected
 // Calls tasks defined in Slave_Monitor_BFM 
 //--------------------------------------------------------------------------------------------
 task slave_monitor_proxy::run_phase(uvm_phase phase);
-  //`uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW);
-  
-  bit cpol,cpha;
-  // TODO(mshariff): Decide one among this
-  // $cast(cpol_cpha, slave_agent_cfg_h.spi_mode);
-  {cpol,cpha} = operation_modes_e'(slave_agent_cfg_h.spi_mode);
+  slave_tx slave_packet;
+
+  `uvm_info(get_type_name(), $sformatf("Inside the slave_monitor_proxy"), UVM_LOW);
+
+  slave_packet = slave_tx::type_id::create("slave_packet");
 
   // Wait for system reset
-  slave_mon_bfm_h.wait_for_reset();
+  slave_mon_bfm_h.wait_for_system_reset();
 
-  // Drive the IDLE state for SPI interface
-  //slave_mon_bfm_h.drive_idle_state(cpol);
+  // TODO(mshariff): If this is enabled then the CS edge for start of transfer is getting missed
+  // Need to work on this code
+  // Wait for the IDLE state of SPI interface
+  slave_mon_bfm_h.wait_for_idle_state();
 
-    // Sampling logic
+  // Driving logic
   forever begin
     spi_transfer_char_s struct_packet;
     spi_transfer_cfg_s struct_cfg;
-    // Wait for IDLE state on SPI interface
-    slave_mon_bfm_h.wait_for_idle_state();
 
-    // MSHA:1010_1011 (AB)
+    slave_tx slave_clone_packet;
 
-    // MSHA:LSB first - 1 1 0 1 0 1 0 1 
-    // MSHA:MSB FIrts - 1 0 1 0 1 0 1 1
-    // MSHA:
-    // MSHA:req.mosi_data = AB;
+    // Wait for transfer to start
+    slave_mon_bfm_h.wait_for_transfer_start();
 
-    // MSHA:converting to struct 
+    // TODO(mshariff): Have a way to print the struct values
+    // slave_spi_seq_item_converter::display_struct(packet);
+    // string s;
+    // s = slave_spi_seq_item_converter::display_struct(packet);
+    // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
-    // MSHA:bit[no_of_bits_transfer-1:0] mosi_s;
+    slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
 
-    // MSHA:if(MSB_FIRST)
-    // MSHA:  D5
-    // MSHA:  mosi_s = flip_version_of(req.mosi_data);
+    slave_mon_bfm_h.sample_data(struct_packet, struct_cfg);
 
-    // MSHA:// LSB First
-    // MSHA:for(int i=0; i< no_of_mosi_bits_transfer; i++) begin
-    // MSHA:  mosi_dat[i]
-    // MSHA:end
-    case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
-      {CPOL0_CPHA0,MSB_FIRST}: slave_mon_bfm_h.sample_msb_first_pos_edge(struct_packet,struct_cfg);
-    endcase
-    //slave_spi_seq_item_converter::to_class(struc_packet, ); 
+    slave_spi_seq_item_converter::to_class(struct_packet, slave_packet);
+
+    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+                                        slave_packet.sprint()),UVM_HIGH)
+
+    // Clone and publish the cloned item to the subscribers
+    $cast(slave_clone_packet, slave_packet.clone());
+    `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port : , \n %s",
+                                        slave_clone_packet.sprint()),UVM_HIGH)
+    slave_analysis_port.write(slave_clone_packet);
 
   end
-
-  
-  
-  // MSHA: `uvm_info(get_type_name(), $sformatf("SPI Mode is = %b",slave_agent_cfg_h.spi_mode), UVM_LOW)
-  //case(slave_agent_cfg_h.spi_mode)
-  //  2'b00 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
-  //  2'b01 : forever begin slave_mon_bfm_h.sample_cpol_0_cpha_1(); end
-  //  2'b10 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_0(); end
-  //  2'b11 : forever begin slave_mon_bfm_h.sample_cpol_1_cpha_1(); end
-  //endcase
-
- // case(slave_agent_cfg_h.spi_mode)
- //   2'b00 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
- //   2'b01 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end 
- //   2'b10 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
- //   2'b11 : repeat(1) begin slave_mon_bfm_h.sample_cpol_0_cpha_0(); end
- // endcase
-
 endtask : run_phase 
-
 
 //-------------------------------------------------------
 // Task : Read
@@ -315,3 +293,4 @@ task slave_monitor_proxy::read(spi_transfer_char_s data_packet);
 endtask : read
 
 `endif
+

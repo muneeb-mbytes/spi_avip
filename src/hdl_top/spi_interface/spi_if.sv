@@ -1,6 +1,9 @@
 `ifndef SPI_IF_INCLUDED_
 `define SPI_IF_INCLUDED_
 
+// Import spi_globals_pkg 
+import spi_globals_pkg::*;
+
 //--------------------------------------------------------------------------------------------
 // Interface : spi_if
 // Declaration of pin level signals for SPI interface
@@ -13,8 +16,7 @@ interface spi_if(input pclk, input areset);
 
   // Variable: cs
   // Active low chip select
-  logic cs;
-  
+  logic [NO_OF_SLAVES-1 : 0] cs;
   
   //Variable: mosi
   //SPI Master Out Slave In signal

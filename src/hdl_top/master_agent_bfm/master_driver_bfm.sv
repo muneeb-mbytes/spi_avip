@@ -52,8 +52,9 @@ interface master_driver_bfm(input pclk, input areset,
   //
   // Parameters:
   //  cpol - Clock polarity of sclk
+  //  idle_state_time - Time(in terms od pclk) for which the IDLE state will be maintained
   //-------------------------------------------------------
-  task drive_idle_state(bit cpol);
+  task drive_idle_state(bit cpol, int idle_state_time=1);
 
     @(posedge pclk);
 
@@ -65,6 +66,9 @@ interface master_driver_bfm(input pclk, input areset,
     // cs   <= NO_OF_SLAVES{1};
     cs <= 'b1;
 
+    repeat(idle_state_time) begin
+      @(posedge pclk);
+    end
   endtask: drive_idle_state
 
   //-------------------------------------------------------
@@ -97,11 +101,11 @@ interface master_driver_bfm(input pclk, input areset,
  
   //-------------------------------------------------------
   // Task: drive_msb_first_pos_edge
+  // TODO(mshariff): Modify the task name and the comments
   //-------------------------------------------------------
-  // TODO(mshariff): Reconsider the logic with different baudrates
-  //task drive_msb_first_pos_edge(spi_transfer_char_s data_packet);
+  task drive_msb_first_pos_edge(inout spi_transfer_char_s data_packet, 
+                                input spi_transfer_cfg_s cfg_pkt); 
 
-  task drive_msb_first_pos_edge(spi_transfer_char_s data_packet, spi_transfer_cfg_s cfg_pkt); 
     //`uvm_info("CS VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.cs = \n %s",data_packet.cs),UVM_LOW)
     //`uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.mosi = \n %s",data_packet.master_out_slave_in),UVM_LOW)
     // Asserting CS and driving sclk with initial value
@@ -115,7 +119,7 @@ interface master_driver_bfm(input pclk, input areset,
       @(posedge pclk);
     end
       
-    `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi (8bits) =8'h%0x",data_packet.master_out_slave_in[0]),UVM_LOW)
+    `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi (8bits) =8'h%0x",data_packet.master_out_slave_in[0]),UVM_HIGH)
 
     // Driving CS, sclk and MOSI
     // and sampling MISO
@@ -144,26 +148,32 @@ interface master_driver_bfm(input pclk, input areset,
           drive_sclk(cfg_pkt.baudrate_divisor/2);
           //data_packet.miso[i] = miso0;
           data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+          data_packet.no_of_miso_bits_transfer++;
         end
         else begin : CPHA_IS_1
           // Data is output half-cycle before the first rising edge of SCLK
           // MSHA: mosi0 <= cfg_pkt.msb_first ? data_packet.master_out_slave_in[0][CHAR_LENGTH - 1] :  data_packet.master_out_slave_in[0][0];
+
+          // When CPHA==1, the MISO is driven half-cycle(sclk) before first edge of sclk
+          //
+          // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
+          // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
           mosi0 <= data_packet.master_out_slave_in[row_no][bit_no];
           `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi[%0d][%0d]=%0b",
                     row_no, k,
                     data_packet.master_out_slave_in[row_no][bit_no]),UVM_LOW)
 
-        // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
-        // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
-        drive_sclk(cfg_pkt.baudrate_divisor/2);
-        //data_packet.miso[i] = miso0;
-        data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+          // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
+          // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
+          drive_sclk(cfg_pkt.baudrate_divisor/2);
+          //data_packet.miso[i] = miso0;
+          data_packet.master_in_slave_out[row_no][bit_no] = miso0;
+          data_packet.no_of_miso_bits_transfer++;
 
-        // Driving MOSI at negedge of sclk for CPOL=0 and CPHA=1  OR
-        // Driving MOSI at posedge of sclk for CPOL=1 and CPHA=1
-        drive_sclk(cfg_pkt.baudrate_divisor/2);
-        // For simple SPI
-        // MSHA: mosi0 <= data_packet.data[B0];
+          // Driving the sclk 
+          drive_sclk(cfg_pkt.baudrate_divisor/2);
+          // For simple SPI
+          // MSHA: mosi0 <= data_packet.data[B0];
           // mosi0 <= data_packet.data[i];
           // 
           // Since first bit in CPHA=1 is driven at CS=0, 

@@ -40,7 +40,7 @@ endfunction : new
 
   // Modifying ONLY the required fields 
   env_cfg_h.master_agent_cfg_h.spi_mode = operation_modes_e'(CPOL0_CPHA1);
-  // MSHA:env_cfg_h.master_agent_cfg_h.shift_dir = shift_direction_e'(MSB_FIRST);
+  // MSHA: env_cfg_h.master_agent_cfg_h.shift_dir = shift_direction_e'(MSB_FIRST);
 
 endfunction: setup_master_agent_cfg
 

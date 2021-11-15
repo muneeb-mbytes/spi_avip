@@ -29,7 +29,7 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s struct_cfg);
+  extern virtual task drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s struct_cfg);
   extern virtual function void reset_detected();
 
 endclass : slave_driver_proxy
@@ -107,40 +107,35 @@ endfunction : end_of_elaboration_phase
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
-  bit cpol, cpha;
 
   super.run_phase(phase);
 
-  // TODO(mshariff): Decide one among this
-  // $cast(cpol_cpha, slave_agent_cfg_h.spi_mode);
-  {cpol,cpha} = operation_modes_e'(slave_agent_cfg_h.spi_mode);
-
   // Wait for system reset
-  slave_drv_bfm_h.wait_for_reset();
+  slave_drv_bfm_h.wait_for_system_reset();
 
-//  // Drive the IDLE state for SPI interface
-//  slave_drv_bfm_h.drive_idle_state(cpol);
+  // Wait for the IDLE state of SPI interface
+  slave_drv_bfm_h.wait_for_idle_state();
 
   // Driving logic
   forever begin
     spi_transfer_char_s struct_packet;
     spi_transfer_cfg_s struct_cfg;
 
+    // Wait for transfer to start
+    slave_drv_bfm_h.wait_for_transfer_start();
+
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
                                         req.sprint()),UVM_LOW)
 
-    // Wait for IDLE state on SPI interface
-    slave_drv_bfm_h.wait_for_idle_state();
-
     slave_spi_seq_item_converter::from_class(req, struct_packet); 
-    // MSHA: slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
+    slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
 
     drive_to_bfm(struct_packet, struct_cfg);
 
     slave_spi_seq_item_converter::to_class(struct_packet, req);
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
-                                        struct_packet),UVM_LOW)
+    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+                                        req.sprint()),UVM_LOW)
 
     seq_item_port.item_done();
   end
@@ -151,7 +146,7 @@ endtask : run_phase
 // This task converts the transcation data packet to struct type and send
 // it to the slave_driver_bfm
 //--------------------------------------------------------------------------------------------
-task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet, spi_transfer_cfg_s struct_cfg);
+task slave_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s struct_cfg);
 
   // TODO(mshariff): Have a way to print the struct values
   // slave_spi_seq_item_converter::display_struct(packet);
@@ -163,7 +158,9 @@ task slave_driver_proxy::drive_to_bfm(spi_transfer_char_s packet, spi_transfer_c
 
    // {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
     
-   //slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+  slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",
+                                        packet),UVM_LOW)
 
 //  endcase
 

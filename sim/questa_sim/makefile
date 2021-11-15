@@ -111,6 +111,9 @@ simulate:
 
 	# To open the waveform use the below command 
 	# vsim -view waveform.wlf &
+	#
+	# To open the wavefrom with saved signals
+	# vsim -view waveform.wlf -do spi_waves.do &
 
 clean_simulate:
 	rm -rf *_test
