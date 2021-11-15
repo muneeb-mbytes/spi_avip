@@ -24,6 +24,7 @@ class master_tx extends uvm_sequence_item;
 
  constraint mosi_c { master_out_slave_in.size() > 0 ;
                      master_out_slave_in.size() < MAXIMUM_BITS/CHAR_LENGTH;}
+
   constraint max_bits{foreach(master_out_slave_in[i])
                               master_out_slave_in[i]%8==0;}
 
