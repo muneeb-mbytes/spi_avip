@@ -45,13 +45,12 @@ class spi_scoreboard extends uvm_scoreboard;
   //Variable data_cmp_failed_count
   //to keep track of number of compared failed data
   int data_cmp_failed_count = 0;
-  
+  int i;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "spi_scoreboard", uvm_component parent = null);
-  extern virtual function void build_phase(uvm_phase phase);
-  extern virtual function void connect_phase(uvm_phase phase);
+  //extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   extern virtual function void check_phase (uvm_phase phase);
   extern virtual function void report_phase(uvm_phase phase);
@@ -66,8 +65,8 @@ endclass : spi_scoreboard
 //--------------------------------------------------------------------------------------------
 function spi_scoreboard::new(string name = "spi_scoreboard", uvm_component parent = null);
   super.new(name, parent);
-  //master_analysis_fifo = new("master_analysis_fifo",this);
-  //slave_analysis_fifo = new("slave_analysis_fifo",this);
+  master_analysis_fifo = new("master_analysis_fifo",this);
+  slave_analysis_fifo = new("slave_analysis_fifo",this);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -77,26 +76,13 @@ endfunction : new
 // Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-function void spi_scoreboard::build_phase(uvm_phase phase);
-  super.build_phase(phase);
-
-  master_analysis_fifo = new("master_analysis_fifo",this);
-  slave_analysis_fifo = new("slave_analysis_fifo",this);
-  
-  master_tx_h = new("master_tx_h");
-  slave_tx_h = new("slave_tx_h");
-endfunction : build_phase
-
-//--------------------------------------------------------------------------------------------
-// Function: connect_phase
-// <Description_here>
+//function void spi_scoreboard::build_phase(uvm_phase phase);
+//  super.build_phase(phase);
 //
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-function void spi_scoreboard::connect_phase(uvm_phase phase);
-  super.connect_phase(phase);
-endfunction : connect_phase
+//  master_tx_h = new("master_tx_h");
+//  slave_tx_h = new("slave_tx_h");
+//endfunction : build_phase
+
 
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
@@ -134,7 +120,7 @@ task spi_scoreboard::run_phase(uvm_phase phase);
  // MSHA:   // SLave MISO with Master MOSI
  // MSHA:   // Also, no_of_mosi_bits and no_of_miso_bits
   
- if (master_tx_h.master_out_slave_in == slave_tx_h.master_in_slave_out)begin 
+ if (master_tx_h.master_out_slave_in.size() == slave_tx_h.master_in_slave_out.size())begin 
  //if (master_tx_h.mosi0 == slave_tx_h.miso0)begin 
   `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_HIGH);
   data_cmp_verified_count++;
@@ -171,7 +157,7 @@ task spi_scoreboard::run_phase(uvm_phase phase);
 //    data_cmp_failed_count++;
 //  end
 
-  if (slave_tx_h.master_in_slave_out == master_tx_h.master_out_slave_in) begin
+  if (slave_tx_h.master_in_slave_out.size() == master_tx_h.master_out_slave_in.size()) begin
   // if (slave_tx_h.miso == master_tx_h.mosi ) begin
     `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_HIGH);
     data_cmp_verified_count++;
@@ -226,16 +212,19 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 // TODO(mshariff): Check the following:
 // 1. Check if the comparisions counter is NON-zero
 //    A non-zero value indicates that the comparisions never happened and throw error
-
-  if ((data_cmp_verified_count)&&(!data_cmp_failed_count) !== 0) begin
+  
+  if (data_cmp_verified_count != 0 ) begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("All comparisions succesfully happened"),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("comparisions happened"),UVM_HIGH);
+  end
+  else if (data_cmp_failed_count == 0)begin
+	  `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
+	  `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
   end
   else begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
-    `uvm_error (get_type_name(), $sformatf ("All comparisions have not happened"));
+	  `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
+    `uvm_error (get_type_name(), $sformatf ("comparisions not happened"));
   end
 
 // 2. Check if master packets received are same as slave packets received
@@ -254,17 +243,20 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 
 
 // 3. Analyis fifos must be zero - This will indicate that all the packets have been compared
-//    This is to make sure that we have taken all packets from both FIFOs and made the comparisions
-  if ((master_analysis_fifo && slave_analysis_fifo) == 0)begin
-    `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo: %0d",master_analysis_fifo ),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo : %0d",slave_analysis_fifo ),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("all packets in FIFO are compared"),UVM_HIGH);
-  end
-  else begin
-    `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo: %0d",master_analysis_fifo ),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo : %0d",slave_analysis_fifo ),UVM_HIGH);
-    `uvm_error (get_type_name(),$sformatf( "all packets in FIFO are not compared"));
-  end
+//    This is to make sure that we have taken all packets from both FIFOs and made the
+//    comparisions
+ //for (int i = 0; i <= DATA_WIDTH-1; i++ ) begin  
+   if ((master_analysis_fifo[i] && slave_analysis_fifo[i]) == 0)begin
+     `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo[%0d]: %0d",i,master_analysis_fifo[i] ),UVM_HIGH);
+     `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo[%0d] : %0d",i,slave_analysis_fifo[i] ),UVM_HIGH);
+     `uvm_info (get_type_name(), $sformatf ("all packets in FIFO are compared"),UVM_HIGH);
+   end
+   else begin
+     `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo[%0d]: %0d",i,master_analysis_fifo ),UVM_HIGH);
+     `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo[%0d] : %0d",i,slave_analysis_fifo ),UVM_HIGH);
+     `uvm_error (get_type_name(),$sformatf( "all packets in FIFO are not compared"));
+   end
+ //end
 endfunction : check_phase
 
 //--------------------------------------------------------------------------------------------
