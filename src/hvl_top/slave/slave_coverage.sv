@@ -20,9 +20,13 @@ class slave_coverage extends uvm_subscriber;
   //-------------------------------------------------------
   covergroup slave_covergroup with function sample (slave_agent_config cfg, slave_tx packet);
     option.per_instance = 1;
-
+    
+    bit cpol ,cphase;
+    
+    {cpol,cphase}=operation_modes_e'(cfg.spi_mode); 
+  
     // Mode of the operation
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+    OPERATION_MODE : coverpoint{cpol,cphase}{
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
       // bins
@@ -30,47 +34,27 @@ class slave_coverage extends uvm_subscriber;
       // bins cpol0_cpha1 = {1};
       // bins cpol1_cpha0 = {2};
       // bins cpol1_cpha1 = {3};
+      bins cpol_cphase[] = {[0:3]};
+    }
+ 
+    bit lsb_first,msb_first;
+
+    {lsb_first,msb_first}=shift_direction_e'(cfg.spi_mode);
+    
+    SHIFT_DIRECTION : coverpoint{lsb_first,msb_first}{
+      option.comment = "Shift direction SPI. MSB and LSB";
+      bins lsb_first = {1};
+      bins msb_first = {1};    
     }
 
-    // Chip-selcet to first SCLK-edge delay
-    C2T_DELAY : coverpoint cfg.c2tdelay {
-      option.comment = "Delay betwen CS assertion to first SCLK edge";
-      // TODO(mshariff): 
-      // bins DELAY[] = {[1:3]};
-      // bins DELAY_4_to_10 = {[4:10]};
-    }
-      // illegal_bins illegal_bin = {0};
-      // Chip-selcet to first SCLK-edge delay 
-      //T2C_DELAY : coverpoint cfg.t2cdelay {
-      // option.comment = "Delay betwen last SCLK to the CS assertion";
-      // TODO(mshariff): 
-      // bins delay[] ={[11:13]};
-      // }
-    
-    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
-      option.comment = "Shift direction SPI. MSB and LSB";
-      bins lsb_first = {[0]};
-      bins msb_first = {[1]};
-      bins lsb_first = {[1]};
-      bins msb_first = {[0]};
-    } 
-    CS : coverpoint packet.cs{
-      option.comment = "Chip select assign one slave based on config"; 
-      bins cs = {[0]};
-      bins cs = {[1]};
-    }
-    NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
-      option.comment = "no of the slaves selected based on the config";
-      // bins slave_1 = {[1]};
-      // bins slave_2 = {[1]};
-      // bins slave_3 = {[1]};
-      // bins slave_4 = {[1]};
-      // illegal_bins illegal_bin = {0};
-    }
-    
-    DATA_WIDTH : coverpoint packet.data_width {
-      option.comment = "Data of a perticular width is transfered";
-      bins dw[] : {[0:$]};
+    //Creating bins for 8,16,32,64 and more bins
+    DATA_WIDTH : coverpoint packet.data_width{
+      option.comment = "Data of a particular width is transfered";
+      bins dw_8_bits  : {[0:7]};
+      bins dw_16_bits : {[8:15]};
+      bins dw_32_bits : {[16:31]};
+      bins dw_64_bits : {[32:63]};
+      bins dw_max_bits: {[64:$]};
     }
     // TODO(mshariff): 
     // Have illegal bins 
@@ -95,41 +79,29 @@ class slave_coverage extends uvm_subscriber;
       bins miso_hit = {1};
       //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
     }
-  
-    //illegal bin : coverpoint 
-
-
-    //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
+    
+    // illegal bin : coverpoint 
+    
+    
+    // CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
    
-    //Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+    // Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
     OPERATION_MODE X CS = cross OPERATION_MODE,CS;
-    OPERATION_MODE X DATA_WIDTH = cross RATION_MODE,DATA_WIDTH;
-    OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
+    OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
+    // OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
     OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
 
-    //Cross of the C2T_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-    C2T_DELAY x CS = cross C2T_DELAY,CS;
-    C2T_DELAY x DATA_WIDTH = cross C2T_DELAY,DATA_WIDTH;
-    C2T_DELAY x master_out_slave_in = cross C2T_DELAY,master_out_slave_in;
-    C2T_DELAY x master_in_slave_out = cross C2T_DELAY,master_in_slave_out;
-
-    //Cross of the T2C_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-    //T2C_DELAY x CS = cross T2C_DELAY,CS;
-    //T2C_DELAY x DATA_WIDTH = cross T2C_DELAY,DATA_WIDTH;
-    //T2C_DELAY x master_out_slave_in = cross T2C_DELAY,master_out_slave_in;
-    //T2C_DELAY x master_in_slave_out = cross T2C_DELAY,master_in_slave_out;
-
-    //Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+    // Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
         
     SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
     SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
-    SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
+    // SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
     SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
 
-    //Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+    // Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
     NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
     NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
-    NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
+    // NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
     NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
 
 
