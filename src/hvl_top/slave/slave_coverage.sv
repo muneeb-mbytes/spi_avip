@@ -69,32 +69,32 @@ class slave_coverage extends uvm_subscriber;
     // cfg X packet : cross cfg X packet;
       
         
-    master_out_slave_in : coverpoint (mosi.packet {
+    master_out_slave_in : coverpoint (packet.master_out_slave_in.size() {
       option.comment = "the mosi data goes from master to slave";
-      bins mosi_hit = {1};
-      // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
+      bins mosi_size = {[0:7]}
     }
-    master_in_slave_out : coverpoint (miso.packet {
+    master_in_slave_out : coverpoint (packet.master_in_slave_out.size() {
       option.comment = "the mosi data goes from master to slave";
-      bins miso_hit = {1};
-      //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
+      bins miso_size = {[0:7]};
     }
     
     // illegal bin : coverpoint 
     
-    
+    //--------------------------------------------------------------------------------------------
+    // 
+    //--------------------------------------------------------------------------------------------
     // CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
    
     // Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
     OPERATION_MODE X CS = cross OPERATION_MODE,CS;
-    OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
+    // OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
     // OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
     OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
 
     // Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
         
     SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
-    SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
+    // SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
     // SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
     SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
 
@@ -102,7 +102,7 @@ class slave_coverage extends uvm_subscriber;
     NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
     NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
     // NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
-    NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
+    // NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
 
 
 
