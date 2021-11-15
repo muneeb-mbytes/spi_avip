@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------------------------------------
 // Class: master_coverage
-// <Description_here>
+// master_coverage determines the how much code is covered for better functionality of the TB.
 //--------------------------------------------------------------------------------------------
 class master_coverage extends uvm_subscriber#(master_tx);
   `uvm_component_utils(master_coverage)
@@ -15,31 +15,133 @@ class master_coverage extends uvm_subscriber#(master_tx);
   //-------------------------------------------------------
   // Covergroup
   // // TODO(mshariff): Add comments
+  // Covergroup consists of the various coverpoints based on the no. of the variables used to improve the coverage.
   //-------------------------------------------------------
   covergroup master_covergroup with function sample (master_agent_config cfg, master_tx packet);
     option.per_instance = 1;
 
     // Mode of the operation
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+
+    OPERATION_MODE : coverpoint {cpol,cpha} operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
-      // bins 
+      {cpol,cpha} = operation_modes_e'(cfg.spi_mode);
+      bins cpol_cpha[] = [0:3];
+      // bins cpol0_cpha0 = 0;
+      // bins cpol0_cpha1 = 1;
+      // bins cpol1_cpha0 = 2;
+      // bins cpol1_cpha1 = 3;
     }
 
     // Chip-selcet to first SCLK-edge delay
     C2T_DELAY : coverpoint cfg.c2tdelay {
       option.comment = "Delay betwen CS assertion to first SCLK edge";
       // TODO(mshariff): 
-      // bins DELAY[] = {[1:3]};
-      // bins DELAY_4_to_10 = {[4:10]};
+      // bins DELAY_1 = 1;
+      // bins DELAY_2 = 2;
+      // bins DELAY_3 = 3;
+      // bins DELAY_4_to_10 = [4:10];
     }
-
+      // illegal_bins illegal_bin = 0;
+      // Chip-selcet to first SCLK-edge delay 
+    T2C_DELAY : coverpoint cfg.t2cdelay {
+      option.comment = "Delay betwen last SCLK to the CS assertion";
+      // TODO(mshariff): 
+      // bins delay_11 = 11;
+      // bins delay_12 = 12;
+      // bins delay_13 = 13;
+    }
+    
+    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
+      option.comment = "Shift direction SPI. MSB and LSB";
+      direction = shift_direction_e'(cfg.spi_mode); 
+      bins lsb_first = 0;
+      bins msb_first = 1;
+    } 
+    
+    CS : coverpoint packet.cs(NO_OF_SLAVES-1){
+      option.comment = "Chip select assign one slave based on config"; 
+      bins cs_0 = 0;
+      bins cs_1 = 1;
+      bins cs_2 = 2;
+      bins cs_3 = 3;
+    }
+    //NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
+     // option.comment = "no of the slaves selected based on the config";
+      // bins slave_1 = 1;
+      // bins slave_2 = 1;
+      // bins slave_3 = 1;
+      // bins slave_4 = 1;
+      // illegal_bins illegal_bin = 0;
+    }
+    
+  
     // TODO(mshariff): 
     // Have illegal bins 
+    // illegal_bins illegal_bin = 0;
     // Have ignore bins
+    // ignore_bins ignore_bin = 
     // Have coverpoints for cfg and packet
+    //
+    //cfg : coverpoint cfg{
+    //option.comment = "  
     // Have interesting cross coverpoints between cfg and packet
-  endgroup : master_covergroup
+    // cfg X packet : cross cfg X packet;
+      
+        
+    master_out_slave_in : coverpoint (mosi.packet {
+      option.comment = "the mosi data goes from master to slave";
+      bins mosi_hit = 1;
+      // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
+    }
+    master_in_slave_out : coverpoint (miso.packet {
+      option.comment = "the mosi data goes from master to slave";
+      bins miso_hit = 1;
+      //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
+    }
+  
+    //illegal bin : coverpoint
+    
+    //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
+//--------------------------------------------------------------------------------------------
+// 1. 
+//--------------------------------------------------------------------------------------------
+ //   //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
+ //  
+ //   //Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+ //   OPERATION_MODE X CS = cross OPERATION_MODE,CS;
+ //   OPERATION_MODE X DATA_WIDTH = cross RATION_MODE,DATA_WIDTH;
+ //   OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
+ //   OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
+
+ //   //Cross of the C2T_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+ //   C2T_DELAY x CS = cross C2T_DELAY,CS;
+ //   C2T_DELAY x DATA_WIDTH = cross C2T_DELAY,DATA_WIDTH;
+ //   C2T_DELAY x master_out_slave_in = cross C2T_DELAY,master_out_slave_in;
+ //   C2T_DELAY x master_in_slave_out = cross C2T_DELAY,master_in_slave_out;
+
+ //   //Cross of the T2C_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+ //   T2C_DELAY x CS = cross T2C_DELAY,CS;
+ //   T2C_DELAY x DATA_WIDTH = cross T2C_DELAY,DATA_WIDTH;
+ //   T2C_DELAY x master_out_slave_in = cross T2C_DELAY,master_out_slave_in;
+ //   T2C_DELAY x master_in_slave_out = cross T2C_DELAY,master_in_slave_out;
+
+ //   //Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+ //       
+ //   SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
+ //   SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
+ //   SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
+ //   SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
+
+ //   //Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+ //   NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
+ //   NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
+ //   NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
+ //   NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
+
+ // 
+ // 
+ // endgroup : master_covergroup
 
   // Variable: master_cg
   // Handle for master covergroup
