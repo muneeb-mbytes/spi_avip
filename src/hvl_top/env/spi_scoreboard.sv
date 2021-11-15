@@ -192,7 +192,25 @@ task spi_scoreboard::run_phase(uvm_phase phase);
 //    `uvm_error (get_type_name(),$sformatf( "data3 comparision failed"));
 //    data_cmp_failed_count++;
 //  end
-  
+ 
+  // Data comparision for MOSI 
+  foreach(master_tx_h.master_out_slave_in[i]) begin
+    if(master_tx_h.master_out_slave_in[i] != slave_tx_h.master_out_slave_in[i]) begin
+      `uvm_error("ERROR_SC_MOSI_DATA_MISMATCH", 
+                $sformatf("Master MOSI[%0d] = 'h%0x and Slave MOSI[%0d] = 'h%0x", 
+                          i, master_tx_h.master_out_slave_in[i],
+                          i, slave_tx_h.master_out_slave_in[i]) );
+    end
+    else begin
+      `uvm_info("SB_MOSI_DATA_MATCH", 
+                $sformatf("Master MOSI[%0d] = 'h%0x and Slave MOSI[%0d] = 'h%0x", 
+                          i, master_tx_h.master_out_slave_in[i],
+                          i, slave_tx_h.master_out_slave_in[i]), UVM_HIGH);
+    end
+  end
+
+  // TODO(mshariff): Do a similar work for MISO
+
 // Done this part in report phase
 // MSHA:   // TODO(mshariff): After comparisions, keep a track of the sno of comparisions done
   end
@@ -208,6 +226,8 @@ endtask : run_phase
 //--------------------------------------------------------------------------------------------
 function void spi_scoreboard::check_phase(uvm_phase phase);
   super.check_phase(phase);
+
+  // TODO(mshariff): Banner as discussed
 
 // TODO(mshariff): Check the following:
 // 1. Check if the comparisions counter is NON-zero
@@ -233,6 +253,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
     `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of packets"),UVM_HIGH);
   end
   else begin
+    // TODO(mshariff): Have the error statements
     `uvm_info (get_type_name(), $sformatf ("master_tx_count : %0d",master_tx_count ),UVM_HIGH);
     `uvm_info (get_type_name(), $sformatf ("slave_tx_count : %0d",slave_tx_count ),UVM_HIGH);
     `uvm_error (get_type_name(), $sformatf ("master and slave does have same no. of packets"));
@@ -255,6 +276,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 //   end
 
   if (master_analysis_fifo.size() == 0)begin
+    // TODO(mshariff): Chnage the info's to errors
      `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo:%0d",master_analysis_fifo.size()),UVM_HIGH);
      `uvm_info (get_type_name(), $sformatf ("Master analysis FIFO is empty"),UVM_HIGH);
   end
@@ -263,6 +285,7 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
      `uvm_error (get_type_name(), $sformatf ("Master analysis FIFO is not empty"));
   end
   if (slave_analysis_fifo.size()== 0)begin
+    // TODO(mshariff): Chnage the info's to errors
      `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo:%0d",slave_analysis_fifo.size()),UVM_HIGH);
      `uvm_info (get_type_name(), $sformatf ("Slave analysis FIFO is empty"),UVM_HIGH);
   end
@@ -284,6 +307,7 @@ function void spi_scoreboard::report_phase(uvm_phase phase);
   `uvm_info("scoreboard",$sformatf("Scoreboard Report"),UVM_HIGH);
   
   // TODO(mshariff): Print the below items:
+  // TODO(mshariff): Banner as discussed
   
   // Total number of packets received from the Master
   `uvm_info (get_type_name(),$sformatf("No. of packects received from master: %0d",master_tx_count),UVM_HIGH);
