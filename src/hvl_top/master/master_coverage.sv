@@ -103,12 +103,12 @@ class master_coverage extends uvm_subscriber#(master_tx);
     // cfg X packet : cross cfg X packet;
       
         
-    master_out_slave_in : coverpoint (mosi.packet {
+    master_out_slave_in : coverpoint (master_out_slave_in.packet {
       option.comment = "the mosi data goes from master to slave";
       bins mosi_hit = 1;
       // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
     }
-    master_in_slave_out : coverpoint (miso.packet {
+    master_in_slave_out : coverpoint (master_in_slave_out.packet {
       option.comment = "the mosi data goes from master to slave";
       bins miso_hit = 1;
       //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
