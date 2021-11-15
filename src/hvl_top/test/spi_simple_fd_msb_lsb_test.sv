@@ -76,8 +76,8 @@ endfunction : setup_master_agent_cfg
 function void spi_simple_fd_msb_lsb_test::setup_slave_agents_cfg();
  super.setup_slave_agents_cfg();
   foreach(env_cfg_h.slave_agent_cfg_h[i])begin
-  env_cfg_h.slave_agent_cfg_h[i].shift_dir = shift_direction_e'(MSB_FIRST);
- // env_cfg_h.slave_agent_cfg_h[i].print();
+    env_cfg_h.slave_agent_cfg_h[i].shift_dir = shift_direction_e'(MSB_FIRST);
+    // env_cfg_h.slave_agent_cfg_h[i].print();
   end
 endfunction: setup_slave_agents_cfg
 

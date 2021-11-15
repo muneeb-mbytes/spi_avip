@@ -17,13 +17,13 @@ class spi_t2c_delay_test extends spi_simple_fd_8b_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  spi_t2c_delay_virtual_seq spi_t2c_delay_virtual_seq_h;
+  //spi_t2c_delay_virtual_seq spi_t2c_delay_virtual_seq_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "spi_t2c_delay_test", uvm_component parent);
-  extern virtual function void setup_master_agent_cfg_t2c();
+  extern virtual function void setup_master_agent_cfg();
 
 endclass : spi_t2c_delay_test
 
@@ -58,11 +58,11 @@ endfunction : new
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void spi_t2c_delay_test::setup_master_agent_cfg_t2c();
+function void spi_t2c_delay_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.t2cdelay = 2;
 //  env_cfg_h.master_agent_cfg_h.print();
-endfunction : setup_master_agent_cfg_t2c
+endfunction : setup_master_agent_cfg
 
 
 //function void spi_t2c_delay_test::setup_slave_agents_cfg_t2c();

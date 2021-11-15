@@ -55,7 +55,7 @@ task spi_simple_fd_8b_test::run_phase(uvm_phase phase);
   phase.raise_objection(this);
 
   //vseq1_fd_8b_h.start(env_h.vseqr);
-  spi_fd_8b_virtual_seq_h.start(env_h.virtual_seqr_h); //added by the team 3
+  spi_fd_8b_virtual_seq_h.start(env_h.virtual_seqr_h); 
 
   phase.drop_objection(this);
 

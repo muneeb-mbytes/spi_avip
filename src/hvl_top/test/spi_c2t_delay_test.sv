@@ -17,13 +17,13 @@ class spi_c2t_delay_test extends spi_simple_fd_8b_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  spi_c2t_delay_virtual_seq spi_c2t_delay_virtual_seq_h;
+  //spi_c2t_delay_virtual_seq spi_c2t_delay_virtual_seq_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "spi_c2t_delay_test", uvm_component parent);
-  extern virtual function void setup_master_agent_cfg_c2t();
+  extern virtual function void setup_master_agent_cfg();
 
 endclass : spi_c2t_delay_test
 
@@ -58,11 +58,11 @@ endfunction : new
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void spi_c2t_delay_test::setup_master_agent_cfg_c2t();
+function void spi_c2t_delay_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.c2tdelay = 2;
 //  env_cfg_h.master_agent_cfg_h.print();
-endfunction : setup_master_agent_cfg_c2t
+endfunction : setup_master_agent_cfg
 
 
 //function void spi_c2t_delay_test::setup_slave_agents_cfg_c2t();
