@@ -213,11 +213,8 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 // 1. Check if the comparisions counter is NON-zero
 //    A non-zero value indicates that the comparisions never happened and throw error
   
-  if (data_cmp_verified_count != 0 ) begin
+  if ((data_cmp_verified_count != 0)&&(data_cmp_failed_count == 0) ) begin
     `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("comparisions happened"),UVM_HIGH);
-  end
-  else if (data_cmp_failed_count == 0)begin
 	  `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
 	  `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
   end
