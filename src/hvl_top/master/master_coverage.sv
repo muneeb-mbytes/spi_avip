@@ -21,9 +21,12 @@ class master_coverage extends uvm_subscriber#(master_tx);
     option.per_instance = 1;
 
     // Mode of the operation
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+
+    OPERATION_MODE : coverpoint {cpol,cpha} operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
+      {cpol,cpha} = operation_modes_e'(cfg.spi_mode);
+      bins cpol_cpha[] = [0:3];
       // bins cpol0_cpha0 = 0;
       // bins cpol0_cpha1 = 1;
       // bins cpol1_cpha0 = 2;
@@ -36,7 +39,8 @@ class master_coverage extends uvm_subscriber#(master_tx);
       // TODO(mshariff): 
       // bins DELAY_1 = 1;
       // bins DELAY_2 = 2;
-      // bins DELAY_3_to_10 = {[3:10]};
+      // bins DELAY_3 = 3;
+      // bins DELAY_4_to_10 = [4:10];
     }
       // illegal_bins illegal_bin = 0;
       // Chip-selcet to first SCLK-edge delay 
@@ -50,18 +54,19 @@ class master_coverage extends uvm_subscriber#(master_tx);
     
     SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
       option.comment = "Shift direction SPI. MSB and LSB";
+      direction = shift_direction_e'(cfg.spi_mode); 
       bins lsb_first = 0;
       bins msb_first = 1;
     } 
-    CS : coverpoint packet.cs{
+    CS : coverpoint packet.cs(NO_OF_SLAVES-1){
       option.comment = "Chip select assign one slave based on config"; 
       bins cs_0 = 0;
       bins cs_1 = 1;
       bins cs_2 = 2;
-      bins cs_4 = 3;
+      bins cs_3 = 3;
     }
-    NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
-      option.comment = "no of the slaves selected based on the config";
+    //NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
+     // option.comment = "no of the slaves selected based on the config";
       // bins slave_1 = 1;
       // bins slave_2 = 1;
       // bins slave_3 = 1;
@@ -69,17 +74,10 @@ class master_coverage extends uvm_subscriber#(master_tx);
       // illegal_bins illegal_bin = 0;
     }
     
-    DATA_WIDTH : coverpoint packet.data_width {
-      option.comment = "Data of a perticular width is transfered";
-      bins dw_8b.size : 0;
-      bins dw_16b : 1;
-      bins dw_32b : 2;
-      bins dw_64b : 3;
-      bins dw_64b_128b :[4:$] ;
-    }
+  
     // TODO(mshariff): 
     // Have illegal bins 
-    // illegal_bins illegal_bin = {0};
+    // illegal_bins illegal_bin = 0;
     // Have ignore bins
     // ignore_bins ignore_bin = 
     // Have coverpoints for cfg and packet
@@ -92,12 +90,12 @@ class master_coverage extends uvm_subscriber#(master_tx);
         
     master_out_slave_in : coverpoint (mosi.packet {
       option.comment = "the mosi data goes from master to slave";
-      bins mosi_hit = {1};
+      bins mosi_hit = 1;
       // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
     }
     master_in_slave_out : coverpoint (miso.packet {
       option.comment = "the mosi data goes from master to slave";
-      bins miso_hit = {1};
+      bins miso_hit = 1;
       //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
     }
   
