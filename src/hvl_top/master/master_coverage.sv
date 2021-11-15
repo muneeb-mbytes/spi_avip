@@ -75,8 +75,21 @@ class master_coverage extends uvm_subscriber#(master_tx);
       // illegal_bins illegal_bin = 0;
     }
     
+    DATA_WIDTH : coverpoint packet.data_width {
+      option.comment = "Data of particular width is transfered";
+      bins dw_8b[] : [0:7];
+      bins dw_16b[] : [8:15];
+      bins dw_32b[] : [16:31];
+      bins dw_64b[] : [32:63];
+      bins dw_128b[] : [64:128];
   
+    BAUD_RATE : coverpoint cfg.baudrate {
+      option.comment = "it control the rate of transfer in communication channel";
+      bins baudrate = 2; 
+      // need to add bins for baud rate 
 
+    }
+    
     // TODO(mshariff): 
     // Have illegal bins 
     // illegal_bins illegal_bin = 0;
