@@ -1,0 +1,462 @@
+# vsim -vopt work.hvl_top work.hdl_top -voptargs="+acc=npr" -assertdebug "+UVM_TESTNAME=spi_simple_fd_msb_lsb_test" "+UVM_VERBOSITY=UVM_MEDIUM" -l spi_simple_fd_msb_lsb_test/spi_simple_fd_msb_lsb_test.log -c -do "log -r /*; add wave -r /*; run -all;" -wlf spi_simple_fd_msb_lsb_test/waveform.wlf 
+# Start time: 02:16:14 on Nov 16,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.6c linux Jul 25 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.slave_driver_bfm(fast)
+# Loading work.slave_monitor_bfm(fast)
+# Loading work.spi_globals_pkg(fast)
+# Loading mtiUvm.uvm_pkg
+# Loading work.spi_slave_pkg(fast)
+# Loading work.master_driver_bfm(fast)
+# Loading work.master_monitor_bfm(fast)
+# Loading work.spi_master_pkg(fast)
+# Loading work.spi_env_pkg(fast)
+# Loading work.spi_slave_seq_pkg(fast)
+# Loading work.spi_master_seq_pkg(fast)
+# Loading work.spi_virtual_seq_pkg(fast)
+# Loading work.test_pkg(fast)
+# Loading work.hvl_top(fast)
+# Loading work.hdl_top(fast)
+# Loading work.spi_if_sv_unit(fast)
+# Loading work.spi_if(fast)
+# Loading work.slave_agent_bfm(fast)
+# Loading work.slave_driver_bfm_sv_unit(fast)
+# Loading work.slave_driver_bfm(fast)
+# Loading work.slave_monitor_bfm_sv_unit(fast)
+# Loading work.slave_monitor_bfm(fast)
+# Loading work.master_agent_bfm(fast)
+# Loading work.master_driver_bfm_sv_unit(fast)
+# Loading work.master_driver_bfm(fast)
+# Loading work.master_monitor_bfm_sv_unit(fast)
+# Loading work.master_monitor_bfm(fast)
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# Loading /tools/mentor/questasim_10.6c/questasim/uvm-1.1d/linux/uvm_dpi.so
+# log -r /*
+#  add wave -r /*
+#  run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# UVM_INFO @ 0: reporter [RNTST] Running test spi_simple_fd_msb_lsb_test...
+# HDL_TOP
+# Slave Driver BFM
+# Slave Monitor BFM
+# Slave Agent BFM
+# Master driver BFM
+# Master Monitor BFM
+# Master Agent BFM
+# -------------------------------------------------------
+# Name                   Type                 Size  Value
+# -------------------------------------------------------
+# master_agent_cfg_h     master_agent_config  -     @497 
+#   is_active            integral             1     1    
+#   no_of_slaves         integral             32    'd1  
+#   spi_mode             integral             2     0    
+#   shift_dir            integral             1     1    
+#   c2tdelay             integral             32    'd1  
+#   t2cdelay             integral             32    'd1  
+#   wdelay               integral             32    'd1  
+#   primary_prescalar    integral             3     'd0  
+#   secondary_prescalar  integral             3     'd0  
+#   baudrate_divisor     integral             32    'd2  
+#   has_coverage         integral             1     1    
+# -------------------------------------------------------
+# -----------------------------------------------------
+# Name                  Type                Size  Value
+# -----------------------------------------------------
+# slave_agent_cfg_h[0]  slave_agent_config  -     @502 
+#   is_active           integral            1     1    
+#   slave_id            integral            2     'd0  
+#   spi_mode            integral            2     0    
+#   shift_dir           integral            1     1    
+#   has_coverage        integral            1     1    
+# -----------------------------------------------------
+# ------------------------------------------
+# Name               Type        Size  Value
+# ------------------------------------------
+# env_cfg_h          env_config  -     @496 
+#   has_scoreboard   integral    1     1    
+#   has_virtual_sqr  integral    1     1    
+#   no_of_slaves     integral    32    'h1  
+# ------------------------------------------
+# UVM_INFO ../../src/hvl_top/env/env.sv(64) @ 0: uvm_test_top.env_h [uvm_test_top.env_h] ENV: build_phase
+# UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+# ---------------------------------------------------------------------
+# Name                          Type                        Size  Value
+# ---------------------------------------------------------------------
+# uvm_test_top                  spi_simple_fd_msb_lsb_test  -     @473 
+#   env_h                       env                         -     @511 
+#     master_agent_h            master_agent                -     @519 
+#       master_drv_proxy_h      master_driver_proxy         -     @651 
+#         rsp_port              uvm_analysis_port           -     @666 
+#         seq_item_port         uvm_seq_item_pull_port      -     @658 
+#       master_mon_proxy_h      master_monitor_proxy        -     @783 
+#         master_analysis_port  uvm_analysis_port           -     @790 
+#       master_seqr_h           master_sequencer            -     @674 
+#         rsp_export            uvm_analysis_export         -     @681 
+#         seq_item_export       uvm_seq_item_pull_imp       -     @775 
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     scoreboard_h              spi_scoreboard              -     @642 
+#       master_analysis_fifo    uvm_tlm_analysis_fifo #(T)  -     @805 
+#         analysis_export       uvm_analysis_imp            -     @844 
+#         get_ap                uvm_analysis_port           -     @836 
+#         get_peek_export       uvm_get_peek_imp            -     @820 
+#         put_ap                uvm_analysis_port           -     @828 
+#         put_export            uvm_put_imp                 -     @812 
+#       slave_analysis_fifo     uvm_tlm_analysis_fifo #(T)  -     @852 
+#         analysis_export       uvm_analysis_imp            -     @891 
+#         get_ap                uvm_analysis_port           -     @883 
+#         get_peek_export       uvm_get_peek_imp            -     @867 
+#         put_ap                uvm_analysis_port           -     @875 
+#         put_export            uvm_put_imp                 -     @859 
+#     slave_agent_h[0]          slave_agent                 -     @526 
+#       slave_drv_proxy_h       slave_driver_proxy          -     @901 
+#         rsp_port              uvm_analysis_port           -     @916 
+#         seq_item_port         uvm_seq_item_pull_port      -     @908 
+#       slave_mon_proxy_h       slave_monitor_proxy         -     @1033
+#         slave_analysis_port   uvm_analysis_port           -     @1040
+#       slave_seqr_h            slave_sequencer             -     @924 
+#         rsp_export            uvm_analysis_export         -     @931 
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1025
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     virtual_seqr_h            virtual_sequencer           -     @533 
+#       master_seqr_h           master_sequencer            -     @1061
+#         rsp_export            uvm_analysis_export         -     @1068
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1162
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       rsp_export              uvm_analysis_export         -     @540 
+#       seq_item_export         uvm_seq_item_pull_imp       -     @634 
+#       slave_seqr_h            slave_sequencer             -     @1170
+#         rsp_export            uvm_analysis_export         -     @1177
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1271
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       arbitration_queue       array                       0     -    
+#       lock_queue              array                       0     -    
+#       num_last_reqs           integral                    32    'd1  
+#       num_last_rsps           integral                    32    'd1  
+# ---------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hvl_top/slave/slave_monitor_proxy.sv(222) @ 0: uvm_test_top.env_h.slave_agent_h[0].slave_mon_proxy_h [slave_monitor_proxy] Inside the slave_monitor_proxy
+# UVM_INFO ../../src/hvl_top/master//master_monitor_proxy.sv(130) @ 0: uvm_test_top.env_h.master_agent_h.master_mon_proxy_h [master_monitor_proxy] Inside the master_monitor_proxy
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(60) @ 100: reporter [SLAVE_MONITOR_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(64) @ 100: reporter [SLAVE_DRIVER_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(59) @ 100: reporter [MASTER_MONITOR_BFM] IDLE condition has been detected
+# ----------------------------------------------------------------------------------------------------------------------
+# Name                           Type       Size  Value                                                                 
+# ----------------------------------------------------------------------------------------------------------------------
+# req                            master_tx  -     @1323                                                                 
+#   begin_time                   time       64    110                                                                   
+#   depth                        int        32    'd2                                                                   
+#   parent sequence (name)       string     22    spi_fd_8b_master_seq_h                                                
+#   parent sequence (full name)  string     70    uvm_test_top.env_h.master_agent_h.master_seqr_h.spi_fd_8b_master_seq_h
+#   sequencer                    string     47    uvm_test_top.env_h.master_agent_h.master_seqr_h                       
+#   cs                           integral   2     'b0                                                                   
+#   master_out_slave_in[0]       integral   8     'h40                                                                  
+# ----------------------------------------------------------------------------------------------------------------------
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(77) @ 140: reporter [SLAVE_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(81) @ 140: reporter [SLAVE_DRIVER_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(78) @ 140: reporter [MASTER_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(129) @ 140: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from slave seqeuncer : , 
+#  ---------------------------------------------------------------------------------------------------------------------
+# Name                           Type      Size  Value                                                                 
+# ---------------------------------------------------------------------------------------------------------------------
+# req                            slave_tx  -     @1327                                                                 
+#   begin_time                   time      64    140                                                                   
+#   depth                        int       32    'd2                                                                   
+#   parent sequence (name)       string    21    spi_fd_8b_slave_seq_h                                                 
+#   parent sequence (full name)  string    70    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h.spi_fd_8b_slave_seq_h
+#   sequencer                    string    48    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h                      
+#   master_in_slave_out[0]       integral  8     'hb8                                                                  
+# ---------------------------------------------------------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(178) @ 520: reporter [SLAVE_DRIVER_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(163) @ 520: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cs:0, master_out_slave_in:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64}, no_of_mosi_bits_transfer:8, master_in_slave_out:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184}, no_of_miso_bits_transfer:8}
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(138) @ 520: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from BFM : , 
+#  -----------------------------------------------
+# Name                      Type      Size  Value
+# -----------------------------------------------
+# slave_tx                  slave_tx  -     @1451
+#   master_in_slave_out[0]  integral  8     'hb8 
+#   master_out_slave_in[0]  integral  8     'h40 
+# -----------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(102) @ 520: reporter [MASTER_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(101) @ 520: reporter [SLAVE_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(189) @ 530: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cpol:0, cpha:0, msb_first:1, c2t:1, t2c:1, baudrate_divisor:2, wdelay:1}
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(168) @ 530: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] Received packet from BFM : , 
+#  ------------------------------------------------
+# Name                      Type       Size  Value
+# ------------------------------------------------
+# master_tx                 master_tx  -     @1472
+#   cs                      integral   2     'b0  
+#   master_out_slave_in[0]  integral   8     'h40 
+#   master_in_slave_out[0]  integral   8     'hb8 
+# ------------------------------------------------
+# 
+# ----------------------------------------------------------------------------------------------------------------------
+# Name                           Type       Size  Value                                                                 
+# ----------------------------------------------------------------------------------------------------------------------
+# req                            master_tx  -     @1477                                                                 
+#   begin_time                   time       64    530                                                                   
+#   depth                        int        32    'd2                                                                   
+#   parent sequence (name)       string     22    spi_fd_8b_master_seq_h                                                
+#   parent sequence (full name)  string     70    uvm_test_top.env_h.master_agent_h.master_seqr_h.spi_fd_8b_master_seq_h
+#   sequencer                    string     47    uvm_test_top.env_h.master_agent_h.master_seqr_h                       
+#   cs                           integral   2     'b0                                                                   
+#   master_out_slave_in[0]       integral   8     'hc0                                                                  
+# ----------------------------------------------------------------------------------------------------------------------
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(81) @ 560: reporter [SLAVE_DRIVER_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(78) @ 560: reporter [MASTER_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(77) @ 560: reporter [SLAVE_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(129) @ 560: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from slave seqeuncer : , 
+#  ---------------------------------------------------------------------------------------------------------------------
+# Name                           Type      Size  Value                                                                 
+# ---------------------------------------------------------------------------------------------------------------------
+# req                            slave_tx  -     @1327                                                                 
+#   begin_time                   time      64    560                                                                   
+#   end_time                     time      64    520                                                                   
+#   depth                        int       32    'd2                                                                   
+#   parent sequence (name)       string    21    spi_fd_8b_slave_seq_h                                                 
+#   parent sequence (full name)  string    70    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h.spi_fd_8b_slave_seq_h
+#   sequencer                    string    48    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h                      
+#   master_in_slave_out[0]       integral  8     'h88                                                                  
+# ---------------------------------------------------------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(178) @ 940: reporter [SLAVE_DRIVER_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(163) @ 940: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cs:0, master_out_slave_in:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 192}, no_of_mosi_bits_transfer:8, master_in_slave_out:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 136}, no_of_miso_bits_transfer:8}
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(138) @ 940: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from BFM : , 
+#  -----------------------------------------------
+# Name                      Type      Size  Value
+# -----------------------------------------------
+# slave_tx                  slave_tx  -     @1481
+#   master_in_slave_out[0]  integral  8     'h88 
+#   master_out_slave_in[0]  integral  8     'hc0 
+# -----------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(101) @ 940: reporter [SLAVE_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(102) @ 940: reporter [MASTER_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(189) @ 950: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cpol:0, cpha:0, msb_first:1, c2t:1, t2c:1, baudrate_divisor:2, wdelay:1}
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(168) @ 950: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] Received packet from BFM : , 
+#  ------------------------------------------------
+# Name                      Type       Size  Value
+# ------------------------------------------------
+# master_tx                 master_tx  -     @1501
+#   cs                      integral   2     'b0  
+#   master_out_slave_in[0]  integral   8     'hc0 
+#   master_in_slave_out[0]  integral   8     'h88 
+# ------------------------------------------------
+# 
+# ----------------------------------------------------------------------------------------------------------------------
+# Name                           Type       Size  Value                                                                 
+# ----------------------------------------------------------------------------------------------------------------------
+# req                            master_tx  -     @1505                                                                 
+#   begin_time                   time       64    950                                                                   
+#   depth                        int        32    'd2                                                                   
+#   parent sequence (name)       string     22    spi_fd_8b_master_seq_h                                                
+#   parent sequence (full name)  string     70    uvm_test_top.env_h.master_agent_h.master_seqr_h.spi_fd_8b_master_seq_h
+#   sequencer                    string     47    uvm_test_top.env_h.master_agent_h.master_seqr_h                       
+#   cs                           integral   2     'b0                                                                   
+#   master_out_slave_in[0]       integral   8     'hf8                                                                  
+# ----------------------------------------------------------------------------------------------------------------------
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(81) @ 980: reporter [SLAVE_DRIVER_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(77) @ 980: reporter [SLAVE_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(78) @ 980: reporter [MASTER_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(129) @ 980: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from slave seqeuncer : , 
+#  ---------------------------------------------------------------------------------------------------------------------
+# Name                           Type      Size  Value                                                                 
+# ---------------------------------------------------------------------------------------------------------------------
+# req                            slave_tx  -     @1327                                                                 
+#   begin_time                   time      64    980                                                                   
+#   end_time                     time      64    940                                                                   
+#   depth                        int       32    'd2                                                                   
+#   parent sequence (name)       string    21    spi_fd_8b_slave_seq_h                                                 
+#   parent sequence (full name)  string    70    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h.spi_fd_8b_slave_seq_h
+#   sequencer                    string    48    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h                      
+#   master_in_slave_out[0]       integral  8     'ha8                                                                  
+# ---------------------------------------------------------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(178) @ 1360: reporter [SLAVE_DRIVER_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(163) @ 1360: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cs:0, master_out_slave_in:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248}, no_of_mosi_bits_transfer:8, master_in_slave_out:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 168}, no_of_miso_bits_transfer:8}
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(138) @ 1360: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from BFM : , 
+#  -----------------------------------------------
+# Name                      Type      Size  Value
+# -----------------------------------------------
+# slave_tx                  slave_tx  -     @1509
+#   master_in_slave_out[0]  integral  8     'ha8 
+#   master_out_slave_in[0]  integral  8     'hf8 
+# -----------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(102) @ 1360: reporter [MASTER_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(101) @ 1360: reporter [SLAVE_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(189) @ 1370: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cpol:0, cpha:0, msb_first:1, c2t:1, t2c:1, baudrate_divisor:2, wdelay:1}
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(168) @ 1370: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] Received packet from BFM : , 
+#  ------------------------------------------------
+# Name                      Type       Size  Value
+# ------------------------------------------------
+# master_tx                 master_tx  -     @1529
+#   cs                      integral   2     'b0  
+#   master_out_slave_in[0]  integral   8     'hf8 
+#   master_in_slave_out[0]  integral   8     'ha8 
+# ------------------------------------------------
+# 
+# ----------------------------------------------------------------------------------------------------------------------
+# Name                           Type       Size  Value                                                                 
+# ----------------------------------------------------------------------------------------------------------------------
+# req                            master_tx  -     @1533                                                                 
+#   begin_time                   time       64    1370                                                                  
+#   depth                        int        32    'd2                                                                   
+#   parent sequence (name)       string     22    spi_fd_8b_master_seq_h                                                
+#   parent sequence (full name)  string     70    uvm_test_top.env_h.master_agent_h.master_seqr_h.spi_fd_8b_master_seq_h
+#   sequencer                    string     47    uvm_test_top.env_h.master_agent_h.master_seqr_h                       
+#   cs                           integral   2     'b0                                                                   
+#   master_out_slave_in[0]       integral   8     'h0                                                                   
+# ----------------------------------------------------------------------------------------------------------------------
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(81) @ 1400: reporter [SLAVE_DRIVER_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(78) @ 1400: reporter [MASTER_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(77) @ 1400: reporter [SLAVE_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(129) @ 1400: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from slave seqeuncer : , 
+#  ---------------------------------------------------------------------------------------------------------------------
+# Name                           Type      Size  Value                                                                 
+# ---------------------------------------------------------------------------------------------------------------------
+# req                            slave_tx  -     @1327                                                                 
+#   begin_time                   time      64    1400                                                                  
+#   end_time                     time      64    1360                                                                  
+#   depth                        int       32    'd2                                                                   
+#   parent sequence (name)       string    21    spi_fd_8b_slave_seq_h                                                 
+#   parent sequence (full name)  string    70    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h.spi_fd_8b_slave_seq_h
+#   sequencer                    string    48    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h                      
+#   master_in_slave_out[0]       integral  8     'h78                                                                  
+# ---------------------------------------------------------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(178) @ 1780: reporter [SLAVE_DRIVER_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(163) @ 1780: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cs:0, master_out_slave_in:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, no_of_mosi_bits_transfer:8, master_in_slave_out:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120}, no_of_miso_bits_transfer:8}
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(138) @ 1780: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from BFM : , 
+#  -----------------------------------------------
+# Name                      Type      Size  Value
+# -----------------------------------------------
+# slave_tx                  slave_tx  -     @1537
+#   master_in_slave_out[0]  integral  8     'h78 
+#   master_out_slave_in[0]  integral  8     'h0  
+# -----------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(101) @ 1780: reporter [SLAVE_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(102) @ 1780: reporter [MASTER_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(189) @ 1790: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cpol:0, cpha:0, msb_first:1, c2t:1, t2c:1, baudrate_divisor:2, wdelay:1}
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(168) @ 1790: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] Received packet from BFM : , 
+#  ------------------------------------------------
+# Name                      Type       Size  Value
+# ------------------------------------------------
+# master_tx                 master_tx  -     @1557
+#   cs                      integral   2     'b0  
+#   master_out_slave_in[0]  integral   8     'h0  
+#   master_in_slave_out[0]  integral   8     'h78 
+# ------------------------------------------------
+# 
+# ----------------------------------------------------------------------------------------------------------------------
+# Name                           Type       Size  Value                                                                 
+# ----------------------------------------------------------------------------------------------------------------------
+# req                            master_tx  -     @1561                                                                 
+#   begin_time                   time       64    1790                                                                  
+#   depth                        int        32    'd2                                                                   
+#   parent sequence (name)       string     22    spi_fd_8b_master_seq_h                                                
+#   parent sequence (full name)  string     70    uvm_test_top.env_h.master_agent_h.master_seqr_h.spi_fd_8b_master_seq_h
+#   sequencer                    string     47    uvm_test_top.env_h.master_agent_h.master_seqr_h                       
+#   cs                           integral   2     'b0                                                                   
+#   master_out_slave_in[0]       integral   8     'h60                                                                  
+# ----------------------------------------------------------------------------------------------------------------------
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(81) @ 1820: reporter [SLAVE_DRIVER_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(77) @ 1820: reporter [SLAVE_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(78) @ 1820: reporter [MASTER_MONITOR_BFM] Transfer start is detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(129) @ 1820: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from slave seqeuncer : , 
+#  ---------------------------------------------------------------------------------------------------------------------
+# Name                           Type      Size  Value                                                                 
+# ---------------------------------------------------------------------------------------------------------------------
+# req                            slave_tx  -     @1327                                                                 
+#   begin_time                   time      64    1820                                                                  
+#   end_time                     time      64    1780                                                                  
+#   depth                        int       32    'd2                                                                   
+#   parent sequence (name)       string    21    spi_fd_8b_slave_seq_h                                                 
+#   parent sequence (full name)  string    70    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h.spi_fd_8b_slave_seq_h
+#   sequencer                    string    48    uvm_test_top.env_h.slave_agent_h[0].slave_seqr_h                      
+#   master_in_slave_out[0]       integral  8     'h8                                                                   
+# ---------------------------------------------------------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(178) @ 2200: reporter [SLAVE_DRIVER_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(163) @ 2200: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cs:0, master_out_slave_in:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96}, no_of_mosi_bits_transfer:8, master_in_slave_out:'{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8}, no_of_miso_bits_transfer:8}
+# UVM_INFO ../../src/hvl_top/slave/slave_driver_proxy.sv(138) @ 2200: uvm_test_top.env_h.slave_agent_h[0].slave_drv_proxy_h [slave_driver_proxy] Received packet from BFM : , 
+#  -----------------------------------------------
+# Name                      Type      Size  Value
+# -----------------------------------------------
+# slave_tx                  slave_tx  -     @1565
+#   master_in_slave_out[0]  integral  8     'h8  
+#   master_out_slave_in[0]  integral  8     'h60 
+# -----------------------------------------------
+# 
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(102) @ 2200: reporter [MASTER_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(101) @ 2200: reporter [SLAVE_MONITOR_BFM] End of Transfer Detected
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(189) @ 2210: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] AFTER STRUCT PACKET : , 
+#  '{cpol:0, cpha:0, msb_first:1, c2t:1, t2c:1, baudrate_divisor:2, wdelay:1}
+# UVM_INFO ../../src/hvl_top/master//master_driver_proxy.sv(168) @ 2210: uvm_test_top.env_h.master_agent_h.master_drv_proxy_h [master_driver_proxy] Received packet from BFM : , 
+#  ------------------------------------------------
+# Name                      Type       Size  Value
+# ------------------------------------------------
+# master_tx                 master_tx  -     @1589
+#   cs                      integral   2     'b0  
+#   master_out_slave_in[0]  integral   8     'h60 
+#   master_in_slave_out[0]  integral   8     'h8  
+# ------------------------------------------------
+# 
