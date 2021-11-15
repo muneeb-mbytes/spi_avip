@@ -15,7 +15,6 @@ class master_base_seq extends uvm_sequence #(master_tx);
   extern function new(string name = "master_base_seq");
 endclass : master_base_seq
 
-
 //-----------------------------------------------------------------------------
 // Constructor: new
 // Initializes the master_sequence class object
@@ -23,7 +22,6 @@ endclass : master_base_seq
 // Parameters:
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
-
 function master_base_seq::new(string name = "master_base_seq");
   super.new(name);
 endfunction : new

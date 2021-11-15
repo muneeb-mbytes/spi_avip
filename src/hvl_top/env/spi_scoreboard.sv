@@ -34,7 +34,7 @@ class spi_scoreboard extends uvm_scoreboard;
   extern function new(string name = "spi_scoreboard", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
-  //extern virtual task run_phase(uvm_phase phase);
+  extern virtual task run_phase(uvm_phase phase);
   //extern virtual function void report_phase(uvm_phase phase);
 endclass : spi_scoreboard
 

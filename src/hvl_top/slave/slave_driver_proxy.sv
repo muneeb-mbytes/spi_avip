@@ -8,7 +8,7 @@
 //--------------------------------------------------------------------------------------------
 class slave_driver_proxy extends uvm_driver#(slave_tx);
   `uvm_component_utils(slave_driver_proxy)
-  slave_tx tx;
+//  slave_tx tx;
 
   // Variable: slave_driver_bfm_h;
   // Handle for slave driver bfm
@@ -26,15 +26,11 @@ class slave_driver_proxy extends uvm_driver#(slave_tx);
   extern function new(string name = "slave_driver_proxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
-
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
+  //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_dut();
-//  extern virtual task drive_cpol_0_cpha_0(bit [7:0] data);
-//  extern virtual task drive_cpol_0_cpha_1(bit [7:0] data);
-//  extern virtual task drive_cpol_1_cpha_0(bit [7:0] data);
-//  extern virtual task drive_cpol_1_cpha_1(bit [7:0] data);
-
+  extern virtual task drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s struct_cfg);
+  extern virtual function void reset_detected();
 
 endclass : slave_driver_proxy
 
@@ -60,9 +56,6 @@ endfunction : new
 function void slave_driver_proxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
-//  if(!uvm_config_db #(slave_agent_config)::get(this,"","slave_agent_config",slave_agent_cfg_h))
-//		`uvm_fatal("CONFIG","cannot get() slave_agent_cfg_h")
-  		
   if(!uvm_config_db #(virtual slave_driver_bfm)::get(this,"","slave_driver_bfm",slave_drv_bfm_h)) begin
     `uvm_fatal("FATAL_SDP_CANNOT_GET_SLAVE_DRIVER_BFM","cannot get() slave_drv_bfm_h");
   end
@@ -91,136 +84,98 @@ endfunction : connect_phase
 //-------------------------------------------------------
 function void slave_driver_proxy::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-//  slave_drv_bfm_h.s_drv_proxy_h = this;
+  slave_drv_bfm_h.slave_drv_proxy_h = this;
 endfunction : end_of_elaboration_phase
 
+//--------------------------------------------------------------------------------------------
+//  Function: start_of_simulation_phase
+//  <Description_here>
+//
+//  Parameters:
+//  phase - uvm phase
+//--------------------------------------------------------------------------------------------
+//function void slave_driver_proxy::start_of_simulation_phase(uvm_phase phase);
+//  super.start_of_simulation_phase(phase);
+//endfunction : start_of_simulation_phase
 
 //--------------------------------------------------------------------------------------------
-//  Task: run_phase
-//  Tasks for driving data to dut from transaction
+// Task: run_phase
+// Gets the sequence_item, converts them to struct compatible transactions
+// and sends them to the BFM to drive the data over the interface
+//
+// Parameters:
+//  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 task slave_driver_proxy::run_phase(uvm_phase phase);
 
+  super.run_phase(phase);
+
+  // Wait for system reset
+  slave_drv_bfm_h.wait_for_system_reset();
+
+  // Wait for the IDLE state of SPI interface
+  slave_drv_bfm_h.wait_for_idle_state();
+
+  // Driving logic
   forever begin
+    spi_transfer_char_s struct_packet;
+    spi_transfer_cfg_s struct_cfg;
+
+    // Wait for transfer to start
+    slave_drv_bfm_h.wait_for_transfer_start();
+
     seq_item_port.get_next_item(req);
-    
-    drive_to_dut();
-    
+    `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
+                                        req.sprint()),UVM_LOW)
+
+    slave_spi_seq_item_converter::from_class(req, struct_packet); 
+    slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
+
+    drive_to_bfm(struct_packet, struct_cfg);
+
+    slave_spi_seq_item_converter::to_class(struct_packet, req);
+    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+                                        req.sprint()),UVM_LOW)
+
     seq_item_port.item_done();
   end
+endtask : run_phase
 
-endtask : run_phase 
+//--------------------------------------------------------------------------------------------
+// Task: drive_to_bfm
+// This task converts the transcation data packet to struct type and send
+// it to the slave_driver_bfm
+//--------------------------------------------------------------------------------------------
+task slave_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s struct_cfg);
 
-task slave_driver_proxy::drive_to_dut();
-//  foreach(req.slave_spi_seq_item_conv_h.output_conv_h.master_out_slave_in[i]) begin
-  foreach(req.master_out_slave_in[i]) begin
-    bit [7:0] data;
+  // TODO(mshariff): Have a way to print the struct values
+  // slave_spi_seq_item_converter::display_struct(packet);
+  // string s;
+  // s = slave_spi_seq_item_converter::display_struct(packet);
+  // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
-//data = req.slave_spi_seq_item_conv_h.output_conv_h.master_out_slave_in[i];
-  data = req.master_out_slave_in[i];
+//  case ({slave_agent_cfg_h.spi_mode, slave_agent_cfg_h.shift_dir})
+
+   // {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
     
-//case ({tx.cpol,tx.cpha})
-    case (slave_agent_cfg_h.spi_mode)
-      CPOL0_CPHA0:
-        if (slave_agent_cfg_h.shift_dir == MSB_FIRST) begin
-          slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-        end
-        
-        else if (slave_agent_cfg_h.shift_dir == LSB_FIRST) begin
-          slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-        end
-  
-      CPOL0_CPHA1:
-        if (slave_agent_cfg_h.shift_dir == MSB_FIRST) begin
-          slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-        end
-        
-        else if (slave_agent_cfg_h.shift_dir == LSB_FIRST) begin
-          slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-        end
-  
-      CPOL1_CPHA0:
-        if (slave_agent_cfg_h.shift_dir == MSB_FIRST) begin
-          slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-        end
-        
-        else if (slave_agent_cfg_h.shift_dir == LSB_FIRST) begin
-          slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-        end
-  
-      CPOL1_CPHA1:
-        if (slave_agent_cfg_h.shift_dir == MSB_FIRST) begin
-          slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-        end
-        
-        else if (slave_agent_cfg_h.shift_dir == LSB_FIRST) begin
-          slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-          slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-        end
-  
-//   CPOL0_CPHA0: drive_cpol_0_cpha_0(data);
-//   CPOL0_CPHA1: drive_cpol_0_cpha_1(data);
-//   CPOL1_CPHA0: drive_cpol_1_cpha_0(data);
-//   CPOL1_CPHA1: drive_cpol_1_cpha_1(data);
-    endcase
-  end
+  slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
+  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",
+                                        packet),UVM_LOW)
 
-endtask : drive_to_dut
+//  endcase
 
-////--------------------------------------------------------------------------------------------
-//// Task for driving miso0 signal for condition cpol==0,cpha==0
-////--------------------------------------------------------------------------------------------
-//
-//task slave_driver_proxy::drive_cpol_0_cpha_0 (bit [7:0] data);
-//  slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-//
-//  tx.miso0 <= data;
-//endtask : drive_cpol_0_cpha_0
-//
-////--------------------------------------------------------------------------------------------
-//// Task for sampling mosi signal and driving miso signal for condition cpol==0,cpha==1
-////--------------------------------------------------------------------------------------------
-//task slave_driver_proxy::drive_cpol_0_cpha_1 (bit [7:0] data);
-//  slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-//  
-//  tx.miso0 <= data;
-//endtask : drive_cpol_0_cpha_1
-//
-////--------------------------------------------------------------------------------------------
-//// Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
-////--------------------------------------------------------------------------------------------
-//task slave_driver_proxy::drive_cpol_1_cpha_0 (bit [7:0] data);
-//  slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-//  
-//  tx.miso0 <= data;
-//endtask : drive_cpol_1_cpha_0
-//
-////--------------------------------------------------------------------------------------------
-//// Task for sampling mosi signal and driving miso signal for condition cpol==1,cpha==0
-////--------------------------------------------------------------------------------------------
-//task slave_driver_proxy::drive_cpol_1_cpha_1 (bit [7:0] data);
-//  slave_drv_bfm_h.drive_msb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_pos_edge(data);
-//  slave_drv_bfm_h.drive_msb_first_neg_edge(data);
-//  slave_drv_bfm_h.drive_lsb_first_neg_edge(data);
-//  
-//  tx.miso0 <= data;
-//endtask : drive_cpol_1_cpha_1
+endtask: drive_to_bfm
+
+//--------------------------------------------------------------------------------------------
+// Function reset_detected
+// This task detect the system reset appliction
+//--------------------------------------------------------------------------------------------
+function void slave_driver_proxy::reset_detected();
+  `uvm_info(get_type_name(), "System reset is detected", UVM_NONE);
+
+  // TODO(mshariff): 
+  // Clear the data queues and kill the required threads
+endfunction: reset_detected
 
 `endif
+

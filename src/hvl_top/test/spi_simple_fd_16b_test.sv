@@ -17,6 +17,7 @@ class spi_simple_fd_16b_test extends base_test;
   // MSHA:m_spi_fd_16b_seq m_spi_fd_16b_h;
   // MSHA:s_spi_fd_16b_seq s_spi_fd_16b_h;
 
+  spi_fd_16b_virtual_seq spi_fd_16b_virtual_seq_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -26,7 +27,6 @@ class spi_simple_fd_16b_test extends base_test;
   extern task run_phase(uvm_phase phase);
 
 endclass : spi_simple_fd_16b_test
-
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
@@ -51,8 +51,8 @@ endfunction : build_phase
 // Responsible for starting the transactions
 //--------------------------------------------------------------------------------------------
 task spi_simple_fd_16b_test::run_phase(uvm_phase phase);
-
-
+  
+  spi_fd_16b_virtual_seq_h = spi_fd_16b_virtual_seq::type_id::create("spi_fd_16b_virtual_seq_h");
   // MSHA:m_spi_fd_16b_h = m_spi_fd_16b_seq::type_id::create("m_spi_fd_16b_h");
   // MSHA:s_spi_fd_16b_h = s_spi_fd_16b_seq::type_id::create("s_spi_fd_16b_h");
 
@@ -61,6 +61,7 @@ task spi_simple_fd_16b_test::run_phase(uvm_phase phase);
   // MSHA:    m_spi_fd_16b_h.start(env_h.v_seqr_h);
   // MSHA:    s_spi_fd_16b_h.start(env_h.v_seqr_h);
   // MSHA:join
+  spi_fd_16b_virtual_seq_h.start(env_h.virtual_seqr_h); //added by the team 3
   phase.drop_objection(this);
 
 endtask:run_phase

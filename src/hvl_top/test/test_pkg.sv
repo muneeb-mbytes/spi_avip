@@ -29,7 +29,19 @@ package test_pkg;
  `include "base_test.sv"
  `include "spi_simple_fd_8b_test.sv"
  `include "spi_simple_fd_16b_test.sv"
-
+ `include "spi_simple_fd_32b_test.sv"
+ `include "spi_simple_fd_64b_test.sv"
+ `include "spi_fd_8b_ct_test.sv"
+ `include "spi_fd_8b_dct_test.sv"
+ `include "spi_simple_fd_msb_lsb_test.sv"
+ `include "spi_simple_fd_8b_cpol0_cpha1_test.sv"
+ `include "spi_simple_fd_cpol0_cpha0_test.sv"
+ `include "spi_simple_fd_cpol0_cpha1_test.sv"
+ `include "spi_simple_fd_cpol1_cpha0_test.sv"
+ `include "spi_simple_fd_cpol1_cpha1_test.sv"
+ `include "spi_simple_fd_maximum_bits_test.sv"
+ `include "spi_c2t_delay_test.sv"
+ `include "spi_t2c_delay_test.sv"
 endpackage : test_pkg
 
 `endif

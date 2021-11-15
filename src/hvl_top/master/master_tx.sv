@@ -16,13 +16,17 @@ class master_tx extends uvm_sequence_item;
   //input signals
   rand bit [CHAR_LENGTH-1:0]master_out_slave_in[];
   rand bit [NO_OF_SLAVES-1:0] cs;
-  bit [CHAR_LENGTH-1:0] master_in_slave_out[$];
+  bit [CHAR_LENGTH-1:0] master_in_slave_out[];
 
   //--------------------------------------------------------------------------------------------
   // Constraints for SPI
   //--------------------------------------------------------------------------------------------
 
-  constraint mosi{master_out_slave_in.size()>0 && master_out_slave_in.size()<8;}
+ constraint mosi_c { master_out_slave_in.size() > 0 ;
+                     master_out_slave_in.size() < MAXIMUM_BITS/CHAR_LENGTH;}
+
+  constraint max_bits{foreach(master_out_slave_in[i])
+                              master_out_slave_in[i]%8==0;}
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -55,13 +59,10 @@ function void master_tx::do_copy (uvm_object rhs);
     `uvm_fatal("do_copy","cast of the rhs object failed")
   end
   super.do_copy(rhs);
-  cs= rhs_.cs;
-  foreach(master_out_slave_in[i]) begin
-    master_out_slave_in[i]= rhs_.master_out_slave_in[i]; 
-  end
-  foreach(master_in_slave_out[i]) begin
-    master_in_slave_out[i]= rhs_.master_in_slave_out[i]; 
-  end
+
+  cs = rhs_.cs;
+  master_in_slave_out = rhs_.master_in_slave_out;
+  master_out_slave_in = rhs_.master_out_slave_in;
 
 endfunction : do_copy
 

@@ -20,10 +20,10 @@ package spi_slave_pkg;
   // Include all other files
   //-------------------------------------------------------
   `include "slave_tx.sv"
-  `include "slave_spi_seq_item_converter.sv"
   `include "slave_agent_config.sv"
+  `include "slave_spi_seq_item_converter.sv"
+  `include "slave_spi_cfg_converter.sv"
   `include "slave_sequencer.sv"
-// `include "slave_sequence.sv"
   `include "slave_driver_proxy.sv"
   `include "slave_monitor_proxy.sv"
   `include "slave_agent.sv"

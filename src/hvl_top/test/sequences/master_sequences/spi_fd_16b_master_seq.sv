@@ -16,8 +16,8 @@ class spi_fd_16b_master_seq extends master_base_seq;
   //---------------------------------------------
 
    extern function new (string name="spi_fd_16b_master_seq");
-
    extern virtual task body();
+
 endclass:spi_fd_16b_master_seq
 
 //-----------------------------------------------------------------------------
@@ -35,15 +35,16 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task spi_fd_16b_master_seq::body(); 
+task spi_fd_16b_master_seq::body();
   req=master_tx::type_id::create("req");
-  repeat(2) begin
-  start_item(req);
-  if(!req.randomize () with { master_out_slave_in.size()==2;
-                            });
-  `uvm_fatal(get_type_name,"Randomization failed")
-  finish_item(req);
-  end
+  repeat(1) begin
+    start_item(req);
+    if(!req.randomize () with {req.master_out_slave_in.size()==2;})
+      `uvm_fatal(get_type_name(),"Randomization failed")
+      req.print();
+      finish_item(req);
+    end
+
 endtask:body
 
 `endif

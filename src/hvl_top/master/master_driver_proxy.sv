@@ -12,7 +12,7 @@
 class master_driver_proxy extends uvm_driver#(master_tx);
   `uvm_component_utils(master_driver_proxy)
   
-  //master_tx tx;
+  master_tx tx;
 
   virtual master_driver_bfm master_drv_bfm_h;
    
@@ -26,11 +26,11 @@ class master_driver_proxy extends uvm_driver#(master_tx);
   extern function new(string name = "master_driver_proxy", uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
-  //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
+  extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task drive_to_bfm(spi_transfer_char_s packet);
-  extern virtual function reset_detected();
+  extern virtual task drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s packet1);
+  extern virtual function void reset_detected();
 
 endclass : master_driver_proxy
 
@@ -76,9 +76,10 @@ endfunction : connect_phase
 //  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-//function void master_driver_proxy::end_of_elaboration_phase(uvm_phase phase);
-//  super.end_of_elaboration_phase(phase);
-//endfunction  : end_of_elaboration_phase
+function void master_driver_proxy::end_of_elaboration_phase(uvm_phase phase);
+  super.end_of_elaboration_phase(phase);
+  master_drv_bfm_h.master_drv_proxy_h = this;
+endfunction  : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
 //  Function: start_of_simulation_phase
@@ -100,27 +101,36 @@ endfunction : connect_phase
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 task master_driver_proxy::run_phase(uvm_phase phase);
+
   bit cpol, cpha;
 
   super.run_phase(phase);
-
+  //`uvm_info(get_type_name(),"Hey ! It's master dirver proxy-RUN PHASE",UVM_LOW)
   // TODO(mshariff): Decide one among this
   // $cast(cpol_cpha, master_agent_cfg_h.spi_mode);
-  {cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
+  //{cpol,cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
+  {cpol, cpha} = operation_modes_e'(master_agent_cfg_h.spi_mode);
 
   // Wait for system reset
   master_drv_bfm_h.wait_for_reset();
 
+  //`uvm_info(get_type_name(),"Waiting for Reset",UVM_LOW)
   // Drive the IDLE state for SPI interface
   master_drv_bfm_h.drive_idle_state(cpol);
 
+  //`uvm_info(get_type_name(),"Driving Idle State",UVM_LOW)
   // Driving logic
   forever begin
     spi_transfer_char_s struc_packet;
+    spi_transfer_cfg_s struct_cfg;
 
+    //`uvm_info(get_type_name(),"Calling get next item",UVM_LOW)
+    //tx = new();
+    //tx.master_out_slave_in = new [2];
+    //`uvm_info(get_type_name(),$sformatf("MASTER_TX = \n %s", tx.sprint),UVM_LOW)
     seq_item_port.get_next_item(req);
-    `uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
-                                        req.sprint()),UVM_HIGH)
+    //`uvm_info(get_type_name(),$sformatf("Received packet from master seqeuncer : , \n %s",
+    //                                    req.sprint),UVM_LOW);
 
     // Wait for IDLE state on SPI interface
     master_drv_bfm_h.wait_for_idle_state();
@@ -146,9 +156,16 @@ task master_driver_proxy::run_phase(uvm_phase phase);
     // MSHA:end
 
     master_spi_seq_item_converter::from_class(req, struc_packet); 
-    drive_to_bfm(struc_packet, struct_cfg);
-    master_spi_seq_item_converter::to_class(struc_packet, req); 
+    master_spi_cfg_converter::from_class(master_agent_cfg_h, struct_cfg); 
 
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_HIGH);
+    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_HIGH);
+    drive_to_bfm(struc_packet, struct_cfg);
+
+    master_spi_seq_item_converter::to_class(struc_packet, req);
+    
+    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+                                        req.sprint()),UVM_LOW)
     seq_item_port.item_done();
   end
 endtask : run_phase
@@ -158,7 +175,7 @@ endtask : run_phase
 // This task converts the transcation data packet to struct type and send
 // it to the master_driver_bfm
 //--------------------------------------------------------------------------------------------
-task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
+task master_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input spi_transfer_cfg_s packet1);
 
   // TODO(mshariff): Have a way to print the struct values
   // master_spi_seq_item_converter::display_struct(packet);
@@ -166,8 +183,10 @@ task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
   // s = master_spi_seq_item_converter::display_struct(packet);
   // `uvm_info(get_type_name(), $sformatf("Packet to drive : \n %s", s), UVM_HIGH);
 
-  case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
-    {CPOL0_CPHA0,MSB_FIRST}: master_drv_bfm_h.drive_msb_first_pos_edge(packet);
+  //case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
+    //{CPOL0_CPHA0,MSB_FIRST}: begin  
+  master_drv_bfm_h.drive_msb_first_pos_edge(packet,packet1); 
+  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",packet1),UVM_LOW);
 
       // MSHA:if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
       // MSHA:  master_drv_bfm_h.drive_msb_first_pos_edge(data);
@@ -216,7 +235,7 @@ task master_driver_proxy::drive_to_bfm(spi_transfer_char_s packet);
 //   CPOL0_CPHA1: drive_cpol_0_cpha_1(data);
 //   CPOL1_CPHA0: drive_cpol_1_cpha_0(data);
 //   CPOL1_CPHA1: drive_cpol_1_cpha_1(data);
-  endcase
+  //endcase
 
 endtask: drive_to_bfm
 
@@ -224,7 +243,7 @@ endtask: drive_to_bfm
 // Function reset_detected
 // This task detect the system reset appliction
 //--------------------------------------------------------------------------------------------
-function master_driver_proxy::reset_detected();
+function void master_driver_proxy::reset_detected();
   `uvm_info(get_type_name(), $sformatf("System reset is detected"), UVM_NONE);
 
   // TODO(mshariff): 
