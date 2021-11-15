@@ -70,11 +70,11 @@ class slave_coverage extends uvm_subscriber;
       
         
     master_out_slave_in : coverpoint (packet.master_out_slave_in.size() {
-      option.comment = "the mosi data goes from master to slave";
+      option.comment = "mosi data which is between 0 and 128 bits";
       bins mosi_size = {[0:7]}
     }
     master_in_slave_out : coverpoint (packet.master_in_slave_out.size() {
-      option.comment = "the mosi data goes from master to slave";
+      option.comment = "miso data which is between 0 and 128 bits";
       bins miso_size = {[0:7]};
     }
     
