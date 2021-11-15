@@ -39,7 +39,7 @@ class slave_tx extends uvm_sequence_item;
   //--------------------------------------------------------------------------------------------
 
   constraint miso_c { master_in_slave_out.size() > 0 ;
-                      master_in_slave_out.size() < MAXIMUM_BITS/CHAR_LENGHT;}
+                      master_in_slave_out.size() < MAXIMUM_BITS/CHAR_LENGTH;}
 
   constraint max_bits_miso{foreach(master_in_slave_out[i])
                                     master_in_slave_out[i]%8 ==0;}
