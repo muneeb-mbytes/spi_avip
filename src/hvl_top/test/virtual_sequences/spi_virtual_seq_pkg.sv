@@ -37,6 +37,7 @@ package spi_virtual_seq_pkg;
   `include "spi_fd_maximum_bits_virtual_seq.sv"
   `include "spi_c2t_delay_virtual_seq.sv"
   `include "spi_t2c_delay_virtual_seq.sv"
+  `include "spi_baudrate_virtual_seq.sv"
 endpackage : spi_virtual_seq_pkg
 
 `endif

@@ -37,13 +37,17 @@ endfunction:new
 //-----------------------------------------------------------------------------
 task spi_fd_64b_master_seq::body(); 
   req=master_tx::type_id::create("req");
-  repeat(2) begin
-    start_item(req);
-    if(!req.randomize () with {req.master_out_slave_in.size()==8;})
-      `uvm_fatal(get_type_name(),"Randomization failed")
-      req.print();
-      finish_item(req);
-    end
+  start_item(req);
+  if(!req.randomize() with {req.master_out_slave_in.size() == 8;
+                            // Selecting only one slave  
+                            $countones(req.cs) == NO_OF_SLAVES - 1;
+                            // Selecting slave 0
+                            req.cs[0] == 0;
+                           }) begin
+    `uvm_fatal(get_type_name(),"Randomization failed")
+    req.print();
+  end
+  finish_item(req);
 
 endtask:body
 
