@@ -57,7 +57,7 @@ interface slave_assertions(input pclk,
   //cs should be low and stable till data transfer is successful ($stable)
   property slave_cs_stable;
     @(posedge pclk) disable iff(!areset)
-    cs == 0 |=> cs[*DATA_WIDTH-1];
+    cs == 0 |=> $stable(cs)[*DATA_WIDTH-1];
   endproperty : slave_cs_stable
   SLAVE_CS_LOW_FOR_CONT_CYCLES : assert property(slave_cs_stable);
 
