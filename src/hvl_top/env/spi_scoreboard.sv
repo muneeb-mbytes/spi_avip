@@ -38,19 +38,18 @@ class spi_scoreboard extends uvm_scoreboard;
   int slave_tx_count = 0;
 
 
-  //Variable data_cmp_verified_count
-  //to keep track of number of compared verified data
-  int data_cmp_verified_count = 0;
+  //Variable byte_data_cmp_verified_count
+  //to keep track of number of byte wise compared verified data
+  int byte_data_cmp_verified_count = 0;
 
-  //Variable data_cmp_failed_count
-  //to keep track of number of compared failed data
-  int data_cmp_failed_count = 0;
+  //Variable byte_data_cmp_failed_count
+  //to keep track of number of byte wise compared failed data
+  int byte_data_cmp_failed_count = 0;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "spi_scoreboard", uvm_component parent = null);
-  //extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   extern virtual function void check_phase (uvm_phase phase);
   extern virtual function void report_phase(uvm_phase phase);
@@ -69,19 +68,6 @@ function spi_scoreboard::new(string name = "spi_scoreboard", uvm_component paren
   slave_analysis_fifo = new("slave_analysis_fifo",this);
 endfunction : new
 
-//--------------------------------------------------------------------------------------------
-// Function: build_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-//function void spi_scoreboard::build_phase(uvm_phase phase);
-//  super.build_phase(phase);
-//
-//  master_tx_h = new("master_tx_h");
-//  slave_tx_h = new("slave_tx_h");
-//endfunction : build_phase
 
 
 //--------------------------------------------------------------------------------------------
@@ -120,78 +106,20 @@ task spi_scoreboard::run_phase(uvm_phase phase);
  // MSHA:   // SLave MISO with Master MOSI
  // MSHA:   // Also, no_of_mosi_bits and no_of_miso_bits
   
- if (master_tx_h.master_out_slave_in.size() == slave_tx_h.master_in_slave_out.size())begin 
- //if (master_tx_h.mosi0 == slave_tx_h.miso0)begin 
-  `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_HIGH);
-  data_cmp_verified_count++;
- end   
- else begin
-  `uvm_error (get_type_name(),$sformatf( "data0 comparision failed"));
-  data_cmp_failed_count++;
- end
-
-//  if (master_tx_h.master_out_slave_in1 == slave_tx_h.master_in_slave_out1)begin
-//    `uvm_info (get_type_name(), $sformatf ("data1 comparision is successfull"),UVM_HIGH);
-//    data_cmp_verified_count++;
-//  end
-//  else begin
-//    `uvm_error (get_type_name(),$sformatf ( "data1 comparision failed"));
-//    data_cmp_failed_count++;
-//  end
+// if (master_tx_h.master_out_slave_in.size() == slave_tx_h.master_in_slave_out.size())begin 
+//  `uvm_info (get_type_name(), $sformatf ("array length is same"),UVM_HIGH);
+// end   
+// else begin
+//  `uvm_error (get_type_name(),$sformatf("array length of data is not same"));
+// end
 //
-//  if (master_tx_h.master_out_slave_in2 == slave_tx_h.master_in_slave_out2)begin 
-//    `uvm_info (get_type_name(), $sformatf ("data2 comparision is successfull"),UVM_HIGH);
-//    data_cmp_verified_count++;
+// if (slave_tx_h.master_in_slave_out.size() == master_tx_h.master_out_slave_in.size()) begin
+//    `uvm_info (get_type_name(), $sformatf ("array length is same"),UVM_HIGH);
 //  end
 //  else begin
-//    `uvm_error (get_type_name(),$sformatf( "data2 comparision failed"));
-//    data_cmp_failed_count++;
+//    `uvm_error (get_type_name(),$sformatf("array length is not same "));
 //  end
-//   
-//  if (master_tx_h.master_out_slave_in3 == slave_tx_h. master_in_slave_out3) begin
-//    `uvm_info (get_type_name(), $sformatf ("data3 comparision is successfull"),UVM_HIGH);
-//     data_cmp_verified_count++;
-//  end
-//  else begin
-//    `uvm_error (get_type_name(),$sformatf( "data3 comparision failed"));
-//    data_cmp_failed_count++;
-//  end
-
-  if (slave_tx_h.master_in_slave_out.size() == master_tx_h.master_out_slave_in.size()) begin
-  // if (slave_tx_h.miso == master_tx_h.mosi ) begin
-    `uvm_info (get_type_name(), $sformatf ("data0 comparision is successfull"),UVM_HIGH);
-    data_cmp_verified_count++;
-  end
-  else begin
-    `uvm_error (get_type_name(),$sformatf( "data0 comparision failed"));
-    data_cmp_failed_count++;
-  end
   
-// if (slave_tx_h.master_in_slave_out1 == master_tx_h.master_out_slave_in1) begin
-//    `uvm_info (get_type_name(), $sformatf ("data1 comparision is successfull"),UVM_HIGH);
-//    data_cmp_verified_count++;
-//  end
-//  else begin
-//    `uvm_error (get_type_name(),$sformatf( "data1 comparision failed"));
-//    data_cmp_failed_count++;
-//  end
-//
-//  if (slave_tx_h.master_in_slave_out2 == master_tx_h.master_out_slave_in2) begin 
-//    `uvm_info (get_type_name(), $sformatf ("data2 comparision is successfull"),UVM_HIGH);
-//    data_cmp_verified_count++;
-//  end
-//  else begin
-//    `uvm_error (get_type_name(),$sformatf( "data2 comparision failed"));
-//     data_cmp_failed_count++;
-//  end 
-//  if (slave_tx_h.master_in_slave_out3 == master_tx_h.master_out_slave_in3) begin
-//    `uvm_info (get_type_name(), $sformatf ("data3 comparision is successfull"),UVM_HIGH);
-//    data_cmp_verified_count++;
-//  end 
-//  else begin
-//    `uvm_error (get_type_name(),$sformatf( "data3 comparision failed"));
-//    data_cmp_failed_count++;
-//  end
  
   // Data comparision for MOSI 
   foreach(master_tx_h.master_out_slave_in[i]) begin
@@ -200,16 +128,37 @@ task spi_scoreboard::run_phase(uvm_phase phase);
                 $sformatf("Master MOSI[%0d] = 'h%0x and Slave MOSI[%0d] = 'h%0x", 
                           i, master_tx_h.master_out_slave_in[i],
                           i, slave_tx_h.master_out_slave_in[i]) );
+      byte_data_cmp_failed_count++;
     end
     else begin
       `uvm_info("SB_MOSI_DATA_MATCH", 
                 $sformatf("Master MOSI[%0d] = 'h%0x and Slave MOSI[%0d] = 'h%0x", 
                           i, master_tx_h.master_out_slave_in[i],
                           i, slave_tx_h.master_out_slave_in[i]), UVM_HIGH);
+                          
+      byte_data_cmp_verified_count++;
     end
   end
 
   // TODO(mshariff): Do a similar work for MISO
+
+  foreach(slave_tx_h.master_in_slave_out[i]) begin
+    if(slave_tx_h.master_in_slave_out[i] != master_tx_h.master_in_slave_out[i]) begin
+      `uvm_error("ERROR_SC_MISO_DATA_MISMATCH", 
+                $sformatf("Slave MISO[%0d] = 'h%0x and Master MISO[%0d] = 'h%0x", 
+                          i, slave_tx_h.master_in_slave_out[i],
+                          i, master_tx_h.master_in_slave_out[i]) );
+      byte_data_cmp_failed_count++;
+    end
+    else begin
+      `uvm_info("SB_MOSI_DATA_MATCH", 
+                $sformatf("Slave MOSI[%0d] = 'h%0x and Master MOSI[%0d] = 'h%0x", 
+                          i, slave_tx_h.master_in_slave_out[i],
+                          i, master_tx_h.master_in_slave_out[i]), UVM_HIGH);
+      byte_data_cmp_verified_count++;
+    end
+  end
+
 
 // Done this part in report phase
 // MSHA:   // TODO(mshariff): After comparisions, keep a track of the sno of comparisions done
@@ -228,19 +177,19 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
   super.check_phase(phase);
 
   // TODO(mshariff): Banner as discussed
-
+  `uvm_info (get_type_name(),$sformatf(" Scoreboard Check Phase is starting"),UVM_HIGH); 
 // TODO(mshariff): Check the following:
 // 1. Check if the comparisions counter is NON-zero
 //    A non-zero value indicates that the comparisions never happened and throw error
   
-  if ((data_cmp_verified_count != 0)&&(data_cmp_failed_count == 0) ) begin
-    `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-	  `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
+  if ((byte_data_cmp_verified_count != 0)&&(byte_data_cmp_failed_count == 0) ) begin
+    `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_verified_count : %0d",byte_data_cmp_verified_count),UVM_HIGH);
+	  `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_failed_count : %0d", byte_data_cmp_failed_count),UVM_HIGH);
 	  `uvm_info (get_type_name(), $sformatf ("all comparisions are succesful"),UVM_HIGH);
   end
   else begin
-    `uvm_info (get_type_name(), $sformatf ("data_cmp_verified_count : %0d",data_cmp_verified_count),UVM_HIGH);
-	  `uvm_info (get_type_name(), $sformatf ("data_cmp_failed_count : %0d", data_cmp_failed_count),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_verified_count : %0d",byte_data_cmp_verified_count),UVM_HIGH);
+	  `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_failed_count : %0d", byte_data_cmp_failed_count),UVM_HIGH);
     `uvm_error (get_type_name(), $sformatf ("comparisions not happened"));
   end
 
@@ -250,13 +199,13 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
  if (master_tx_count == slave_tx_count ) begin
     `uvm_info (get_type_name(), $sformatf ("master_tx_count : %0d",master_tx_count ),UVM_HIGH);
     `uvm_info (get_type_name(), $sformatf ("slave_tx_count : %0d",slave_tx_count ),UVM_HIGH);
-    `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of packets"),UVM_HIGH);
+    `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of transactions"),UVM_HIGH);
   end
   else begin
     // TODO(mshariff): Have the error statements
     `uvm_info (get_type_name(), $sformatf ("master_tx_count : %0d",master_tx_count ),UVM_HIGH);
     `uvm_info (get_type_name(), $sformatf ("slave_tx_count : %0d",slave_tx_count ),UVM_HIGH);
-    `uvm_error (get_type_name(), $sformatf ("master and slave does have same no. of packets"));
+    `uvm_error (get_type_name(), $sformatf ("master and slave doesnot have same no. of transactions"));
   end 
 
 
@@ -264,17 +213,6 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
 //    This is to make sure that we have taken all packets from both FIFOs and made the
 //    comparisions
    
-//if ((master_analysis_fifo.size())&& (slave_analysis_fifo.size())== 0)begin
-//     `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo:%0d",master_analysis_fifo.size()),UVM_HIGH);
-//     `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo:%0d",slave_analysis_fifo.size()),UVM_HIGH);
-//     `uvm_info (get_type_name(), $sformatf ("all packets in FIFO are compared"),UVM_HIGH);
-//   end
-//   else begin
-//     `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo:%0d",master_analysis_fifo.size() ),UVM_HIGH);
-//     `uvm_info (get_type_name(), $sformatf ("slave_analysis_fifo:%0d",slave_analysis_fifo.size() ),UVM_HIGH);
-//     `uvm_error (get_type_name(),$sformatf( "all packets in FIFO are not compared"));
-//   end
-
   if (master_analysis_fifo.size() == 0)begin
     // TODO(mshariff): Chnage the info's to errors
      `uvm_info (get_type_name(), $sformatf ("master_analysis_fifo:%0d",master_analysis_fifo.size()),UVM_HIGH);
@@ -308,24 +246,24 @@ function void spi_scoreboard::report_phase(uvm_phase phase);
   
   // TODO(mshariff): Print the below items:
   // TODO(mshariff): Banner as discussed
-  
+  `uvm_info (get_type_name(),$sformatf(" Scoreboard Report Phase is starting"),UVM_HIGH); 
   // Total number of packets received from the Master
-  `uvm_info (get_type_name(),$sformatf("No. of packects received from master: %0d",master_tx_count),UVM_HIGH);
+  `uvm_info (get_type_name(),$sformatf("No. of transactions from master:%0d",master_tx_count),UVM_HIGH);
 
   //Total number of packets received from the Slave (with their ID)
-  `uvm_info (get_type_name(),$sformatf("No. of packects received from slave: %0d", slave_tx_count),UVM_HIGH);
+  `uvm_info (get_type_name(),$sformatf("No. of transactions from slave:%0d", slave_tx_count),UVM_HIGH);
   
   //Number of comparisions done
-  `uvm_info (get_type_name(),$sformatf("Total no. of packects compared %0d",
-                 data_cmp_verified_count+data_cmp_failed_count),UVM_HIGH);
+  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise comparisions:%0d",
+                 byte_data_cmp_verified_count+byte_data_cmp_failed_count),UVM_HIGH);
 
   //Number of comparisios passed
-  `uvm_info (get_type_name(),$sformatf("No. of packects successfully compared %0d",
-                data_cmp_verified_count),UVM_HIGH);
+  `uvm_info (get_type_name(),$sformatf("No. of byte wise comparisions passed:%0d",
+                byte_data_cmp_verified_count),UVM_HIGH);
 
   //Number of compariosn failed
-  `uvm_info (get_type_name(),$sformatf("No. of packects failed to compare %0d",
-                data_cmp_failed_count),UVM_HIGH);
+  `uvm_info (get_type_name(),$sformatf("No. of byte wise comparision failed:%0d",
+                byte_data_cmp_failed_count),UVM_HIGH);
 
 endfunction : report_phase
 
