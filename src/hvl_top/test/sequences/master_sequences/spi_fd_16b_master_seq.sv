@@ -45,8 +45,8 @@ task spi_fd_16b_master_seq::body();
                             req.cs[0] == 0;
                            }) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
-    req.print();
   end
+//  req.print();
   finish_item(req);
 
 endtask:body

@@ -50,7 +50,6 @@ task spi_fd_8b_virtual_seq::body();
    //configuring no of masters and starting master sequencers
 
   fork 
-    begin : MASTER_SEQ_START
       //has_m_agt should be declared in env_config file
       // TODO(mshariff): Only one Master agent as SPI supports only one Master
       // MSHA:if(e_cfg_h.has_m_agt) begin
@@ -63,12 +62,11 @@ task spi_fd_8b_virtual_seq::body();
 
       //starting master sequencer with respective to p_sequencer declared in virtual seq base
       
-      repeat(5) begin
-       spi_fd_8b_master_seq_h.start(p_sequencer.master_seqr_h);
+      forever begin : SLAVE_SEQ_START
+        spi_fd_8b_slave_seq_h.start(p_sequencer.slave_seqr_h);
       end
-    end
+    join_none
 
-    begin : SLAVE_SEQ_START
       // TODO(mshariff): We need to connect the slaves with caution
       // as only ONe slave can drive on MISO line
       // so the sequences need to be started based on the System configurations
@@ -83,11 +81,9 @@ task spi_fd_8b_virtual_seq::body();
       // MSHA: end
 
       //starting slave sequencer with respective to p_sequencer declared in virtual seq base
-      repeat(5) begin
-        spi_fd_8b_slave_seq_h.start(p_sequencer.slave_seqr_h);
+      repeat(5) begin : MASTER_SEQ_START
+        spi_fd_8b_master_seq_h.start(p_sequencer.master_seqr_h);
       end
-    end
-  join
 
 endtask: body
 

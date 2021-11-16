@@ -49,7 +49,6 @@ task spi_baudrate_virtual_seq::body();
     //configuring no of masters and starting master sequencers
 
   fork
-  begin
     //has_m_agt should be declared in env_config file
     // TODO(mshariff): Only one Master agent as SPI supports only one Master
 
@@ -62,11 +61,11 @@ task spi_baudrate_virtual_seq::body();
     // MSHA: end
 
     //starting master sequencer
-    repeat(5)begin
-      spi_baudrate_master_seq_h.start(p_sequencer.master_seqr_h);
+    forever begin : SLAVE_SEQ_START
+        spi_baudrate_slave_seq_h.start(p_sequencer.slave_seqr_h);
     end
-  end
-    begin
+  join_none
+
       // TODO(mshariff): We need to connect the slaves with caution
       // as only ONe slave can drive on MISO line
       // so the sequences need to be started based on the System configurations
@@ -81,11 +80,9 @@ task spi_baudrate_virtual_seq::body();
       // MSHA: end
 
       //starting slave sequencer
-      repeat(5)begin
-        spi_baudrate_slave_seq_h.start(p_sequencer.slave_seqr_h);
+      repeat(5)begin : MASTER_SEQ_START
+      spi_baudrate_master_seq_h.start(p_sequencer.master_seqr_h);
       end
-    end
- join
 
 endtask: body
 
