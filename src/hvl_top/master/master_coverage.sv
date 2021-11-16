@@ -22,11 +22,11 @@ class master_coverage extends uvm_subscriber#(master_tx);
 
     // Mode of the operation
 
-    OPERATION_MODE : coverpoint {cpol,cpha} operation_modes_e'(cfg.spi_mode) {
+    // {cpol,cpha} = operation_modes_e'(cfg.spi_mode);
+    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
-      {cpol,cpha} = operation_modes_e'(cfg.spi_mode);
-      bins cpol_cpha[] = [0:3];
+       bins cpol_cpha[] = {[0:3]};
       // bins cpol0_cpha0 = 0;
       // bins cpol0_cpha1 = 1;
       // bins cpol1_cpha0 = 2;
@@ -37,34 +37,34 @@ class master_coverage extends uvm_subscriber#(master_tx);
     C2T_DELAY : coverpoint cfg.c2tdelay {
       option.comment = "Delay betwen CS assertion to first SCLK edge";
       // TODO(mshariff): 
-      // bins DELAY_1 = 1;
-      // bins DELAY_2 = 2;
-      // bins DELAY_3 = 3;
-      // bins DELAY_4_to_10 = [4:10];
-    }
-      // illegal_bins illegal_bin = 0;
-      // Chip-selcet to first SCLK-edge delay 
+       bins DELAY_1 = {1};
+       bins DELAY_2 = {2};
+       bins DELAY_3 = {3};
+       bins DELAY_4_to_10[] = {[4:10]};
+    
+       illegal_bins illegal_bin = {0};
+     }  // Chip-selcet to first SCLK-edge delay 
     T2C_DELAY : coverpoint cfg.t2cdelay {
       option.comment = "Delay betwen last SCLK to the CS assertion";
       // TODO(mshariff): 
-      // bins delay_11 = 11;
-      // bins delay_12 = 12;
-      // bins delay_13 = 13;
+       bins delay_11 = {11};
+       bins delay_12 = {12};
+       bins delay_13 = {13};
     }
     
+     // direction = shift_direction_e'(cfg.spi_mode); 
     SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
       option.comment = "Shift direction SPI. MSB and LSB";
-      direction = shift_direction_e'(cfg.spi_mode); 
-      bins lsb_first = 0;
-      bins msb_first = 1;
+      bins lsb_first = {0};
+      bins msb_first = {1};
     } 
     
     CS : coverpoint packet.cs(NO_OF_SLAVES-1){
       option.comment = "Chip select assign one slave based on config"; 
-      bins cs_0 = 0;
-      bins cs_1 = 1;
-      bins cs_2 = 2;
-      bins cs_3 = 3;
+      bins cs_0 ={0};
+      bins cs_1 ={1};
+      bins cs_2 ={2};
+      bins cs_3 ={3};
     }
     //NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
      // option.comment = "no of the slaves selected based on the config";
@@ -73,19 +73,19 @@ class master_coverage extends uvm_subscriber#(master_tx);
       // bins slave_3 = 1;
       // bins slave_4 = 1;
       // illegal_bins illegal_bin = 0;
-    }
+      //  }
     
-    DATA_WIDTH : coverpoint packet.data_width {
+    DATA_WIDTH : coverpoint packet.data_w {
       option.comment = "Data of particular width is transfered";
-      bins dw_8b[] : [0:7];
-      bins dw_16b[] : [8:15];
-      bins dw_32b[] : [16:31];
-      bins dw_64b[] : [32:63];
-      bins dw_128b[] : [64:128];
-  
-    BAUD_RATE : coverpoint cfg.baudrate {
+      bins dw_8b[] = {[0:7]};
+      bins dw_16b[] = {[8:15]};
+      bins dw_32b[] = {[16:31]};
+      bins dw_64b[] = {[32:63]};
+      bins dw_128b[] = {[64:128]};
+    } 
+    BAUD_RATE : coverpoint cfg.baudrate_divisor {
       option.comment = "it control the rate of transfer in communication channel";
-      bins baudrate = 2; 
+      bins baudrate = {2}; 
       // need to add bins for baud rate 
 
     }
@@ -103,14 +103,15 @@ class master_coverage extends uvm_subscriber#(master_tx);
     // cfg X packet : cross cfg X packet;
       
         
-    master_out_slave_in : coverpoint (master_out_slave_in.packet {
+    MASTER_OUT_SLAVE_IN : coverpoint packet.master_out_slave_in {
       option.comment = "the mosi data goes from master to slave";
-      bins mosi_hit = 1;
+      
+      bins mosi_hit = {1};
       // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
     }
-    master_in_slave_out : coverpoint (master_in_slave_out.packet {
+    MASTER_IN_SLAVE_OUT : coverpoint packet.master_in_slave_out {
       option.comment = "the mosi data goes from master to slave";
-      bins miso_hit = 1;
+      bins miso_hit = {1};
       //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
     }
   
@@ -118,7 +119,8 @@ class master_coverage extends uvm_subscriber#(master_tx);
     
     //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
 //--------------------------------------------------------------------------------------------
-// 1. 
+// 1.cross the cs with the mosi 
+// 2.
 //--------------------------------------------------------------------------------------------
  //   //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
  //  
@@ -155,7 +157,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
 
  // 
  // 
- // endgroup : master_covergroup
+  endgroup : master_covergroup
 
   // Variable: master_cg
   // Handle for master covergroup
@@ -194,13 +196,13 @@ class master_coverage extends uvm_subscriber#(master_tx);
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "master_coverage", uvm_component parent = null);
-  extern virtual function void build_phase(uvm_phase phase);
+  //extern virtual function void build_phase(uvm_phase phase);
   //extern virtual function void connect_phase(uvm_phase phase);
   //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   //extern virtual function void start_of_simulation_phase(uvm_phase phase);
   //extern virtual task run_phase(uvm_phase phase);
-  extern virtual function void write(master_tx master_tx_h)
-  extern virtual function report_phase(uvm_phase phase);
+  extern virtual function void write(master_tx t);
+  extern virtual function void report_phase(uvm_phase phase);
 
 endclass : master_coverage
 
@@ -214,7 +216,7 @@ endclass : master_coverage
 function master_coverage::new(string name = "master_coverage", uvm_component parent = null);
   super.new(name, parent);
   // TODO(mshariff): Create the covergroup
-  // master_cg = new(); 
+   master_cg = new(); 
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -286,17 +288,17 @@ endtask : run_phase
 // Function: write
 // // TODO(mshariff): Add comments
 //--------------------------------------------------------------------------------------------
-function void master_coverage::write(master_tx master_tx_cov_data)
+function void master_coverage::write(master_tx t);
   // TODO(mshariff): 
-  // cg.sample(master_agent_cfg_h, master_tx_cov_data);     
+   master_cg.sample(master_agent_cfg_h,t);     
 endfunction: write
 
 //--------------------------------------------------------------------------------------------
 // Function: report_phase
 // Used for reporting the coverage instance percentage values
 //--------------------------------------------------------------------------------------------
-function master_coverage::report_phase(uvm_phase phase);
-  `uvm_info(get_type_name(), $sformat("Master Agent Coverage = %0.2f %%",
+function void master_coverage::report_phase(uvm_phase phase);
+  `uvm_info(get_type_name(), $sformatf("Master Agent Coverage = %0.2f %%",
                                        master_cg.get_inst_coverage()), UVM_NONE);
 endfunction: report_phase
 `endif
