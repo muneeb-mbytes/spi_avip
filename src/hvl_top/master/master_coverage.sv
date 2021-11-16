@@ -17,7 +17,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
   // // TODO(mshariff): Add comments
   // Covergroup consists of the various coverpoints based on the no. of the variables used to improve the coverage.
   //-------------------------------------------------------
-  covergroup master_covergroup with function sample (master_agent_config cfg, master_tx packet);
+  covergroup master_covergroup_with_function_sample (master_agent_config cfg, master_tx packet);
     option.per_instance = 1;
 
     // Mode of the operation
@@ -59,13 +59,13 @@ class master_coverage extends uvm_subscriber#(master_tx);
       bins msb_first = {1};
     } 
     
-    CS : coverpoint packet.cs(NO_OF_SLAVES-1){
-      option.comment = "Chip select assign one slave based on config"; 
-      bins cs_0 ={0};
-      bins cs_1 ={1};
-      bins cs_2 ={2};
-      bins cs_3 ={3};
-    }
+//    CS : coverpoint packet.cs(NO_OF_SLAVES-1){
+//      option.comment = "Chip select assign one slave based on config"; 
+//      bins cs_0 ={0};
+//      bins cs_1 ={1};
+//      bins cs_2 ={2};
+//      bins cs_3 ={3};
+//    }
     //NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
      // option.comment = "no of the slaves selected based on the config";
       // bins slave_1 = 1;
@@ -75,14 +75,23 @@ class master_coverage extends uvm_subscriber#(master_tx);
       // illegal_bins illegal_bin = 0;
       //  }
     
-    DATA_WIDTH : coverpoint packet.data_w {
-      option.comment = "Data of particular width is transfered";
-      bins dw_8b[] = {[0:7]};
-      bins dw_16b[] = {[8:15]};
-      bins dw_32b[] = {[16:31]};
-      bins dw_64b[] = {[32:63]};
-      bins dw_128b[] = {[64:128]};
-    } 
+//  MASTER_DATA_WIDTH : coverpoint packet.master_out_slave_in(CHAR_LENGTH-1) {
+//      option.comment = "Data of particular width is transfered";
+//      bins dw_8b[] = {[0:7]};
+//      bins dw_16b[] = {[8:15]};
+//      bins dw_32b[] = {[16:31]};
+//      bins dw_64b[] = {[32:63]};
+//      bins dw_128b[] = {[64:128]};
+//    } 
+//
+//  SLAVE_DATA_WIDTH : coverpoint packet.master_in_slave_out(CHAR_LENGTH-1) {
+//      option.comment = "Data of particular width is transfered";
+//      bins dw_8b[] = {[0:7]};
+//      bins dw_16b[] = {[8:15]};
+//      bins dw_32b[] = {[16:31]};
+//      bins dw_64b[] = {[32:63]};
+//      bins dw_128b[] = {[64:128]};
+//    } 
     BAUD_RATE : coverpoint cfg.baudrate_divisor {
       option.comment = "it control the rate of transfer in communication channel";
       bins baudrate = {2}; 
@@ -103,17 +112,17 @@ class master_coverage extends uvm_subscriber#(master_tx);
     // cfg X packet : cross cfg X packet;
       
         
-    MASTER_OUT_SLAVE_IN : coverpoint packet.master_out_slave_in {
-      option.comment = "the mosi data goes from master to slave";
-      
-      bins mosi_hit = {1};
-      // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
-    }
-    MASTER_IN_SLAVE_OUT : coverpoint packet.master_in_slave_out {
-      option.comment = "the mosi data goes from master to slave";
-      bins miso_hit = {1};
-      //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
-    }
+  //  MASTER_OUT_SLAVE_IN : coverpoint packet.master_out_slave_in {
+  //    option.comment = "the mosi data goes from master to slave";
+  //    
+  //    bins mosi_hit = {1};
+  //    // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
+  //  }
+  //  MASTER_IN_SLAVE_OUT : coverpoint packet.master_in_slave_out {
+  //    option.comment = "the mosi data goes from master to slave";
+  //    bins miso_hit = {1};
+  //    //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
+  //  }
   
     //illegal bin : coverpoint
     
@@ -157,7 +166,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
 
  // 
  // 
-  endgroup : master_covergroup
+  endgroup : master_covergroup_with_function_sample
 
   // Variable: master_cg
   // Handle for master covergroup
@@ -290,7 +299,8 @@ endtask : run_phase
 //--------------------------------------------------------------------------------------------
 function void master_coverage::write(master_tx t);
   // TODO(mshariff): 
-   master_cg.sample(master_agent_cfg_h,t);     
+  // master_cg.sample(master_agent_cfg_h,t);     
+   master_cg.sample();     
 endfunction: write
 
 //--------------------------------------------------------------------------------------------
