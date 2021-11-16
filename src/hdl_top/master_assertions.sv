@@ -57,21 +57,36 @@ interface master_assertions ( input pclk,
 
   // Assertion for if_cs_is_stable_during_transfers
   // cs should be low and stable till data transfer is successful ($stable)
-  sequence s1;
+  sequence if_cs_is_stable_during_transfers_s1;
     @(posedge sclk)
     cs == 0;
-  endsequence:s1
+  endsequence:if_cs_is_stable_during_transfers_s1
 
-  sequence s2;
+  sequence if_cs_is_stable_during_transfers_s2;
     @(posedge sclk)
     $stable(cs)[*8];
-  endsequence:s2
+  endsequence:if_cs_is_stable_during_transfers_s2
 
   property if_cs_is_stable_during_transfers;
     @(posedge sclk) disable iff(!areset)
-    s1 |-> s2;
+    if_cs_is_stable_during_transfers_s1 |-> if_cs_is_stable_during_transfers_s2;
   endproperty:if_cs_is_stable_during_transfers
   IF_CS_IS_STABLE_DURING_TRANSFERS: assert property (if_cs_is_stable_during_transfers);
+
+ 
+  // Assertion for successful_data_transfers
+  // cs should be low for multiples of 8 clock cycles for successful data transfer
+   sequence successful_data_transfers_s1;
+    @(posedge sclk)
+    (!cs && !$isunknown(mosi0))[*8];
+  endsequence:successful_data_transfers_s1
+
+  property successful_data_transfers;
+    @(posedge sclk) disable iff(!areset)
+    successful_data_transfers_s1;
+  endproperty:successful_data_transfers
+  SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
+
 
 endinterface : master_assertions
 
