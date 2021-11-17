@@ -31,17 +31,22 @@ interface master_assertions ( input pclk,
 
   initial begin
     `uvm_info("MASTER_ASSERTIONS","MASTER ASSERTIONS",UVM_LOW);
+    `uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
   end
   
   // Assertion for if_signals_are_stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable;
-    @(posedge sclk) disable iff(!areset)
-    cs == 1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
+    @(posedge pclk) 
+    //@(posedge pclk) disable iff(areset==0)
+    //cs == '1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
+    cs=='1  |-> $stable(sclk) && $stable(mosi0) && $stable(mosi1) && $stable(mosi2) &&
+    $stable(mosi3) && $stable(miso0) && $stable(miso1) && $stable(miso2) && $stable(miso3);
+    //cs == '1 |-> mosi0 ==1'b0;
   endproperty : if_signals_are_stable
   IF_SIGNALS_ARE_STABLE: assert property (if_signals_are_stable);
 
-
+/*
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
   sequence master_mosi0_valid_seq;
@@ -87,7 +92,7 @@ interface master_assertions ( input pclk,
   endproperty:successful_data_transfers
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
 
-
+*/
 endinterface : master_assertions
 
 `endif

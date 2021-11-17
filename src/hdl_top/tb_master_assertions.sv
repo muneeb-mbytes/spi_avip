@@ -26,20 +26,66 @@ module tb_master_assertions;
   // Generate/drive SCLK
   
   always@(posedge pclk) begin
-    sclk =!sclk;
+    //if(cs == '1) begin
+      //sclk = sclk;
+    //end
+    //else begin
+      sclk =!sclk;
+    //end
   end
-  /*initial begin
-      repeat(8) begin
-      @(posedge pclk) sclk = ~sclk;
-      $display("sclk=%0d",sclk);
-    end
-  end*/
   
   initial begin
-    cs = '1;
-    test1();
+    //test1();
+    if_signals_are_stable_negative_1();
     $display("AN_SVA", "INTIAL BLOCK");
   end
+
+  task if_signals_are_stable_negative_1();
+    bit[7:0] mosi_data;
+    bit[7:0] miso_data;
+    //$display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    //@(posedge pclk) begin
+    cs ='1;
+    areset = 0;
+    //end
+    @(posedge sclk);
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    //$display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
+    //$display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
+
+    //$display("ASSERTION_DEBUG_CS","cs = %0b", cs);
+    for(int i=0 ; i<8; i++) begin
+      @(posedge sclk);
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+  endtask
+
+  task if_signals_are_stable_negative_2();
+    bit[7:0] mosi_data;
+    bit[7:0] miso_data;
+    $display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    areset = 1'b1;
+    //sclk = sclk;
+    @(posedge sclk);
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
+    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
+
+    $display("ASSERTION_DEBUG_CS","cs = %0b", cs);
+
+   //bit j =mosi_data[i];
+   //bit k =miso_data[i];
+ 
+    for(int i=0 ; i<8; i++) begin
+      cs = $urandom;
+      @(posedge sclk);
+        mosi0 = mosi_data[i];
+        miso0 = miso_data[i];
+    end
+  endtask 
   
   task test1();
     bit[7:0] mosi_data;
