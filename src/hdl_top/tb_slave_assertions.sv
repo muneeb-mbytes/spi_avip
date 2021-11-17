@@ -48,6 +48,7 @@ module tb_slave_assertions;
     bit [7:0] miso0_data;
     areset = 1'b1;
     $display("SLAVE ASSERTION_DEBUG","TEST1");
+
     
     //drive the data
     //mosi and miso data
