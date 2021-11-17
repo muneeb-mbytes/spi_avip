@@ -27,7 +27,7 @@ class slave_agent_config extends uvm_object;
 
   // Variable: has_coverage
   // Used for enabling the slave agent coverage
-  bit has_coverage;
+  bit has_coverage = 1;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
