@@ -66,6 +66,9 @@ class master_agent_config extends uvm_object;
   // Used for enabling the master agent coverage
   bit has_coverage;
 
+  //spi_type_e enum declared in global pakage for simple,dual,quad 
+  spi_type_e spi_type;
+  
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -103,6 +106,7 @@ function void master_agent_config::do_print(uvm_printer printer);
   printer.print_field ("secondary_prescalar",secondary_prescalar, 3, UVM_DEC);
   printer.print_field ("baudrate_divisor",baudrate_divisor, 32, UVM_DEC);
   printer.print_field ("has_coverage",has_coverage, 1, UVM_DEC);
+  printer.print_string ("spi_type",spi_type.name());
   
 endfunction : do_print
 
