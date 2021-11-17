@@ -32,9 +32,7 @@ module tb_slave_assertions;
 
   // sclk generation
   always begin
-  // repeat(8) begin
      @(posedge pclk) sclk = ~sclk;
-  // end
   end
   
   // Calling tasks 
@@ -44,49 +42,45 @@ module tb_slave_assertions;
   end
  
   task test1();
-    bit [7:0] mosi0_data;
-    bit [7:0] miso0_data;
+    bit [7:0] mosi_data;
+    bit [7:0] miso_data;
     areset = 1'b1;
     $display("SLAVE ASSERTION_DEBUG","TEST1");
 
     
     //drive the data
     //mosi and miso data
-    repeat(4) begin
-      mosi0_data = $urandom;
-      miso0_data = 8'b10101010;
-      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "mosi_data = %0d", mosi0_data);
-      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "miso_data = %0d", miso0_data);
+      mosi_data = $urandom;
+      miso_data = $urandom;
+      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "mosi_data = %0d", mosi_data);
+      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "miso_data = %0d", miso_data);
 
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
-      mosi0 = mosi0_data[i];
-      miso0 = miso0_data[i];
-    end
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
     end
   endtask : test1
   
   task test2();
-    bit[7:0] mosi0_data;
-    bit[7:0] miso0_data;
+    bit[7:0] mosi_data;
+    bit[7:0] miso_data;
     areset = 1'b0;
-    repeat(4) begin
-      mosi0_data = $urandom;
-      miso0_data = $urandom;
-      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "mosi_data = %0d", mosi0_data);
-      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "miso_data = %0d", miso0_data);
+      mosi_data = $urandom;
+      miso_data = $urandom;
+      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "mosi_data = %0d", mosi_data);
+      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "miso_data = %0d", miso_data);
 
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
-      mosi0 = mosi0_data[i];
-      miso0 = miso0_data[i];
-    end
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
     end
   
     $display("SLAVE_ASSERTION_DEBUG","TEST2_DONE");
   endtask : test2
 
-  initial begin
+  initial begin 
     $display("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",
               $time, pclk, sclk, areset, cs, mosi0, miso0);
   end
