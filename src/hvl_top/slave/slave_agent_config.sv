@@ -28,7 +28,10 @@ class slave_agent_config extends uvm_object;
   // Variable: has_coverage
   // Used for enabling the slave agent coverage
   bit has_coverage;
-
+  
+  //spi_type_e enum declared in global pakage for simple,dual,quad 
+  spi_type_e spi_type;
+  
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -59,6 +62,7 @@ function void slave_agent_config::do_print(uvm_printer printer);
   printer.print_string ("spi_mode",spi_mode.name());
   printer.print_string ("shift_dir",shift_dir.name());
   printer.print_field ("has_coverage",has_coverage, 1, UVM_DEC);
+  printer.print_string ("spi_type",spi_type.name());
   
 endfunction : do_print
 

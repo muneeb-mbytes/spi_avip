@@ -6,7 +6,7 @@
 // Description:
 // Extended the spi_simple_fd_cpol0_cpha0_test class from base_test class
 //--------------------------------------------------------------------------------------------
-class spi_simple_fd_cpol0_cpha0_test extends base_test;
+class spi_simple_fd_cpol0_cpha0_test extends spi_simple_fd_8b_test;
 
   //Registering the spi_simple_fd_cpol0_cpha0_test in the factory
   `uvm_component_utils(spi_simple_fd_cpol0_cpha0_test)

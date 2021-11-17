@@ -32,7 +32,7 @@ package test_pkg;
  `include "spi_simple_fd_32b_test.sv"
  `include "spi_simple_fd_64b_test.sv"
  `include "spi_fd_8b_ct_test.sv"
- `include "spi_fd_8b_dct_test.sv"
+ `include "spi_fd_dct_test.sv"
  `include "spi_simple_fd_msb_lsb_test.sv"
  `include "spi_simple_fd_8b_cpol0_cpha1_test.sv"
  `include "spi_simple_fd_cpol0_cpha0_test.sv"
@@ -43,6 +43,8 @@ package test_pkg;
  `include "spi_c2t_delay_test.sv"
  `include "spi_t2c_delay_test.sv"
  `include "spi_baudrate_test.sv"
+ `include "spi_dual_spi_type_test.sv"
+ `include "spi_quad_spi_type_test.sv"
 endpackage : test_pkg
 
 `endif
