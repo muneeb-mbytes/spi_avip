@@ -43,6 +43,7 @@ package test_pkg;
  `include "spi_c2t_delay_test.sv"
  `include "spi_t2c_delay_test.sv"
  `include "spi_baudrate_test.sv"
+ `include "spi_simple_fd_no_of_slaves_test.sv"
 endpackage : test_pkg
 
 `endif

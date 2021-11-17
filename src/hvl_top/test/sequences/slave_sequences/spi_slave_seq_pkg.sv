@@ -35,6 +35,7 @@
  `include "spi_c2t_delay_slave_seq.sv"
  `include "spi_t2c_delay_slave_seq.sv"
  `include "spi_baudrate_slave_seq.sv"
+ `include "spi_fd_no_of_slaves_slave_seq.sv"
 endpackage :spi_slave_seq_pkg
 
 `endif
