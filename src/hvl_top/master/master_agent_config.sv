@@ -92,10 +92,10 @@ function void master_agent_config::do_print(uvm_printer printer);
   super.do_print(printer);
 
 
-  printer.print_field ("is_active",is_active,1, UVM_ENUM);
+  printer.print_string ("is_active",is_active.name());
   printer.print_field ("no_of_slaves",no_of_slaves,$bits(no_of_slaves), UVM_DEC);
-  printer.print_field ("spi_mode",spi_mode, 2, UVM_ENUM);
-  printer.print_field ("shift_dir",shift_dir, 1, UVM_ENUM);
+  printer.print_string ("spi_mode",spi_mode.name());
+  printer.print_string ("shift_dir",shift_dir.name());
   printer.print_field ("c2tdelay",c2tdelay, $bits(c2tdelay), UVM_DEC);
   printer.print_field ("t2cdelay",t2cdelay, $bits(t2cdelay), UVM_DEC);
   printer.print_field ("wdelay",wdelay, $bits(wdelay), UVM_DEC);
