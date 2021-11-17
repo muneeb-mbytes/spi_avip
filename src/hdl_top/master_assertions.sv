@@ -41,7 +41,7 @@ interface master_assertions ( input pclk,
   endproperty : if_signals_are_stable
   IF_SIGNALS_ARE_STABLE: assert property (if_signals_are_stable);
 
-
+i
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
   sequence master_mosi0_valid_seq;
