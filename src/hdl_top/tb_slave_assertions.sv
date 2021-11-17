@@ -12,7 +12,7 @@ module tb_slave_assertions;
 
   bit pclk;
   bit sclk;
-  bit [NO_OF_SLAVES-1:0]cs;
+  bit [NO_OF_SLAVES-1:0] cs;
   bit areset;
   bit mosi0;
   bit mosi1;
@@ -37,7 +37,7 @@ module tb_slave_assertions;
   // end
   end
   
-  // Stimulus
+  // Calling tasks 
   initial begin
     test1();
     test2();

@@ -1,0 +1,7 @@
+# vsim -vopt work.hvl_top work.hdl_top work.tb_master_assertions work.tb_slave_assertions -voptargs="+acc=npr" -assertdebug "+UVM_TESTNAME=assertions_base_test" "+UVM_VERBOSITY=UVM_MEDIUM" -l assertions_base_test/assertions_base_test.log -c -do "log -r /*; add wave -r /*; run -all;" -wlf assertions_base_test/waveform.wlf 
+# Start time: 09:54:18 on Nov 17,2021
+# ** Error (suppressible): (vsim-19) Failed to access library 'work' at "work".
+# No such file or directory. (errno = ENOENT)
+# Error loading design
+# End time: 09:54:18 on Nov 17,2021, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
