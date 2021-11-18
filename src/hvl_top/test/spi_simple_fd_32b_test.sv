@@ -61,9 +61,10 @@ task spi_simple_fd_32b_test::run_phase(uvm_phase phase);
   // MSHA:    m_spi_fd_32b_h.start(env_h.v_seqr_h);
   // MSHA:    s_spi_fd_32b_h.start(env_h.v_seqr_h);
   // MSHA:join
-  spi_fd_32b_virtual_seq_h.start(env_h.virtual_seqr_h); 
+  spi_fd_32b_virtual_seq_h.start(env_h.virtual_seqr_h); //added by the team 3
   phase.drop_objection(this);
 
 endtask:run_phase
+
 
 `endif

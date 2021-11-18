@@ -39,8 +39,8 @@ task spi_fd_cpol0_cpha0_slave_seq::body();
   if(!req.randomize () with {req.master_in_slave_out.size()==1;}) begin 
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
-    req.print();
-    finish_item(req);
+  req.print();
+  finish_item(req);
 
 endtask:body
 
