@@ -27,7 +27,7 @@ class master_agent extends uvm_agent;
   
   // MSHA: // Variable: master_coverage
   // MSHA: // Decalring a handle for master_coverage
-  // MSHA: master_coverage master_cov_h;
+   master_coverage master_cov_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -73,9 +73,9 @@ function void master_agent::build_phase(uvm_phase phase);
 
   master_mon_proxy_h=master_monitor_proxy::type_id::create("master_mon_proxy_h",this);
 
-  // MSHA: if(master_agent_cfg_h.has_coverage) begin
-  // MSHA:   master_cov_h = master_coverage::type_id::create("master_cov_h",this);
-  // MSHA: end
+  if(master_agent_cfg_h.has_coverage) begin
+    master_cov_h = master_coverage::type_id::create("master_cov_h",this);
+  end
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -96,8 +96,11 @@ function void master_agent::connect_phase(uvm_phase phase);
   
   if(master_agent_cfg_h.has_coverage) begin
     // MSHA: master_cov_h.master_agent_cfg_h = master_agent_cfg_h;
+     master_cov_h.master_agent_cfg_h = master_agent_cfg_h;
     // TODO(mshariff): 
     // connect monitor port to coverage
+
+    master_mon_proxy_h.master_analysis_port.connect(master_cov_h.analysis_export);
   end
 
   master_mon_proxy_h.master_agent_cfg_h = master_agent_cfg_h;
