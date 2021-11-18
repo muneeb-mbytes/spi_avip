@@ -45,7 +45,9 @@ module tb_master_assertions;
   
   initial begin
     //test1();
-    if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_2();
+    if_signals_are_stable_positive();
     $display("AN_SVA", "INTIAL BLOCK");
   end
 
@@ -79,7 +81,7 @@ module tb_master_assertions;
     sclk_gen_neg();
     areset = 1'b1;
     //sclk = sclk;
-    @(posedge sclk);
+    .@(posedge sclk);
     mosi_data = $urandom;
     miso_data = $urandom;
     $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);

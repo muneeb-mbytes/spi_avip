@@ -37,8 +37,9 @@ module tb_slave_assertions;
   
   // Calling tasks 
   initial begin
-    if_signals_are_stable_negative_1();
-    if_signals_are_stable_negative_2();
+    //if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_2();
+    if_signals_are_stable_positive();
   end
 
   
@@ -83,9 +84,41 @@ module tb_slave_assertions;
     end
   endtask 
   
+  
+  task if_signals_are_stable_positive();
+    bit[7:0] mosi_data;
+    bit[7:0] miso_data;
+    $display("ASSERTION_DEBUG","TEST1");
+    cs = '1;
+    // random mosi data
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
+    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
+    //@(posedge pclk) sclk = sclk;
+    //sclk = sclk;
+    sclk_gen_pos();
+    for(int i=0 ; i<8; i++) begin
+      @(posedge sclk);
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+    cs[0]=1'b1;
+    $display("ASSERTION_DEBUG","TEST1_DONE");
+// MSHA:    repeat(5) begin
+// MSHA:  //  @(posedge sclk);
+// MSHA:    mosi0 = 1'b1;
+// MSHA:    //{mosi0, mosi1, mosi2, mosi3,
+// MSHA:        //miso0, miso1, miso2, miso3} = $urandom;
+// MSHA:      end  
+// MSHA:    $display("ASSERTION_DEBUG"," mosi0=%d",mosi0);
+  endtask 
+
+  
   initial begin 
-    $monitor("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",
-              $time, pclk, sclk, areset, cs, mosi0, miso0);
+    //$monitor("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",$time, pclk, sclk, areset, cs, mosi0, miso0);
+    $display("TB_SLAVEE_ASSERTIONS");
   end
 
   // Instantiation of slave assertion module

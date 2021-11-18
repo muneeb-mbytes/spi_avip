@@ -94,10 +94,14 @@ interface master_assertions ( input pclk,
 */
  
   initial begin
-  if(spi_type == 2'd0) begin
-    IF_SIGNALS_ARE_STABLE_SINGLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
+    spi_type = '0;
   end
-  if(spi_type == 2'd1) begin
+  //generate
+  initial begin
+  if(spi_type =='0) //begin
+     assert property (if_signals_are_stable(mosi0,miso0));
+ // end
+  /*if(spi_type == 2'd1) begin
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
   end
@@ -106,8 +110,9 @@ interface master_assertions ( input pclk,
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
-  end
-  end
+  end*/
+ end
+ //endgenerate
 endinterface : master_assertions
 
 `endif
