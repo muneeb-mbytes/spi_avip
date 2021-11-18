@@ -40,7 +40,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
        bins DELAY_1 = {1};
        bins DELAY_2 = {2};
        bins DELAY_3 = {3};
-       bins DELAY_4_to_10[] = {[4:10]};
+       bins DELAY_4_to_10 = {[4:10]};
     
        illegal_bins illegal_bin = {0};
      } 
@@ -76,13 +76,14 @@ class master_coverage extends uvm_subscriber#(master_tx);
 //      // illegal_bins illegal_bin = 0;
 //      //  }
 //    
-    MASTER_DATA_WIDTH : coverpoint packet.master_out_slave_in[CHAR_LENGTH-1] {
+    MOSI_DATA_TRANSFER : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
       option.comment = "Data of particular width is transfered";
-      bins dw_8b[] = {[0:7]};
-      bins dw_16b[] = {[8:15]};
-      bins dw_32b[] = {[16:31]};
-      bins dw_64b[] = {[32:63]};
-      bins dw_128b[] = {[64:128]};
+      bins TRANSFER_8BIT = 8;
+      bins TRANSFER_16BIT = 16;
+      bins TRANSFER_24BIT = 24;
+      bins TRANSFER_32BIT = 32;
+      bins TRANSFER_64BIT = 64;
+      bins TRANSFER_MANY_BITS = {[72:1024]};
     } 
 
     SLAVE_DATA_WIDTH : coverpoint packet.master_in_slave_out[CHAR_LENGTH-1] {
