@@ -21,8 +21,8 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
   // Covergroup consists of the various coverpoints based on the no. of the variables used to improve the coverage.
   //-------------------------------------------------------
   covergroup slave_covergroup with function sample (slave_agent_config cfg, slave_tx packet);
-    option.per_instance = 1;
-  
+  option.per_instance = 1;
+
     // Mode of the operation
     OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
@@ -43,69 +43,70 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
     }
 
     //Creating bins for 8,16,32,64 and more bins
-    DATA_WIDTH : coverpoint packet.data_width{
-      option.comment = "Data of a particular width is transfered";
-      bins dw_8_bits  []  = {[0:7]};
-      bins dw_16_bits []  = {[8:15]};
-      bins dw_32_bits []  = {[16:31]};
-      bins dw_64_bits []  = {[32:63]};
-      bins dw_128_bits [] = {[64:128]};
-    }
-    // TODO(mshariff): 
-    // Have illegal bins 
-    // illegal_bins illegal_bin = {0};
-    // Have ignore bins
-    // ignore_bins ignore_bin = 
-    // Have coverpoints for cfg and packet
-    //
-    //cfg : coverpoint cfg{
-    //option.comment = "  
-    // Have interesting cross coverpoints between cfg and packet
-    // cfg X packet : cross cfg X packet;
-      
-        
-    master_out_slave_in : coverpoint packet.master_out_slave_in.size() {
-      option.comment = "mosi data which is between 0 and 128 bits";
-      bins mosi_size = {[0:7]};
-    }
-    master_in_slave_out : coverpoint packet.master_in_slave_out.size() {
-      option.comment = "miso data which is between 0 and 128 bits";
-      bins miso_size = {[0:7]};
-    }
-    
-    // illegal bin : coverpoint 
-    
-    //--------------------------------------------------------------------------------------------
-    // 
-    //--------------------------------------------------------------------------------------------
-    // CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
-   
-    // Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-    //OPERATION_MODE X CS = cross OPERATION_MODE,CS;
-    // OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
-    // OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
-    //OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
+//    DATA_WIDTH : coverpoint packet.data_width{
+//      option.comment = "Data of a particular width is transfered";
+//      bins dw_8_bits  []  = {[0:7]};
+//      bins dw_16_bits []  = {[8:15]};
+//      bins dw_32_bits []  = {[16:31]};
+//      bins dw_64_bits []  = {[32:63]};
+//      bins dw_128_bits [] = {[64:128]};
+//    }
 
-    // Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-        
-    //SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
-    // SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
-    // SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
-    //SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
-
-    // Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-    //NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
-    //NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
-    // NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
-    // NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
-
-
-
-  endgroup : slave_covergroup
-
+//    // TODO(mshariff): 
+//    // Have illegal bins 
+//    // illegal_bins illegal_bin = {0};
+//    // Have ignore bins
+//    // ignore_bins ignore_bin = 
+//    // Have coverpoints for cfg and packet
+//    //
+//    //cfg : coverpoint cfg{
+//    //option.comment = "  
+//    // Have interesting cross coverpoints between cfg and packet
+//    // cfg X packet : cross cfg X packet;
+//      
+//        
+//    master_out_slave_in : coverpoint packet.master_out_slave_in.size() {
+//      option.comment = "mosi data which is between 0 and 128 bits";
+//      bins mosi_size = {[0:7]};
+//    }
+//    master_in_slave_out : coverpoint packet.master_in_slave_out.size() {
+//      option.comment = "miso data which is between 0 and 128 bits";
+//      bins miso_size = {[0:7]};
+//    }
+//    
+//    // illegal bin : coverpoint 
+//    
+//    //--------------------------------------------------------------------------------------------
+//    // 
+//    //--------------------------------------------------------------------------------------------
+//    // CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
+//   
+//    // Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+//    //OPERATION_MODE X CS = cross OPERATION_MODE,CS;
+//    // OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
+//    // OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
+//    //OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
+//
+//    // Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+//        
+//    //SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
+//    // SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
+//    // SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
+//    //SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
+//
+//    // Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+//    //NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
+//    //NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
+//    // NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
+//    // NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
+//
+//
+//
+  
+  endgroup :slave_covergroup
   // Variable: slave_cg
   // Handle for slave covergroup
-  slave_coverage slave_cg;
+  //slave_coverage slave_cg;
 
   // TODO(mshariff):
   //
@@ -160,7 +161,7 @@ endclass : slave_coverage
 function slave_coverage::new(string name = "slave_coverage", uvm_component parent = null);
   super.new(name, parent);
   // TODO(mshariff): Create the covergroup
-   slave_cg = new(); 
+   slave_covergroup = new(); 
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
@@ -235,7 +236,7 @@ endtask : run_phase
 function void slave_coverage::write(slave_tx t);
   // TODO(mshariff): 
   // cg.sample(slave_agent_cfg_h, slave_tx_cov_data);     
-  slave_cg.sample(slave_agent_cfg_h, t);     
+    slave_covergroup.sample(slave_agent_cfg_h,t);     
 endfunction: write
 
 //--------------------------------------------------------------------------------------------
@@ -244,7 +245,7 @@ endfunction: write
 //--------------------------------------------------------------------------------------------
 function void slave_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("Slave Agent Coverage = %0.2f %%",
-                                       slave_cg.get_inst_coverage()), UVM_NONE);
+                                       slave_covergroup.get_coverage()), UVM_NONE);
 endfunction: report_phase
 `endif
 
