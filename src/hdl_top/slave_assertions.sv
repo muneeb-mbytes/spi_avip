@@ -35,12 +35,15 @@ interface slave_assertions(input pclk,
 
   // Assertion for if signals are stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
+
   property if_signals_are_stable;
-    @(posedge sclk) disable iff(!areset)
-    cs == 1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
+    @(posedge pclk)
+    //@(posedge pclk) disable iff(!areset)
+    cs == '1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
   endproperty : if_signals_are_stable
   IF_SIGNALS_ARE_STABLE: assert property (if_signals_are_stable);
-  
+
+  /*
   // Assertion for slave_miso0_valid
   // when cs is low mosi should be valid from next clock cycle.
   sequence slave_miso0_valid_seq;
@@ -60,6 +63,8 @@ interface slave_assertions(input pclk,
     cs == 0 |=> $stable(cs)[*DATA_WIDTH-1];
   endproperty : slave_cs_stable
   SLAVE_CS_LOW_FOR_CONT_CYCLES : assert property(slave_cs_stable);
+
+*/
 
 endinterface : slave_assertions
 
