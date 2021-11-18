@@ -21,18 +21,27 @@ module tb_master_assertions;
   bit miso3;
 
   int ct2_delay, t2c_delay, baurdate;
-
+  initial begin
+    pclk =0;
+  end
   always #10 pclk = ~pclk;
   // Generate/drive SCLK
   
-  always@(posedge pclk) begin
+  task sclk_gen_pos();
+    forever #20 sclk = sclk;
+  endtask
+
+  task sclk_gen_neg();
+    forever #20 sclk = !sclk;
+  endtask
+  /*always@(posedge pclk) begin
     //if(cs == '1) begin
       //sclk = sclk;
     //end
     //else begin
       sclk =!sclk;
     //end
-  end
+  end*/
   
   initial begin
     //test1();
@@ -46,8 +55,9 @@ module tb_master_assertions;
     //$display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
     //@(posedge pclk) begin
     cs ='1;
-    areset = 0;
+    //areset = 0;
     //end
+    sclk_gen_neg();
     @(posedge sclk);
     mosi_data = $urandom;
     miso_data = $urandom;
@@ -66,6 +76,7 @@ module tb_master_assertions;
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
     $display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    sclk_gen_neg();
     areset = 1'b1;
     //sclk = sclk;
     @(posedge sclk);
@@ -85,20 +96,21 @@ module tb_master_assertions;
         mosi0 = mosi_data[i];
         miso0 = miso_data[i];
     end
-  endtask 
+  endtask
   
-  task test1();
+  task if_signals_are_stable_positive();
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
     $display("ASSERTION_DEBUG","TEST1");
-
+    cs = '1;
     // random mosi data
     mosi_data = $urandom;
     miso_data = $urandom;
     $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
     $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
-
-    cs[0]= 0;
+    //@(posedge pclk) sclk = sclk;
+    //sclk = sclk;
+    sclk_gen_pos();
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
       mosi0 = mosi_data[i];
@@ -114,7 +126,7 @@ module tb_master_assertions;
 // MSHA:        //miso0, miso1, miso2, miso3} = $urandom;
 // MSHA:      end  
 // MSHA:    $display("ASSERTION_DEBUG"," mosi0=%d",mosi0);
-  endtask : test1
+  endtask 
   
   task test2();
     areset = 1'b0;
