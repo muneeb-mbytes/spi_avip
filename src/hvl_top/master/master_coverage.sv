@@ -45,14 +45,14 @@ class master_coverage extends uvm_subscriber#(master_tx);
        illegal_bins illegal_bin = {0};
      } 
 //     // Chip-selcet to first SCLK-edge delay 
-//    T2C_DELAY : coverpoint cfg.t2cdelay {
-//      option.comment = "Delay betwen last SCLK to the CS assertion";
-//      // TODO(mshariff): 
-//       bins delay_11 = {11};
-//       bins delay_12 = {12};
-//       bins delay_13 = {13};
-//    }
-//    
+    T2C_DELAY : coverpoint cfg.t2cdelay {
+      option.comment = "Delay betwen last SCLK to the CS assertion";
+      // TODO(mshariff): 
+       bins delay_11 = {11};
+       bins delay_12 = {12};
+       //bins delay_13 = {13};
+    }
+    
 //     // direction = shift_direction_e'(cfg.spi_mode); 
 //    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
 //      option.comment = "Shift direction SPI. MSB and LSB";
@@ -317,7 +317,7 @@ endfunction: write
 // Used for reporting the coverage instance percentage values
 //--------------------------------------------------------------------------------------------
 function void master_coverage::report_phase(uvm_phase phase);
-  `uvm_info(get_type_name(), $sformatf("Master Agent Coverage = %0.2f %%",master_covergroup.get_inst_coverage()), UVM_NONE);
+  `uvm_info(get_type_name(), $sformatf("Master Agent Coverage = %0.2f %%",master_covergroup.get_coverage()), UVM_NONE);
 //  `uvm_info(get_type_name(), $sformatf("Master Agent Coverage") ,UVM_NONE);
 endfunction: report_phase
 `endif
