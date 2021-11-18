@@ -26,7 +26,7 @@ package spi_slave_pkg;
   `include "slave_sequencer.sv"
   `include "slave_driver_proxy.sv"
   `include "slave_monitor_proxy.sv"
-  `include "slave_coverage.sv"
+  //`include "slave_coverage.sv"
   `include "slave_agent.sv"
 
 endpackage : spi_slave_pkg

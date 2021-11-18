@@ -26,7 +26,7 @@ class slave_agent extends uvm_agent;
 
   // Variable: slave_coverage
   // Decalring a handle for slave_coverage
-   slave_coverage slave_cov_h;
+ //  slave_coverage slave_cov_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -73,9 +73,9 @@ function void slave_agent::build_phase(uvm_phase phase);
 
    slave_mon_proxy_h = slave_monitor_proxy::type_id::create("slave_mon_proxy_h",this);
 
-   if(slave_agent_cfg_h.has_coverage) begin
-    slave_cov_h = slave_coverage::type_id::create("slave_cov_h",this);
-   end
+//   if(slave_agent_cfg_h.has_coverage) begin
+//    slave_cov_h = slave_coverage::type_id::create("slave_cov_h",this);
+//   end
   
   
 endfunction : build_phase
@@ -94,7 +94,7 @@ function void slave_agent::connect_phase(uvm_phase phase);
   if(slave_agent_cfg_h.is_active == UVM_ACTIVE) begin
     slave_drv_proxy_h.slave_agent_cfg_h = slave_agent_cfg_h;
     slave_seqr_h.slave_agent_cfg_h = slave_agent_cfg_h;
-    slave_cov_h.slave_agent_cfg_h = slave_agent_cfg_h;
+//    slave_cov_h.slave_agent_cfg_h = slave_agent_cfg_h;
     
     // Connecting the ports
     slave_drv_proxy_h.seq_item_port.connect(slave_seqr_h.seq_item_export);
@@ -103,10 +103,10 @@ function void slave_agent::connect_phase(uvm_phase phase);
     // TODO(mshariff): 
     // connect monitor port to coverage
     
-    if(slave_agent_cfg_h.has_coverage)begin
-      slave_cov_h.slave_agent_cfg_h=slave_agent_cfg_h;
-      slave_mon_proxy_h.slave_analysis_port.connect(slave_cov_h.analysis_export);
-   end
+ //   if(slave_agent_cfg_h.has_coverage)begin
+ //     slave_cov_h.slave_agent_cfg_h=slave_agent_cfg_h;
+ //     slave_mon_proxy_h.slave_analysis_port.connect(slave_cov_h.analysis_export);
+ //  end
 
   slave_mon_proxy_h.slave_agent_cfg_h = slave_agent_cfg_h;
 
