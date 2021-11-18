@@ -26,9 +26,11 @@ module tb_slave_assertions;
   int ct2_delay, t2c_delay, baudrate;
   
   // pclk generation
-  always begin
-    #10 pclk = ~pclk;
+  initial begin 
+    pclk =0;
+    sclk =0;
   end
+  always #10 pclk = ~pclk;
 
   // sclk generation
   always begin
@@ -37,8 +39,9 @@ module tb_slave_assertions;
   
   // Calling tasks 
   initial begin
-    if_signals_are_stable_negative_1();
-    if_signals_are_stable_negative_2();
+    $display("TB_SLAVE_ASSERTIONS");
+    //if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_2();
   end
 
   
@@ -84,8 +87,8 @@ module tb_slave_assertions;
   endtask 
   
   initial begin 
-    $monitor("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",
-              $time, pclk, sclk, areset, cs, mosi0, miso0);
+    //$monitor("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d,miso0=%d",$time, pclk, sclk, areset, cs, mosi0, miso0);
+    $display("TB_SLAVE");
   end
 
   // Instantiation of slave assertion module

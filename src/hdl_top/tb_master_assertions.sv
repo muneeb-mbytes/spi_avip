@@ -12,6 +12,7 @@ module tb_master_assertions;
   bit [NO_OF_SLAVES-1:0]cs;
   bit areset;
   bit mosi0;
+  //logic mosi0;
   bit mosi1;
   bit mosi2;
   bit mosi3;
@@ -22,7 +23,7 @@ module tb_master_assertions;
 
   int ct2_delay, t2c_delay, baurdate;
   initial begin
-    pclk =0;
+    pclk =1;
   end
   always #10 pclk = ~pclk;
   // Generate/drive SCLK
@@ -45,7 +46,10 @@ module tb_master_assertions;
   
   initial begin
     //test1();
-    if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_2();
+    //if_signals_are_stable_positive();
+    master_cs_low_check_positive();
     $display("AN_SVA", "INTIAL BLOCK");
   end
 
@@ -128,15 +132,18 @@ module tb_master_assertions;
 // MSHA:    $display("ASSERTION_DEBUG"," mosi0=%d",mosi0);
   endtask 
   
-  task test2();
-    areset = 1'b0;
-    repeat(5)begin
-      //#10; areset = 1'b1;
-      {mosi0, mosi1, mosi2, mosi3,
-        miso0, miso1, miso2, miso3} = $urandom;
-  
-      end
-  endtask : test2
+  task master_cs_low_check_positive();
+    bit [7:0]mosi_data;
+    cs[0] = 1'b0;
+    sclk_gen_neg();
+    mosi_data = 8'h23;
+    $display("mosi_data = %0d",mosi_data);
+    for(int i=0 ; i<8; i++) begin
+      @(posedge sclk);
+      mosi0 = mosi_data[i];
+      $display("mosi=%d",mosi0);
+    end
+  endtask : master_cs_low_check_positive
   
   master_assertions M_A (.pclk(pclk),
                          .cs(cs),

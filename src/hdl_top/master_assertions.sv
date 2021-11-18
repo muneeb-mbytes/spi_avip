@@ -32,9 +32,9 @@ interface master_assertions ( input pclk,
 
   initial begin
     `uvm_info("MASTER_ASSERTIONS","MASTER ASSERTIONS",UVM_LOW);
-    `uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
+    //`uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
   end
-  
+/*  
   // Assertion for if_signals_are_stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic mosi_local, logic miso_local);
@@ -44,21 +44,25 @@ interface master_assertions ( input pclk,
     cs=='1  |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
     //cs == '1 |-> mosi0 ==1'b0;
   endproperty : if_signals_are_stable
-
-/*
+*/
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
-  sequence master_mosi0_valid_seq;
-    cs==0;
-  endsequence : master_mosi0_valid_seq
+  sequence master_mosi0_valid_seq_1;
+    @(posedge pclk) cs==0;
+  endsequence : master_mosi0_valid_seq_1
+
+  sequence master_mosi0_valid_seq_2;
+    @(posedge sclk) ~$isunknown(mosi0);
+  endsequence : master_mosi0_valid_seq_2
 
   property master_mosi0_valid_p;
-    @(posedge sclk) disable iff(!areset)
-    master_mosi0_valid_seq |-> !$isunknown(mosi0);
+    //@(posedge sclk) disable iff(!areset)
+    //@(posedge pclk)
+    master_mosi0_valid_seq_1 |-> master_mosi0_valid_seq_2;
   endproperty : master_mosi0_valid_p
   MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p);
-  
-
+ 
+/*
   // Assertion for if_cs_is_stable_during_transfers
   // cs should be low and stable till data transfer is successful ($stable)
   sequence if_cs_is_stable_during_transfers_s1;
@@ -76,7 +80,6 @@ interface master_assertions ( input pclk,
     if_cs_is_stable_during_transfers_s1 |-> if_cs_is_stable_during_transfers_s2;
   endproperty:if_cs_is_stable_during_transfers
   IF_CS_IS_STABLE_DURING_TRANSFERS: assert property (if_cs_is_stable_during_transfers);
-
  
   // Assertion for successful_data_transfers
   // cs should be low for multiples of 8 clock cycles for successful data transfer
@@ -92,22 +95,28 @@ interface master_assertions ( input pclk,
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
 
 */
- 
-  initial begin
-  if(spi_type == 2'd0) begin
-    IF_SIGNALS_ARE_STABLE_SINGLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
+  //IF_SIGNALS_ARE_STABLE : assert property (if_signals_are_stable(mosi0,miso0));
+  /*initial begin
+    spi_type = 2'd0;
   end
-  if(spi_type == 2'd1) begin
+  generate
+    if(spi_type == 2'd0) begin
+      $info("SINGLE SPI");
+      assert property (if_signals_are_stable(mosi0,miso0));
+    end
+  endgenerate*/
+    //end
+  /*else begin
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
-  end
-  if(spi_type == 2'd2) begin
+  end*/
+  /*if(spi_type == 2'd2) begin
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
-  end
-  end
+  end*/
+  //end
 endinterface : master_assertions
 
 `endif
