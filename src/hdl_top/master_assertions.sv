@@ -51,16 +51,16 @@ interface master_assertions ( input pclk,
     @(posedge pclk) cs==0;
   endsequence : master_mosi0_valid_seq_1
 
-  sequence master_mosi0_valid_seq_2;
-    @(posedge sclk) ~$isunknown(mosi0);
+  sequence master_mosi0_valid_seq_2(logic mosi_local, logic miso_local);
+    @(posedge sclk) ~$isunknown(mosi_local) && ~$isunknown(miso_local);
   endsequence : master_mosi0_valid_seq_2
 
-  property master_mosi0_valid_p;
+  property master_mosi0_valid_p(logic mosi_local, logic miso_local);
     //@(posedge sclk) disable iff(!areset)
     //@(posedge pclk)
-    master_mosi0_valid_seq_1 |-> master_mosi0_valid_seq_2;
+    master_mosi0_valid_seq_1 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
   endproperty : master_mosi0_valid_p
-  MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p);
+  MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
  
 /*
   // Assertion for if_cs_is_stable_during_transfers
