@@ -1,0 +1,335 @@
+# vsim -vopt work.hvl_top work.hdl_top work.tb_master_assertions work.tb_slave_assertions -voptargs="+acc=npr" -assertdebug "+UVM_TESTNAME=assertions_base_test" "+UVM_VERBOSITY=UVM_MEDIUM" -l assertions_base_test/assertions_base_test.log -c -do "log -r /*; add wave -r /*; run -all;" -wlf assertions_base_test/waveform.wlf 
+# Start time: 04:22:12 on Nov 19,2021
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim
+# //  Version 10.6c linux Jul 25 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.slave_driver_bfm(fast)
+# Loading work.slave_monitor_bfm(fast)
+# Loading work.spi_globals_pkg(fast)
+# Loading mtiUvm.uvm_pkg
+# Loading work.spi_slave_pkg(fast)
+# Loading work.master_driver_bfm(fast)
+# Loading work.master_monitor_bfm(fast)
+# Loading work.spi_master_pkg(fast)
+# Loading work.spi_env_pkg(fast)
+# Loading work.spi_slave_seq_pkg(fast)
+# Loading work.spi_master_seq_pkg(fast)
+# Loading work.spi_virtual_seq_pkg(fast)
+# Loading work.test_pkg(fast)
+# Loading work.hvl_top(fast)
+# Loading work.hdl_top(fast)
+# Loading work.spi_if_sv_unit(fast)
+# Loading work.spi_if(fast)
+# Loading work.slave_agent_bfm(fast)
+# Loading work.slave_driver_bfm_sv_unit(fast)
+# Loading work.slave_driver_bfm(fast)
+# Loading work.slave_monitor_bfm_sv_unit(fast)
+# Loading work.slave_monitor_bfm(fast)
+# Loading work.slave_assertions_sv_unit(fast)
+# Loading work.slave_assertions(fast)
+# Loading work.master_agent_bfm(fast)
+# Loading work.master_driver_bfm_sv_unit(fast)
+# Loading work.master_driver_bfm(fast)
+# Loading work.master_monitor_bfm_sv_unit(fast)
+# Loading work.master_monitor_bfm(fast)
+# Loading work.master_assertions_sv_unit(fast)
+# Loading work.master_assertions(fast)
+# Loading work.tb_master_assertions(fast)
+# Loading work.tb_slave_assertions(fast)
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# Loading /tools/mentor/questasim_10.6c/questasim/uvm-1.1d/linux/uvm_dpi.so
+# log -r /*
+#  add wave -r /*
+#  run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# UVM_INFO @ 0: reporter [RNTST] Running test assertions_base_test...
+# HDL_TOP
+# Slave Driver BFM
+# Slave Monitor BFM
+# UVM_INFO ../../src/hdl_top/slave_assertions.sv(33) @ 0: reporter [slave_ASSERTIONS] slave ASSERTIONS
+# Slave Agent BFM
+# Master driver BFM
+# Master Monitor BFM
+# UVM_INFO ../../src/hdl_top/master_assertions.sv(35) @ 0: reporter [MASTER_ASSERTIONS] MASTER ASSERTIONS
+# Master Agent BFM
+# UVM_INFO ../../src/hdl_top/master_assertions.sv(35) @ 0: reporter [MASTER_ASSERTIONS] MASTER ASSERTIONS
+# TB_SLAVE_ASSERTIONS
+# TB_SLAVE_ASSERTIONS
+# ASSERTION_DEBUGSLAVE_MISO0_VALID_SEQ
+# UVM_INFO ../../src/hdl_top/slave_assertions.sv(33) @ 0: reporter [slave_ASSERTIONS] slave ASSERTIONS
+# UVM_INFO ../../src/hvl_top/test/assertions_base_test.sv(53) @ 0: uvm_test_top [assertions_base_test] BUILD_PHASE assertions_base_test
+# -------------------------------------------------------
+# Name                   Type                 Size  Value
+# -------------------------------------------------------
+# master_agent_cfg_h     master_agent_config  -     @497 
+#   is_active            integral             1     1    
+#   no_of_slaves         integral             32    'd1  
+#   spi_mode             integral             2     0    
+#   shift_dir            integral             1     0    
+#   c2tdelay             integral             32    'd1  
+#   t2cdelay             integral             32    'd1  
+#   wdelay               integral             32    'd1  
+#   primary_prescalar    integral             3     'd0  
+#   secondary_prescalar  integral             3     'd0  
+#   baudrate_divisor     integral             32    'd2  
+#   has_coverage         integral             1     1    
+# -------------------------------------------------------
+# -----------------------------------------------------
+# Name                  Type                Size  Value
+# -----------------------------------------------------
+# slave_agent_cfg_h[0]  slave_agent_config  -     @502 
+#   is_active           integral            1     1    
+#   slave_id            integral            2     'd0  
+#   spi_mode            integral            2     0    
+#   shift_dir           integral            1     0    
+#   has_coverage        integral            1     1    
+# -----------------------------------------------------
+# ------------------------------------------
+# Name               Type        Size  Value
+# ------------------------------------------
+# env_cfg_h          env_config  -     @496 
+#   has_scoreboard   integral    1     1    
+#   has_virtual_sqr  integral    1     1    
+#   no_of_slaves     integral    32    'h1  
+# ------------------------------------------
+# -------------------------------------------------------
+# Name                   Type                 Size  Value
+# -------------------------------------------------------
+# master_agent_cfg_h     master_agent_config  -     @497 
+#   is_active            integral             1     1    
+#   no_of_slaves         integral             32    'd1  
+#   spi_mode             integral             2     0    
+#   shift_dir            integral             1     0    
+#   c2tdelay             integral             32    'd1  
+#   t2cdelay             integral             32    'd1  
+#   wdelay               integral             32    'd1  
+#   primary_prescalar    integral             3     'd0  
+#   secondary_prescalar  integral             3     'd0  
+#   baudrate_divisor     integral             32    'd2  
+#   has_coverage         integral             1     1    
+# -------------------------------------------------------
+# -----------------------------------------------------
+# Name                  Type                Size  Value
+# -----------------------------------------------------
+# slave_agent_cfg_h[0]  slave_agent_config  -     @520 
+#   is_active           integral            1     1    
+#   slave_id            integral            2     'd0  
+#   spi_mode            integral            2     0    
+#   shift_dir           integral            1     0    
+#   has_coverage        integral            1     1    
+# -----------------------------------------------------
+# ------------------------------------------
+# Name               Type        Size  Value
+# ------------------------------------------
+# env_cfg_h          env_config  -     @496 
+#   has_scoreboard   integral    1     1    
+#   has_virtual_sqr  integral    1     1    
+#   no_of_slaves     integral    32    'h1  
+# ------------------------------------------
+# UVM_INFO ../../src/hvl_top/env/env.sv(64) @ 0: uvm_test_top.env_h [uvm_test_top.env_h] ENV: build_phase
+# UVM_INFO ../../src/hvl_top/env/env.sv(64) @ 0: uvm_test_top.env_ha [uvm_test_top.env_ha] ENV: build_phase
+# UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+# ---------------------------------------------------------------------
+# Name                          Type                        Size  Value
+# ---------------------------------------------------------------------
+# uvm_test_top                  assertions_base_test        -     @473 
+#   env_h                       env                         -     @511 
+#     master_agent_h            master_agent                -     @529 
+#       master_drv_proxy_h      master_driver_proxy         -     @661 
+#         rsp_port              uvm_analysis_port           -     @676 
+#         seq_item_port         uvm_seq_item_pull_port      -     @668 
+#       master_mon_proxy_h      master_monitor_proxy        -     @793 
+#         master_analysis_port  uvm_analysis_port           -     @800 
+#       master_seqr_h           master_sequencer            -     @684 
+#         rsp_export            uvm_analysis_export         -     @691 
+#         seq_item_export       uvm_seq_item_pull_imp       -     @785 
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     scoreboard_h              spi_scoreboard              -     @652 
+#       master_analysis_fifo    uvm_tlm_analysis_fifo #(T)  -     @815 
+#         analysis_export       uvm_analysis_imp            -     @854 
+#         get_ap                uvm_analysis_port           -     @846 
+#         get_peek_export       uvm_get_peek_imp            -     @830 
+#         put_ap                uvm_analysis_port           -     @838 
+#         put_export            uvm_put_imp                 -     @822 
+#       slave_analysis_fifo     uvm_tlm_analysis_fifo #(T)  -     @862 
+#         analysis_export       uvm_analysis_imp            -     @901 
+#         get_ap                uvm_analysis_port           -     @893 
+#         get_peek_export       uvm_get_peek_imp            -     @877 
+#         put_ap                uvm_analysis_port           -     @885 
+#         put_export            uvm_put_imp                 -     @869 
+#     slave_agent_h[0]          slave_agent                 -     @536 
+#       slave_drv_proxy_h       slave_driver_proxy          -     @911 
+#         rsp_port              uvm_analysis_port           -     @926 
+#         seq_item_port         uvm_seq_item_pull_port      -     @918 
+#       slave_mon_proxy_h       slave_monitor_proxy         -     @1043
+#         slave_analysis_port   uvm_analysis_port           -     @1050
+#       slave_seqr_h            slave_sequencer             -     @934 
+#         rsp_export            uvm_analysis_export         -     @941 
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1035
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     virtual_seqr_h            virtual_sequencer           -     @543 
+#       master_seqr_h           master_sequencer            -     @1071
+#         rsp_export            uvm_analysis_export         -     @1078
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1172
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       rsp_export              uvm_analysis_export         -     @550 
+#       seq_item_export         uvm_seq_item_pull_imp       -     @644 
+#       slave_seqr_h            slave_sequencer             -     @1180
+#         rsp_export            uvm_analysis_export         -     @1187
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1281
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       arbitration_queue       array                       0     -    
+#       lock_queue              array                       0     -    
+#       num_last_reqs           integral                    32    'd1  
+#       num_last_rsps           integral                    32    'd1  
+#   env_ha                      env                         -     @521 
+#     master_agent_h            master_agent                -     @1300
+#       master_drv_proxy_h      master_driver_proxy         -     @1432
+#         rsp_port              uvm_analysis_port           -     @1447
+#         seq_item_port         uvm_seq_item_pull_port      -     @1439
+#       master_mon_proxy_h      master_monitor_proxy        -     @1564
+#         master_analysis_port  uvm_analysis_port           -     @1571
+#       master_seqr_h           master_sequencer            -     @1455
+#         rsp_export            uvm_analysis_export         -     @1462
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1556
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     scoreboard_h              spi_scoreboard              -     @1423
+#       master_analysis_fifo    uvm_tlm_analysis_fifo #(T)  -     @1586
+#         analysis_export       uvm_analysis_imp            -     @1625
+#         get_ap                uvm_analysis_port           -     @1617
+#         get_peek_export       uvm_get_peek_imp            -     @1601
+#         put_ap                uvm_analysis_port           -     @1609
+#         put_export            uvm_put_imp                 -     @1593
+#       slave_analysis_fifo     uvm_tlm_analysis_fifo #(T)  -     @1633
+#         analysis_export       uvm_analysis_imp            -     @1672
+#         get_ap                uvm_analysis_port           -     @1664
+#         get_peek_export       uvm_get_peek_imp            -     @1648
+#         put_ap                uvm_analysis_port           -     @1656
+#         put_export            uvm_put_imp                 -     @1640
+#     slave_agent_h[0]          slave_agent                 -     @1307
+#       slave_drv_proxy_h       slave_driver_proxy          -     @1682
+#         rsp_port              uvm_analysis_port           -     @1697
+#         seq_item_port         uvm_seq_item_pull_port      -     @1689
+#       slave_mon_proxy_h       slave_monitor_proxy         -     @1814
+#         slave_analysis_port   uvm_analysis_port           -     @1821
+#       slave_seqr_h            slave_sequencer             -     @1705
+#         rsp_export            uvm_analysis_export         -     @1712
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1806
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#     virtual_seqr_h            virtual_sequencer           -     @1314
+#       master_seqr_h           master_sequencer            -     @1842
+#         rsp_export            uvm_analysis_export         -     @1849
+#         seq_item_export       uvm_seq_item_pull_imp       -     @1943
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       rsp_export              uvm_analysis_export         -     @1321
+#       seq_item_export         uvm_seq_item_pull_imp       -     @1415
+#       slave_seqr_h            slave_sequencer             -     @1951
+#         rsp_export            uvm_analysis_export         -     @1958
+#         seq_item_export       uvm_seq_item_pull_imp       -     @2052
+#         arbitration_queue     array                       0     -    
+#         lock_queue            array                       0     -    
+#         num_last_reqs         integral                    32    'd1  
+#         num_last_rsps         integral                    32    'd1  
+#       arbitration_queue       array                       0     -    
+#       lock_queue              array                       0     -    
+#       num_last_reqs           integral                    32    'd1  
+#       num_last_rsps           integral                    32    'd1  
+# ---------------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hvl_top/test/assertions_base_test.sv(173) @ 0: uvm_test_top [assertions_base_test] Inside assertions_base_test
+# UVM_INFO ../../src/hvl_top/test/base_test.sv(170) @ 0: uvm_test_top [assertions_base_test] Inside BASE_TEST
+# UVM_INFO ../../src/hvl_top/slave/slave_monitor_proxy.sv(222) @ 0: uvm_test_top.env_ha.slave_agent_h[0].slave_mon_proxy_h [slave_monitor_proxy] Inside the slave_monitor_proxy
+# UVM_INFO ../../src/hvl_top/master//master_monitor_proxy.sv(130) @ 0: uvm_test_top.env_ha.master_agent_h.master_mon_proxy_h [master_monitor_proxy] Inside the master_monitor_proxy
+# UVM_INFO ../../src/hvl_top/slave/slave_monitor_proxy.sv(222) @ 0: uvm_test_top.env_h.slave_agent_h[0].slave_mon_proxy_h [slave_monitor_proxy] Inside the slave_monitor_proxy
+# UVM_INFO ../../src/hvl_top/master//master_monitor_proxy.sv(130) @ 0: uvm_test_top.env_h.master_agent_h.master_mon_proxy_h [master_monitor_proxy] Inside the master_monitor_proxy
+# UVM_INFO ../../src/hvl_top/test/base_test.sv(180) @ 100: uvm_test_top [assertions_base_test] Done BASE_TEST
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(60) @ 100: reporter [SLAVE_MONITOR_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(64) @ 100: reporter [SLAVE_DRIVER_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(59) @ 100: reporter [MASTER_MONITOR_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(60) @ 100: reporter [SLAVE_MONITOR_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(64) @ 100: reporter [SLAVE_DRIVER_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hdl_top/master_agent_bfm/master_monitor_bfm.sv(59) @ 100: reporter [MASTER_MONITOR_BFM] IDLE condition has been detected
+# UVM_INFO ../../src/hvl_top/test/assertions_base_test.sv(183) @ 1100: uvm_test_top [assertions_base_test] Done assertions_base_test
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1268) @ 1100: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :   26
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [MASTER_ASSERTIONS]     2
+# [MASTER_MONITOR_BFM]     2
+# [Questa UVM]     2
+# [RNTST]     1
+# [SLAVE_DRIVER_BFM]     2
+# [SLAVE_MONITOR_BFM]     2
+# [TEST_DONE]     1
+# [UVMTOP]     1
+# [assertions_base_test]     5
+# [master_monitor_proxy]     2
+# [slave_ASSERTIONS]     2
+# [slave_monitor_proxy]     2
+# [uvm_test_top.env_h]     1
+# [uvm_test_top.env_ha]     1
+# ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 1100 ns  Iteration: 54  Instance: /hvl_top
+# End time: 04:22:19 on Nov 19,2021, Elapsed time: 0:00:07
+# Errors: 0, Warnings: 0

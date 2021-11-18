@@ -190,7 +190,20 @@ interface master_monitor_bfm(input pclk, input areset,
 
     end
     
-  endtask: sample_data 
+  endtask: sample_data
+
+   bind master_monitor_bfm master_assertions master_assertion_h (.pclk(pclk),
+                                                                .cs(cs),
+                                                                .areset(areset),
+                                                                .sclk(sclk),
+                                                                .mosi0(mosi0),
+                                                                .mosi1(mosi1),
+                                                                .mosi2(mosi2),
+                                                                .mosi3(mosi3),
+                                                                .miso0(miso0),
+                                                                .miso1(miso1),
+                                                                .miso2(miso2),
+                                                                .miso3(miso3));
 
 endinterface : master_monitor_bfm
 
