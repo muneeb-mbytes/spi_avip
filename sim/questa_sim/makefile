@@ -71,6 +71,8 @@ compile:
 	vlib work; 
 	vlog -sv \
 	+acc \
+	+cover \
+	+fcover \
 	-l spi_compile.log \
 	-f ../spi_compile.f
 
@@ -91,6 +93,11 @@ ifndef uvm_verbosity
 override uvm_verbosity = UVM_MEDIUM
 endif
 
+## For randomized seed
+# TODO(mshariff): 
+#Add this line after -sva 
+#-sv_seed random 
+
 simulate:
 	make clean_simulate
 	mkdir $(test)
@@ -104,10 +111,24 @@ simulate:
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
 	-l $(test)/$(test).log \
-	-c -do "log -r /*; add wave -r /*; run -all;" \
+	-sva \
+  -coverage \
+	-c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll $(test)/coverage.ucdb; run -all; exit" \
 	-wlf $(test)/waveform.wlf
 
+	# For checking and reporting simulation errors
 	make simulate_war_err
+
+	## TODO(mshariff): 
+	## # For coverage report in text format 
+	## #vcover report -text $(test)/$(test)_cov
+	## vcover report -file $(test)/coverage.ucdb -byfile -detail -noannotate -option -cvg
+
+	# For coverage report in HTML format 
+	vcover report -html $(test)/coverage.ucdb -htmldir $(test)/html_cov_report
+
+	# To open the html coverage report
+	# firefox test_folder/html_cov_report/index.html &
 
 	# To open the waveform use the below command 
 	# vsim -view waveform.wlf &
@@ -124,6 +145,20 @@ clean_compile:
 clean:
 	make clean_compile
 	make clean_simulate
+
+##
+## For Regression and coverage merge
+##
+##clean:
+##	rm -rf modelsim.* transcript* *log* work vsim.wlf fcover* covhtml* mem_cov*
+##	clear
+##report:
+##	vcover merge mem_cover mem_cov1 mem_cov2 mem_cov3 mem_cov4 mem_cov5 mem_cov6 mem_cov7 mem_cov8
+##	vcover report -html mem_cover
+##
+##regress: clean run_test1_single run_test2_wrap run_test3_single run_test4_wrap run_test5_single run_test6_single run_test7_wrap run_test8_wrap report html
+##
+
 
 compile_war_err:
 	echo "";
