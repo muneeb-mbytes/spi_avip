@@ -47,8 +47,9 @@ function void slave_spi_seq_item_converter::from_class(input slave_tx input_conv
   output_conv.no_of_miso_bits_transfer = input_conv_h.master_in_slave_out.size()*CHAR_LENGTH;
 
   for(int i=0; i<input_conv_h.master_in_slave_out.size(); i++) begin
-    output_conv.master_in_slave_out = output_conv.master_in_slave_out << CHAR_LENGTH;
-    output_conv.master_in_slave_out[CHAR_LENGTH-1:0] = input_conv_h.master_in_slave_out[i];    
+    //output_conv.master_in_slave_out = output_conv.master_in_slave_out << CHAR_LENGTH;
+    output_conv.master_in_slave_out[i][CHAR_LENGTH-1:0] = input_conv_h.master_in_slave_out[i];    
+    //output_conv.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];    
   end
 
 endfunction: from_class 
@@ -78,12 +79,17 @@ function void slave_spi_seq_item_converter::to_class(input spi_transfer_char_s i
 
   // Defining the size of arrays
   output_conv_h.master_out_slave_in = new[input_conv.no_of_mosi_bits_transfer/CHAR_LENGTH];
+  //output_conv_h.master_out_slave_in = new[input_conv.no_of_mosi_bits_transfer];
   output_conv_h.master_in_slave_out = new[input_conv.no_of_miso_bits_transfer/CHAR_LENGTH];
+  //output_conv_h.master_in_slave_out = new[input_conv.no_of_miso_bits_transfer];
 
   // Storing the values in the respective arrays
   for(int i=0; i<input_conv.no_of_mosi_bits_transfer/CHAR_LENGTH; i++) begin
-    output_conv_h.master_out_slave_in[i] = input_conv.master_out_slave_in[i +: CHAR_LENGTH];
-    output_conv_h.master_in_slave_out[i] = input_conv.master_in_slave_out[i +: CHAR_LENGTH];
+  //for(int i=0; i<input_conv.no_of_mosi_bits_transfer; i++) begin
+    output_conv_h.master_out_slave_in[i] = input_conv.master_out_slave_in[i][CHAR_LENGTH-1:0];
+    output_conv_h.master_in_slave_out[i] = input_conv.master_in_slave_out[i][CHAR_LENGTH-1:0];
+  //  output_conv_h.master_out_slave_in[i] = input_conv.master_out_slave_in[i];
+  //  output_conv_h.master_in_slave_out[i] = input_conv.master_in_slave_out[i];
   end
   
 endfunction: to_class
