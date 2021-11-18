@@ -37,51 +37,54 @@ module tb_slave_assertions;
   
   // Calling tasks 
   initial begin
-    test1();
-    test2();
+    if_signals_are_stable_negative_1();
+    if_signals_are_stable_negative_2();
   end
- 
-  task test1();
-    bit [7:0] mosi_data;
-    bit [7:0] miso_data;
-    areset = 1'b1;
-    $display("SLAVE ASSERTION_DEBUG","TEST1");
 
-    
-    //drive the data
-    //mosi and miso data
-      mosi_data = $urandom;
-      miso_data = $urandom;
-      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "mosi_data = %0d", mosi_data);
-      $display("SLAVE_ASSERTION_DEBUG_TEST_1", "miso_data = %0d", miso_data);
-
-    for(int i=0 ; i<8; i++) begin
-      @(posedge sclk);
-      mosi0 = mosi_data[i];
-      miso0 = miso_data[i];
-    end
-  endtask : test1
   
-  task test2();
+  task if_signals_are_stable_negative_1();
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
+    $display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    
+    cs ='1;
     areset = 1'b0;
-      mosi_data = $urandom;
-      miso_data = $urandom;
-      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "mosi_data = %0d", mosi_data);
-      $display("SLAVE_ASSERTION_DEBUG_TEST_2", "miso_data = %0d", miso_data);
+    
+    @(posedge sclk);
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
+    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
 
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
-      mosi0 = mosi_data[i];
-      miso0 = miso_data[i];
+        mosi0 = mosi_data[i];
+        miso0 = miso_data[i];
     end
-  
-    $display("SLAVE_ASSERTION_DEBUG","TEST2_DONE");
-  endtask : test2
+  endtask
 
+  task if_signals_are_stable_negative_2();
+    bit[7:0] mosi_data;
+    bit[7:0] miso_data;
+    $display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    areset = 1'b1;
+    
+    @(posedge sclk);
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
+    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
+
+    for(int i=0 ; i<8; i++) begin
+       cs = $urandom;
+       @(posedge sclk);
+        mosi0 = mosi_data[i];
+        miso0 = miso_data[i];
+    end
+  endtask 
+  
   initial begin 
-    $display("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",
+    $monitor("TB_SLAVE_ASSERTIONS,%0t: pclk=%0d, sclk=%0d, areset=%0d, cs=%0d, mosi0=%0d, miso0=%0d",
               $time, pclk, sclk, areset, cs, mosi0, miso0);
   end
 
