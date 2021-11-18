@@ -122,7 +122,8 @@ simulate:
 	## TODO(mshariff): 
 	## # For coverage report in text format 
 	## #vcover report -text $(test)/$(test)_cov
-	## vcover report -file $(test)/coverage.ucdb -byfile -detail -noannotate -option -cvg
+	# -c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll $(test)/coverage.ucdb; coverage report -file $(teset)/coverage.txt -byfile -detail -noannotate -option -directive -cvg -details -verbose; run -all; exit" \
+	# vcover report -file  -byfile -detail -noannotate -option -cvg
 
 	# For coverage report in HTML format 
 	vcover report -html $(test)/coverage.ucdb -htmldir $(test)/html_cov_report
