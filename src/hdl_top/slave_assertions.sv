@@ -33,19 +33,17 @@ interface slave_assertions(input pclk,
     `uvm_info("slave_ASSERTIONS","slave ASSERTIONS",UVM_LOW);
   end  
 
+/*
   // Assertion for if signals are stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
-
   property if_signals_are_stable;
     @(posedge pclk)
     //@(posedge pclk) disable iff(!areset)
     cs == '1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
   endproperty : if_signals_are_stable
   IF_SIGNALS_ARE_STABLE: assert property (if_signals_are_stable);
- 
+ */
   
-
-  /*
   // Assertion for slave_miso0_valid
   // when cs is low mosi should be valid from next clock cycle.
   sequence slave_miso0_valid_seq;
@@ -53,11 +51,13 @@ interface slave_assertions(input pclk,
   endsequence : slave_miso0_valid_seq
 
   property slave_miso0_valid_p;
-    @(posedge sclk) disable iff(!areset)
+    @(posedge sclk) disable iff(areset==0)
     slave_miso0_valid_seq |-> !$isunknown(miso0);
   endproperty : slave_miso0_valid_p
   SLAVE_CS_LOW_CHECK: assert property (slave_miso0_valid_p);
     
+  
+  /*
   //Assertion for Checking if cs is stable during transfers
   //cs should be low and stable till data transfer is successful ($stable)
   property slave_cs_stable;
