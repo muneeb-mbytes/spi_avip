@@ -46,10 +46,10 @@ module tb_master_assertions;
   
   initial begin
     //test1();
-    //if_signals_are_stable_negative_1();
+    if_signals_are_stable_negative_1();
     //if_signals_are_stable_negative_2();
     //if_signals_are_stable_positive();
-    master_cs_low_check_positive();
+    //master_cs_low_check_positive();
     $display("AN_SVA", "INTIAL BLOCK");
   end
 

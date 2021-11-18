@@ -72,7 +72,7 @@ compile:
 	vlog -sv \
 	+acc \
 	-l spi_compile.log \
-	-f ../spi_compile.f
+	-f ../spi_compile.f 
 
 	# -s means silent mode
 	#  The command executed along with the output will be displayed on the terminal
@@ -91,6 +91,10 @@ ifndef uvm_verbosity
 override uvm_verbosity = UVM_MEDIUM
 endif
 
+ifndef spi_type
+override  spi_type= SIMPLE_SPI
+endif
+
 simulate:
 	make clean_simulate
 	mkdir $(test)
@@ -105,6 +109,7 @@ simulate:
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
+	+define=$(spi_type) \
 	-l $(test)/$(test).log \
 	-c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf $(test)/waveform.wlf
