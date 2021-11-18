@@ -24,7 +24,7 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
   option.per_instance = 1;
 
     // Mode of the operation
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+    OPERATION_MODE_CP : coverpoint operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
       // bins
@@ -32,25 +32,35 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
       // bins cpol0_cpha1 = {1};
       // bins cpol1_cpha0 = {2};
       // bins cpol1_cpha1 = {3};
-      bins cpol_cphase[] = {[0:3]};
+      bins CPOL_CPHA[] = {[0:3]};
     }
  
     
-    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
+    SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.spi_mode) {
       option.comment = "Shift direction SPI. MSB and LSB";
-      bins lsb_first = {0};
-      bins msb_first = {1};    
+      bins LSB_FIRST = {0};
+      bins MSB_FIRST = {1};    
     }
 
-    //Creating bins for 8,16,32,64 and more bins
-//    DATA_WIDTH : coverpoint packet.data_width{
-//      option.comment = "Data of a particular width is transfered";
-//      bins dw_8_bits  []  = {[0:7]};
-//      bins dw_16_bits []  = {[8:15]};
-//      bins dw_32_bits []  = {[16:31]};
-//      bins dw_64_bits []  = {[32:63]};
-//      bins dw_128_bits [] = {[64:128]};
-//    }
+     MOSI_DATA_TRANSFER_CP : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
+      option.comment = "different data size of the packets transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
+    }  
+      MISO_DATA_TRANSFER_CP : coverpoint packet.master_in_slave_out.size()*CHAR_LENGTH {
+      option.comment = "different data size of the packets transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
+    } 
+
 
 //    // TODO(mshariff): 
 //    // Have illegal bins 
