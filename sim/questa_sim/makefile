@@ -126,7 +126,7 @@ simulate:
 	# vcover report -file  -byfile -detail -noannotate -option -cvg
 
 	# For coverage report in HTML format 
-	vcover report -html $(test)/coverage.ucdb -htmldir $(test)/html_cov_report
+	vcover report -html $(test)/coverage.ucdb -htmldir $(test)/html_cov_report -details
 
 	# To open the html coverage report
 	# firefox test_folder/html_cov_report/index.html &
