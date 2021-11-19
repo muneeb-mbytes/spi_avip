@@ -58,7 +58,19 @@ module tb_master_assertions;
     bit[7:0] miso_data;
     //$display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
     //@(posedge pclk) begin
-    cs ='1;
+
+    areset = 0;
+
+    @(posedge pclk); 
+    cs = '1;
+    sclk = 0; //cpol
+
+    repeat(1) begin
+      @(posedge pclk); 
+    end
+    
+    areset = 1;
+
     //areset = 0;
     //end
     sclk_gen_neg();
@@ -105,8 +117,25 @@ module tb_master_assertions;
   task if_signals_are_stable_positive();
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
+
     $display("ASSERTION_DEBUG","TEST1");
+
+    areset = 0;
+
+    @(posedge pclk); 
     cs = '1;
+    sclk = 0; //cpol
+
+    repeat(1) begin
+      @(posedge pclk); 
+    end
+    
+    areset = 1;
+
+    // MSHA:// initial data
+    // MSHA:pclk = 0;
+    // MSHA:cs = 1;
+
     // random mosi data
     mosi_data = $urandom;
     miso_data = $urandom;
