@@ -23,10 +23,10 @@ class master_coverage extends uvm_subscriber#(master_tx);
     // Mode of the operation
 
     // {cpol,cpha} = operation_modes_e'(cfg.spi_mode);
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+    OPERATION_MODE_CP : coverpoint operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
-       bins cpol_cpha[] = {[0:3]};
+       bins MODE[] = {[0:3]};
       // bins cpol0_cpha0 = 0;
       // bins cpol0_cpha1 = 1;
       // bins cpol1_cpha0 = 2;
@@ -34,173 +34,115 @@ class master_coverage extends uvm_subscriber#(master_tx);
     }
 
     // Chip-selcet to first SCLK-edge delay
-    C2T_DELAY : coverpoint cfg.c2tdelay {
+    C2T_DELAY_CP : coverpoint cfg.c2tdelay {
       option.comment = "Delay betwen CS assertion to first SCLK edge";
       // TODO(mshariff): 
        bins DELAY_1 = {1};
        bins DELAY_2 = {2};
        bins DELAY_3 = {3};
-       bins DELAY_4_to_10[] = {[4:10]};
+       bins DELAY_4_to_10 = {[4:10]};
     
        illegal_bins illegal_bin = {0};
      } 
 //     // Chip-selcet to first SCLK-edge delay 
-    T2C_DELAY : coverpoint cfg.t2cdelay {
+    T2C_DELAY_CP : coverpoint cfg.t2cdelay {
       option.comment = "Delay betwen last SCLK to the CS assertion";
       // TODO(mshariff): 
-       bins delay_11 = {11};
-       bins delay_12 = {12};
-       bins delay_13 = {13};
-    }
+       bins DELAY_1 = {1};
+       bins DELAY_2 = {2};
+       bins DELAY_3 = {3};
+       bins DELAY_4_TO_10 = {[4:10]};
     
+     }
+
+    W_DELAY_CP : coverpoint cfg.wdelay {
+      option.comment = "Delay between two transfer";
+      bins W_DELAY_1 = {1}; 
+      bins W_DELAY_2 = {2}; 
+      bins W_DELAY_3 = {3}; 
+      bins W_DELAY_MAX = {[4:MAXIMUM_BITS]}; 
+    } 
      // direction = shift_direction_e'(cfg.spi_mode); 
-    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
+    SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.spi_mode) {
       option.comment = "Shift direction SPI. MSB and LSB";
-      bins lsb_first = {0};
-      bins msb_first = {1};
+      bins LSB_FIRST = {0};
+      bins MSB_FIRST = {1};
     } 
     
-    CS : coverpoint packet.cs{
+    CS_CP : coverpoint packet.cs{
       option.comment = "Chip select assign one slave based on config"; 
-      bins cs_0 ={0};
-      bins cs_1 ={1};
-      bins cs_2 ={2};
-      bins cs_3 ={3};
+      bins SLAVE_0 = {0};
+      //bins SLAVE_1 ={1};
+      //bins SLAVE_2 ={2};
+      //bins SLAVE_3 ={3};
     }
-//    //NO_OF_SLAVES : coverpoint cfg.no_of_slaves {
-//     // option.comment = "no of the slaves selected based on the config";
-//      // bins slave_1 = 1;
-//      // bins slave_2 = 1;
-//      // bins slave_3 = 1;
-//      // bins slave_4 = 1;
-//      // illegal_bins illegal_bin = 0;
-//      //  }
-//    
-    MASTER_DATA_WIDTH : coverpoint packet.master_out_slave_in[CHAR_LENGTH-1] {
-      option.comment = "Data of particular width is transfered";
-      bins dw_8b[] = {[0:7]};
-      bins dw_16b[] = {[8:15]};
-      bins dw_32b[] = {[16:31]};
-      bins dw_64b[] = {[32:63]};
-      bins dw_128b[] = {[64:128]};
+    
+    
+    
+    MOSI_DATA_TRANSFER_CP : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
+      option.comment = "Data size of the packet transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
+    } 
+    MISO_DATA_TRANSFER_CP : coverpoint packet.master_in_slave_out.size()*CHAR_LENGTH {
+      option.comment = "Data size of the packet transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
     } 
 
-    SLAVE_DATA_WIDTH : coverpoint packet.master_in_slave_out[CHAR_LENGTH-1] {
-      option.comment = "Data of particular width is transfered";
-      bins dw_8b[] = {[0:7]};
-      bins dw_16b[] = {[8:15]};
-      bins dw_32b[] = {[16:31]};
-      bins dw_64b[] = {[32:63]};
-      bins dw_128b[] = {[64:128]};
-    } 
-    BAUD_RATE : coverpoint cfg.baudrate_divisor {
+
+
+    //If the pclk is 10mhz and the baudrate_divisor is 2 then the sclk will be 5mhz.
+    
+      BAUD_RATE_CP : coverpoint cfg.baudrate_divisor {
       option.comment = "it control the rate of transfer in communication channel";
-      bins baudrate = {2}; 
-//      // need to add bins for baud rate 
+     
+      bins BAUDRATE_DIVISOR_1 = {2}; 
+      bins BAUDRATE_DIVISOR_2 = {4}; 
+      bins BAUDRATE_DIVISOR_3 = {6}; 
+      bins BAUDRATE_DIVISOR_4 = {8}; 
+      bins BAUDRATE_DIVISOR_5 = {[8:$]}; 
+
+       illegal_bins illegal_bin = {0};
+
+//      // need to add bins for baud rate
+//      TODO
+//      to have a bins for the baud rate for the 4,6,8,and more
 //
     }
-//    
-//    // TODO(mshariff): 
-//    // Have illegal bins 
-//    // illegal_bins illegal_bin = 0;
-//    // Have ignore bins
-//    // ignore_bins ignore_bin = 
-//    // Have coverpoints for cfg and packet
-//    //
-//    //cfg : coverpoint cfg{
-//    //option.comment = "  
-//    // Have interesting cross coverpoints between cfg and packet
-//    // cfg X packet : cross cfg X packet;
-//      
-//        
-//  //  MASTER_OUT_SLAVE_IN : coverpoint packet.master_out_slave_in {
-//  //    option.comment = "the mosi data goes from master to slave";
-//  //    
-//  //    bins mosi_hit = {1};
-//  //    // illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin 
-//  //  }
-//  //  MASTER_IN_SLAVE_OUT : coverpoint packet.master_in_slave_out {
-//  //    option.comment = "the mosi data goes from master to slave";
-//  //    bins miso_hit = {1};
-//  //    //  illegal_bins illegal bin that if data is not of the multiple of the 8 then illegal bin
-//  //  }
-//  
-//    //illegal bin : coverpoint
-//    
-//    //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
-////--------------------------------------------------------------------------------------------
-//// 1.cross the cs with the mosi 
-//// 2.
-////--------------------------------------------------------------------------------------------
-// //   //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
-// //  
-// //   //Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-// //   OPERATION_MODE X CS = cross OPERATION_MODE,CS;
-// //   OPERATION_MODE X DATA_WIDTH = cross RATION_MODE,DATA_WIDTH;
-// //   OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
-// //   OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
-//
-// //   //Cross of the C2T_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-// //   C2T_DELAY x CS = cross C2T_DELAY,CS;
-// //   C2T_DELAY x DATA_WIDTH = cross C2T_DELAY,DATA_WIDTH;
-// //   C2T_DELAY x master_out_slave_in = cross C2T_DELAY,master_out_slave_in;
-// //   C2T_DELAY x master_in_slave_out = cross C2T_DELAY,master_in_slave_out;
-//
-// //   //Cross of the T2C_DELAY with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-// //   T2C_DELAY x CS = cross T2C_DELAY,CS;
-// //   T2C_DELAY x DATA_WIDTH = cross T2C_DELAY,DATA_WIDTH;
-// //   T2C_DELAY x master_out_slave_in = cross T2C_DELAY,master_out_slave_in;
-// //   T2C_DELAY x master_in_slave_out = cross T2C_DELAY,master_in_slave_out;
-//
-// //   //Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-// //       
-// //   SHIFT_DIRECTION x CS = cross SHIFT_DIRECTION,CS;
-// //   SHIFT_DIRECTION x DATA_WIDTH = cross SHIFT_DIRECTION,DATA_WIDTH;
-// //   SHIFT_DIRECTION x master_out_slave_in = cross SHIFT_DIRECTION,master_out_slave_in;
-// //   SHIFT_DIRECTION x master_in_slave_out = cross SHIFT_DIRECTION,master_in_slave_out;
-//
-// //   //Cross of the NO_OF_SLAVES with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-// //   NO_OF_SLAVES x CS = cross NO_OF_SLAVES,CS;
-// //   NO_OF_SLAVES x DATA_WIDTH = cross NO_OF_SLAVES,DATA_WIDTH;
-// //   NO_OF_SLAVES x master_out_slave_in = cross NO_OF_SLAVES,master_out_slave_in;
-// //   NO_OF_SLAVES x master_in_slave_out = cross NO_OF_SLAVES,master_in_slave_out;
-//
-// // 
-// // 
-  endgroup : master_covergroup
-//
-  // Variable: master_cg
-  // Handle for master covergroup
-   // master_coverage master_cg;
 
-  // TODO(mshariff):
-  //
-  // Example for reference 
-  //
-	// MSHA: coverpoint mode {
-	// MSHA: 	// Manually create a separate bin for each value
-	// MSHA: 	bins zero = {0};
-	// MSHA: 	bins one  = {1};
-	// MSHA: 	
-	// MSHA: 	// Allow SystemVerilog to automatically create separate bins for each value
-	// MSHA: 	// Values from 0 to maximum possible value is split into separate bins
-	// MSHA: 	bins range[] = {[0:$]};
-	// MSHA: 	
-	// MSHA: 	// Create automatic bins for both the given ranges
-	// MSHA: 	bins c[] = { [2:3], [5:7]};
-	// MSHA: 	
-	// MSHA: 	// Use fixed number of automatic bins. Entire range is broken up into 4 bins
-	// MSHA: 	bins range[4] = {[0:$]};
-	// MSHA: 	
-	// MSHA: 	// If the number of bins cannot be equally divided for the given range, then 
-	// MSHA: 	// the last bin will include remaining items; Here there are 13 values to be
-	// MSHA: 	// distributed into 4 bins which yields:
-	// MSHA: 	// [1,2,3] [4,5,6] [7,8,9] [10, 1, 3, 6]
-	// MSHA: 	bins range[4] = {[1:10], 1, 3, 6};
-	// MSHA: 	
-	// MSHA: 	// A single bin to store all other values that don't belong to any other bin
-	// MSHA: 	bins others = default;
-	// MSHA: }
+    //CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
+    //Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
+    //cross of the operation mode with the all type of the delays
+      OPERATION_MODE_CP_X_C2T_DELAY_CP : cross OPERATION_MODE_CP,C2T_DELAY_CP;
+      OPERATION_MODE_CP_X_T2C_DELAY_CP : cross OPERATION_MODE_CP,T2C_DELAY_CP;
+      OPERATION_MODE_CP_X_W_DELAY_CP : cross OPERATION_MODE_CP,W_DELAY_CP;
+
+      //cross of the mosi_data_trasfer_cp with shift direction and the operation mode  and the delays
+      MOSI_DATA_TRANSFER_CP_X_SHIFT_DIRECTION_CP : cross MOSI_DATA_TRANSFER_CP,SHIFT_DIRECTION_CP;
+      MOSI_DATA_TRANSFER_CP_X_OPERATION_MODE_CP : cross MOSI_DATA_TRANSFER_CP,OPERATION_MODE_CP;
+      MOSI_DATA_TRANSFER_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,C2T_DELAY_CP,T2C_DELAY_CP;
+      MOSI_DATA_TRANSFER_CP_X_W_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,W_DELAY_CP;
+      
+      //Cross of the mosi_data_transfer_cp with teh baudrate
+      MOSI_DATA_TRANSFER_CP_X_BAUD_RATE_CP : cross MOSI_DATA_TRANSFER_CP,BAUD_RATE_CP;
+    
+      //cross of the cs_cp with mosi_data_transfer_cp, shift_direction, operation_modeand the delays
+      CS_CP_X_MOSI_DATA_TRANSFER_CP : cross CS_CP,MOSI_DATA_TRANSFER_CP;
+      CS_CP_X_SHIFT_DIRECTION_CP : cross CS_CP,SHIFT_DIRECTION_CP;
+      CS_CP_X_OPERATION_MODE_CP : cross CS_CP,OPERATION_MODE_CP;
+      CS_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP_X_W_DELAY_CP : cross CS_CP,C2T_DELAY_CP,T2C_DELAY_CP,W_DELAY_CP;
+    
+
+  endgroup : master_covergroup
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -229,82 +171,18 @@ function master_coverage::new(string name = "master_coverage", uvm_component par
   // TODO(mshariff): Create the covergroup
 //`uvm_info(get_type_name(),$sformatf(master_cg),UVM_LOW);
 //
-//   //master_cg = new(cfg,packet); 
      master_covergroup = new(); 
 //  `uvm_info(get_type_name(),$sformatf(master_cg),UVM_LOW); 
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// Function: build_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-/*function void master_coverage::build_phase(uvm_phase phase);
-  super.build_phase(phase);
-endfunction : build_phase
-
-//--------------------------------------------------------------------------------------------
-// Function: connect_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-function void master_coverage::connect_phase(uvm_phase phase);
-  super.connect_phase(phase);
-endfunction : connect_phase
-
-//--------------------------------------------------------------------------------------------
-// Function: end_of_elaboration_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-function void master_coverage::end_of_elaboration_phase(uvm_phase phase);
-  super.end_of_elaboration_phase(phase);
-endfunction  : end_of_elaboration_phase
-
-//--------------------------------------------------------------------------------------------
-// Function: start_of_simulation_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-function void master_coverage::start_of_simulation_phase(uvm_phase phase);
-  super.start_of_simulation_phase(phase);
-endfunction : start_of_simulation_phase
-
-//--------------------------------------------------------------------------------------------
-// Task: run_phase
-// <Description_here>
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-task master_coverage::run_phase(uvm_phase phase);
-
-  phase.raise_objection(this, "master_coverage");
-
-  super.run_phase(phase);
-
-  // Work here
-  // ...
-
-  phase.drop_objection(this);
-
-endtask : run_phase
-*/
-
-//--------------------------------------------------------------------------------------------
 // Function: write
 // // TODO(mshariff): Add comments
+// sampiling is done
 //--------------------------------------------------------------------------------------------
 function void master_coverage::write(master_tx t);
 //  // TODO(mshariff): 
+  `uvm_info("MUNEEB_DEBUG", $sformatf("Config values = %0s", master_agent_cfg_h.sprint()), UVM_HIGH);
    master_covergroup.sample(master_agent_cfg_h,t);     
 //   `uvm_info(get_type_name(),$sformatf("master_cg=%0d",master_cg),UVM_LOW);
 //

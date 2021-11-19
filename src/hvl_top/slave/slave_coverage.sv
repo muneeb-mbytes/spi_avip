@@ -24,33 +24,38 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
   option.per_instance = 1;
 
     // Mode of the operation
-    OPERATION_MODE : coverpoint operation_modes_e'(cfg.spi_mode) {
+    OPERATION_MODE_CP : coverpoint operation_modes_e'(cfg.spi_mode) {
       option.comment = "Operation mode SPI. CPOL and CPHA";
-      // TODO(mshariff): 
-      // bins
-      // bins cpol0_cpha0 = {0};
-      // bins cpol0_cpha1 = {1};
-      // bins cpol1_cpha0 = {2};
-      // bins cpol1_cpha1 = {3};
-      bins cpol_cphase[] = {[0:3]};
+      
+      bins MODE[] = {[0:3]};
     }
  
     
-    SHIFT_DIRECTION : coverpoint shift_direction_e'(cfg.spi_mode) {
+    SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.spi_mode) {
       option.comment = "Shift direction SPI. MSB and LSB";
-      bins lsb_first = {0};
-      bins msb_first = {1};    
+      bins LSB_FIRST = {0};
+      bins MSB_FIRST = {1};    
     }
 
-    //Creating bins for 8,16,32,64 and more bins
-//    DATA_WIDTH : coverpoint packet.data_width{
-//      option.comment = "Data of a particular width is transfered";
-//      bins dw_8_bits  []  = {[0:7]};
-//      bins dw_16_bits []  = {[8:15]};
-//      bins dw_32_bits []  = {[16:31]};
-//      bins dw_64_bits []  = {[32:63]};
-//      bins dw_128_bits [] = {[64:128]};
-//    }
+     MOSI_DATA_TRANSFER_CP : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
+      option.comment = "different data size of the packets transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
+    }  
+      MISO_DATA_TRANSFER_CP : coverpoint packet.master_in_slave_out.size()*CHAR_LENGTH {
+      option.comment = "different data size of the packets transfer";
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
+      bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
+    } 
+
 
 //    // TODO(mshariff): 
 //    // Have illegal bins 
@@ -63,29 +68,18 @@ class slave_coverage extends uvm_subscriber#(slave_tx);
 //    //option.comment = "  
 //    // Have interesting cross coverpoints between cfg and packet
 //    // cfg X packet : cross cfg X packet;
-//      
-//        
-//    master_out_slave_in : coverpoint packet.master_out_slave_in.size() {
-//      option.comment = "mosi data which is between 0 and 128 bits";
-//      bins mosi_size = {[0:7]};
-//    }
-//    master_in_slave_out : coverpoint packet.master_in_slave_out.size() {
-//      option.comment = "miso data which is between 0 and 128 bits";
-//      bins miso_size = {[0:7]};
-//    }
-//    
-//    // illegal bin : coverpoint 
 //    
 //    //--------------------------------------------------------------------------------------------
 //    // 
 //    //--------------------------------------------------------------------------------------------
-//    // CROSS OF THE CFG AND THE PACKET WITH MULTIPLE COVERPOINT.
 //   
-//    // Cross of the OPERATION_MODE with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
-//    //OPERATION_MODE X CS = cross OPERATION_MODE,CS;
-//    // OPERATION_MODE X DATA_WIDTH = cross OPERATION_MODE,DATA_WIDTH;
-//    // OPERATION_MODE X master_out_slave_in = cross OPERATION_MODE,master_out_slave_in;
-//    //OPERATION_MODE X master_in_slave_out = cross OPERATION_MODE,master_in_slave_out;
+     // Cross of the OPERATION_MODE with mosi and miso data 
+     OPERATION_MODE_X_MASTER_OUT_SLAVE_IN : cross OPERATION_MODE_CP,MOSI_DATA_TRANSFER_CP;
+     OPERATION_MODE_X_MASTER_IN_SLAVE_OUT : cross OPERATION_MODE_CP,MISO_DATA_TRANSFER_CP;
+
+     // Cross of the SHIFT_DIRECTION with mosi and miso data 
+     SHIFT_DIRECTION_X_MASTER_OUT_SLAVE_IN : cross SHIFT_DIRECTION_CP,MOSI_DATA_TRANSFER_CP;
+     SHIFT_DIRECTION_X_MASTER_IN_SLAVE_OUT : cross SHIFT_DIRECTION_CP,MISO_DATA_TRANSFER_CP;
 //
 //    // Cross of the SHIFT_DIRECTION with and the CS,DATA_WIDTH,master_out_slave_in,master_in_slave_out
 //        
