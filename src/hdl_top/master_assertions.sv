@@ -39,12 +39,30 @@ interface master_assertions ( input pclk,
   // Assertion for if_signals_are_stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic mosi_local, logic miso_local);
-    @(posedge pclk)  
-    //@(posedge pclk) disable iff(areset==0)
+    //@(posedge pclk)  
+    @(posedge pclk) disable iff(areset==0)
     //cs == '1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
     cs=='1  |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
     //cs == '1 |-> mosi0 ==1'b0;
   endproperty : if_signals_are_stable
+
+  // quick trick
+  // `define DUAL_SPI
+  `define SIMPLE_SPI
+
+  `ifdef SIMPLE_SPI
+    IF_SIGNALS_ARE_STABLE_SIMPLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
+  `endif
+ `ifdef DUAL_SPI
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
+  `endif
 
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
@@ -53,13 +71,14 @@ interface master_assertions ( input pclk,
   endsequence : master_mosi0_valid_seq_1
 
   sequence master_mosi0_valid_seq_2(logic mosi_local, logic miso_local);
-    @(posedge sclk) ~$isunknown(mosi_local) && ~$isunknown(miso_local);
+    !$isunknown(sclk) && !$isunknown(mosi_local) && !$isunknown(miso_local);
   endsequence : master_mosi0_valid_seq_2
 
   property master_mosi0_valid_p(logic mosi_local, logic miso_local);
-    //@(posedge sclk) disable iff(!areset)
+    @(posedge pclk) disable iff(!areset)
     //@(posedge pclk)
-    master_mosi0_valid_seq_1 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
+    // MSHA: master_mosi0_valid_seq_1 && master_mosi0_valid_seq_2(mosi_local, miso_local);
+    cs == 0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
   endproperty : master_mosi0_valid_p
   MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
  
@@ -96,56 +115,7 @@ interface master_assertions ( input pclk,
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
 
 */
-  //IF_SIGNALS_ARE_STABLE : assert property (if_signals_are_stable(mosi0,miso0));
-  /*initial begin
-    spi_type = 2'd0;
-  end
-  generate
-    if(spi_type == 2'd0) begin
-      $info("SINGLE SPI");
-      assert property (if_signals_are_stable(mosi0,miso0));
-    end
-  endgenerate*/
-    //end
-  /*else begin
- 
-  `ifdef spi_type==2'd0
-    IF_SIGNALS_ARE_STABLE_SINGLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
-  `endif
-/*  `ifdef(spi_type == 2'd1) begin
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
-  end
-  `endif
-  `ifdef(spi_type == 2'd2) begin
-  initial begin
-    spi_type = '0;
-  end
-  //generate
-  initial begin
-  if(spi_type =='0) //begin
-     assert property (if_signals_are_stable(mosi0,miso0));
- // end
 
-`endif
- // end*/
-  //end
- //end
- //endgenerate
- //
-  //`ifdef SIMPLE_SPI
-    IF_SIGNALS_ARE_STABLE_SIMPLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
-  //`endif
- `ifdef DUAL_SPI
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
-  `endif
-  `ifdef QUAD_SPI
-    IF_SIGNALS_ARE_STABLE_QUAD_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
-    IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
-    IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
-    IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
-  `endif
 endinterface : master_assertions
 
 `endif

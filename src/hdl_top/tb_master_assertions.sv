@@ -35,40 +35,63 @@ module tb_master_assertions;
   task sclk_gen_neg();
     forever #20 sclk = !sclk;
   endtask
-  /*always@(posedge pclk) begin
-    //if(cs == '1) begin
-      //sclk = sclk;
-    //end
-    //else begin
-      sclk =!sclk;
-    //end
-  end*/
   
   initial begin
-    //test1();
-    if_signals_are_stable_negative_1();
-    //if_signals_are_stable_negative_2();
-    //if_signals_are_stable_positive();
-    //master_cs_low_check_positive();
-    $display("AN_SVA", "INTIAL BLOCK");
+    //Include this to verify if signals are stable
+    //if_signals_are_stable();
+
+    //Include this to verify master cs low check assertion
+    master_cs_low_check();
   end
+
+  task if_signals_are_stable;
+    //if_signals_are_stable_negative_1();
+    //if_signals_are_stable_negative_2();
+    if_signals_are_stable_positive();
+  endtask
+
+  task master_cs_low_check;
+    master_cs_low_check_positive();
+    //master_cs_low_check_negative_1();
+  endtask
+
+  task areset_gen(sclk_local,cs_local,no_of_slaves);
+    areset = 0;
+
+    @(posedge pclk);
+    if(no_of_slaves == 0) begin
+      //cs = 'cs_local;
+      cs = cs_local;
+    end
+    else begin
+      cs[0] = cs_local;
+    end
+    sclk = sclk_local; //cpol
+
+    repeat(1) begin
+      @(posedge pclk); 
+    end
+    
+    areset = 1;
+
+  endtask
 
   task if_signals_are_stable_negative_1();
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
-    //$display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
-    //@(posedge pclk) begin
-    cs ='1;
-    //areset = 0;
-    //end
+    
+    //areset generation
+    areset_gen(1,1,1);
+
+    //sclk generation
     sclk_gen_neg();
+
+    //Randomising mosi and miso data
     @(posedge sclk);
     mosi_data = $urandom;
     miso_data = $urandom;
-    //$display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
-    //$display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
 
-    //$display("ASSERTION_DEBUG_CS","cs = %0b", cs);
+    //Driving mosi and miso data
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
       mosi0 = mosi_data[i];
@@ -77,23 +100,22 @@ module tb_master_assertions;
   endtask
 
   task if_signals_are_stable_negative_2();
+    
+    //Declaring mosi and miso data
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
-    $display("ASSERTION_DEBUG","IF_SIGNALS_ARE_STABLE");
+    
+    //areset_generation
+    areset_gen(1,1,1);
+
+    //sclk generation
     sclk_gen_neg();
-    areset = 1'b1;
-    //sclk = sclk;
+
+    //randomising miso and mosi data
     @(posedge sclk);
     mosi_data = $urandom;
     miso_data = $urandom;
-    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
-    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
 
-    $display("ASSERTION_DEBUG_CS","cs = %0b", cs);
-
-   //bit j =mosi_data[i];
-   //bit k =miso_data[i];
- 
     for(int i=0 ; i<8; i++) begin
       cs = $urandom;
       @(posedge sclk);
@@ -105,47 +127,80 @@ module tb_master_assertions;
   task if_signals_are_stable_positive();
     bit[7:0] mosi_data;
     bit[7:0] miso_data;
-    $display("ASSERTION_DEBUG","TEST1");
-    cs = '1;
+
+    //areset generation
+    areset_gen(1,1,1);
+
     // random mosi data
     mosi_data = $urandom;
     miso_data = $urandom;
-    $display("ASSERTION_DEBUG","mosi_data = 'h%0x", mosi_data);
-    $display("ASSERTION_DEBUG","miso_data = 'h%0x", miso_data);
-    //@(posedge pclk) sclk = sclk;
-    //sclk = sclk;
+    
+    //sclk generation
     sclk_gen_pos();
+
+    //Driving mosi and miso data
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
       mosi0 = mosi_data[i];
       miso0 = miso_data[i];
     end
 
-    cs[0]=1'b1;
-    $display("ASSERTION_DEBUG","TEST1_DONE");
-// MSHA:    repeat(5) begin
-// MSHA:  //  @(posedge sclk);
-// MSHA:    mosi0 = 1'b1;
-// MSHA:    //{mosi0, mosi1, mosi2, mosi3,
-// MSHA:        //miso0, miso1, miso2, miso3} = $urandom;
-// MSHA:      end  
-// MSHA:    $display("ASSERTION_DEBUG"," mosi0=%d",mosi0);
   endtask 
   
   task master_cs_low_check_positive();
+    
+    //Initialising mosi data
     bit [7:0]mosi_data;
-    cs[0] = 1'b0;
+    bit [7:0]miso_data;
+    
+    //areset generation
+    areset_gen(1,0,1);
+    
+    //sclk generation
     sclk_gen_neg();
-    mosi_data = 8'h23;
-    $display("mosi_data = %0d",mosi_data);
+
+    //Random mosi data
+    mosi_data = $urandom;
+    miso_data = $urandom;
+
+    //Driving mosi and miso data
     for(int i=0 ; i<8; i++) begin
       @(posedge sclk);
       mosi0 = mosi_data[i];
-      $display("mosi=%d",mosi0);
+      miso0 = miso_data[i];
     end
   endtask : master_cs_low_check_positive
+
+  task master_cs_low_check_negative_1();
+    
+    //Initialising mosi data
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    
+    //areset generation
+    areset_gen(1,0,1);
+    
+    //sclk generation
+    sclk_gen_neg();
+
+    //Random mosi data
+    mosi_data = $urandom;
+    miso_data = $urandom;
   
- /* master_assertions M_A (.pclk(pclk),
+    //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
+      //bit mosi_local,miso_local;
+
+      @(posedge sclk);
+      //mosi0 = 'miso_local; 
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+  endtask : master_cs_low_check_negative_1
+
+  
+  master_assertions M_A (.pclk(pclk),
                          .cs(cs),
                          .areset(areset),
                          .sclk(sclk),
@@ -156,7 +211,7 @@ module tb_master_assertions;
                          .miso0(miso0),
                          .miso1(miso1),
                          .miso2(miso2),
-                         .miso3(miso3)); */
+                         .miso3(miso3)); 
 endmodule
 
 `endif

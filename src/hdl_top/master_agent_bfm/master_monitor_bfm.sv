@@ -192,18 +192,18 @@ interface master_monitor_bfm(input pclk, input areset,
     
   endtask: sample_data
 
-   bind master_monitor_bfm master_assertions master_assertion_h (.pclk(pclk),
-                                                                .cs(cs),
-                                                                .areset(areset),
-                                                                .sclk(sclk),
-                                                                .mosi0(mosi0),
-                                                                .mosi1(mosi1),
-                                                                .mosi2(mosi2),
-                                                                .mosi3(mosi3),
-                                                                .miso0(miso0),
-                                                                .miso1(miso1),
-                                                                .miso2(miso2),
-                                                                .miso3(miso3));
+   // MSHA: bind master_monitor_bfm master_assertions master_assertion_h (.pclk(pclk),
+   // MSHA:                                                              .cs(cs),
+   // MSHA:                                                              .areset(areset),
+   // MSHA:                                                              .sclk(sclk),
+   // MSHA:                                                              .mosi0(mosi0),
+   // MSHA:                                                              .mosi1(mosi1),
+   // MSHA:                                                              .mosi2(mosi2),
+   // MSHA:                                                              .mosi3(mosi3),
+   // MSHA:                                                              .miso0(miso0),
+   // MSHA:                                                              .miso1(miso1),
+   // MSHA:                                                              .miso2(miso2),
+   // MSHA:                                                              .miso3(miso3));
 
 endinterface : master_monitor_bfm
 
