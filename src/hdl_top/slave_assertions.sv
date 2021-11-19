@@ -36,10 +36,10 @@ interface slave_assertions(input pclk,
 
   // Assertion for if signals are stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
-  property if_signals_are_stable(logic miso0_local, logic mosi_local);
+  property if_signals_are_stable(logic miso_local, logic mosi_local);
     @(posedge pclk)
     //@(posedge pclk) disable iff(!areset)
-    cs == '1 |-> $stable(sclk) && $stable(mosi0_local) && $stable(miso0_local);
+    cs == '1 |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
   endproperty : if_signals_are_stable
  
   
