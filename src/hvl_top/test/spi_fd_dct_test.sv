@@ -26,8 +26,8 @@ class spi_fd_dct_test extends base_test;
   //-------------------------------------------------------
   extern function new(string name = "spi_fd_dct_test", uvm_component parent);
   extern function void build_phase(uvm_phase phase);
-  extern task run_phase(uvm_phase phase);
-
+  extern task run_phase(uvm_phase phase); 
+  extern virtual function void setup_master_agent_cfg();
 endclass : spi_fd_dct_test
 
 //--------------------------------------------------------------------------------------------
@@ -40,6 +40,16 @@ endclass : spi_fd_dct_test
 function spi_fd_dct_test::new(string name = "spi_fd_dct_test",uvm_component parent);
   super.new(name, parent);
 endfunction : new
+//--------------------------------------------------------------------------------------------
+//Function: setup_master_agent_cfg
+//Setup the master agent configuration with the required values
+//and store the handle into the config_db
+//--------------------------------------------------------------------------------------------
+function void spi_fd_dct_test::setup_master_agent_cfg();
+  super.setup_master_agent_cfg();
+  env_cfg_h.master_agent_cfg_h.wdelay= 4;
+endfunction : setup_master_agent_cfg
+
 
 //--------------------------------------------------------------------------------------------
 // Function:build_phase

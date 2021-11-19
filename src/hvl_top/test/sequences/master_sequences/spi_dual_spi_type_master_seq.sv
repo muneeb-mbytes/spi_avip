@@ -37,7 +37,8 @@ endfunction:new
 task spi_dual_spi_type_master_seq::body(); 
   req=master_tx::type_id::create("req");
   start_item(req);
-  if(!req.randomize() with {req.master_out_slave_in.size() == 1;
+  if(!req.randomize() with {req.mosi0.size() == CHAR_LENGTH/2;
+                            req.mosi1.size() == CHAR_LENGTH/2;
                             // selecting only one slave  
                             $countones(req.cs) == NO_OF_SLAVES - 1;
                             // selecting slave 0

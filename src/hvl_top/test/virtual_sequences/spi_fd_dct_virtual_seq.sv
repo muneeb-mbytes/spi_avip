@@ -78,7 +78,7 @@ task spi_fd_dct_virtual_seq::body();
     // MSHA: end
 
     //starting master sequencer
-    repeat(5)begin: MASTER_SEQ_START
+    repeat(1)begin: MASTER_SEQ_START
       spi_fd_dct_master_seq_h.start(p_sequencer.master_seqr_h);
     end
 

@@ -36,7 +36,8 @@ endfunction:new
 task spi_dual_spi_type_slave_seq::body(); 
   req=slave_tx::type_id::create("req");
   start_item(req);
-  if(!req.randomize () with {req.master_in_slave_out.size()==1;}) begin
+  if(!req.randomize () with {req.miso0.size()==CHAR_LENGTH/2;
+                             req.miso1.size()==CHAR_LENGTH/2;}) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
   req.print();
