@@ -63,7 +63,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
       bins W_DELAY_MAX = {[4:MAXIMUM_BITS]}; 
     } 
      // direction = shift_direction_e'(cfg.spi_mode); 
-    SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.spi_mode) {
+    SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.shift_dir) {
       option.comment = "Shift direction SPI. MSB and LSB";
       bins LSB_FIRST = {0};
       bins MSB_FIRST = {1};
