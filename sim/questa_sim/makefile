@@ -109,7 +109,7 @@ simulate:
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
-	+define=$(spi_type) \
+	+define+$(spi_type) \
 	-l $(test)/$(test).log \
 	-c -do "log -r /*; add wave -r /*; run -all;" \
 	-wlf $(test)/waveform.wlf
