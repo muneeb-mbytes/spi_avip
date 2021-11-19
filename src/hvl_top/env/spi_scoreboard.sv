@@ -116,10 +116,14 @@ task spi_scoreboard::run_phase(uvm_phase phase);
   
  
   // Data comparision for MOSI 
-  foreach(master_tx_h.master_out_slave_in[i]) begin
-    if (master_tx_h.master_out_slave_in.size() == slave_tx_h.master_out_slave_in.size())begin 
-     `uvm_info (get_type_name(), $sformatf ("Size of MOSI data from Master and Slave is equal"),UVM_HIGH);
+  if (master_tx_h.master_out_slave_in.size() == slave_tx_h.master_out_slave_in.size())begin 
+   `uvm_info (get_type_name(), $sformatf ("Size of MOSI data from Master and Slave is equal"),UVM_HIGH);
+  end
+  else begin
+   `uvm_error (get_type_name(),$sformatf("Size of MOSI data from Master and Slave is not equal"));
+  end
 
+  foreach(master_tx_h.master_out_slave_in[i]) begin
      if(master_tx_h.master_out_slave_in[i] != slave_tx_h.master_out_slave_in[i]) begin
        `uvm_error("ERROR_SC_MOSI_DATA_MISMATCH", 
                  $sformatf("Master MOSI[%0d] = 'h%0x and Slave MOSI[%0d] = 'h%0x", 
@@ -136,20 +140,17 @@ task spi_scoreboard::run_phase(uvm_phase phase);
        byte_data_cmp_verified_mosi_count++;
      end
     end   
-    else begin
-     `uvm_error (get_type_name(),$sformatf("Size of MOSI data from Master and Slave is not equal"));
-    end
-
-  end
-
 
   // TODO(mshariff): Do a similar work for MISO
 
-  foreach(slave_tx_h.master_in_slave_out[i]) begin
-    
    if (slave_tx_h.master_in_slave_out.size() == master_tx_h.master_in_slave_out.size()) begin
       `uvm_info (get_type_name(), $sformatf ("Size of MISO data from Master and Slave is equal"),UVM_HIGH);
-      
+    end
+   else begin
+      `uvm_error (get_type_name(),$sformatf("Size of MISO data in Master and Slave is not equal"));
+   end
+
+  foreach(slave_tx_h.master_in_slave_out[i]) begin
       if(slave_tx_h.master_in_slave_out[i] != master_tx_h.master_in_slave_out[i]) begin
         `uvm_error("ERROR_SC_MISO_DATA_MISMATCH", 
                   $sformatf("Slave MISO[%0d] = 'h%0x and Master MISO[%0d] = 'h%0x", 
@@ -165,12 +166,6 @@ task spi_scoreboard::run_phase(uvm_phase phase);
         byte_data_cmp_verified_miso_count++;
       end
     end
-
-   else begin
-      `uvm_error (get_type_name(),$sformatf("Size of MISO data in Master and Slave is not equal"));
-   end
-   end
-
 
 // Done this part in report phase
 // MSHA:   // TODO(mshariff): After comparisions, keep a track of the sno of comparisions done
@@ -282,15 +277,15 @@ function void spi_scoreboard::report_phase(uvm_phase phase);
 //                 byte_data_cmp_verified_miso_count+byte_data_cmp_failed_miso_count),UVM_HIGH);
   
   //Number of mosi comparisios passed
-  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise miso and mosi comparisions passed:%0d",
+  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise mosi comparisions passed:%0d",
                 byte_data_cmp_verified_mosi_count),UVM_HIGH);
 
   //Number of miso comparisios passed
-  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise miso and mosi comparisions passed:%0d",
+  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise miso comparisions passed:%0d",
                 byte_data_cmp_verified_miso_count),UVM_HIGH);
   
   //Number of mosi compariosn failed
-  `uvm_info (get_type_name(),$sformatf("No. of byte wise miso comparision failed:%0d",
+  `uvm_info (get_type_name(),$sformatf("No. of byte wise mosi comparision failed:%0d",
                 byte_data_cmp_failed_mosi_count),UVM_HIGH);
 
   //Number of miso compariosn failed
@@ -300,4 +295,3 @@ function void spi_scoreboard::report_phase(uvm_phase phase);
 endfunction : report_phase
 
 `endif
-
