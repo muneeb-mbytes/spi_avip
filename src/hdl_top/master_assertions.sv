@@ -121,8 +121,16 @@ interface master_assertions ( input pclk,
     successful_data_transfers_s1;
   endproperty:successful_data_transfers
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
-
 */
+
+  //Assertion for mode_of_cfg_cpol_0_cpha_1
+  //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
+  property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
+    @(negedge sclk) disable iff(!areset)
+    !$isunknown(mosi) && !$isunknown(miso);
+  endproperty: mode_of_cfg_cpol_0_cpha_1
+  CPOL_0_CPHA_1: assert property(mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+
 
 endinterface : master_assertions
 
