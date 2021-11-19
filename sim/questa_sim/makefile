@@ -143,23 +143,22 @@ clean_simulate:
 clean_compile:
 	rm -rf work/ *_compile.log transcript waveform.wlf
 
-clean:
-	make clean_compile
-	make clean_simulate
+#clean:
+#	make clean_compile
+#	make clean_simulate
 
 ##
 ## For Regression and coverage merge
 ##
-##clean:
-##	rm -rf modelsim.* transcript* *log* work vsim.wlf fcover* covhtml* mem_cov*
+clean:
+	rm -rf modelsim.* transcript* *log* work vsim.wlf fcover* covhtml* mem_cov*
 ##	clear
-##report:
-##	vcover merge mem_cover mem_cov1 mem_cov2 mem_cov3 mem_cov4 mem_cov5 mem_cov6 mem_cov7 mem_cov8
-##	vcover report -html mem_cover
+report:
+	vcover merge mem_cover mem_cov1 mem_cov2 mem_cov3 mem_cov4 mem_cov5 mem_cov6 mem_cov7 mem_cov8
+	vcover report -html mem_cover
 ##
 ##regress: clean run_test1_single run_test2_wrap run_test3_single run_test4_wrap run_test5_single run_test6_single run_test7_wrap run_test8_wrap report html
 ##
-
 
 compile_war_err:
 	echo "";
