@@ -35,7 +35,7 @@ interface master_assertions ( input pclk,
     `uvm_info("MASTER_ASSERTIONS","MASTER ASSERTIONS",UVM_LOW);
     //`uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
   end
-/*  
+  
   // Assertion for if_signals_are_stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic mosi_local, logic miso_local);
@@ -45,7 +45,7 @@ interface master_assertions ( input pclk,
     cs=='1  |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
     //cs == '1 |-> mosi0 ==1'b0;
   endproperty : if_signals_are_stable
-*/
+
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
   sequence master_mosi0_valid_seq_1;
@@ -133,9 +133,9 @@ interface master_assertions ( input pclk,
  //end
  //endgenerate
  //
-  `ifdef SIMPLE_SPI
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
-  `endif
+  //`ifdef SIMPLE_SPI
+    IF_SIGNALS_ARE_STABLE_SIMPLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
+  //`endif
  `ifdef DUAL_SPI
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
