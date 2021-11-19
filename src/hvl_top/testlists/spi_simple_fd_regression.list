@@ -1,0 +1,5 @@
+# Regression list for Simple SPI - Full duplex 
+
+# Directed testcases
+spi_simple_fd_16b_test
+spi_simple_fd_msb_lsb_test
