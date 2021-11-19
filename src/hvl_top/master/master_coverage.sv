@@ -78,11 +78,11 @@ class master_coverage extends uvm_subscriber#(master_tx);
 //    
     MOSI_DATA_TRANSFER : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
       option.comment = "Data of particular width is transfered";
-      bins TRANSFER_8BIT = 8;
-      bins TRANSFER_16BIT = 16;
-      bins TRANSFER_24BIT = 24;
-      bins TRANSFER_32BIT = 32;
-      bins TRANSFER_64BIT = 64;
+      bins TRANSFER_8BIT = {8};
+      bins TRANSFER_16BIT = {16};
+      bins TRANSFER_24BIT = {24};
+      bins TRANSFER_32BIT = {32};
+      bins TRANSFER_64BIT = {64};
       bins TRANSFER_MANY_BITS = {[72:1024]};
     } 
 
