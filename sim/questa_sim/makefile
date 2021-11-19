@@ -68,6 +68,7 @@ all:
 # For Assertions use +acc options
 compile:
 	make clean_compile;
+	make clean_simulate;
 	vlib work; 
 	vlog -sv \
 	+acc \
@@ -99,7 +100,6 @@ endif
 #-sv_seed random 
 
 simulate:
-	make clean_simulate
 	mkdir $(test)
 
 	# Use -novopt for no optimization - Makes the simulation slower
