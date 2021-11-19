@@ -1,15 +1,15 @@
-`ifndef SPI_SIMPLE_FD_MSB_LSB_TEST_INCLUDED_
-`define SPI_SIMPLE_FD_MSB_LSB_TEST_INCLUDED_
+`ifndef SPI_SIMPLE_FD_MSB_TEST_INCLUDED_
+`define SPI_SIMPLE_FD_MSB_TEST_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: spi_simple_fd_msb_lsb_test
+// Class: spi_simple_fd_msb_test
 // Description:
-// Extended the spi_simple_fd_msb_lsb_test class from spi_simple_fd_8b_test class
+// Extended the spi_simple_fd_msb_test class from spi_simple_fd_8b_test class
 //--------------------------------------------------------------------------------------------
-class spi_simple_fd_msb_lsb_test extends spi_simple_fd_8b_test;
+class spi_simple_fd_msb_test extends spi_simple_fd_8b_test;
 
-  //Registering the spi_simple_fd_msb_lsb_test in the factory
-  `uvm_component_utils(spi_simple_fd_msb_lsb_test)
+  //Registering the spi_simple_fd_msb_test in the factory
+  `uvm_component_utils(spi_simple_fd_msb_test)
   //env_config env_cfg_h;
   // master_agent_config master_agent_cfg_h;
   //slave_agent_config slave_agent_cfg_h;
@@ -17,32 +17,32 @@ class spi_simple_fd_msb_lsb_test extends spi_simple_fd_8b_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  // MSHA:m_spi_fd_msb_lsb_seq m_spi_fd_msb_lsb_h;
-  // MSHA:s_spi_fd_msb_lsb_seq s_spi_fd_msb_lsb_h;
+  // MSHA:m_spi_fd_msb_seq m_spi_fd_msb_h;
+  // MSHA:s_spi_fd_msb_seq s_spi_fd_msb_h;
 
-  //spi_fd_msb_lsb_virtual_seq spi_fd_msb_lsb_virtual_seq_h;
+  //spi_fd_msb_virtual_seq spi_fd_msb_virtual_seq_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "spi_simple_fd_msb_lsb_test", uvm_component parent);
+  extern function new(string name = "spi_simple_fd_msb_test", uvm_component parent);
   extern virtual function void setup_master_agent_cfg();
   extern virtual function void setup_slave_agents_cfg();
 
-endclass : spi_simple_fd_msb_lsb_test
+endclass : spi_simple_fd_msb_test
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
 // Initializes class object
 // Parameters:
-// name - spi_simple_fd_msb_lsb_test
+// name - spi_simple_fd_msb_test
 // parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function spi_simple_fd_msb_lsb_test::new(string name = "spi_simple_fd_msb_lsb_test",uvm_component parent);
+function spi_simple_fd_msb_test::new(string name = "spi_simple_fd_msb_test",uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
-//function void spi_simple_fd_msb_lsb_test::build_phase(uvm_phase phase);
+//function void spi_simple_fd_msb_test::build_phase(uvm_phase phase);
 //  super.build_phase(phase);
 //  env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
 //  setup_master_agent_cfg_msb();
@@ -61,7 +61,7 @@ endfunction : new
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void spi_simple_fd_msb_lsb_test::setup_master_agent_cfg();
+function void spi_simple_fd_msb_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.shift_dir = shift_direction_e'(MSB_FIRST);
  // env_cfg_h.master_agent_cfg_h.print();
@@ -73,7 +73,7 @@ endfunction : setup_master_agent_cfg
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
 
-function void spi_simple_fd_msb_lsb_test::setup_slave_agents_cfg();
+function void spi_simple_fd_msb_test::setup_slave_agents_cfg();
  super.setup_slave_agents_cfg();
   foreach(env_cfg_h.slave_agent_cfg_h[i])begin
     env_cfg_h.slave_agent_cfg_h[i].shift_dir = shift_direction_e'(MSB_FIRST);

@@ -1,24 +1,24 @@
-`ifndef SPI_T2C_DELAY_MASTER_SEQ_INCLUDED_
-`define SPI_T2C_DELAY_MASTER_SEQ_INCLUDED_
+`ifndef SPI_FD_T2C_DELAY_MASTER_SEQ_INCLUDED_
+`define SPI_FD_T2C_DELAY_MASTER_SEQ_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // class: extended class from base class
 //--------------------------------------------------------------------------------------------
-class spi_t2c_delay_master_seq extends master_base_seq;
+class spi_fd_t2c_delay_master_seq extends master_base_seq;
 
   //register with factory so can use create uvm_method 
   //and override in future if necessary 
 
-   `uvm_object_utils(spi_t2c_delay_master_seq)
+   `uvm_object_utils(spi_fd_t2c_delay_master_seq)
 
   //---------------------------------------------
   // Externally defined tasks and functions
   //---------------------------------------------
 
-   extern function new (string name="spi_t2c_delay_master_seq");
+   extern function new (string name="spi_fd_t2c_delay_master_seq");
 
    extern virtual task body();
-endclass:spi_t2c_delay_master_seq
+endclass:spi_fd_t2c_delay_master_seq
 
 //-----------------------------------------------------------------------------
 // Constructor: new
@@ -27,7 +27,7 @@ endclass:spi_t2c_delay_master_seq
 // Parameters:
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
-function spi_t2c_delay_master_seq::new(string name="spi_t2c_delay_master_seq");
+function spi_fd_t2c_delay_master_seq::new(string name="spi_fd_t2c_delay_master_seq");
   super.new(name);
 endfunction:new
 
@@ -35,7 +35,7 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task spi_t2c_delay_master_seq::body(); 
+task spi_fd_t2c_delay_master_seq::body(); 
   req=master_tx::type_id::create("req");
   start_item(req);
   if(!req.randomize() with {req.master_out_slave_in.size() == 1;

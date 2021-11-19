@@ -39,7 +39,7 @@ task spi_fd_maximum_bits_slave_seq::body();
   if(!req.randomize () with {req.master_in_slave_out.size() < MAXIMUM_BITS/CHAR_LENGTH;}) begin 
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
-  req.print();
+  //req.print();
   finish_item(req);
 
 endtask:body

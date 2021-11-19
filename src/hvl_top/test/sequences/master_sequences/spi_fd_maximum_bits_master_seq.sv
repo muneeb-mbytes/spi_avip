@@ -47,7 +47,7 @@ task spi_fd_maximum_bits_master_seq::body();
                           }) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
-  req.print();
+  //req.print();
   finish_item(req);
 
 endtask:body

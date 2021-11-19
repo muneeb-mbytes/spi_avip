@@ -1,33 +1,31 @@
-`ifndef SPI_BAUDRATE_MASTER_SEQ_INCLUDED_
-`define SPI_BAUDRATE_MASTER_SEQ_INCLUDED_
+`ifndef SPI_FD_MSB_SLAVE_SEQ_INCLUDED_
+`define SPI_FD_MSB_SLAVE_SEQ_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // class: extended class from base class
 //--------------------------------------------------------------------------------------------
-class spi_baudrate_master_seq extends master_base_seq;
+class spi_fd_msb_slave_seq extends slave_base_seq;
 
   //register with factory so can use create uvm_method 
   //and override in future if necessary 
 
-   `uvm_object_utils(spi_baudrate_master_seq)
-
-  //---------------------------------------------
-  // Externally defined tasks and functions
-  //---------------------------------------------
-
-   extern function new (string name="spi_baudrate_master_seq");
-
+   `uvm_object_utils(spi_fd_msb_slave_seq)
+   //---------------------------------------------
+   // Externally defined tasks and functions
+   //---------------------------------------------
+   extern function new (string name="spi_fd_msb_slave_seq");
    extern virtual task body();
-endclass:spi_baudrate_master_seq
+
+endclass:spi_fd_msb_slave_seq
 
 //-----------------------------------------------------------------------------
 // Constructor: new
-// Initializes the master_sequence class object
+// Initializes the slave_sequence class object
 //
 // Parameters:
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
-function spi_baudrate_master_seq::new(string name="spi_baudrate_master_seq");
+function spi_fd_msb_slave_seq::new(string name="spi_fd_msb_slave_seq");
   super.new(name);
 endfunction:new
 
@@ -35,20 +33,15 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task spi_baudrate_master_seq::body(); 
-  req=master_tx::type_id::create("req");
+task spi_fd_msb_slave_seq::body(); 
+  req=slave_tx::type_id::create("req");
   start_item(req);
-  if(!req.randomize() with {req.master_out_slave_in.size() == 1;
-                            // Selecting only one slave  
-                            $countones(req.cs) == NO_OF_SLAVES - 1;
-                            // Selecting slave 0
-                            req.cs[0] == 0;
-                           }) begin
+  if(!req.randomize () with {req.master_in_slave_out.size()==1;}) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
-    req.print();
   end
-  
+  req.print();
   finish_item(req);
+
 endtask:body
 
 `endif
