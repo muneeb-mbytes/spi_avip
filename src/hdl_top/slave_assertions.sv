@@ -32,6 +32,7 @@ interface slave_assertions(input pclk,
   import uvm_pkg::*;
   `include "uvm_macros.svh";
 
+  bit cpol,cpha;
   initial begin
     `uvm_info("slave_ASSERTIONS","slave ASSERTIONS",UVM_LOW);
   end  

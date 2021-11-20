@@ -45,6 +45,27 @@ module tb_slave_assertions;
     // @(posedge pclk) sclk = ~sclk;
   //end
   
+  task areset_gen(sclk_local,cs_local,no_of_slaves);
+    areset = 0;
+
+    @(posedge pclk);
+    if(no_of_slaves == 0) begin
+      //cs = 'cs_local;
+      cs = '1;
+    end
+    else begin
+      cs[0] = cs_local;
+    end
+    sclk = sclk_local; //cpol
+
+    repeat(1) begin
+      @(posedge pclk); 
+    end
+    
+    areset = 1;
+    $display("ARESET_GEN");
+  endtask 
+
   // Calling tasks 
   initial begin
     $display("TB_SLAVE_ASSERTIONS");
