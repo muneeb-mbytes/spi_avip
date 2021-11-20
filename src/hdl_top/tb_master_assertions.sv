@@ -198,7 +198,7 @@ module tb_master_assertions;
       miso0 = miso_data[i];
     end
   endtask : master_cs_low_check_negative_1
-  
+  /*
     task cpol_idle_state_low_positive();
     cpol=1'b0;
     sclk = 0;
@@ -207,7 +207,7 @@ module tb_master_assertions;
       sclk = !sclk;
     end
   endtask : cpol_idle_state_low_positive
-*/
+
   task cpol_idle_state_low_negative();
     cpol=1'b0;
     sclk = 1;
@@ -216,7 +216,7 @@ module tb_master_assertions;
       sclk = !sclk;
     end
 
-
+*/
   
   master_assertions M_A (.pclk(pclk),
                          .cs(cs),
