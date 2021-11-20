@@ -43,6 +43,7 @@
  `include "spi_fd_no_of_slaves_master_seq.sv"
  `include "spi_dual_spi_type_master_seq.sv"
  `include "spi_quad_spi_type_master_seq.sv"
+ `include "spi_fd_negative_scenarios_master_seq.sv"
 endpackage :spi_master_seq_pkg
 
 `endif

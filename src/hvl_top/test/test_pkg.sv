@@ -52,6 +52,7 @@ package test_pkg;
  `include "spi_simple_fd_no_of_slaves_test.sv"
  `include "spi_dual_spi_type_test.sv"
  `include "spi_quad_spi_type_test.sv"
+ `include "spi_simple_fd_negative_scenarios_test.sv"
 endpackage : test_pkg
 
 `endif

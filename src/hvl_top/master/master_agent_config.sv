@@ -20,30 +20,30 @@ class master_agent_config extends uvm_object;
 
   // Variable: spi_mode 
   // Used for setting the opeartion mode 
-  operation_modes_e spi_mode;
+  rand operation_modes_e spi_mode;
 
   // Variable: shift_dir
   // Shifts the data, LSB first or MSB first
-  shift_direction_e shift_dir;
+  rand shift_direction_e shift_dir;
 
   // Variable: c2tdelay
   // Delay between CS assertion to clock generation
   // Used for setting the setup time 
   // Default value is 1
-  int c2tdelay = 1;
+  rand int c2tdelay = 1;
 
   // Variable: t2cdelay
   // Delay between end of clock to CS de-assertion
   // Used for setting the hold time 
   // Default value is 1
-  int t2cdelay = 1;
+  rand int t2cdelay = 1;
 
   // Variable: wdelay
   // Delay between the transfers 
   // Used for setting the time required between 2 transfers 
   // in terms of SCLK 
   // Default value is 1
-  int wdelay = 1;
+  rand int wdelay = 1;
   
   // Variable: primary_prescalar
   // Used for setting the primary prescalar value for baudrate_divisor

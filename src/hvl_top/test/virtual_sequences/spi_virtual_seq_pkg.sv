@@ -46,6 +46,7 @@ package spi_virtual_seq_pkg;
   `include "spi_fd_no_of_slaves_virtual_seq.sv"
   `include "spi_dual_spi_type_virtual_seq.sv"
   `include "spi_quad_spi_type_virtual_seq.sv"
+  `include "spi_fd_negative_scenarios_virtual_seq.sv"
 endpackage : spi_virtual_seq_pkg
 
 `endif
