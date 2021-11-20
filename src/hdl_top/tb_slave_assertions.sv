@@ -170,7 +170,52 @@ module tb_slave_assertions;
     end
   endtask
  
+task cpol_0_cpha_0_positive;
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    areset_gen(1,0,1);
+    sclk_gen_neg();
+        //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
+      //bit mosi_local,miso_local;
 
+      @(negedge sclk);
+      //mosi0 = 'miso_local; 
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
+
+  task cpol_0_cpha_0_negative_1;
+    bit [31:0]mosi_data;
+    bit [31:0]miso_data;
+    
+    $display("HEY-----NEG1");
+    areset_gen(1,0,1);
+    
+    $display($time,"POSCLK1");
+    $display("HEY-----NEG2");
+    //sclk_gen_neg();
+    
+    $display($time,"POSCLK2");
+    $display("HEY-----NEG3");
+    //@(posedge sclk);
+    mosi_data = $urandom;
+    miso_data = $urandom;
+    
+    //Driving mosi and miso data
+    for(int i=0 ; i<31; i++) begin
+      //bit mosi_local,miso_local;
+
+      @(posedge sclk);
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
   
   task cpol_0_cpha_1_positive;
     bit [7:0]mosi_data;

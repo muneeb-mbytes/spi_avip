@@ -108,11 +108,12 @@ interface master_assertions ( input pclk,
   endproperty : master_cpol_idle_state_check_p
   MASTER_CPOL_IDLE_STATE_CHECK: assert property(master_cpol_idle_state_check_p);*/
  
-
+/*
   //Assertion for mode_of_cfg_cpol_0_cpha_0
   //when cpol is 0 and cpha is 0 immediately mosi data and miso data should be valid at the same posedge of sclk 
   property mode_of_cfg_cpol_0_cpha_0(logic mosi_local,logic miso_local);
-    @(negedge sclk)
+    //@(negedge sclk) disable iff(areset)
+    @(negedge sclk) disable iff(!areset)
     cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_0
   `ifdef SIMPLE_SPI
@@ -128,7 +129,7 @@ interface master_assertions ( input pclk,
     CPOL_0_CPHA_0_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso2));
     CPOL_0_CPHA_0_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso3));
   `endif
-/*
+
   //Assertion for mode_of_cfg_cpol_0_cpha_1
   //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
@@ -149,7 +150,6 @@ interface master_assertions ( input pclk,
     CPOL_0_CPHA_1_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso3));
   `endif */
 
- /*
   //Assertion for mode_of_cfg_cpol_1_cpha_0
   //when cpol is 1 and cpha is 0 immediately mosi data and miso data should be valid at the samenegedge of sclk 
   property mode_of_cfg_cpol_1_cpha_0(logic mosi_local,logic miso_local);
@@ -169,7 +169,7 @@ interface master_assertions ( input pclk,
     CPOL_1_CPHA_0_QUAD_SPI_3: assert property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso2));
     CPOL_1_CPHA_0_QUAD_SPI_4: assert property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso3));
   `endif
-
+/*
   // Assertion for if_cs_is_stable_during_transfers
   // cs should be low and stable till data transfer is successful ($stable)
   sequence if_cs_is_stable_during_transfers_s1;
