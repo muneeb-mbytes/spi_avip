@@ -81,6 +81,14 @@ interface master_assertions ( input pclk,
     cs == 0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
   endproperty : master_mosi0_valid_p
   MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
+    
+    // Assertion for cpol in idle state
+  // When cpol is low, idle state should be logic low
+  property master_cpol_idle_state_low_p;
+    @(posedge pclk)
+    (cpol_h.cpol) == 1'b0 |-> sclk == 0;
+  endproperty : master_cpol_idle_state_low_p
+  MASTER_CPOL_IDLE_STATE_LOW: assert property(master_cpol_idle_state_low_p);
  
 /*
   // Assertion for if_cs_is_stable_during_transfers
