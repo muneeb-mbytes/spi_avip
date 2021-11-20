@@ -23,6 +23,10 @@
 #
 # make target -i 
 
+# // TODO(mshariff): 
+# Add .git rules to ignore log files, basically the sim folder except makefile and scripts
+
+
 .IGNORE:
 	compile
 	simulate
@@ -47,11 +51,17 @@ usage:
 	echo "To compile use:"
 	echo "make compile";
 	echo "";
-	echo "To simulate use:"
+	echo "To simulate individual test:"
 	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL>";
 	echo "";
 	echo "Example:":
 	echo "make simulate test=base_test uvm_verbosity=UVM_HIGH";
+	echo "";
+	echo "To run regression:"
+	echo "make regression testlist_name=<regression_testlist_name.list>";
+	echo "";
+	echo "Example:":
+	echo "make regression testlist_name=spi_simple_fd_regression.list";
 	echo "";
 	echo "-----------------------------------------------------------------";
 	echo "-----------------------------------------------------------------";
@@ -60,17 +70,16 @@ usage:
 all:
 	make clean; make compile; make simulate;
 
-# TODO(mshariff): 
-# Need some work to point to the 
-# dir:
-# 	mkdir -p logfiles_and_waveforms
-
 # For Assertions use +acc options
+#  +cover=becstf
 compile:
 	make clean_compile;
+	make clean_simulate;
 	vlib work; 
 	vlog -sv \
 	+acc \
+	+cover \
+	+fcover \
 	-l spi_compile.log \
 	-f ../spi_compile.f
 
@@ -91,11 +100,21 @@ ifndef uvm_verbosity
 override uvm_verbosity = UVM_MEDIUM
 endif
 
+## For randomized seed
+# TODO(mshariff): 
+#Add this line after -sva 
+#-sv_seed random 
+
+# Setting the default test folder to test name 
+ifndef test_folder
+override test_folder = $(test)
+endif
+
 simulate:
-	make clean_simulate
-	mkdir $(test)
+	mkdir $(test_folder)
 
 	# Use -novopt for no optimization - Makes the simulation slower
+	# vsim -pli finesim.so -coverage top
 	vsim -vopt \
 	work.hvl_top \
 	work.hdl_top \
@@ -103,11 +122,26 @@ simulate:
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
-	-l $(test)/$(test).log \
-	-c -do "log -r /*; add wave -r /*; run -all;" \
-	-wlf $(test)/waveform.wlf
+	-l $(test_folder)/$(test).log \
+	-sva \
+  -coverage \
+	-c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll $(test_folder)/$(test)_coverage.ucdb; run -all; exit" \
+	-wlf $(test_folder)/waveform.wlf
 
+	# For checking and reporting simulation errors
 	make simulate_war_err
+
+	## TODO(mshariff): 
+	## # For coverage report in text format 
+	## #vcover report -text $(test)/$(test)_cov
+	# -c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll $(test)/coverage.ucdb; coverage report -file $(teset)/coverage.txt -byfile -detail -noannotate -option -directive -cvg -details -verbose; run -all; exit" \
+	# vcover report -file  -byfile -detail -noannotate -option -cvg
+
+	# For coverage report in HTML format 
+	vcover report -html $(test_folder)/$(test)_coverage.ucdb -htmldir $(test_folder)/html_cov_report -details
+
+	# To open the html coverage report
+	# firefox test_folder/html_cov_report/index.html &
 
 	# To open the waveform use the below command 
 	# vsim -view waveform.wlf &
@@ -116,14 +150,45 @@ simulate:
 	# vsim -view waveform.wlf -do spi_waves.do &
 
 clean_simulate:
-	rm -rf *_test
+	rm -rf *_test*
 
 clean_compile:
 	rm -rf work/ *_compile.log transcript waveform.wlf
+	rm -rf merged_coverage.ucdb merged_cov_html_report
 
-clean:
-	make clean_compile
+#clean:
+#	make clean_compile
+#	make clean_simulate
+
+##
+## For Regression and coverage merge
+##
+regression:
+	# Run compilation
+	#make compile
 	make clean_simulate
+	# Run simualtion - regression 
+	python regression_handling.py $(testlist_name)
+	#	# Get the tests from regression list
+	#	grep "_test" ../../src/hvl_top/testlists/spi_simple_fd_regression.list | grep -v "\#" > reg_list
+	#	make simulate test=value #Get the name from regression list
+	#	Merge coverage
+	make merge_cov_report
+		
+# For merge to happen, the coverage names for each test must be different
+#
+merge_cov_report:
+	rm -rf merged_coverage.ucdb merged_cov_html_report
+	# Merging all the coverage
+	vcover merge merged_coverage.ucdb -64 */*.ucdb  
+	#vcover merge mem_cover mem_cov1 mem_cov2 mem_cov3 mem_cov4 mem_cov5 mem_cov6 mem_cov7 mem_cov8
+	vcover report -html merged_coverage.ucdb -htmldir ./merged_cov_html_report -details
+
+	echo "";
+	echo "-----------------------------------------------------------------";
+	echo "Coverage report: firefox merged_cov_html_report/index.html &"
+	echo "-----------------------------------------------------------------";
+	echo "";
 
 compile_war_err:
 	echo "";
@@ -146,20 +211,24 @@ simulate_war_err:
 	echo "-------------------- Simulation Report --------------------------";
 	echo "";
 	echo "Simulator Errors";
-	grep "Error" $(test)/$(test).log;
+	grep "Error" $(test_folder)/$(test).log;
 	echo "";
 	echo "UVM Fatal";
-	grep "UVM_FATAL" $(test)/$(test).log;
+	grep "UVM_FATAL" $(test_folder)/$(test).log;
 	echo "";
 	echo "UVM Errors";
-	grep "UVM_ERROR" $(test)/$(test).log;
+	grep "UVM_ERROR" $(test_folder)/$(test).log;
 	echo "";
 	echo "UVM Warnings";
-	grep "UVM_WARNING" $(test)/$(test).log;
+	grep "UVM_WARNING" $(test_folder)/$(test).log;
 	echo "";
 	echo "Testname: $(test)"
-	echo "Log file path: $(test)/$(test).log"
-	echo "Waveform: vsim -view $(test)/waveform.wlf &"
+	echo "";
+	echo "Log file path: $(test_folder)/$(test).log"
+	echo "";
+	echo "Waveform: vsim -view $(test_folder)/waveform.wlf &"
+	echo "";
+	echo "Coverage report: firefox $(test_folder)/html_cov_report/index.html &"
 	echo "";
 	echo "-----------------------------------------------------------------";
 	echo "-----------------------------------------------------------------";

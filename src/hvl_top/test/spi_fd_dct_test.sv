@@ -1,15 +1,15 @@
-`ifndef SPI_FD_8B_DCT_TEST_INCLUDED_
-`define SPI_FD_8B_DCT_TEST_INCLUDED_
+`ifndef SPI_FD_DCT_TEST_INCLUDED_
+`define SPI_FD_DCT_TEST_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // Class: spi_fd_8b_dct_test
 // Description:
 // Extended the spi_fd_8b_dct_test class from base_test class
 //--------------------------------------------------------------------------------------------
-class spi_fd_8b_dct_test extends base_test;
+class spi_fd_dct_test extends base_test;
 
-  //Registering the spi_fd_8b_dct_test in the factory
-  `uvm_component_utils(spi_fd_8b_dct_test)
+  //Registering the spi_fd_dct_test in the factory
+  `uvm_component_utils(spi_fd_dct_test)
 
   //-------------------------------------------------------
   // Declaring sequence handles  
@@ -24,11 +24,11 @@ class spi_fd_8b_dct_test extends base_test;
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  extern function new(string name = "spi_fd_8b_dct_test", uvm_component parent);
+  extern function new(string name = "spi_fd_dct_test", uvm_component parent);
   extern function void build_phase(uvm_phase phase);
   extern task run_phase(uvm_phase phase);
 
-endclass : spi_fd_8b_dct_test
+endclass : spi_fd_dct_test
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
@@ -37,14 +37,14 @@ endclass : spi_fd_8b_dct_test
 // name - spi_fd_8b_dct_test
 // parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function spi_fd_8b_dct_test::new(string name = "spi_fd_8b_dct_test",uvm_component parent);
+function spi_fd_dct_test::new(string name = "spi_fd_dct_test",uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function:build_phase
 //--------------------------------------------------------------------------------------------
-function void spi_fd_8b_dct_test::build_phase(uvm_phase phase);
+function void spi_fd_dct_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
 endfunction : build_phase
 
@@ -52,7 +52,7 @@ endfunction : build_phase
 // Task:run_phase
 // Responsible for starting the transactions
 //--------------------------------------------------------------------------------------------
-task spi_fd_8b_dct_test::run_phase(uvm_phase phase);
+task spi_fd_dct_test::run_phase(uvm_phase phase);
   
   spi_simple_fd_8b_virtual_seq_h = spi_fd_8b_virtual_seq::type_id::create("spi_simple_fd_8b_virtual_seq_h");
   spi_simple_fd_16b_virtual_seq_h = spi_fd_16b_virtual_seq::type_id::create("spi_simple_fd_16b_virtual_seq_h");

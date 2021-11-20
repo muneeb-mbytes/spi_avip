@@ -25,8 +25,12 @@
  `include "spi_fd_32b_slave_seq.sv"
  `include "spi_fd_64b_slave_seq.sv"
  `include "spi_fd_8b_ct_slave_seq.sv"
- `include "spi_fd_8b_dct_slave_seq.sv"
+ `include "spi_fd_dct_slave_seq.sv"
  `include "spi_fd_msb_lsb_slave_seq.sv"
+ `include "spi_fd_8b_configurations_cpol0_cpha0_slave_seq.sv"
+ `include "spi_fd_8b_configurations_cpol0_cpha1_slave_seq.sv"
+ `include "spi_fd_8b_configurations_cpol1_cpha0_slave_seq.sv"
+ `include "spi_fd_8b_configurations_cpol1_cpha1_slave_seq.sv"
  `include "spi_fd_cpol0_cpha0_slave_seq.sv"
  `include "spi_fd_cpol0_cpha1_slave_seq.sv"
  `include "spi_fd_cpol1_cpha0_slave_seq.sv"
@@ -34,6 +38,10 @@
  `include "spi_fd_maximum_bits_slave_seq.sv"
  `include "spi_c2t_delay_slave_seq.sv"
  `include "spi_t2c_delay_slave_seq.sv"
+ `include "spi_baudrate_slave_seq.sv"
+ `include "spi_fd_no_of_slaves_slave_seq.sv"
+ `include "spi_dual_spi_type_slave_seq.sv"
+ `include "spi_quad_spi_type_slave_seq.sv"
 endpackage :spi_slave_seq_pkg
 
 `endif

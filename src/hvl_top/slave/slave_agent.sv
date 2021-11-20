@@ -24,9 +24,9 @@ class slave_agent extends uvm_agent;
   // Handle for slave monitor proxy
   slave_monitor_proxy slave_mon_proxy_h;
 
-  // MSHA: // Variable: slave_coverage
-  // MSHA: // Decalring a handle for slave_coverage
-  // MSHA: slave_coverage slave_cov_h;
+  // Variable: slave_coverage
+  // Decalring a handle for slave_coverage
+  slave_coverage slave_cov_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -73,9 +73,11 @@ function void slave_agent::build_phase(uvm_phase phase);
 
    slave_mon_proxy_h = slave_monitor_proxy::type_id::create("slave_mon_proxy_h",this);
 
-  // MSHA: if(slave_agent_cfg_h.has_coverage) begin
-  // MSHA:   slave_cov_h = slave_coverage::type_id::create("slave_cov_h",this);
-  // MSHA: end
+   if(slave_agent_cfg_h.has_coverage) begin
+    slave_cov_h = slave_coverage::type_id::create("slave_cov_h",this);
+   end
+  
+  
 endfunction : build_phase
 
 //--------------------------------------------------------------------------------------------
@@ -85,21 +87,29 @@ endfunction : build_phase
 //  Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
+
 function void slave_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   
   if(slave_agent_cfg_h.is_active == UVM_ACTIVE) begin
     slave_drv_proxy_h.slave_agent_cfg_h = slave_agent_cfg_h;
     slave_seqr_h.slave_agent_cfg_h = slave_agent_cfg_h;
-    // MSHA: slave_cov_h.slave_agent_cfg_h = slave_agent_cfg_h;
+    slave_cov_h.slave_agent_cfg_h = slave_agent_cfg_h;
     
     // Connecting the ports
     slave_drv_proxy_h.seq_item_port.connect(slave_seqr_h.seq_item_export);
+  end
+  
     // TODO(mshariff): 
     // connect monitor port to coverage
-  end
+    
+    if(slave_agent_cfg_h.has_coverage)begin
+      slave_cov_h.slave_agent_cfg_h=slave_agent_cfg_h;
+      slave_mon_proxy_h.slave_analysis_port.connect(slave_cov_h.analysis_export);
+   end
 
   slave_mon_proxy_h.slave_agent_cfg_h = slave_agent_cfg_h;
+
 
 endfunction: connect_phase
 
