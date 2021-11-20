@@ -101,11 +101,12 @@ interface master_assertions ( input pclk,
     
   // Assertion for cpol in idle state
   // When cpol is low, idle state should be logic low
-  property master_cpol_idle_state_low_p;
+  property master_cpol_idle_state_check_p;
     @(posedge pclk)
-    (cpol_h.cpol) == 1'b0 |-> sclk == 0;
-  endproperty : master_cpol_idle_state_low_p
-  MASTER_CPOL_IDLE_STATE_LOW: assert property(master_cpol_idle_state_low_p);
+    //(cpol_h.cpol) == 1'b0 |-> sclk == 0;
+    cs==0 |-> sclk == cpol;
+  endproperty : master_cpol_idle_state_check_p
+  MASTER_CPOL_IDLE_STATE_CHECK: assert property(master_cpol_idle_state_check_p);
  
 
   //Assertion for mode_of_cfg_cpol_0_cpha_0
@@ -114,7 +115,6 @@ interface master_assertions ( input pclk,
     @(negedge sclk) disable iff(!areset)
     cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_0
-  CPOL_0_CPHA_0: assert property(mode_of_cfg_cpol_0_cpha_0(mosi0,miso0)); 
   `ifdef SIMPLE_SPI
     CPOL_0_CPHA_0_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
   `endif
@@ -132,10 +132,9 @@ interface master_assertions ( input pclk,
   //Assertion for mode_of_cfg_cpol_0_cpha_1
   //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
-    @(negedge sclk) disable iff(!areset)
-    !$isunknown(mosi_local) && !$isunknown(miso_local);
+    @(posedge sclk) disable iff(!areset)
+    cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_1
-  CPOL_0_CPHA_1: assert property(mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
   `ifdef SIMPLE_SPI
     CPOL_0_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
   `endif
@@ -182,15 +181,6 @@ interface master_assertions ( input pclk,
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
 
 
-  //Assertion for mode_of_cfg_cpol_0_cpha_1
-  //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
-  property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
-    @(negedge sclk) disable iff(!areset)
-    !$isunknown(mosi) && !$isunknown(miso);
-  endproperty: mode_of_cfg_cpol_0_cpha_1
-  CPOL_0_CPHA_1: assert property(mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
-
-*/
 endinterface : master_assertions
 
 `endif
