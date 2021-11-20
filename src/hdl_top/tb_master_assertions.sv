@@ -41,7 +41,10 @@ module tb_master_assertions;
     //if_signals_are_stable();
 
     //Include this to verify master cs low check assertion
-    master_cs_low_check();
+   //master_cs_low_check();
+
+    //Uncomment this when you want to verify cpol 0 and cpha 0
+    cpol_0_cpha_0();
   end
 
   task if_signals_are_stable;
@@ -55,13 +58,17 @@ module tb_master_assertions;
     //master_cs_low_check_negative_1();
   endtask
 
+  task cpol_0_cpha_0;
+    cpol_0_cpha_0_positive();
+  endtask
+
   task areset_gen(sclk_local,cs_local,no_of_slaves);
     areset = 0;
 
     @(posedge pclk);
     if(no_of_slaves == 0) begin
       //cs = 'cs_local;
-      cs = cs_local;
+      cs = '1;
     end
     else begin
       cs[0] = cs_local;
@@ -198,8 +205,8 @@ module tb_master_assertions;
       miso0 = miso_data[i];
     end
   endtask : master_cs_low_check_negative_1
-  /*
-    task cpol_idle_state_low_positive();
+  
+  task cpol_idle_state_low_positive();
     cpol=1'b0;
     sclk = 0;
     for(int i=0 ; i<8; i++) begin
@@ -215,8 +222,25 @@ module tb_master_assertions;
       @(posedge pclk);
       sclk = !sclk;
     end
+  endtask
 
-*/
+  task cpol_0_cpha_0_positive;
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    areset_gen(1,0,1);
+    sclk_gen_neg();
+        //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
+      //bit mosi_local,miso_local;
+
+      @(negedge sclk);
+      //mosi0 = 'miso_local; 
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
   
   master_assertions M_A (.pclk(pclk),
                          .cs(cs),
