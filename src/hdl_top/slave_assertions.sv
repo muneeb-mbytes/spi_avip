@@ -22,6 +22,9 @@ interface slave_assertions(input pclk,
                            input miso1,
                            input miso2,
                            input miso3);
+  
+  
+  bit cpol,cpha;
 
   //-------------------------------------------------------
   // Importing Uvm Package

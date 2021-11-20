@@ -54,6 +54,26 @@ module tb_slave_assertions;
     slave_miso0_valid_seq_positive;
   end
 
+  task areset_gen(sclk_local,cs_local,no_of_slaves);
+    areset = 0;
+
+    @(posedge pclk);
+    if(no_of_slaves == 0) begin
+      //cs = 'cs_local;
+      cs = '1;
+    end
+    else begin
+      cs[0] = cs_local;
+    end
+    sclk = sclk_local; //cpol
+
+    repeat(1) begin
+      @(posedge pclk); 
+    end
+    
+    areset = 1;
+
+  endtask
   
   task if_signals_are_stable_negative_1();
     bit[7:0] mosi_data;
