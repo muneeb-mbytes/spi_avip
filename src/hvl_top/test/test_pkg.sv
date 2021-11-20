@@ -27,6 +27,7 @@ package test_pkg;
 
  //including base_test for testing
  `include "base_test.sv"
+ `include "assertions_base_test.sv"
  `include "spi_simple_fd_8b_test.sv"
  `include "spi_simple_fd_16b_test.sv"
  `include "spi_simple_fd_32b_test.sv"

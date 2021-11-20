@@ -81,7 +81,7 @@ compile:
 	+cover \
 	+fcover \
 	-l spi_compile.log \
-	-f ../spi_compile.f
+	-f ../spi_compile.f 
 
 	# -s means silent mode
 	#  The command executed along with the output will be displayed on the terminal
@@ -98,6 +98,11 @@ endif
 # Setting the default uvm_verbosity to UVM_MEDIUM
 ifndef uvm_verbosity
 override uvm_verbosity = UVM_MEDIUM
+endif
+
+
+ifndef spi_type
+override  spi_type= SIMPLE_SPI
 endif
 
 ## For randomized seed
@@ -118,15 +123,19 @@ simulate:
 	vsim -vopt \
 	work.hvl_top \
 	work.hdl_top \
+	work.tb_master_assertions \
+	work.tb_slave_assertions \
 	-voptargs=+acc=npr \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
+	+define+$(spi_type) \
 	-l $(test_folder)/$(test).log \
 	-sva \
   -coverage \
 	-c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll $(test_folder)/$(test)_coverage.ucdb; run -all; exit" \
 	-wlf $(test_folder)/waveform.wlf
+
 
 	# For checking and reporting simulation errors
 	make simulate_war_err
