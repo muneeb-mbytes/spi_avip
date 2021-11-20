@@ -10,6 +10,7 @@ module tb_master_assertions;
   bit pclk;
   bit sclk;
   bit [NO_OF_SLAVES-1:0]cs;
+  bit cpol;
   bit areset;
   bit mosi0;
   //logic mosi0;
@@ -45,8 +46,17 @@ module tb_master_assertions;
     //Include this to verify master cs low check assertion
     //master_cs_low_check();
 
-    //Uncomment this when you want to verify cpol 0 and cpha 0
-    cpol_0_cpha_0();
+   //include this to verify cpol_idle_state_low
+   cpol_idle_state_low_positive();
+   cpol_idle_state_low_negative();
+
+   //include this to verify cpol_idle_state_high
+   cpol_idle_state_high_positive();
+   cpol_idle_state_high_negative();
+
+   //Uncomment this when you want to verify cpol 0 and cpha 0
+   cpol_0_cpha_0();
+  // cpol_1_cpha_0();
   end
 
   task if_signals_are_stable;
@@ -212,24 +222,64 @@ module tb_master_assertions;
   endtask : master_cs_low_check_negative_1
   
   task cpol_idle_state_low_positive();
-    //cpol=1'b0;
-    sclk = 0;
-    for(int i=0 ; i<8; i++) begin
-      @(posedge pclk);
-      sclk = !sclk;
-    end
+    cs='b1;
+    cpol=1'b0;
+    sclk=1'b0;
+   // for(int i=0 ; i<8; i++) begin
+    //  @(posedge pclk);
+     //  sclk = !sclk;
+    //end
   endtask : cpol_idle_state_low_positive
 
   task cpol_idle_state_low_negative();
+    cs = 'b0;
     //cpol=1'b0;
-    sclk = 1;
-    for(int i=0 ; i<8; i++) begin
-      @(posedge pclk);
-      sclk = !sclk;
-    end
+    sclk=1'b0;
+    //for(int i=0 ; i<8; i++) begin
+     // @(posedge pclk);
+     // sclk = !sclk;
+    //end
   endtask
 
+  task cpol_idle_state_high_positive();
+    cs='b1;
+    cpol=1'b0;
+    sclk=1'b0;
+   // for(int i=0 ; i<8; i++) begin
+    //  @(posedge pclk);
+     //  sclk = !sclk;
+    //end
+  endtask : cpol_idle_state_high_positive
+
+  task cpol_idle_state_high_negative();
+    cs = 'b0;
+    cpol=1'b0;
+    sclk=1'b0;
+    //for(int i=0 ; i<8; i++) begin
+     // @(posedge pclk);
+     // sclk = !sclk;
+    //end
+  endtask : cpol_idle_state_high_negative
+
   task cpol_0_cpha_0_positive;
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    areset_gen(1,0,1);
+    sclk_gen_neg();
+        //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
+      //bit mosi_local,miso_local;
+
+      @(negedge sclk);
+      //mosi0 = 'miso_local; 
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
+
+  task cpol_0_cpha_1_positive;
     bit [7:0]mosi_data;
     bit [7:0]miso_data;
     
@@ -243,15 +293,37 @@ module tb_master_assertions;
     
     //Driving mosi and miso data
     for(int i=0 ; i<8; i++) begin
+
+      @(negedge sclk);
+      //mosi0 = 'miso_local; 
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
+
+
+
+   task cpol_1_cpha_0_negative;
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    areset_gen(1,0,1);
+    sclk_gen_pos();
+    mosi_data=$urandom;
+    miso_data=$urandom;
+        //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
       //bit mosi_local,miso_local;
 
       @(posedge sclk);
+      //mosi0 = 'miso_local; 
 
       mosi0 = mosi_data[i];
       miso0 = miso_data[i];
     end
 
   endtask
+
   
   task cpol_0_cpha_0_negative_1;
     bit [31:0]mosi_data;
