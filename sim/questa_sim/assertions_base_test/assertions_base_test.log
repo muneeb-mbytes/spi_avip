@@ -1,5 +1,5 @@
 # vsim -vopt work.hvl_top work.hdl_top work.tb_master_assertions work.tb_slave_assertions -voptargs="+acc=npr" -assertdebug "+UVM_TESTNAME=assertions_base_test" "+UVM_VERBOSITY=UVM_MEDIUM" "+define+SIMPLE_SPI" -l assertions_base_test/assertions_base_test.log -sva -coverage -c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll assertions_base_test/assertions_base_test_coverage.ucdb; run -all; exit" -wlf assertions_base_test/waveform.wlf 
-# Start time: 21:26:56 on Nov 20,2021
+# Start time: 22:25:17 on Nov 20,2021
 # ** Note: (vsim-3812) Design is being optimized...
 # //  Questa Sim
 # //  Version 10.6c linux Jul 25 2017
@@ -313,8 +313,6 @@
 #    Time: 40 ns Started: 40 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 60 ns Started: 60 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 80 ns Started: 80 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # UVM_INFO ../../src/hvl_top/test/base_test.sv(181) @ 100: uvm_test_top [assertions_base_test] Done BASE_TEST
 # UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_monitor_bfm.sv(60) @ 100: reporter [SLAVE_MONITOR_BFM] IDLE condition has been detected
 # UVM_INFO ../../src/hdl_top/slave_agent_bfm/slave_driver_bfm.sv(64) @ 100: reporter [SLAVE_DRIVER_BFM] IDLE condition has been detected
@@ -325,103 +323,53 @@
 # ** Error: Assertion error.
 #    Time: 100 ns Started: 100 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 120 ns Started: 120 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 140 ns Started: 140 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 160 ns Started: 160 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 180 ns Started: 180 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 200 ns Started: 200 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 220 ns Started: 220 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 240 ns Started: 240 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 260 ns Started: 260 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 280 ns Started: 280 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 300 ns Started: 300 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 320 ns Started: 320 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 340 ns Started: 340 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 360 ns Started: 360 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 380 ns Started: 380 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 400 ns Started: 400 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 420 ns Started: 420 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 440 ns Started: 440 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 460 ns Started: 460 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 480 ns Started: 480 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 500 ns Started: 500 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 520 ns Started: 520 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 540 ns Started: 540 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 560 ns Started: 560 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 580 ns Started: 580 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 600 ns Started: 600 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 620 ns Started: 620 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 640 ns Started: 640 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 660 ns Started: 660 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 680 ns Started: 680 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 700 ns Started: 700 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 720 ns Started: 720 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 740 ns Started: 740 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 760 ns Started: 760 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 780 ns Started: 780 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 800 ns Started: 800 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 820 ns Started: 820 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 840 ns Started: 840 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 860 ns Started: 860 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 880 ns Started: 880 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 900 ns Started: 900 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 920 ns Started: 920 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 940 ns Started: 940 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 960 ns Started: 960 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
 #    Time: 980 ns Started: 980 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 1 us Started: 1 us  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 1020 ns Started: 1020 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # ** Error: Assertion error.
-#    Time: 1040 ns Started: 1040 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
 #    Time: 1060 ns Started: 1060 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
-# ** Error: Assertion error.
-#    Time: 1080 ns Started: 1080 ns  Scope: tb_master_assertions.M_A.MASTER_CPOL_IDLE_STATE_CHECK File: ../../src/hdl_top/master_assertions.sv Line: 109 Expr: sclk==cpol
 # UVM_INFO ../../src/hvl_top/test/assertions_base_test.sv(183) @ 1100: uvm_test_top [assertions_base_test] Done assertions_base_test
 # UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1268) @ 1100: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
 # UVM_ERROR ../../src/hvl_top/env/spi_scoreboard.sv(201) @ 1100: uvm_test_top.env_h.scoreboard_h [spi_scoreboard] comparisions of mosi not happened
@@ -459,5 +407,5 @@
 # ** Note: $finish    : /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
 #    Time: 1100 ns  Iteration: 54  Instance: /hvl_top
 # Saving coverage database on exit...
-# End time: 21:27:05 on Nov 20,2021, Elapsed time: 0:00:09
-# Errors: 53, Warnings: 0
+# End time: 22:25:25 on Nov 20,2021, Elapsed time: 0:00:08
+# Errors: 27, Warnings: 0

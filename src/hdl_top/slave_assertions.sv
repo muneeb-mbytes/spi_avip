@@ -61,7 +61,28 @@ interface slave_assertions(input pclk,
   SLAVE_MISO_MOSI_VALID_P: assert property (slave_miso_mosi_valid_p(mosi0,miso0));
     
   
-  /*
+  //Assertion for mode_of_cfg_cpol_0_cpha_1
+  //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
+  property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
+    @(posedge sclk) disable iff(!areset)
+    cpol==0 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
+  endproperty: mode_of_cfg_cpol_0_cpha_1
+  `ifdef SIMPLE_SPI
+    CPOL_0_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+  `endif
+ `ifdef DUAL_SPI
+    CPOL_0_CPHA_1_DUAL_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_DUAL_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+    CPOL_0_CPHA_1_QUAD_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_QUAD_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1)));
+    CPOL_0_CPHA_1_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso2));
+    CPOL_0_CPHA_1_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso3));
+  `endif
+  
+  
+  /* 
   //Assertion for Checking if cs is stable during transfers
   //cs should be low and stable till data transfer is successful ($stable)
   property slave_cs_stable;

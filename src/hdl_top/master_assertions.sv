@@ -83,8 +83,8 @@ interface master_assertions ( input pclk,
     // MSHA: master_mosi0_valid_seq_1 && master_mosi0_valid_seq_2(mosi_local, miso_local);
     cs == 0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
   endproperty : master_mosi0_valid_p
-  MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
- `ifdef SIMPLE_SPI
+ 
+  `ifdef SIMPLE_SPI
     MASTER_CS_LOW_CHECK_SIMPLE_SPI: assert property (master_mosi0_valid_p(mosi0,miso0));
   `endif
  `ifdef DUAL_SPI
@@ -133,7 +133,7 @@ interface master_assertions ( input pclk,
   //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
     @(posedge sclk) disable iff(!areset)
-    cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==0 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_1
   `ifdef SIMPLE_SPI
     CPOL_0_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
