@@ -81,7 +81,7 @@ interface master_assertions ( input pclk,
     cs == 0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
   endproperty : master_mosi0_valid_p
   MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
-    
+ /*   
     // Assertion for cpol in idle state
   // When cpol is low, idle state should be logic low
   property master_cpol_idle_state_low_p;
@@ -90,7 +90,7 @@ interface master_assertions ( input pclk,
   endproperty : master_cpol_idle_state_low_p
   MASTER_CPOL_IDLE_STATE_LOW: assert property(master_cpol_idle_state_low_p);
  
-/*
+
   // Assertion for if_cs_is_stable_during_transfers
   // cs should be low and stable till data transfer is successful ($stable)
   sequence if_cs_is_stable_during_transfers_s1;
@@ -121,7 +121,7 @@ interface master_assertions ( input pclk,
     successful_data_transfers_s1;
   endproperty:successful_data_transfers
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
-*/
+
 
   //Assertion for mode_of_cfg_cpol_0_cpha_1
   //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
@@ -131,7 +131,7 @@ interface master_assertions ( input pclk,
   endproperty: mode_of_cfg_cpol_0_cpha_1
   CPOL_0_CPHA_1: assert property(mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
 
-
+*/
 endinterface : master_assertions
 
 `endif
