@@ -35,7 +35,7 @@ interface master_assertions ( input pclk,
   initial begin
     `uvm_info("MASTER_ASSERTIONS","MASTER ASSERTIONS",UVM_LOW);
     //`uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
-    cpol = 0;
+    cpol = 1;
     cpha = 0;
   end
   
