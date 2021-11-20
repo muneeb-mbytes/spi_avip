@@ -1,0 +1,5 @@
+-html
+assertions_base_test/assertions_base_test_coverage.ucdb
+-htmldir
+assertions_base_test/html_cov_report
+-details

@@ -44,7 +44,8 @@ module tb_master_assertions;
    //master_cs_low_check();
 
     //Uncomment this when you want to verify cpol 0 and cpha 0
-    cpol_0_cpha_0();
+   cpol_0_cpha_0();
+  // cpol_1_cpha_0();
   end
 
   task if_signals_are_stable;
@@ -60,6 +61,7 @@ module tb_master_assertions;
 
   task cpol_0_cpha_0;
     cpol_0_cpha_0_positive();
+    //cpol_1_cpha_0_negative();
   endtask
 
   task areset_gen(sclk_local,cs_local,no_of_slaves);
@@ -241,6 +243,27 @@ module tb_master_assertions;
     end
 
   endtask
+
+   task cpol_1_cpha_0_negative;
+    bit [7:0]mosi_data;
+    bit [7:0]miso_data;
+    areset_gen(1,0,1);
+    sclk_gen_pos();
+    mosi_data=$urandom;
+    miso_data=$urandom;
+        //Driving mosi and miso data
+    for(int i=0 ; i<8; i++) begin
+      //bit mosi_local,miso_local;
+
+      @(posedge sclk);
+      //mosi0 = 'miso_local; 
+
+      mosi0 = mosi_data[i];
+      miso0 = miso_data[i];
+    end
+
+  endtask
+
   
   master_assertions M_A (.pclk(pclk),
                          .cs(cs),
