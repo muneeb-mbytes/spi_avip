@@ -18,6 +18,10 @@ class slave_tx extends uvm_sequence_item;
   rand bit [CHAR_LENGTH-1:0]master_in_slave_out[];
 
   bit [CHAR_LENGTH-1:0] master_out_slave_in[];
+  rand bit [CHAR_LENGTH/2-1:0]miso0[];
+  rand bit [CHAR_LENGTH/2-1:0]miso1[];
+       bit [CHAR_LENGTH/2-1:0]mosi0[];
+       bit [CHAR_LENGTH/2-1:0]mosi1[];
 
   //--------------------------------------------------------------------------------------------
   // Constraints for SPI
@@ -28,7 +32,10 @@ class slave_tx extends uvm_sequence_item;
 
   constraint max_bits_miso{foreach(master_in_slave_out[i])
                                     master_in_slave_out[i]%8 ==0;}
-
+  constraint dual_spi_bits_even{foreach(miso0[i])
+                              miso0[i]%2==0;}
+  constraint dual_spi_bits_odd{foreach(miso1[i])
+                              miso1[i]%2!=0;}
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -100,6 +107,19 @@ function void slave_tx::do_print(uvm_printer printer);
   foreach(master_out_slave_in[i]) begin
     printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
   end
+  foreach(miso0[i]) begin
+    printer.print_field($sformatf("miso0[%0d]",i),this.miso0[i],4,UVM_HEX);
+  end
+  foreach(miso1[i]) begin
+    printer.print_field($sformatf("miso1[%0d]",i),this.miso1[i],4,UVM_HEX);
+  end
+  foreach(mosi0[i]) begin
+    printer.print_field($sformatf("mosi0[%0d]",i),this.mosi0[i],4,UVM_HEX);
+  end
+  foreach(mosi1[i]) begin
+    printer.print_field($sformatf("mosi1[%0d]",i),this.mosi1[i],4,UVM_HEX);
+  end
+
 
 endfunction : do_print
 

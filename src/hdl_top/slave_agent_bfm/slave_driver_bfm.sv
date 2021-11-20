@@ -88,6 +88,8 @@ interface slave_driver_bfm(input pclk, input areset,
   task drive_the_miso_data (inout spi_transfer_char_s data_packet,
                             input spi_transfer_cfg_s cfg_pkt);
     int row_no;
+    // reseting the no_of_miso_bits inorder to get the required count of miso data
+    data_packet.no_of_miso_bits_transfer = 0;
 
     `uvm_info("DEBUG MOSI CPHA SLAVE_DRIVER_BFM",$sformatf("miso(8bits)=8'h%0x",data_packet.master_in_slave_out[0]),UVM_HIGH)
 
@@ -110,6 +112,7 @@ interface slave_driver_bfm(input pclk, input areset,
           detect_sclk();
           if(end_of_transfer) break; 
           miso0 <= data_packet.master_in_slave_out[row_no][bit_no];
+          data_packet.no_of_miso_bits_transfer++;
 
           // Sampling MOSI at negedge of sclk for CPOL=0 and CPHA=0  OR
           // Sampling MOSI at posedge of sclk for CPOL=1 and CPHA=0
@@ -125,6 +128,8 @@ interface slave_driver_bfm(input pclk, input areset,
           // Driving MISO at negedge of sclk for CPOL=0 and CPHA=1  OR
           // Driving MISO at posedge of sclk for CPOL=1 and CPHA=1
           miso0 <= data_packet.master_in_slave_out[row_no][bit_no];
+          data_packet.no_of_miso_bits_transfer++;
+
           detect_sclk();
           if(end_of_transfer) break; 
 

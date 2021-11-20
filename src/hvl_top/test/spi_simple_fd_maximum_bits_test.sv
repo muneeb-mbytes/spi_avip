@@ -61,7 +61,7 @@ task spi_simple_fd_maximum_bits_test::run_phase(uvm_phase phase);
   // MSHA:    m_spi_fd_maximum_bits_h.start(env_h.v_seqr_h);
   // MSHA:    s_spi_fd_maximum_bits_h.start(env_h.v_seqr_h);
   // MSHA:join
-  spi_fd_maximum_bits_virtual_seq_h.start(env_h.virtual_seqr_h); //added by the team 3
+  spi_fd_maximum_bits_virtual_seq_h.start(env_h.virtual_seqr_h);
   phase.drop_objection(this);
 
 endtask:run_phase

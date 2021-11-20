@@ -158,8 +158,11 @@ task master_driver_proxy::run_phase(uvm_phase phase);
     master_spi_seq_item_converter::from_class(req, struc_packet); 
     master_spi_cfg_converter::from_class(master_agent_cfg_h, struct_cfg); 
 
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",struc_packet),UVM_HIGH);
-    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_HIGH);
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
+    struc_packet.master_out_slave_in[0]),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
+    struc_packet.master_out_slave_in[1]),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_LOW);
     drive_to_bfm(struc_packet, struct_cfg);
 
     master_spi_seq_item_converter::to_class(struc_packet, req);

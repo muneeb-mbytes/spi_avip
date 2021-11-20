@@ -108,6 +108,7 @@ endfunction : build_phase
   env_cfg_h.master_agent_cfg_h.c2tdelay             = 1;
   env_cfg_h.master_agent_cfg_h.t2cdelay             = 1;
   env_cfg_h.master_agent_cfg_h.has_coverage         = 1;
+  env_cfg_h.master_agent_cfg_h.wdelay               = 1;
 
   // baudrate_divisor_divisor = (secondary_prescalar+1) * (2 ** (primary_prescalar+1))
   // baudrate = busclock / baudrate_divisor_divisor;
