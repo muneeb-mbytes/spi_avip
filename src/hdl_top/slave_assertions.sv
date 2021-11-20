@@ -33,7 +33,7 @@ interface slave_assertions(input pclk,
     `uvm_info("slave_ASSERTIONS","slave ASSERTIONS",UVM_LOW);
   end  
 
-/*
+
   // Assertion for if signals are stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic miso0_local, logic mosi_local);
@@ -41,7 +41,7 @@ interface slave_assertions(input pclk,
     //@(posedge pclk) disable iff(!areset)
     cs == '1 |-> $stable(sclk) && $stable(mosi0_local) && $stable(miso0_local);
   endproperty : if_signals_are_stable
- */
+ 
   
   // Assertion Checking if mosi and miso is valid
   // when cs is low mosi and miso should be valid from next clock cycle.
@@ -70,10 +70,10 @@ interface slave_assertions(input pclk,
   endproperty : slave_cs_stable
   SLAVE_CS_LOW_FOR_CONT_CYCLES : assert property(slave_cs_stable);
   
-*/
 
-/*
-  initial begin
+
+
+ initial begin
     spi_type = '0;
   end
   //generate
@@ -90,11 +90,11 @@ interface slave_assertions(input pclk,
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
-  end*/
+  end
  //end
 
  
- /*
+ 
   
   initial begin
     spi_type = '0;
@@ -104,7 +104,7 @@ interface slave_assertions(input pclk,
   if(spi_type =='0) //begin
      assert property (slave_miso_mosi_valid_p(mosi0,miso0));
  // end
-  /*if(spi_type == 2'd1) begin
+  if(spi_type == 2'd1) begin
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (slave_miso_mosi_valid_p(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (slave_miso_mosi_valid_p(mosi1,miso1));
   end
@@ -113,9 +113,9 @@ interface slave_assertions(input pclk,
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (slave_miso_mosi_valid_p(mosi1,miso1));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (slave_miso_mosi_valid_p(mosi2,miso2));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (slave_miso_mosi_valid_p(mosi3,miso3));
-  end*/
+  end
 // end
-
+*/
 
 endinterface : slave_assertions
 
