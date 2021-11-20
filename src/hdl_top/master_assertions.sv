@@ -100,11 +100,11 @@ interface master_assertions ( input pclk,
 
     
   // Assertion for cpol in idle state
-  // When cpol is low, idle state should be logic low
+  // When cpol is low , idle state should be logic low
+  // when cpol is high,idle state should be logic high
   property master_cpol_idle_state_check_p;
-    @(posedge pclk)
-    //(cpol_h.cpol) == 1'b0 |-> sclk == 0;
-    cs==0 |-> sclk == cpol;
+    @(posedge pclk) disable iff(!areset)
+    cs==1 |-> cpol == sclk;
   endproperty : master_cpol_idle_state_check_p
   MASTER_CPOL_IDLE_STATE_CHECK: assert property(master_cpol_idle_state_check_p);
  
