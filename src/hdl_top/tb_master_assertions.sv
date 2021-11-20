@@ -61,7 +61,7 @@ module tb_master_assertions;
 
   task cpol_0_cpha_0;
     cpol_0_cpha_0_positive();
-    cpol_1_cpha_0_negative();
+    //cpol_1_cpha_0_negative();
   endtask
 
   task areset_gen(sclk_local,cs_local,no_of_slaves);
