@@ -23,6 +23,9 @@ interface master_assertions ( input pclk,
                               input miso1,
                               input miso2,
                               input miso3 );
+
+  bit cpol;
+  bit cpha;
   
   //-------------------------------------------------------
   // Importing Uvm Package
@@ -68,13 +71,9 @@ interface master_assertions ( input pclk,
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
   //-------------------------------------------------------
-  sequence master_mosi0_valid_seq(logic mosi_local);
-    !$isunknown(sclk) && !$isunknown(mosi_local);
-  endsequence : master_mosi0_valid_seq
-
   property master_mosi0_valid_p(logic mosi_local, logic miso_local);
     @(posedge pclk) disable iff(!areset)
-    cs=='0 |=> master_mosi0_valid_seq_2(mosi_local) |-> !$isunknown(miso_local);
+    cs=='0 |=> !$isunknown(sclk) && !$isunknown(mosi_local) |-> !$isunknown(miso_local);
   endproperty : master_mosi0_valid_p
   
   `ifdef SIMPLE_SPI
@@ -98,7 +97,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property master_cpol_idle_state_check_p;
     @(posedge pclk) disable iff(!areset)
-    cs=='1 |-> master_agent_bfm_h.spi_trans_h.cpol == sclk;
+    cs=='1 |-> cpol == sclk;
   endproperty : master_cpol_idle_state_check_p
   MASTER_CPOL_IDLE_STATE_CHECK: assert property(master_cpol_idle_state_check_p);
  
@@ -109,7 +108,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_0_cpha_0(logic mosi_local,logic miso_local);
     @(negedge sclk) disable iff(!areset)
-    master_agent_bfm_h.oper_mode_h.CPOL0_CPHA0 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_0
 
   `ifdef SIMPLE_SPI
@@ -133,7 +132,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
     @(posedge sclk) disable iff(!areset)
-   master_agent_bfm_h.oper_mode_h.CPOL0_CPHA1 |-> $stable(mosi_local) && $stable(miso_local);
+   cpol==0 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_1
   
   `ifdef SIMPLE_SPI
@@ -157,7 +156,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_1_cpha_0(logic mosi_local,logic miso_local);
     @(posedge sclk) disable iff(!areset)
-    master_agent_bfm_h.oper_mode_h.CPOL1_CPHA0 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==1 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_1_cpha_0
   
   `ifdef SIMPLE_SPI
@@ -181,7 +180,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_1_cpha_1(logic mosi_local,logic miso_local);
     @(posedge sclk) disable iff(!areset)
-    master_agent_bfm_h.oper_mode_h.CPOL1_CPHA1 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==1 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_1_cpha_1
   
   `ifdef SIMPLE_SPI

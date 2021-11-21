@@ -18,14 +18,6 @@ module master_agent_bfm(spi_if intf);
   //-------------------------------------------------------
   import spi_globals_pkg::*;
 
-  // Variable: operation_modes_e 
-  // Used for different operation modes
-  bit oper_mode_h;
-
-  // Variable: spi_trans_h 
-  // Used to access bit variables from struct
-  bit spi_trans_h;
-
   //-------------------------------------------------------
   // Master Driver bfm instantiation
   //-------------------------------------------------------

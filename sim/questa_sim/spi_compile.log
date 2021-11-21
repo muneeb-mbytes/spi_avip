@@ -1,0 +1,71 @@
+QuestaSim vlog 10.6c Compiler 2017.07 Jul 25 2017
+Start time: 02:44:39 on Nov 22,2021
+vlog -sv "+acc" "+cover" "+fcover" -l spi_compile.log -f ../spi_compile.f 
+-- Compiling package spi_globals_pkg
+-- Compiling package spi_master_pkg
+** Note: (vlog-2286) ../../src/hvl_top/master/spi_master_pkg.sv(13): Using implicit +incdir+/tools/mentor/questasim_10.6c/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package spi_globals_pkg
+-- Compiling package spi_slave_pkg
+-- Compiling package spi_master_seq_pkg
+-- Importing package spi_master_pkg
+-- Compiling package spi_slave_seq_pkg
+-- Importing package spi_slave_pkg
+-- Compiling package spi_env_pkg
+-- Compiling package spi_virtual_seq_pkg
+-- Importing package spi_master_seq_pkg
+-- Importing package spi_slave_seq_pkg
+-- Importing package spi_env_pkg
+-- Compiling package test_pkg
+-- Importing package spi_virtual_seq_pkg
+-- Compiling package spi_if_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface spi_if
+-- Compiling package master_driver_bfm_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface master_driver_bfm
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package spi_master_pkg
+-- Compiling package master_monitor_bfm_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface master_monitor_bfm
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package spi_master_pkg
+-- Compiling module master_agent_bfm
+-- Compiling package slave_driver_bfm_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface slave_driver_bfm
+-- Importing package spi_slave_pkg
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package slave_monitor_bfm_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface slave_monitor_bfm
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package spi_slave_pkg
+-- Compiling module slave_agent_bfm
+-- Compiling module hdl_top
+-- Compiling module hvl_top
+-- Importing package test_pkg
+-- Importing package spi_master_pkg
+-- Importing package spi_env_pkg
+-- Importing package spi_master_seq_pkg
+-- Importing package spi_slave_seq_pkg
+-- Importing package spi_virtual_seq_pkg
+-- Compiling module tb_master_assertions
+-- Compiling module tb_slave_assertions
+-- Compiling package master_assertions_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface master_assertions
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling package slave_assertions_sv_unit
+-- Importing package spi_globals_pkg
+-- Compiling interface slave_assertions
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+
+Top level modules:
+	hdl_top
+	hvl_top
+	tb_master_assertions
+	tb_slave_assertions
+End time: 02:44:43 on Nov 22,2021, Elapsed time: 0:00:04
+Errors: 0, Warnings: 0
