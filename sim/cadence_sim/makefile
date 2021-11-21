@@ -100,15 +100,15 @@ compile:
 	# or use .SILENT
 	make compile_war_err
 
-	# Setting a default test as base_test
-	ifndef test
-		override test = base_test
-	endif
+# Setting a default test as base_test
+ifndef test
+override test = base_test
+endif
 
-	# Setting the default uvm_verbosity to UVM_MEDIUM
-	ifndef uvm_verbosity
-		override uvm_verbosity = UVM_MEDIUM
-	endif
+# Setting the default uvm_verbosity to UVM_MEDIUM
+ifndef uvm_verbosity
+override uvm_verbosity = UVM_MEDIUM
+endif
 
 simulate:
 	echo "INside simulate"
