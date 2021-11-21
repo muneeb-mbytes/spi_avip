@@ -1,10 +1,12 @@
 `ifndef MASTER_MONITOR_BFM_INCLUDED_
 `define MASTER_MONITOR_BFM_INCLUDED_
+
 //--------------------------------------------------------------------------------------------
 // Inteface : Master Monitor BFM
 // Connects the master monitor bfm with the monitor proxy
 //--------------------------------------------------------------------------------------------
 import spi_globals_pkg::*;
+
 interface master_monitor_bfm(input pclk, input areset, 
                              input sclk, 
                              input [NO_OF_SLAVES-1:0] cs, 
@@ -15,10 +17,11 @@ interface master_monitor_bfm(input pclk, input areset,
   bit end_of_transfer;
 
   //-------------------------------------------------------
-  // 
+  // Package : Importing UVM package and including macros file 
   //-------------------------------------------------------
   import uvm_pkg::*;
   `include "uvm_macros.svh"
+
   //-------------------------------------------------------
   // Package : Importing SPI Global Package and SPI Master Package
   //-------------------------------------------------------

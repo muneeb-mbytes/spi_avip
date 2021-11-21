@@ -14,6 +14,19 @@ module master_agent_bfm(spi_if intf);
   `include "uvm_macros.svh"
   
   //-------------------------------------------------------
+  // Importing Uvm Package
+  //-------------------------------------------------------
+  import spi_globals_pkg::*;
+
+  // Variable: operation_modes_e 
+  // Used for different operation modes
+  bit oper_mode_h;
+
+  // Variable: spi_trans_h 
+  // Used to access bit variables from struct
+  bit spi_trans_h;
+
+  //-------------------------------------------------------
   // Master Driver bfm instantiation
   //-------------------------------------------------------
   master_driver_bfm master_drv_bfm_h (.pclk(intf.pclk), 
@@ -29,7 +42,6 @@ module master_agent_bfm(spi_if intf);
                                       .miso2(intf.miso2),
                                       .miso3(intf.miso3)
                                     );
-   
 
   //-------------------------------------------------------
   // Master monitor  bfm instantiation
@@ -47,6 +59,23 @@ module master_agent_bfm(spi_if intf);
                                        .miso2(intf.miso2),
                                        .miso3(intf.miso3)
                                      );
+   
+  //-------------------------------------------------------
+  // Binding Master monitor bfm with Master assertions and instantiation of handle
+  //-------------------------------------------------------
+  bind master_monitor_bfm master_assertions master_assertion_h (.pclk(pclk),
+                                                                .cs(cs),
+                                                                .areset(areset),
+                                                                .sclk(sclk),
+                                                                .mosi0(mosi0),
+                                                                .mosi1(mosi1),
+                                                                .mosi2(mosi2),
+                                                                .mosi3(mosi3),
+                                                                .miso0(miso0),
+                                                                .miso1(miso1),
+                                                                .miso2(miso2),
+                                                                .miso3(miso3)
+                                                              );
 
   //-------------------------------------------------------
   // Setting the virtual handle of BMFs into config_db
@@ -55,11 +84,12 @@ module master_agent_bfm(spi_if intf);
     uvm_config_db#(virtual master_driver_bfm)::set(null,"*", "master_driver_bfm", master_drv_bfm_h); 
     uvm_config_db#(virtual master_monitor_bfm)::set(null,"*", "master_monitor_bfm", master_mon_bfm_h);
   end
-
   
   initial begin
     $display("Master Agent BFM");
   end
    
 endmodule : master_agent_bfm
+
 `endif
+
