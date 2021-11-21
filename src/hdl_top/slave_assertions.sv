@@ -23,26 +23,24 @@ interface slave_assertions(input pclk,
                            input miso2,
                            input miso3);
   
-  
-  bit cpol,cpha;
-
   //-------------------------------------------------------
   // Importing Uvm Package
   //-------------------------------------------------------
   import uvm_pkg::*;
   `include "uvm_macros.svh";
+ //-------------------------------------------------------
+ // Defining Macro
+ //-------------------------------------------------------
+  `define SIMPLE_SPI;
+  `define DUAL_SPI;
+  `define QUAD_SPI;
 
- // bit cpol,cpha;
-  initial begin
-    `uvm_info("slave_ASSERTIONS","slave ASSERTIONS",UVM_LOW);
-    cpol=1;
-    cpha=0;
-  end  
-`define SIMPLE_SPI;
-
-/*
-  // Assertion for if signals are stable
-  // When cs is high, the signals sclk, mosi, miso should be stable.
+  //-------------------------------------------------------
+  //
+  //
+  //-------------------------------------------------------
+   Assertion for if signals are stable
+   When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic miso_local, logic mosi_local);
     @(posedge pclk)
     //@(posedge pclk) disable iff(!areset)
@@ -66,8 +64,18 @@ interface slave_assertions(input pclk,
     slave_mosi_miso_valid_seq1 |=> slave_mosi_miso_valid_seq2(miso_local,mosi_local)
   endproperty : slave_miso_mosi_valid_p
   SLAVE_MISO_MOSI_VALID_P: assert property (slave_miso_mosi_valid_p(mosi0,miso0));
-    
   
+  //-------------------------------------------------------
+  // Assertion for cpol in idle state
+  // when cpol is low, idle state should be logic low
+  // when cpol is high,idle state should be logic high
+  //-------------------------------------------------------
+  property slave_cpol_idle_state_check_p;
+    @(posedge pclk) disable iff(!areset)
+    cs=='1 |-> slave_agent_bfm_h.spi_trans_h.cpol == sclk;
+  endproperty : slave_cpol_idle_state_check_p
+
+
   //Assertion for mode_of_cfg_cpol_0_cpha_1
   //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
