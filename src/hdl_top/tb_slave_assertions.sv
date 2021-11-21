@@ -31,6 +31,7 @@ module tb_slave_assertions;
     sclk =0;
   end
   always #10 pclk = ~pclk;
+  always #10 sclk = ~sclk;
   
   task sclk_gen_pos();
     forever #20 sclk = sclk;
@@ -67,12 +68,15 @@ module tb_slave_assertions;
   endtask 
 
   // Calling tasks 
+
   initial begin
     $display("TB_SLAVE_ASSERTIONS");
     //if_signals_are_stable_negative_1();
     //if_signals_are_stable_negative_2();
     //if_signals_are_stable_positive();
-    slave_miso0_valid_seq_positive;
+  //  slave_miso0_valid_seq_positive;
+  //   cpol_1_cpha_0_positive();
+       cpol_1_cpha_0_negative();
   end
 
  /* task areset_gen(sclk_local,cs_local,no_of_slaves);
@@ -319,5 +323,9 @@ task cpol_0_cpha_0_positive;
                                        .miso2(miso2),
                                        .miso3(miso3) );
 endmodule : tb_slave_assertions
+
+
+
+
 
 `endif
