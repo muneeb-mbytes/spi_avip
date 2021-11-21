@@ -62,22 +62,22 @@ module hdl_top;
 
   // Waveform dump for Cadence simulator
   // For Questa the makefile will generate the waveforms (.wlf)
-  // initial begin
-  //   `ifdef WAVES_OFF
-  //   `else
-  //     string path_to_waveform;
-  //     reg [2047:0] path_to_waveform_reg;
+  initial begin
+    `ifdef WAVES_OFF
+     `else
+       string path_to_waveform;
+       reg [2047:0] path_to_waveform_reg;
 
-  //     if($value$plusargs("WAVEFORM_PATH=%s", path_to_waveform)) begin
-  //       // The simulator will not support the string as input to shm_open system task.
-  //       // To mitigate this you need to send reg variable to shm_open
-  //       path_to_waveform_reg = reg'(path_to_waveform);
-  //       end
-  //     else path_to_waveform = "waves.shm";
+       if($value$plusargs("WAVEFORM_PATH=%s", path_to_waveform)) begin
+         // The simulator will not support the string as input to shm_open system task.
+         // To mitigate this you need to send reg variable to shm_open
+         path_to_waveform_reg = reg'(path_to_waveform);
+         end
+       else path_to_waveform = "waves.shm";
 
-  //     $shm_probe("AS");
-  //   `endif
-  // end
+       $shm_probe("AS");
+     `endif
+   end
 
 endmodule : hdl_top
 
