@@ -35,9 +35,12 @@ interface slave_assertions(input pclk,
  // bit cpol,cpha;
   initial begin
     `uvm_info("slave_ASSERTIONS","slave ASSERTIONS",UVM_LOW);
+    cpol=1;
+    cpha=0;
   end  
+`define SIMPLE_SPI;
 
-
+/*
   // Assertion for if signals are stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
   property if_signals_are_stable(logic miso_local, logic mosi_local);
@@ -84,7 +87,7 @@ interface slave_assertions(input pclk,
     CPOL_0_CPHA_1_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso2));
     CPOL_0_CPHA_1_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso3));
   `endif
-  
+  */
   //Assertion for mode_of_cfg_cpol_1_cpha_0
   //when cpol is 1 and cpha is 0 immediately mosi data and miso data should be valid at the samenegedge of sclk 
   property mode_of_cfg_cpol_1_cpha_0(logic mosi_local,logic miso_local);
@@ -162,6 +165,7 @@ interface slave_assertions(input pclk,
   end
 // end
 */
+  /*
   //Assertion for mode_of_cfg_cpol_0_cpha_0
   //when cpol is 0 and cpha is 0 immediately mosi data and miso data should be valid at the same posedge of sclk 
   property mode_of_cfg_cpol_0_cpha_0(logic mosi_local,logic miso_local);
@@ -181,7 +185,7 @@ interface slave_assertions(input pclk,
     CPOL_0_CPHA_0_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso2));
     CPOL_0_CPHA_0_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso3));
   `endif
-
+*/
 endinterface : slave_assertions
 
 `endif
