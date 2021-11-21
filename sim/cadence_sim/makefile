@@ -69,103 +69,104 @@ all:
 compile:
 	make clean_compile;
 
-# For Xcelium
-# xrun -c
-# -xmlibdirname INCA_libs \
-	#
-# If not given this then the tool will use the default
-# installation of UVM library
-# -uvmhome $(UVMHOME) \
+	# For Xcelium
+	# xrun -c
+	# -xmlibdirname INCA_libs \
+		#
+	# If not given this then the tool will use the default
+	# installation of UVM library
+	# -uvmhome $(UVMHOME) \
 
-irun -c \
-	-clean \
-	-elaborate \
-	-coverage a \
-	-access +rwc \
-	-64 \
-	-sv \
-	-uvm \
-	+access+rw \
-	-f ../spi_compile.f \
-	-l spi_compile.log \
-	-top worklib.hdl_top:sv \
-	-top worklib.hvl_top:sv \
-	-nclibdirname INCA_libs \
-	-SVA
+	irun -c \
+		-clean \
+		-elaborate \
+		-coverage a \
+		-access +rwc \
+		-64 \
+		-sv \
+		-uvm \
+		+access+rw \
+		-f ../spi_compile.f \
+		-l spi_compile.log \
+		-top worklib.hdl_top:sv \
+		-top worklib.hvl_top:sv \
+		-nclibdirname INCA_libs \
+		-SVA
 
-# -s means silent mode
-#  The command executed along with the output will be displayed on the terminal
-#  To get only the ouput use 'silent' mode
-# make compile_war_err -s
-# or use .SILENT
-make compile_war_err
+	# -s means silent mode
+	#  The command executed along with the output will be displayed on the terminal
+	#  To get only the ouput use 'silent' mode
+	# make compile_war_err -s
+	# or use .SILENT
+	make compile_war_err
 
-# Setting a default test as base_test
-ifndef test
-	override test = base_test
-endif
+	# Setting a default test as base_test
+	ifndef test
+		override test = base_test
+	endif
 
-# Setting the default uvm_verbosity to UVM_MEDIUM
-ifndef uvm_verbosity
-	override uvm_verbosity = UVM_MEDIUM
-endif
+	# Setting the default uvm_verbosity to UVM_MEDIUM
+	ifndef uvm_verbosity
+		override uvm_verbosity = UVM_MEDIUM
+	endif
 
 simulate:
 	echo "INside simulate"
 	make clean_simulate
 	mkdir $(test)
 
-irun -R \
-	-licqueue \
-	-64 \
-	-l $(test)/$(test).log \
-	+UVM_TESTNAME=$(test) \
-	+UVM_VERBOSITY=$(uvm_verbosity) \
-	-nclibdirname INCA_libs
+	irun -R \
+		-licqueue \
+		-64 \
+		-l $(test)/$(test).log \
+		+UVM_TESTNAME=$(test) \
+		+UVM_VERBOSITY=$(uvm_verbosity) \
+		-input shm.tcl \
+		-nclibdirname INCA_libs
 
-#-seed random
-#-write_metrics \
-	#-covfile coverage_config_file \
-	#-covdut hdl_top \
-	#-uvm \
-	#-coverage All
+	#-seed random
+	#-write_metrics \
+		#-covfile coverage_config_file \
+		#-covdut hdl_top \
+		#-uvm \
+		#-coverage All
 
-make simulate_war_err
+	make simulate_war_err
 
-# `ifdef VCD_ON
-# $dumpfile("fpga_top.vcd");
-# $dumpvars(0, tb_fpga);
-# `endif
-#
-# `ifdef QUESTA
-#   $wlfdumpvars(0);
-# `else
-#   `ifdef WAVES_OFF
-#   `else
-#     $shm_open("waves.shm");
-#     $shm_probe("AS");
-#   `endif
-# `endif
-#
+	# `ifdef VCD_ON
+	# $dumpfile("fpga_top.vcd");
+	# $dumpvars(0, tb_fpga);
+	# `endif
+	#
+	# `ifdef QUESTA
+	#   $wlfdumpvars(0);
+	# `else
+	#   `ifdef WAVES_OFF
+	#   `else
+	#     $shm_open("waves.shm");
+	#     $shm_probe("AS");
+	#   `endif
+	# `endif
+	#
 
-# To open the waveform use the below command
-# vsim -view waveform.wlf &
-#
-# To open the wavefrom with saved signals
-# vsim -view waveform.wlf -do spi_waves.do &
-#
-# Coverage
-# 1) cov_work_paths.txt - Has the path for the coverage files (path consisting of cov_work/scope/test
-# 2) merge_cov.cmd - Has the below contents
-#    merge -out all_cov_merge -overwrite -runfile cov_work_paths.txt -message 1 -initial_model union_all
-#    load -run cov_work/scope/all_cov_merge
-#    report_metrics -out report_s -detail -metrics all
-#    OR
-#    merge -out all_cov_merge -overwrite -runfile cov_work_paths.txt -message 1 -initial_model union_all -out $(merge_dir)
-#    load -run cov_work/scope/$(merge_dir)
-#    report_metrics -out report_s -detail -metrics toggle -inst fpga_top
-# 3) imc -exec merge_cov.cmd
-#
+	# To open the waveform use the below command
+	# vsim -view waveform.wlf &
+	#
+	# To open the wavefrom with saved signals
+	# vsim -view waveform.wlf -do spi_waves.do &
+	#
+	# Coverage
+	# 1) cov_work_paths.txt - Has the path for the coverage files (path consisting of cov_work/scope/test
+	# 2) merge_cov.cmd - Has the below contents
+	#    merge -out all_cov_merge -overwrite -runfile cov_work_paths.txt -message 1 -initial_model union_all
+	#    load -run cov_work/scope/all_cov_merge
+	#    report_metrics -out report_s -detail -metrics all
+	#    OR
+	#    merge -out all_cov_merge -overwrite -runfile cov_work_paths.txt -message 1 -initial_model union_all -out $(merge_dir)
+	#    load -run cov_work/scope/$(merge_dir)
+	#    report_metrics -out report_s -detail -metrics toggle -inst fpga_top
+	# 3) imc -exec merge_cov.cmd
+	#
 
 clean_simulate:
 	rm -rf *_test cov_work

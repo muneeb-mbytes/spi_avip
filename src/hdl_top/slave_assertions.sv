@@ -56,7 +56,7 @@ interface slave_assertions(input pclk,
   endsequence: slave_mosi_miso_valid_seq2
 
   property slave_miso_mosi_valid_p(logic miso_local, logic mosi_local);
-    slave_mosi_miso_valid_seq1 |=> slave_mosi_miso_valid_seq2(miso_local,mosi_local)
+    slave_mosi_miso_valid_seq1 |=> slave_mosi_miso_valid_seq2(miso_local,mosi_local);
   endproperty : slave_miso_mosi_valid_p
   SLAVE_MISO_MOSI_VALID_P: assert property (slave_miso_mosi_valid_p(mosi0,miso0));
     
