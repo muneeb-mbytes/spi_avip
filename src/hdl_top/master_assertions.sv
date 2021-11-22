@@ -47,7 +47,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property if_signals_are_stable(logic mosi_local, logic miso_local);
     @(posedge pclk) disable iff(!areset)
-    cs=='1  |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
+    cs=='1  |=> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
   endproperty : if_signals_are_stable
 
   `ifdef SIMPLE_SPI
@@ -68,17 +68,13 @@ interface master_assertions ( input pclk,
   // Assertion for master_mosi0_valid
   // when cs is low mosi should be valid from next clock cycle.
   //-------------------------------------------------------
-  sequence master_mosi0_valid_seq_1;
-    @(posedge pclk) cs=='0;
-  endsequence : master_mosi0_valid_seq_1
-
-  sequence master_mosi0_valid_seq_2(logic mosi_local, logic miso_local);
-    !$isunknown(sclk) && !$isunknown(mosi_local) && !$isunknown(miso_local);
-  endsequence : master_mosi0_valid_seq_2
+  sequence master_mosi0_valid_seq(logic mosi_local);
+    !$isunknown(sclk) && !$isunknown(mosi_local);
+  endsequence : master_mosi0_valid_seq
 
   property master_mosi0_valid_p(logic mosi_local, logic miso_local);
     @(posedge pclk) disable iff(!areset)
-    cs=='0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
+    cs=='0 |=> master_mosi0_valid_seq_2(mosi_local) |-> !$isunknown(miso_local);
   endproperty : master_mosi0_valid_p
   
   `ifdef SIMPLE_SPI
