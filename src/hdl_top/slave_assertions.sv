@@ -62,26 +62,26 @@ interface slave_assertions(input pclk,
   `endif
   
   //-------------------------------------------------------
-  // Assertion for slave_mosi0_valid
+  // Assertion for mosi_miso_valid
   // when cs is low mosi should be valid from next clock cycle.
   //-------------------------------------------------------
-  property slave_mosi0_valid_p(logic mosi_local, logic miso_local);
+  property mosi_miso_valid_p(logic mosi_local, logic miso_local);
     @(posedge pclk) disable iff(!areset)
     cs=='0 |=> !$isunknown(sclk) && !$isunknown(mosi_local) |-> !$isunknown(miso_local);
-  endproperty : slave_mosi0_valid_p
+  endproperty : mosi_miso_valid_p
   
   `ifdef SIMPLE_SPI
-    SLAVE_CS_LOW_CHECK_SIMPLE_SPI: assert property (slave_mosi0_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_SIMPLE_SPI: assert property (mosi_miso_valid_p(mosi0,miso0));
   `endif
   `ifdef DUAL_SPI
-    SLAVE_CS_LOW_CHECK_DUAL_SPI_1: assert property (slave_mosi0_valid_p(mosi0,miso0));
-    SLAVE_CS_LOW_CHECK_DUAL_SPI_2: assert property (slave_mosi0_valid_p(mosi1,miso1));
+        CS_LOW_CHECK_DUAL_SPI_1: assert property (mosi_miso_valid_p(mosi0,miso0));
+        CS_LOW_CHECK_DUAL_SPI_2: assert property (mosi_miso_valid_p(mosi1,miso1));
   `endif
   `ifdef QUAD_SPI
-    SLAVE_CS_LOW_CHECK_QUAD_SPI_1: assert property (slave_mosi0_valid_p(mosi0,miso0));
-    SLAVE_CS_LOW_CHECK_QUAD_SPI_2: assert property (slave_mosi0_valid_p(mosi1,miso1));
-    SLAVE_CS_LOW_CHECK_QUAD_SPI_3: assert property (slave_mosi0_valid_p(mosi3,miso2));
-    SLAVE_CS_LOW_CHECK_QUAD_SPI_4: assert property (slave_mosi0_valid_p(mosi3,miso3));
+      CS_LOW_CHECK_QUAD_SPI_1: assert property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_QUAD_SPI_2: assert property (mosi_miso_valid_p(mosi1,miso1));
+      CS_LOW_CHECK_QUAD_SPI_3: assert property (mosi_miso_valid_p(mosi3,miso2));
+      CS_LOW_CHECK_QUAD_SPI_4: assert property (mosi_miso_valid_p(mosi3,miso3));
   `endif
 
   //-------------------------------------------------------
@@ -89,12 +89,12 @@ interface slave_assertions(input pclk,
   // when cpol is low, idle state should be logic low
   // when cpol is high,idle state should be logic high
   //-------------------------------------------------------
-  property slave_cpol_idle_state_check_p;
+  property cpol_idle_state_check_p;
     @(posedge pclk) disable iff(!areset)
     cs=='1 |-> cpol == sclk;
-  endproperty : slave_cpol_idle_state_check_p
+  endproperty : cpol_idle_state_check_p
   
-  SLAVE_CPOL_IDLE_STATE_CHECK: assert property(slave_cpol_idle_state_check_p);
+  CPOL_IDLE_STATE_CHECK: assert property(cpol_idle_state_check_p);
  
   //-------------------------------------------------------
   // Assertion for mode_of_cfg_cpol_0_cpha_0
