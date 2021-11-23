@@ -230,7 +230,7 @@ interface master_assertions ( input pclk,
   // mosi data and miso data should be valid at the same negedge of sclk 
   //-------------------------------------------------------
   property mode_of_cfg_cpol_1_cpha_1(logic mosi_local,logic miso_local);
-    @(posedge sclk) disable iff(!areset)
+    @(negedge sclk) disable iff(!areset)
     cpol==1 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty: mode_of_cfg_cpol_1_cpha_1
   
