@@ -199,7 +199,9 @@ simulate_war_err:
 	echo "-------------------- Simulation Report --------------------------";
 	echo "";
 	echo "Simulator Errors";
-	grep "Error" $(test)/$(test).log;
+	grep "\*E" $(test)/$(test).log;
+	echo "";
+	grep "\*F" $(test)/$(test).log;
 	echo "";
 	echo "UVM Fatal";
 	grep "UVM_FATAL" $(test)/$(test).log;
