@@ -109,7 +109,7 @@ interface slave_assertions(input pclk,
   //-------------------------------------------------------
   property cpol_idle_state_check_p;
     @(posedge pclk) disable iff(!areset)
-    cs=='1 |-> cpol == sclk;
+    cs=='1 |-> sclk == cpol;
   endproperty : cpol_idle_state_check_p
   
   CPOL_IDLE_STATE_CHECK: assert property(cpol_idle_state_check_p);
@@ -223,6 +223,8 @@ interface slave_assertions(input pclk,
     @(negedge sclk) disable iff(!areset)
     cpol==1 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
   endproperty : mode_of_cfg_cpol_1_cpha_1
+  
+  CPOL_1_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
   
   `ifdef SIMPLE_SPI
     CPOL_1_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));

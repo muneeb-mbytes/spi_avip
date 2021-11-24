@@ -116,7 +116,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property cpol_idle_state_check_p;
     @(posedge pclk) disable iff(!areset)
-    cs=='1 |-> cpol == sclk;
+    cs=='1 |-> sclk == cpol;
   endproperty : master_cpol_idle_state_check_p
   CPOL_IDLE_STATE_CHECK: assert property(cpol_idle_state_check_p);
     
