@@ -46,7 +46,8 @@ function void master_spi_cfg_converter::from_class(input master_agent_config inp
     {cpol,cpha} = operation_modes_e'(input_conv_h.spi_mode);
     output_conv.c2t = input_conv_h.c2tdelay;
     output_conv.t2c = input_conv_h.t2cdelay;
-    output_conv.baudrate_divisor = input_conv_h.baudrate_divisor;
+    output_conv.baudrate_divisor = input_conv_h.get_baudrate_divisor();
+    `uvm_info("conv_bd",$sformatf("bd = \n %p",output_conv.baudrate_divisor),UVM_LOW)
     output_conv.cpol = cpol;
     output_conv.cpha = cpha;
     output_conv.msb_first = shift_direction_e'(input_conv_h.shift_dir);

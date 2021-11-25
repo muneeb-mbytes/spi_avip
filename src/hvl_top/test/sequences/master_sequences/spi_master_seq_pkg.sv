@@ -40,6 +40,7 @@
  `include "spi_fd_c2t_delay_master_seq.sv"
  `include "spi_fd_t2c_delay_master_seq.sv"
  `include "spi_fd_baudrate_master_seq.sv"
+ `include "spi_fd_rand_master_seq.sv"
  `include "spi_fd_no_of_slaves_master_seq.sv"
  `include "spi_dual_spi_type_master_seq.sv"
  `include "spi_quad_spi_type_master_seq.sv"

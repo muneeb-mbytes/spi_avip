@@ -50,6 +50,7 @@ package test_pkg;
  `include "spi_simple_fd_t2c_delay_test.sv"
  `include "spi_simple_fd_baudrate_test.sv"
  `include "spi_simple_fd_no_of_slaves_test.sv"
+ `include "spi_simple_fd_rand_test.sv"
  `include "spi_dual_spi_type_test.sv"
  `include "spi_quad_spi_type_test.sv"
 endpackage : test_pkg

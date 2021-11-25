@@ -25,3 +25,5 @@ spi_simple_fd_t2c_delay_test
 spi_simple_fd_baudrate_test
 
 spi_simple_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_test
+
+spi_simple_fd_rand_test

@@ -43,6 +43,7 @@ package spi_virtual_seq_pkg;
   `include "spi_fd_c2t_delay_virtual_seq.sv"
   `include "spi_fd_t2c_delay_virtual_seq.sv"
   `include "spi_fd_baudrate_virtual_seq.sv"
+  `include "spi_fd_rand_virtual_seq.sv"
   `include "spi_fd_no_of_slaves_virtual_seq.sv"
   `include "spi_dual_spi_type_virtual_seq.sv"
   `include "spi_quad_spi_type_virtual_seq.sv"

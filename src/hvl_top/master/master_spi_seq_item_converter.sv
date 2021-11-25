@@ -9,7 +9,6 @@
 
 class master_spi_seq_item_converter extends uvm_object;
   
-  
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -47,21 +46,13 @@ function void master_spi_seq_item_converter::from_class(input master_tx input_co
   output_conv.no_of_mosi_bits_transfer),UVM_HIGH)
 
   for(int i=0; i<input_conv_h.master_out_slave_in.size(); i++) begin
-   // `uvm_info("master_seq_item_conv_class",
-   // $sformatf("Before shift master_out_slave_in = \n %p",output_conv.master_out_slave_in),UVM_LOW)
-   // output_conv.master_out_slave_in = output_conv.master_out_slave_in << CHAR_LENGTH;
     `uvm_info("master_seq_item_conv_class",
     $sformatf(" master_tx_input_cov_h master_out_slave_in = \n %p",
     input_conv_h.master_out_slave_in[i]),UVM_HIGH)
     output_conv.master_out_slave_in[i][CHAR_LENGTH-1:0] = input_conv_h.master_out_slave_in[i];    
-   //`uvm_info("master_seq_item_conv_class",
-   // $sformatf("After shift input_cov_h master_out_slave_in = \n %p",
-   // input_conv_h.master_out_slave_in[i]),UVM_LOW)
-   //output_conv.master_out_slave_in[i*8 +: 8]= input_conv_h.master_out_slave_in[i];    
     
     `uvm_info("master_seq_item_conv_class",
     $sformatf("output_conv_master_out_slave_in = \n %p",output_conv.master_out_slave_in),UVM_HIGH)
-    //output_conv.master_out_slave_in[i] = input_conv_h.master_out_slave_in[i];    
   end
 
   // MSHA: for(int i=0; i<output_conv.no_of_mosi_bits_transfer; i++) begin

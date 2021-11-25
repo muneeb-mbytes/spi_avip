@@ -44,7 +44,7 @@ endfunction : new
   //env_cfg_h.master_agent_cfg_h.spi_mode = operation_modes_e'(CPOL1_CPHA0);
   env_cfg_h.master_agent_cfg_h.spi_mode = operation_modes_e'(CPOL1_CPHA0);
   env_cfg_h.master_agent_cfg_h.shift_dir = shift_direction_e'(MSB_FIRST);
-  env_cfg_h.master_agent_cfg_h.baudrate_divisor = 4;
+  env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(1), .secondary_prescalar(0));
   env_cfg_h.master_agent_cfg_h.t2cdelay = 2;
   env_cfg_h.master_agent_cfg_h.c2tdelay = 2;
 

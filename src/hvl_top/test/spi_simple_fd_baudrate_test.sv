@@ -60,7 +60,7 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void spi_simple_fd_baudrate_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
-  env_cfg_h.master_agent_cfg_h.baudrate_divisor = 4;
+  env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(0), .secondary_prescalar(1));
 //  env_cfg_h.master_agent_cfg_h.print();
 endfunction : setup_master_agent_cfg
 

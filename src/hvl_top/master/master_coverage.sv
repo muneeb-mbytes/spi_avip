@@ -102,7 +102,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
 
     //If the pclk is 10mhz and the baudrate_divisor is 2 then the sclk will be 5mhz.
     
-      BAUD_RATE_CP : coverpoint cfg.baudrate_divisor {
+      BAUD_RATE_CP : coverpoint cfg.get_baudrate_divisor() {
       option.comment = "it control the rate of transfer in communication channel";
      
       bins BAUDRATE_DIVISOR_1 = {2}; 
