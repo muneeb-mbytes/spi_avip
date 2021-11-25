@@ -14,9 +14,6 @@ class spi_simple_fd_dct_test extends base_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  // MSHA:m_spi_fd_8b_dct_seq m_spi_fd_8b_dct_h;
-  // MSHA:s_spi_fd_8b_dct_seq s_spi_fd_8b_dct_h;
-
   spi_fd_8b_virtual_seq spi_simple_fd_8b_virtual_seq_h;
   spi_fd_16b_virtual_seq spi_simple_fd_16b_virtual_seq_h;
   spi_fd_32b_virtual_seq spi_simple_fd_32b_virtual_seq_h;
@@ -40,6 +37,7 @@ endclass : spi_simple_fd_dct_test
 function spi_simple_fd_dct_test::new(string name = "spi_simple_fd_dct_test",uvm_component parent);
   super.new(name, parent);
 endfunction : new
+
 //--------------------------------------------------------------------------------------------
 //Function: setup_master_agent_cfg
 //Setup the master agent configuration with the required values
@@ -49,7 +47,6 @@ function void spi_simple_fd_dct_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
   env_cfg_h.master_agent_cfg_h.wdelay= 4;
 endfunction : setup_master_agent_cfg
-
 
 //--------------------------------------------------------------------------------------------
 // Function:build_phase
@@ -67,14 +64,8 @@ task spi_simple_fd_dct_test::run_phase(uvm_phase phase);
   spi_simple_fd_8b_virtual_seq_h = spi_fd_8b_virtual_seq::type_id::create("spi_simple_fd_8b_virtual_seq_h");
   spi_simple_fd_16b_virtual_seq_h = spi_fd_16b_virtual_seq::type_id::create("spi_simple_fd_16b_virtual_seq_h");
   spi_simple_fd_32b_virtual_seq_h = spi_fd_32b_virtual_seq::type_id::create("spi_simple_fd_32b_virtual_seq_h");
-  // MSHA:m_spi_fd_8b_dct_h = m_spi_fd_8b_dct_seq::type_id::create("m_spi_fd_8b_dct_h");
-  // MSHA:s_spi_fd_8b_dct_h = s_spi_fd_8b_dct_seq::type_id::create("s_spi_fd_8b_dct_h");
 
   phase.raise_objection(this);
-  // MSHA:fork
-  // MSHA:    m_spi_fd_8b_dct_h.start(env_h.v_seqr_h);
-  // MSHA:    s_spi_fd_8b_dct_h.start(env_h.v_seqr_h);
-  // MSHA:join
   spi_simple_fd_8b_virtual_seq_h.start(env_h.virtual_seqr_h); 
   spi_simple_fd_16b_virtual_seq_h.start(env_h.virtual_seqr_h); 
   spi_simple_fd_32b_virtual_seq_h.start(env_h.virtual_seqr_h); 

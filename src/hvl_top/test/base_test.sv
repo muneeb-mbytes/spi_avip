@@ -65,13 +65,11 @@ endfunction : build_phase
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
  function void base_test::setup_env_cfg();
-  //env_cfg_h = env_config::type_id::create("env_cfg_h");
   env_cfg_h.no_of_slaves = NO_OF_SLAVES;
   env_cfg_h.has_scoreboard = 1;
   env_cfg_h.has_virtual_seqr = 1;
   
   // Setup the master agent cfg 
-  //env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   setup_master_agent_cfg();
   uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
   `uvm_info(get_type_name(),$sformatf("master_agent_cfg = \n %0p",
@@ -101,7 +99,6 @@ endfunction : build_phase
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
  function void base_test::setup_master_agent_cfg();
-  //env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   // Configure the Master agent configuration
   env_cfg_h.master_agent_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
   env_cfg_h.master_agent_cfg_h.no_of_slaves         = NO_OF_SLAVES;
@@ -116,8 +113,6 @@ endfunction : build_phase
   // baudrate = busclock / baudrate_divisor_divisor;
   env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(0), .secondary_prescalar(0));
 
- // uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
- //env_cfg_h.master_agent_cfg_h.print();
 endfunction: setup_master_agent_cfg
 
 //--------------------------------------------------------------------------------------------
@@ -127,23 +122,14 @@ endfunction: setup_master_agent_cfg
 //--------------------------------------------------------------------------------------------
  function void base_test::setup_slave_agents_cfg();
   // Create slave agent(s) configurations
-  // env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
   // Setting the configuration for each slave
   foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
-    //env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("salve_agent_cfg_h[%0d]",i));
     env_cfg_h.slave_agent_cfg_h[i].slave_id     = i;
     env_cfg_h.slave_agent_cfg_h[i].is_active    = uvm_active_passive_enum'(UVM_ACTIVE);
     env_cfg_h.slave_agent_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
     env_cfg_h.slave_agent_cfg_h[i].shift_dir    = shift_direction_e'(LSB_FIRST);
     env_cfg_h.slave_agent_cfg_h[i].has_coverage = 1;
 
-    // MSHAdb #(slave_agent_config)::set(this,"*slave_agent*",
-    // MSHA:                                         $sformatf("slave_agent_config[%0d]",i),
-    // MSHA:                                         env_cfg_h.salve_agent_cfg_h[i]);
-
-   // uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
-   //                                          "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
-   // env_cfg_h.slave_agent_cfg_h[i].print();
   end
 
 endfunction: setup_slave_agents_cfg

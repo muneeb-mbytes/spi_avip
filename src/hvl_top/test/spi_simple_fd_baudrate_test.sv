@@ -10,14 +10,6 @@ class spi_simple_fd_baudrate_test extends spi_simple_fd_8b_test;
 
   //Registering the spi_simple_fd_baudrate_test in the factory
   `uvm_component_utils(spi_simple_fd_baudrate_test)
-  //env_config env_cfg_h;
-  // master_agent_config master_agent_cfg_h;
-  //slave_agent_config slave_agent_cfg_h;
-
-  //-------------------------------------------------------
-  // Declaring sequence handles  
-  //-------------------------------------------------------
-//  spi_simple_fd_baudrate_virtual_seq spi_simple_fd_baudrate_virtual_seq_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -39,36 +31,19 @@ function spi_simple_fd_baudrate_test::new(string name = "spi_simple_fd_baudrate_
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// Function:build_phase
-//--------------------------------------------------------------------------------------------
-//function void spi_simple_fd_baudrate_test::build_phase(uvm_phase phase);
-//  super.build_phase(phase);
-//
-// // env_cfg_h.master_agent_cfg_h.c2tdelay = 1;
-//  env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
-//  setup_master_agent_cfg_c2t();
-//  //foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
-//   //env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("salve_agent_cfg_h[%0d]",i));
-// //end
-//
-//endfunction : build_phase
-
-//--------------------------------------------------------------------------------------------
 // Function: setup_master_agent_cfg
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
 function void spi_simple_fd_baudrate_test::setup_master_agent_cfg();
   super.setup_master_agent_cfg();
+<<<<<<< HEAD
   env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(0), .secondary_prescalar(1));
 //  env_cfg_h.master_agent_cfg_h.print();
+=======
+  env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(1), .secondary_prescalar(2)); 
+>>>>>>> 84415fcb12f6c7a4ad141718e5d33b94958a1398
 endfunction : setup_master_agent_cfg
 
-
-//function void spi_simple_fd_baudrate_test::setup_slave_agents_cfg_c2t();
-//  foreach(env_cfg_h.slave_agent_cfg_h[i])begin
-//  env_cfg_h.slave_agent_cfg_h[i].shift_dir = shift_direction_e'(MSB_FIRST);
-//  end
-//endfunction: setup_slave_agents_cfg_msb
 
 `endif
