@@ -159,8 +159,8 @@ task spi_scoreboard::run_phase(uvm_phase phase);
         byte_data_cmp_failed_miso_count++;
       end
       else begin
-        `uvm_info("SB_MOSI_DATA_MATCH", 
-                  $sformatf("Slave MOSI[%0d] = 'h%0x and Master MOSI[%0d] = 'h%0x", 
+        `uvm_info("SB_MISO_DATA_MATCH", 
+                  $sformatf("Slave MISO[%0d] = 'h%0x and Master MISO[%0d] = 'h%0x", 
                             i, slave_tx_h.master_in_slave_out[i],
                             i, master_tx_h.master_in_slave_out[i]), UVM_HIGH);
         byte_data_cmp_verified_miso_count++;
@@ -184,31 +184,36 @@ function void spi_scoreboard::check_phase(uvm_phase phase);
   super.check_phase(phase);
 
   // TODO(mshariff): Banner as discussed
-  `uvm_info (get_type_name(),$sformatf(" Scoreboard Check Phase is starting"),UVM_HIGH); 
+  // `uvm_info (get_type_name(),$sformatf(" Scoreboard Check Phase is starting"),UVM_HIGH); 
+  $display(" ");
+  $display("-------------------------------------------- ");
+  $display("SCOREBOARD CHECK PHASE");
+  $display("-------------------------------------------- ");
+  $display(" ");
 // TODO(mshariff): Check the following:
 
 // 1. Check if the comparisions counter is NON-zero
 //    A non-zero value indicates that the comparisions never happened and throw error
   
   if ((byte_data_cmp_verified_mosi_count != 0)&&(byte_data_cmp_failed_mosi_count == 0)) begin
-	  `uvm_info (get_type_name(), $sformatf ("all mosi comparisions are succesful"),UVM_HIGH);
+	  `uvm_info (get_type_name(), $sformatf ("all mosi comparisions are succesful"),UVM_NONE);
   end
   else begin
     `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_verified_mosi_count :%0d",
-                                            byte_data_cmp_verified_mosi_count),UVM_HIGH);
+                                            byte_data_cmp_verified_mosi_count),UVM_NONE);
 	  `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_failed_mosi_count : %0d", 
-                                            byte_data_cmp_failed_mosi_count),UVM_HIGH);
+                                            byte_data_cmp_failed_mosi_count),UVM_NONE);
     `uvm_error (get_type_name(), $sformatf ("comparisions of mosi not happened"));
   end
 
   if ((byte_data_cmp_verified_miso_count != 0)&&(byte_data_cmp_failed_miso_count == 0) ) begin
-	  `uvm_info (get_type_name(), $sformatf ("all miso comparisions are succesful"),UVM_HIGH);
+	  `uvm_info (get_type_name(), $sformatf ("all miso comparisions are succesful"),UVM_NONE);
   end
   else begin
     `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_verified_miso_count :%0d",
-                                            byte_data_cmp_verified_miso_count),UVM_HIGH);
+                                            byte_data_cmp_verified_miso_count),UVM_NONE);
 	  `uvm_info (get_type_name(), $sformatf ("byte_data_cmp_failed_miso_count : %0d", 
-                                            byte_data_cmp_failed_miso_count),UVM_HIGH);
+                                            byte_data_cmp_failed_miso_count),UVM_NONE);
   end
 
 // 2. Check if master packets received are same as slave packets received
@@ -256,18 +261,22 @@ endfunction : check_phase
 //--------------------------------------------------------------------------------------------
 function void spi_scoreboard::report_phase(uvm_phase phase);
   super.report_phase(phase);
-  `uvm_info("scoreboard",$sformatf("Scoreboard Report"),UVM_HIGH);
+  //`uvm_info("scoreboard",$sformatf("Scoreboard Report"),UVM_HIGH);
   
   // TODO(mshariff): Print the below items:
   // TODO(mshariff): Banner as discussed
-  `uvm_info (get_type_name(),$sformatf(" Scoreboard Report Phase is starting"),UVM_HIGH); 
+  $display(" ");
+  $display("-------------------------------------------- ");
+  $display("SCOREBOARD REPORT PHASE");
+  $display("-------------------------------------------- ");
+  $display(" ");
   // Total number of packets received from the Master
   `uvm_info (get_type_name(),$sformatf("No. of transactions from master:%0d",
-                             master_tx_count),UVM_HIGH);
+                             master_tx_count),UVM_NONE);
 
   //Total number of packets received from the Slave (with their ID)
   `uvm_info (get_type_name(),$sformatf("No. of transactions from slave:%0d", 
-                             slave_tx_count),UVM_HIGH);
+                             slave_tx_count),UVM_NONE);
   
 //  //Number of mosi comparisions done
 //  `uvm_info (get_type_name(),$sformatf("Total no. of byte wise mosi comparisions:%0d",
@@ -278,19 +287,19 @@ function void spi_scoreboard::report_phase(uvm_phase phase);
   
   //Number of mosi comparisios passed
   `uvm_info (get_type_name(),$sformatf("Total no. of byte wise mosi comparisions passed:%0d",
-                byte_data_cmp_verified_mosi_count),UVM_HIGH);
+                byte_data_cmp_verified_mosi_count),UVM_NONE);
 
   //Number of miso comparisios passed
   `uvm_info (get_type_name(),$sformatf("Total no. of byte wise miso comparisions passed:%0d",
-                byte_data_cmp_verified_miso_count),UVM_HIGH);
+                byte_data_cmp_verified_miso_count),UVM_NONE);
   
   //Number of mosi compariosn failed
   `uvm_info (get_type_name(),$sformatf("No. of byte wise mosi comparision failed:%0d",
-                byte_data_cmp_failed_mosi_count),UVM_HIGH);
+                byte_data_cmp_failed_mosi_count),UVM_NONE);
 
   //Number of miso compariosn failed
   `uvm_info (get_type_name(),$sformatf("No. of byte wise miso comparision failed:%0d",
-                byte_data_cmp_failed_miso_count),UVM_HIGH);
+                byte_data_cmp_failed_miso_count),UVM_NONE);
 
 endfunction : report_phase
 

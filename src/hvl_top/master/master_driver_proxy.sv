@@ -158,16 +158,16 @@ task master_driver_proxy::run_phase(uvm_phase phase);
     master_spi_seq_item_converter::from_class(req, struc_packet); 
     master_spi_cfg_converter::from_class(master_agent_cfg_h, struct_cfg); 
 
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
-    struc_packet.master_out_slave_in[0]),UVM_LOW);
-    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET : , \n %p",
-    struc_packet.master_out_slave_in[1]),UVM_LOW);
-    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("STRUCT PACKET MOSI : , \n %p",
+    struc_packet.master_out_slave_in),UVM_HIGH);
+    //`uvm_info(get_type_name(),$sformatf("STRUCT PACKET[1] : , \n %p",
+    //struc_packet.master_out_slave_in[1]),UVM_LOW);
+    `uvm_info(get_type_name(),$sformatf("STRUCT CONFIGURATION : , \n %p",struct_cfg),UVM_HIGH);
     drive_to_bfm(struc_packet, struct_cfg);
 
     master_spi_seq_item_converter::to_class(struc_packet, req);
     
-    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+    `uvm_info(get_type_name(),$sformatf("Received packet from MASTER DRIVER BFM : , \n %s",
                                         req.sprint()),UVM_LOW)
     seq_item_port.item_done();
   end
@@ -189,7 +189,8 @@ task master_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input s
   //case ({master_agent_cfg_h.spi_mode, master_agent_cfg_h.shift_dir})
     //{CPOL0_CPHA0,MSB_FIRST}: begin  
   master_drv_bfm_h.drive_msb_first_pos_edge(packet,packet1); 
-  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",packet1),UVM_LOW);
+  `uvm_info(get_type_name(),$sformatf("BFM STRUCT PACKET : , \n %p", packet),UVM_LOW)
+  `uvm_info(get_type_name(),$sformatf(" STRUCT CONFIG VALUES : , \n %p",packet1),UVM_HIGH);
 
       // MSHA:if (master_agent_cfg_h.shift_dir == MSB_FIRST) begin
       // MSHA:  master_drv_bfm_h.drive_msb_first_pos_edge(data);

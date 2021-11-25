@@ -106,7 +106,7 @@ interface slave_monitor_bfm(input pclk, input areset,
     end while(! ((sclk_local == POSEDGE) || (sclk_local == NEGEDGE)) );
 
     sclk_edge_value = edge_detect_e'(sclk_local);
-    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_HIGH);
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_FULL);
   
   endtask: detect_sclk
 

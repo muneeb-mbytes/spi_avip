@@ -74,7 +74,8 @@ endfunction : build_phase
   //env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   setup_master_agent_cfg();
   uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
-  env_cfg_h.master_agent_cfg_h.print();
+  `uvm_info(get_type_name(),$sformatf("master_agent_cfg = \n %0p",
+  env_cfg_h.master_agent_cfg_h.sprint()),UVM_NONE)
   
   // Setup the slave agent(s) cfg 
   env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
@@ -85,12 +86,13 @@ endfunction : build_phase
   foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
     uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
                                              "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
-   env_cfg_h.slave_agent_cfg_h[i].print();
+    `uvm_info(get_type_name(),$sformatf("slave_agent_cfg = \n %0p",
+    env_cfg_h.slave_agent_cfg_h[i].sprint()),UVM_NONE)
   end
 
   // set method for env_cfg
   uvm_config_db #(env_config)::set(this,"*","env_config",env_cfg_h);
-  env_cfg_h.print();
+  `uvm_info(get_type_name(),$sformatf("env_cfg = \n %0p", env_cfg_h.sprint()),UVM_NONE)
  endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------

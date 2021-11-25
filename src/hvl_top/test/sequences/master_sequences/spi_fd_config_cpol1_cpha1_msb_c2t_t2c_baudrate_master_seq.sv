@@ -46,8 +46,7 @@ task spi_fd_config_cpol1_cpha1_msb_c2t_t2c_baudrate_master_seq::body();
                            }) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
-  req.print();
-  
+  `uvm_info(get_type_name(),$sformatf("master_seq",req.sprint()),UVM_MEDIUM)
   finish_item(req);
 
 endtask:body

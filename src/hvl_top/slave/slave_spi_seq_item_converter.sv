@@ -9,9 +9,6 @@
 
 class slave_spi_seq_item_converter extends uvm_object;
   
-  //static int c2t;
-  //static int t2c;
-  //static int baudrate_divisor;
   
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -45,10 +42,15 @@ function void slave_spi_seq_item_converter::from_class(input slave_tx input_conv
                                                         output spi_transfer_char_s output_conv);
 
   output_conv.no_of_miso_bits_transfer = input_conv_h.master_in_slave_out.size()*CHAR_LENGTH;
+  `uvm_info("slave_seq_item_conv_class",
+  $sformatf("no_of_miso_bits_transfer = \n %p",
+  output_conv.no_of_miso_bits_transfer),UVM_HIGH)
 
   for(int i=0; i<input_conv_h.master_in_slave_out.size(); i++) begin
     //output_conv.master_in_slave_out = output_conv.master_in_slave_out << CHAR_LENGTH;
     output_conv.master_in_slave_out[i][CHAR_LENGTH-1:0] = input_conv_h.master_in_slave_out[i];    
+    `uvm_info("slave_seq_item_conv_class",
+    $sformatf("output_conv_master_in_slave_out = \n %p",output_conv.master_in_slave_out),UVM_HIGH)
     //output_conv.master_in_slave_out[i] = input_conv_h.master_in_slave_out[i];    
   end
 

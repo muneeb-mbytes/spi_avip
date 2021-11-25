@@ -182,7 +182,7 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void master_coverage::write(master_tx t);
 //  // TODO(mshariff): 
-  `uvm_info("MUNEEB_DEBUG", $sformatf("Config values = %0s", master_agent_cfg_h.sprint()), UVM_HIGH);
+  `uvm_info("MUNEEB_DEBUG", $sformatf("Config values = \n %0s", master_agent_cfg_h.sprint()), UVM_HIGH);
    master_covergroup.sample(master_agent_cfg_h,t);     
 //   `uvm_info(get_type_name(),$sformatf("master_cg=%0d",master_cg),UVM_LOW);
 //

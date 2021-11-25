@@ -15,7 +15,6 @@ class slave_spi_cfg_converter extends uvm_object;
   extern function new(string name = "slave_spi_cfg_converter");
   extern static function void from_class(input slave_agent_config input_conv_h ,
                                          output spi_transfer_cfg_s output_conv);
-  //extern static function void to_class(input spi_transfer_cfg_s input_conv, output slave_tx output_conv_h);
   extern function void do_print(uvm_printer printer);
 
 endclass : slave_spi_cfg_converter

@@ -67,6 +67,7 @@ function void master_spi_cfg_converter::do_print(uvm_printer printer);
   printer.print_field( "baudrate_divisor", spi_st.baudrate_divisor , $bits(spi_st.baudrate_divisor),UVM_DEC);
   printer.print_field( "cpol", spi_st.cpol , $bits(spi_st.cpol),UVM_DEC);
   printer.print_field( "cphase", spi_st.cpha , $bits(spi_st.cpha),UVM_DEC);
+  printer.print_field( "msb_first", spi_st.msb_first , $bits(spi_st.msb_first),UVM_BIN);
 
 endfunction : do_print
 

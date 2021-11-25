@@ -109,6 +109,7 @@ interface master_driver_bfm(input pclk, input areset,
     //`uvm_info("CS VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.cs = \n %s",data_packet.cs),UVM_LOW)
     //`uvm_info("MOSI VALUE IN MASTER_DRIVER_BFM",$sformatf("data_packet.mosi = \n %s",data_packet.master_out_slave_in),UVM_LOW)
     // Asserting CS and driving sclk with initial value
+    `uvm_info("MASTER_DRIVER_BFM", $sformatf("Transfer start is detected"), UVM_NONE);
     @(posedge pclk);
     cs <= data_packet.cs; 
     sclk <= cfg_pkt.cpol;
@@ -118,7 +119,6 @@ interface master_driver_bfm(input pclk, input areset,
     repeat((cfg_pkt.c2t * cfg_pkt.baudrate_divisor) - 1) begin
       @(posedge pclk);
     end
-      
     `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi (8bits) =8'h%0x",data_packet.master_out_slave_in[0]),UVM_HIGH)
 
     // Driving CS, sclk and MOSI
@@ -161,7 +161,7 @@ interface master_driver_bfm(input pclk, input areset,
           mosi0 <= data_packet.master_out_slave_in[row_no][bit_no];
           `uvm_info("DEBUG MOSI CPHA MASTER_DRIVER_BFM",$sformatf("mosi[%0d][%0d]=%0b",
                     row_no, k,
-                    data_packet.master_out_slave_in[row_no][bit_no]),UVM_LOW)
+                    data_packet.master_out_slave_in[row_no][bit_no]),UVM_HIGH)
 
           // Sampling MISO at posedge of sclk for CPOL=0 and CPHA=1  OR
           // Sampling MISO at negedge of sclk for CPOL=1 and CPHA=1
