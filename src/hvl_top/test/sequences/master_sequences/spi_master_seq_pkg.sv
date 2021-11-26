@@ -23,7 +23,7 @@
  `include "spi_fd_8b_master_seq.sv"
  `include "spi_fd_16b_master_seq.sv"
  `include "spi_fd_24b_master_seq.sv"
- `include "spi_fd_negative scenarios_master_seq.sv"
+ `include "spi_fd_negative_scenarios_master_seq.sv"
  `include "spi_fd_32b_master_seq.sv"
  `include "spi_fd_64b_master_seq.sv"
  `include "spi_fd_8b_ct_master_seq.sv"

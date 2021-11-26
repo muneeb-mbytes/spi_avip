@@ -3,6 +3,7 @@
 # Directed testcases
 spi_simple_fd_8b_test
 spi_simple_fd_16b_test
+spi_simple_fd_24b_test
 spi_simple_fd_32b_test
 spi_simple_fd_64b_test
 spi_simple_fd_maximum_bits_test
@@ -25,5 +26,8 @@ spi_simple_fd_t2c_delay_test
 spi_simple_fd_baudrate_test
 
 spi_simple_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_test
+spi_simple_fd_cross_test
+
+spi_simple_fd_negative_scenarios_test
 
 spi_simple_fd_rand_test

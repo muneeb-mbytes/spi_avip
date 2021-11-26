@@ -47,7 +47,6 @@ endfunction : setup_master_agent_cfg
 // setup the slave agent configurations with required values
 // and store the handle into configdb
 //--------------------------------------------------------------------------------------------
-function void spi_simple_fd_cpol0_cpha1_test::setup_master_agent_cfg();
 function void spi_simple_fd_cpol0_cpha1_test::setup_slave_agents_cfg();
   super.setup_slave_agents_cfg();
   foreach(env_cfg_h.slave_agent_cfg_h[i])begin
