@@ -39,11 +39,12 @@ endfunction: new
 // phase - stores the current phase
 //--------------------------------------------------------------------------------------------
 task spi_fd_rand_virtual_seq::body();
- super.body(); //Sets up the sub-sequencer pointer
+   //creations master and slave sequence handles here  
+   spi_fd_rand_master_seq_h = spi_fd_rand_master_seq::type_id::create("spi_fd_rand_master_seq_h");
+   spi_fd_rand_slave_seq_h = spi_fd_rand_slave_seq::type_id::create("spi_fd_rand_slave_seq_h");
+ 
+   super.body(); //Sets up the sub-sequencer pointer
 
-   //crearions master and slave sequence handles here  
-   spi_fd_rand_master_seq::type_id::create("spi_fd_rand_master_seq_h");
-   spi_fd_rand_slave_seq::type_id::create("spi_fd_rand_slave_seq_h");
 
   fork
       // TODO(mshariff): We need to connect the slaves with caution
