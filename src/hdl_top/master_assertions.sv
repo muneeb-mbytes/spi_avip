@@ -121,7 +121,7 @@ interface master_assertions ( input pclk,
     
   CPOL_IDLE_STATE_CHECK_C: cover property(cpol_idle_state_check_p);
  
- 
+/* 
   //-------------------------------------------------------
   // Assertion for mode_of_cfg_cpol_0_cpha_0
   // when cpol is 0 and cpha is 0,
