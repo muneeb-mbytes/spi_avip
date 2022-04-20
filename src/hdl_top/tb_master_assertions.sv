@@ -391,7 +391,7 @@ module tb_master_assertions;
 
   endtask
 
-  master_assertions M_A (.pclk(pclk),
+  /*master_assertions M_A (.pclk(pclk),
                          .cs(cs),
                          .areset(areset),
                          .sclk(sclk),
@@ -402,7 +402,8 @@ module tb_master_assertions;
                          .miso0(miso0),
                          .miso1(miso1),
                          .miso2(miso2),
-                         .miso3(miso3)); 
+                         .miso3(miso3));
+                         */
 endmodule
 
 `endif

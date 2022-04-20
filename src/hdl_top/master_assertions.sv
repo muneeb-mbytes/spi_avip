@@ -129,7 +129,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_0_cpha_0(logic mosi_local,logic miso_local);
     @(negedge sclk) disable iff(!areset)
-    cpol==0 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==0 && cpha==0 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_0
 
   `ifdef SIMPLE_SPI
@@ -159,11 +159,11 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   // Assertion for mode_of_cfg_cpol_0_cpha_1
   // when cpol is 0 and cpha is 1,
-  // mosi data and miso data should be valid at the same posedge of sclk
+  // mosi data and miso data should be valid at the same negedge of sclk
   //-------------------------------------------------------
   property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
-    @(posedge sclk) disable iff(!areset)
-   cpol==0 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
+    @(negedge sclk) disable iff(!areset)
+   cpol==0 && cpha==1 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
   endproperty: mode_of_cfg_cpol_0_cpha_1
   
   `ifdef SIMPLE_SPI
@@ -196,7 +196,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_1_cpha_0(logic mosi_local,logic miso_local);
     @(posedge sclk) disable iff(!areset)
-    cpol==1 && cpha==0 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==1 && cpha==0 |-> !$isunknown(mosi_local) && !$isunkown(miso_local);
   endproperty: mode_of_cfg_cpol_1_cpha_0
   
   `ifdef SIMPLE_SPI
@@ -229,7 +229,7 @@ interface master_assertions ( input pclk,
   //-------------------------------------------------------
   property mode_of_cfg_cpol_1_cpha_1(logic mosi_local,logic miso_local);
     @(negedge sclk) disable iff(!areset)
-    cpol==1 && cpha==1 |-> $stable(mosi_local) && $stable(miso_local);
+    cpol==1 && cpha==1 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
   endproperty: mode_of_cfg_cpol_1_cpha_1
   
   `ifdef SIMPLE_SPI

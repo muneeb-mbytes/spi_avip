@@ -310,7 +310,7 @@ task cpol_0_cpha_0_positive;
   end
 
   // Instantiation of slave assertion module
-  slave_assertions slave_assertions_h (.pclk(pclk),
+  /*slave_assertions slave_assertions_h (.pclk(pclk),
                                        .sclk(sclk),
                                        .cs(cs),
                                        .areset(areset),
@@ -322,6 +322,7 @@ task cpol_0_cpha_0_positive;
                                        .miso1(miso1),
                                        .miso2(miso2),
                                        .miso3(miso3) );
+                                       */
 endmodule : tb_slave_assertions
 
 
