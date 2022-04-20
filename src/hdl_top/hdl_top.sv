@@ -62,7 +62,7 @@ module hdl_top;
 
   // Waveform dump for Cadence simulator
   // For Questa the makefile will generate the waveforms (.wlf)
-  initial begin
+/*  initial begin
     `ifdef WAVES_OFF
      `else
        string path_to_waveform;
@@ -78,6 +78,7 @@ module hdl_top;
        $shm_probe("AS");
      `endif
    end
+   */
 
 endmodule : hdl_top
 
