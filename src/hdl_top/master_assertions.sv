@@ -1,14 +1,15 @@
-//--------------------------------------------------------------------------------------------
-// Module : Master Assertions
-// Used to write the assertion checks needed for the master
-//--------------------------------------------------------------------------------------------
 `ifndef MASTER_ASSERTIONS_INCLUDED_
 `define MASTER_ASSERTIONS_INCLUDED_
 
-  //-------------------------------------------------------
-  // Importing Uvm Package
-  //-------------------------------------------------------
-  import spi_globals_pkg::*;
+//-------------------------------------------------------
+// Importing SPI Global Package
+//-------------------------------------------------------
+import spi_globals_pkg::*;
+
+//--------------------------------------------------------------------------------------------
+// Interface : Master Assertions
+// Used to write the assertion checks needed for the master
+//--------------------------------------------------------------------------------------------
 
 interface master_assertions ( input pclk,
                               input areset,
@@ -23,8 +24,9 @@ interface master_assertions ( input pclk,
                               input miso2,
                               input miso3 );
 
-  bit [1:0]spi_type;
-
+  bit cpol;
+  bit cpha;
+  
   //-------------------------------------------------------
   // Importing Uvm Package
   //-------------------------------------------------------
@@ -33,64 +35,227 @@ interface master_assertions ( input pclk,
 
   initial begin
     `uvm_info("MASTER_ASSERTIONS","MASTER ASSERTIONS",UVM_LOW);
-    //`uvm_info("Master_Assertions_TB_TEST",$sformatf("cs=%0d,sclk=%0d,mosi0=%d,miso0=%d",cs,sclk,mosi0,miso0),UVM_LOW);
   end
+ 
+  //-------------------------------------------------------
+  // Defining Macro
+  //-------------------------------------------------------
+  `define SIMPLE_SPI
+  //`define DUAL_SPI
+  //`define QUAD_SPI
   
+  //-------------------------------------------------------
   // Assertion for if_signals_are_stable
   // When cs is high, the signals sclk, mosi, miso should be stable.
+  //-------------------------------------------------------
   property if_signals_are_stable(logic mosi_local, logic miso_local);
-    //@(posedge pclk)  
-    @(posedge pclk) disable iff(areset==0)
-    //cs == '1 |-> $stable(sclk) && $stable(mosi0) && $stable(miso0);
-    cs=='1  |-> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
-    //cs == '1 |-> mosi0 ==1'b0;
+    @(posedge pclk) disable iff(!areset)
+    cs=='1  |=> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
   endproperty : if_signals_are_stable
-
-  // quick trick
-  // `define DUAL_SPI
-  `define SIMPLE_SPI
 
   `ifdef SIMPLE_SPI
     IF_SIGNALS_ARE_STABLE_SIMPLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_SIMPLE_SPI_C: cover property (if_signals_are_stable(mosi0,miso0));    
   `endif
- `ifdef DUAL_SPI
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
-    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
+  `ifdef DUAL_SPI
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1_C: assert property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2_C: assert property (if_signals_are_stable(mosi1,miso1));
+    
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_1_C: cover property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_DUAL_SPI_2_C: cover property (if_signals_are_stable(mosi1,miso1));
   `endif
   `ifdef QUAD_SPI
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_1: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_2: assert property (if_signals_are_stable(mosi1,miso1));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_3: assert property (if_signals_are_stable(mosi2,miso2));
     IF_SIGNALS_ARE_STABLE_QUAD_SPI_4: assert property (if_signals_are_stable(mosi3,miso3));
+       
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_1_C: cover property (if_signals_are_stable(mosi0,miso0));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_2_C: cover property (if_signals_are_stable(mosi1,miso1));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_3_C: cover property (if_signals_are_stable(mosi2,miso2));
+    IF_SIGNALS_ARE_STABLE_QUAD_SPI_4_C: cover property (if_signals_are_stable(mosi3,miso3));
   `endif
 
-  // Assertion for master_mosi0_valid
+  //-------------------------------------------------------
+  // Assertion for mosi_miso_valid
   // when cs is low mosi should be valid from next clock cycle.
-  sequence master_mosi0_valid_seq_1;
-    @(posedge pclk) cs==0;
-  endsequence : master_mosi0_valid_seq_1
-
-  sequence master_mosi0_valid_seq_2(logic mosi_local, logic miso_local);
-    !$isunknown(sclk) && !$isunknown(mosi_local) && !$isunknown(miso_local);
-  endsequence : master_mosi0_valid_seq_2
-
-  property master_mosi0_valid_p(logic mosi_local, logic miso_local);
+  //-------------------------------------------------------
+  property mosi_miso_valid_p(logic mosi_local, logic miso_local);
     @(posedge pclk) disable iff(!areset)
-    //@(posedge pclk)
-    // MSHA: master_mosi0_valid_seq_1 && master_mosi0_valid_seq_2(mosi_local, miso_local);
-    cs == 0 |-> master_mosi0_valid_seq_2(mosi_local, miso_local);
-  endproperty : master_mosi0_valid_p
-  MASTER_CS_LOW_CHECK: assert property (master_mosi0_valid_p(mosi0,miso0));
- /*   
-    // Assertion for cpol in idle state
-  // When cpol is low, idle state should be logic low
-  property master_cpol_idle_state_low_p;
-    @(posedge pclk)
-    (cpol_h.cpol) == 1'b0 |-> sclk == 0;
-  endproperty : master_cpol_idle_state_low_p
-  MASTER_CPOL_IDLE_STATE_LOW: assert property(master_cpol_idle_state_low_p);
- 
+    cs=='0 |=> !$isunknown(sclk) && !$isunknown(mosi_local) |-> !$isunknown(miso_local);
+  endproperty : mosi_miso_valid_p
+  
+  `ifdef SIMPLE_SPI
+      CS_LOW_CHECK_SIMPLE_SPI: assert property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_SIMPLE_SPI_C: cover property (mosi_miso_valid_p(mosi0,miso0));
+  `endif
+  `ifdef DUAL_SPI
+      CS_LOW_CHECK_DUAL_SPI_1: assert property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_DUAL_SPI_2: assert property (mosi_miso_valid_p(mosi1,miso1));
+          
+      CS_LOW_CHECK_DUAL_SPI_1_C: cover property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_DUAL_SPI_2_C: cover property (mosi_miso_valid_p(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+      CS_LOW_CHECK_QUAD_SPI_1: assert property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_QUAD_SPI_2: assert property (mosi_miso_valid_p(mosi1,miso1));
+      CS_LOW_CHECK_QUAD_SPI_3: assert property (mosi_miso_valid_p(mosi3,miso2));
+      CS_LOW_CHECK_QUAD_SPI_4: assert property (mosi_miso_valid_p(mosi3,miso3));
+              
+      CS_LOW_CHECK_QUAD_SPI_1_C: cover property (mosi_miso_valid_p(mosi0,miso0));
+      CS_LOW_CHECK_QUAD_SPI_2_C: cover property (mosi_miso_valid_p(mosi1,miso1));
+      CS_LOW_CHECK_QUAD_SPI_3_C: cover property (mosi_miso_valid_p(mosi3,miso2));
+      CS_LOW_CHECK_QUAD_SPI_4_C: cover property (mosi_miso_valid_p(mosi3,miso3));
+  `endif
 
+  //-------------------------------------------------------
+  // Assertion for cpol in idle state
+  // when cpol is low, idle state should be logic low
+  // when cpol is high,idle state should be logic high
+  //-------------------------------------------------------
+  property cpol_idle_state_check_p;
+    @(posedge pclk) disable iff(!areset)
+    cs=='1 |-> sclk == cpol;
+  endproperty : cpol_idle_state_check_p
+  CPOL_IDLE_STATE_CHECK: assert property(cpol_idle_state_check_p);
+    
+  CPOL_IDLE_STATE_CHECK_C: cover property(cpol_idle_state_check_p);
+ 
+/* 
+  //-------------------------------------------------------
+  // Assertion for mode_of_cfg_cpol_0_cpha_0
+  // when cpol is 0 and cpha is 0,
+  // mosi data and miso data should be valid at the same negedge of sclk 
+  //-------------------------------------------------------
+  property mode_of_cfg_cpol_0_cpha_0(logic mosi_local,logic miso_local);
+    @(negedge sclk) disable iff(!areset)
+    cpol==0 && cpha==0 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
+  endproperty: mode_of_cfg_cpol_0_cpha_0
+
+  `ifdef SIMPLE_SPI
+    CPOL_0_CPHA_0_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+      
+    CPOL_0_CPHA_0_SIMPLE_SPI_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+  `endif
+  `ifdef DUAL_SPI
+    CPOL_0_CPHA_0_DUAL_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+    CPOL_0_CPHA_0_DUAL_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_0(mosi1,miso1));
+      
+    CPOL_0_CPHA_0_DUAL_SPI_1_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+    CPOL_0_CPHA_0_DUAL_SPI_2_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+    CPOL_0_CPHA_0_QUAD_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+    CPOL_0_CPHA_0_QUAD_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_0(mosi1,miso1));
+    CPOL_0_CPHA_0_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso2));
+    CPOL_0_CPHA_0_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso3));
+      
+    CPOL_0_CPHA_0_QUAD_SPI_1_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi0,miso0));
+    CPOL_0_CPHA_0_QUAD_SPI_2_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi1,miso1));
+    CPOL_0_CPHA_0_QUAD_SPI_3_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso2));
+    CPOL_0_CPHA_0_QUAD_SPI_4_C: cover property (mode_of_cfg_cpol_0_cpha_0(mosi3,miso3));
+  `endif
+
+  //-------------------------------------------------------
+  // Assertion for mode_of_cfg_cpol_0_cpha_1
+  // when cpol is 0 and cpha is 1,
+  // mosi data and miso data should be valid at the same negedge of sclk
+  //-------------------------------------------------------
+  property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
+    @(negedge sclk) disable iff(!areset)
+   cpol==0 && cpha==1 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
+  endproperty: mode_of_cfg_cpol_0_cpha_1
+  
+  `ifdef SIMPLE_SPI
+    CPOL_0_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_SIMPLE_SPI_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+  `endif
+  `ifdef DUAL_SPI
+    CPOL_0_CPHA_1_DUAL_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_DUAL_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1));
+      
+    CPOL_0_CPHA_1_DUAL_SPI_1_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_DUAL_SPI_2_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+    CPOL_0_CPHA_1_QUAD_SPI_1: assert property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_QUAD_SPI_2: assert property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1));
+    CPOL_0_CPHA_1_QUAD_SPI_3: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso2));
+    CPOL_0_CPHA_1_QUAD_SPI_4: assert property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso3));
+      
+    CPOL_0_CPHA_1_QUAD_SPI_1_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
+    CPOL_0_CPHA_1_QUAD_SPI_2_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi1,miso1));
+    CPOL_0_CPHA_1_QUAD_SPI_3_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso2));
+    CPOL_0_CPHA_1_QUAD_SPI_4_C: cover property (mode_of_cfg_cpol_0_cpha_1(mosi3,miso3));
+  `endif
+
+  //-------------------------------------------------------
+  // Assertion for mode_of_cfg_cpol_1_cpha_0
+  // when cpol is 1 and cpha is 0,
+  // mosi data and miso data should be valid at the same posedge of sclk 
+  //-------------------------------------------------------
+  property mode_of_cfg_cpol_1_cpha_0(logic mosi_local,logic miso_local);
+    @(posedge sclk) disable iff(!areset)
+    cpol==1 && cpha==0 |-> !$isunknown(mosi_local) && !$isunkown(miso_local);
+  endproperty: mode_of_cfg_cpol_1_cpha_0
+  
+  `ifdef SIMPLE_SPI
+    CPOL_1_CPHA_0_SIMPLE_SPI: assert property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+    CPOL_1_CPHA_0_SIMPLE_SPI_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+  `endif
+  `ifdef DUAL_SPI
+    CPOL_1_CPHA_0_DUAL_SPI_1: assert property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+    CPOL_1_CPHA_0_DUAL_SPI_2: assert property (mode_of_cfg_cpol_1_cpha_0(mosi1,miso1));
+      
+    CPOL_1_CPHA_0_DUAL_SPI_1_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+    CPOL_1_CPHA_0_DUAL_SPI_2_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SPI
+    CPOL_1_CPHA_0_QUAD_SPI_1: assert property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+    CPOL_1_CPHA_0_QUAD_SPI_2: assert property (mode_of_cfg_cpol_1_cpha_0(mosi1,miso1));
+    CPOL_1_CPHA_0_QUAD_SPI_3: assert property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso2));
+    CPOL_1_CPHA_0_QUAD_SPI_4: assert property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso3));
+      
+    CPOL_1_CPHA_0_QUAD_SPI_1_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi0,miso0));
+    CPOL_1_CPHA_0_QUAD_SPI_2_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi1,miso1));
+    CPOL_1_CPHA_0_QUAD_SPI_3_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso2));
+    CPOL_1_CPHA_0_QUAD_SPI_4_C: cover property (mode_of_cfg_cpol_1_cpha_0(mosi3,miso3));
+  `endif
+  
+  //-------------------------------------------------------
+  // Assertion for mode_of_cfg_cpol_1_cpha_1
+  // when cpol is 1 and cpha is 1,
+  // mosi data and miso data should be valid at the same negedge of sclk 
+  //-------------------------------------------------------
+  property mode_of_cfg_cpol_1_cpha_1(logic mosi_local,logic miso_local);
+    @(negedge sclk) disable iff(!areset)
+    cpol==1 && cpha==1 |-> !$isunknown(mosi_local) && !$isunknown(miso_local);
+  endproperty: mode_of_cfg_cpol_1_cpha_1
+  
+  `ifdef SIMPLE_SPI
+    CPOL_1_CPHA_1_SIMPLE_SPI: assert property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+    CPOL_1_CPHA_1_SIMPLE_SPI_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+  `endif
+  `ifdef DUAL_SPI
+    CPOL_1_CPHA_1_DUAL_SPI_1: assert property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+    CPOL_1_CPHA_1_DUAL_SPI_2: assert property (mode_of_cfg_cpol_1_cpha_1(mosi1,miso1));
+      
+    CPOL_1_CPHA_1_DUAL_SPI_1_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+    CPOL_1_CPHA_1_DUAL_SPI_2_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi1,miso1));
+  `endif
+  `ifdef QUAD_SP1
+    CPOL_1_CPHA_1_QUAD_SPI_1: assert property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+    CPOL_1_CPHA_1_QUAD_SPI_2: assert property (mode_of_cfg_cpol_1_cpha_1(mosi1,miso1));
+    CPOL_1_CPHA_1_QUAD_SPI_3: assert property (mode_of_cfg_cpol_1_cpha_1(mosi3,miso2));
+    CPOL_1_CPHA_1_QUAD_SPI_4: assert property (mode_of_cfg_cpol_1_cpha_1(mosi3,miso3));
+      
+    CPOL_1_CPHA_1_QUAD_SPI_1_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi0,miso0));
+    CPOL_1_CPHA_1_QUAD_SPI_2_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi1,miso1));
+    CPOL_1_CPHA_1_QUAD_SPI_3_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi3,miso2));
+    CPOL_1_CPHA_1_QUAD_SPI_4_C: cover property (mode_of_cfg_cpol_1_cpha_1(mosi3,miso3));
+  `endif
+
+/*
   // Assertion for if_cs_is_stable_during_transfers
   // cs should be low and stable till data transfer is successful ($stable)
   sequence if_cs_is_stable_during_transfers_s1;
@@ -121,17 +286,9 @@ interface master_assertions ( input pclk,
     successful_data_transfers_s1;
   endproperty:successful_data_transfers
   SUCCESSFUL_DATA_TRANSFERS: assert property (successful_data_transfers);
-
-
-  //Assertion for mode_of_cfg_cpol_0_cpha_1
-  //when cs is low immediately mosi data should be stable after at negedge miso should be stable 
-  property mode_of_cfg_cpol_0_cpha_1(logic mosi_local, logic miso_local);
-    @(negedge sclk) disable iff(!areset)
-    !$isunknown(mosi) && !$isunknown(miso);
-  endproperty: mode_of_cfg_cpol_0_cpha_1
-  CPOL_0_CPHA_1: assert property(mode_of_cfg_cpol_0_cpha_1(mosi0,miso0));
-
 */
+
 endinterface : master_assertions
 
 `endif
+

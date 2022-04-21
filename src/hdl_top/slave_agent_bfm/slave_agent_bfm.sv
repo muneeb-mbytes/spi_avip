@@ -56,6 +56,19 @@ module slave_agent_bfm(spi_if intf);
                                      .miso2(intf.miso2),
                                      .miso3(intf.miso3)
                                     );
+  
+  bind slave_monitor_bfm slave_assertions slave_assertions_h(.pclk(pclk),
+                                                             .cs(cs),
+                                                             .areset(areset),
+                                                             .sclk(sclk),
+                                                             .mosi0(mosi0),
+                                                             .mosi1(mosi1),
+                                                             .mosi2(mosi2),
+                                                             .mosi3(mosi3),
+                                                             .miso0(miso0),
+                                                             .miso1(miso1),
+                                                             .miso2(miso2),
+                                                             .miso3(miso3)); 
 
   //-------------------------------------------------------
   // Setting Slave_driver_bfm and monitor_bfm
