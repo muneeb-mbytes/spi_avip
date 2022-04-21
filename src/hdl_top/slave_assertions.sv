@@ -47,6 +47,7 @@ interface slave_assertions(input pclk,
     cs=='1 |=> $stable(sclk) && $stable(mosi_local) && $stable(miso_local);
   endproperty : if_signals_are_stable
   
+
   `ifdef SIMPLE_SPI
     IF_SIGNALS_ARE_STABLE_SIMPLE_SPI: assert property (if_signals_are_stable(mosi0,miso0));
     IF_SIGNALS_ARE_STABLE_SIMPLE_SPI_C: cover property (if_signals_are_stable(mosi0,miso0));
@@ -69,6 +70,24 @@ interface slave_assertions(input pclk,
 //    IF_SIGNALS_ARE_STABLE_QUAD_SPI_3_C: cover property (if_signals_are_stable(mosi2,miso2));
 //    IF_SIGNALS_ARE_STABLE_QUAD_SPI_4_C: cover property (if_signals_are_stable(mosi3,miso3));
 //  `endif
+
+  // Assertion Checking if mosi and miso is valid
+  // when cs is low mosi and miso should be valid from next clock cycle.
+  sequence slave_mosi_miso_valid_seq1;
+    @(posedge pclk)
+    cs == 0;
+  endsequence : slave_mosi_miso_valid_seq1
+
+  sequence slave_mosi_miso_valid_seq2(logic miso_local, logic mosi_local);
+    @(posedge sclk)
+    !$isunknown(miso_local) && !$isunknown(mosi_local);
+  endsequence: slave_mosi_miso_valid_seq2
+
+  property slave_miso_mosi_valid_p(logic miso_local, logic mosi_local);
+    slave_mosi_miso_valid_seq1 |=> slave_mosi_miso_valid_seq2(miso_local,mosi_local);
+  endproperty : slave_miso_mosi_valid_p
+  //SLAVE_MISO_MOSI_VALID_P: assert property (slave_miso_mosi_valid_p(mosi0,miso0));
+    
   
   //-------------------------------------------------------
   // Assertion for mosi_miso_valid

@@ -253,7 +253,7 @@ task slave_monitor_proxy::run_phase(uvm_phase phase);
 
     slave_spi_seq_item_converter::to_class(struct_packet, slave_packet);
 
-    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+    `uvm_info(get_type_name(),$sformatf("Received packet from SLAVE MONITOR BFM : , \n %s",
                                         slave_packet.sprint()),UVM_HIGH)
 
     // Clone and publish the cloned item to the subscribers

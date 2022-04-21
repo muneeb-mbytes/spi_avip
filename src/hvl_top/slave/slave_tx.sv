@@ -11,10 +11,6 @@ class slave_tx extends uvm_sequence_item;
   //-------------------------------------------------------
   // Instantiating SPI signals
   //-------------------------------------------------------
-  // TODO(mshariff): Not required
-  bit cs;
-
-  //input signals
   rand bit [CHAR_LENGTH-1:0]master_in_slave_out[];
 
   bit [CHAR_LENGTH-1:0] master_out_slave_in[];
@@ -119,8 +115,6 @@ function void slave_tx::do_print(uvm_printer printer);
   foreach(mosi1[i]) begin
     printer.print_field($sformatf("mosi1[%0d]",i),this.mosi1[i],4,UVM_HEX);
   end
-
-
 endfunction : do_print
 
 `endif

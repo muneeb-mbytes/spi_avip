@@ -14,9 +14,6 @@ class spi_simple_fd_64b_test extends base_test;
   //-------------------------------------------------------
   // Declaring sequence handles  
   //-------------------------------------------------------
-  // MSHA:m_spi_fd_64b_seq m_spi_fd_64b_h;
-  // MSHA:s_spi_fd_64b_seq s_spi_fd_64b_h;
-
   spi_fd_64b_virtual_seq spi_fd_64b_virtual_seq_h;
 
   //-------------------------------------------------------
@@ -53,14 +50,8 @@ endfunction : build_phase
 task spi_simple_fd_64b_test::run_phase(uvm_phase phase);
   
   spi_fd_64b_virtual_seq_h = spi_fd_64b_virtual_seq::type_id::create("spi_fd_64b_virtual_seq_h");
-  // MSHA:m_spi_fd_64b_h = m_spi_fd_64b_seq::type_id::create("m_spi_fd_64b_h");
-  // MSHA:s_spi_fd_64b_h = s_spi_fd_64b_seq::type_id::create("s_spi_fd_64b_h");
 
   phase.raise_objection(this);
-  // MSHA:fork
-  // MSHA:    m_spi_fd_64b_h.start(env_h.v_seqr_h);
-  // MSHA:    s_spi_fd_64b_h.start(env_h.v_seqr_h);
-  // MSHA:join
   spi_fd_64b_virtual_seq_h.start(env_h.virtual_seqr_h); 
   phase.drop_objection(this);
 

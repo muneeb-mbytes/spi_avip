@@ -1,24 +1,24 @@
-`ifndef SPI_FD_CONFIG_CPOL0_CPHA0_MSB_C2T_T2C_BAUDRATE_MASTER_SEQ_INCLUDED_
-`define SPI_FD_CONFIG_CPOL0_CPHA0_MSB_C2T_T2C_BAUDRATE_MASTER_SEQ_INCLUDED_
+`ifndef SPI_FD_24B_MASTER_SEQ_INCLUDED_
+`define SPI_FD_24B_MASTER_SEQ_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // class: extended class from base class
 //--------------------------------------------------------------------------------------------
-class spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq extends master_base_seq;
+class spi_fd_24b_master_seq extends master_base_seq;
 
   //register with factory so can use create uvm_method 
   //and override in future if necessary 
 
-   `uvm_object_utils(spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq)
+   `uvm_object_utils(spi_fd_24b_master_seq)
 
   //---------------------------------------------
   // Externally defined tasks and functions
   //---------------------------------------------
 
-   extern function new (string name="spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq");
-
+   extern function new (string name="spi_fd_24b_master_seq");
    extern virtual task body();
-endclass:spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq
+
+endclass:spi_fd_24b_master_seq
 
 //-----------------------------------------------------------------------------
 // Constructor: new
@@ -27,7 +27,7 @@ endclass:spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq
 // Parameters:
 //  name - instance name of the config_template
 //-----------------------------------------------------------------------------
-function spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq::new(string name="spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq");
+function spi_fd_24b_master_seq::new(string name="spi_fd_24b_master_seq");
   super.new(name);
 endfunction:new
 
@@ -35,19 +35,18 @@ endfunction:new
 //task:body
 //based on the request from driver task will drive the transaction
 //-----------------------------------------------------------------------------
-task spi_fd_config_cpol0_cpha0_msb_c2t_t2c_baudrate_master_seq::body(); 
+task spi_fd_24b_master_seq::body(); 
   req=master_tx::type_id::create("req");
   start_item(req);
-  if(!req.randomize() with {req.master_out_slave_in.size() == 1;
-                            // selecting only one slave  
+  if(!req.randomize() with {req.master_out_slave_in.size() == 3;
+                            // Selecting only one slave  
                             $countones(req.cs) == NO_OF_SLAVES - 1;
-                            // selecting slave 0
+                            // Selecting slave 0
                             req.cs[0] == 0;
                            }) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
   req.print();
-  
   finish_item(req);
 
 endtask:body

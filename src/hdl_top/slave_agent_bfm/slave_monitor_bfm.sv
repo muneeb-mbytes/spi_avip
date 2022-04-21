@@ -106,7 +106,7 @@ interface slave_monitor_bfm(input pclk, input areset,
     end while(! ((sclk_local == POSEDGE) || (sclk_local == NEGEDGE)) );
 
     sclk_edge_value = edge_detect_e'(sclk_local);
-    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_HIGH);
+    `uvm_info("SLAVE_MONITOR_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_FULL);
   
   endtask: detect_sclk
 
@@ -187,6 +187,19 @@ interface slave_monitor_bfm(input pclk, input areset,
     
   endtask: sample_data
 
-  endinterface : slave_monitor_bfm
+//  bind slave_monitor_bfm slave_assertions slave_assertions_h(.pclk(pclk),
+//                                                             .cs(cs),
+//                                                             .areset(areset),
+//                                                             .sclk(sclk),
+//                                                             .mosi0(mosi0),
+//                                                             .mosi1(mosi1),
+//                                                             .mosi2(mosi2),
+//                                                             .mosi3(mosi3),
+//                                                             .miso0(miso0),
+//                                                             .miso1(miso1),
+//                                                             .miso2(miso2),
+//                                                             .miso3(miso3)); 
+
+endinterface : slave_monitor_bfm
 
 `endif

@@ -53,10 +53,7 @@ task spi_simple_fd_8b_test::run_phase(uvm_phase phase);
   spi_fd_8b_virtual_seq_h = spi_fd_8b_virtual_seq::type_id::create("spi_fd_8b_virtual_seq_h");
 
   phase.raise_objection(this);
-
-  //vseq1_fd_8b_h.start(env_h.vseqr);
   spi_fd_8b_virtual_seq_h.start(env_h.virtual_seqr_h); 
-
   phase.drop_objection(this);
 
 endtask : run_phase
