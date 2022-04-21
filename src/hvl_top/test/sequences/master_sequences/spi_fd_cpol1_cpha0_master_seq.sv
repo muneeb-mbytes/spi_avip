@@ -45,9 +45,8 @@ task spi_fd_cpol1_cpha0_master_seq::body();
                             req.cs[0] == 0;
                            }) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
-    req.print();
   end
-  
+  `uvm_info(get_type_name(),$sformatf("master_seq = \n %0p",req.sprint()),UVM_MEDIUM)
   finish_item(req);
 
 endtask:body

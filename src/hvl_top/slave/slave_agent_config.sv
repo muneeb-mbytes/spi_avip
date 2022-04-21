@@ -19,11 +19,11 @@ class slave_agent_config extends uvm_object;
 
   // Variable: spi_mode 
   // Used for setting the opeartion mode 
-  operation_modes_e spi_mode;
+  rand operation_modes_e spi_mode;
 
   // Variable: shift_dir
   // Shifts the data, LSB first or MSB first
-  shift_direction_e shift_dir;
+  rand shift_direction_e shift_dir;
 
   // Variable: has_coverage
   // Used for enabling the slave agent coverage

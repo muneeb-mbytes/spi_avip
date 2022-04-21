@@ -113,6 +113,9 @@ interface slave_driver_bfm(input pclk, input areset,
           if(end_of_transfer) break; 
           miso0 <= data_packet.master_in_slave_out[row_no][bit_no];
           data_packet.no_of_miso_bits_transfer++;
+          `uvm_info("DEBUG MOSI0 SLAVE_DRIVER_BFM",$sformatf("miso=\n %0p",miso0),UVM_HIGH)
+          `uvm_info("DEBUG MISO TRANSFER COUNT SLAVE_DRIVER_BFM",$sformatf("miso count=\n %0p",
+          data_packet.no_of_miso_bits_transfer),UVM_HIGH)
 
           // Sampling MOSI at negedge of sclk for CPOL=0 and CPHA=0  OR
           // Sampling MOSI at posedge of sclk for CPOL=1 and CPHA=0
@@ -188,7 +191,7 @@ interface slave_driver_bfm(input pclk, input areset,
     end while(! ((sclk_local == POSEDGE) || (sclk_local == NEGEDGE)) );
 
     sclk_edge_value = edge_detect_e'(sclk_local);
-    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_HIGH);
+    `uvm_info("SLAVE_DRIVER_BFM", $sformatf("SCLK %s detected", sclk_edge_value.name()), UVM_FULL);
   
   endtask: detect_sclk
 

@@ -159,7 +159,7 @@ task master_monitor_proxy::run_phase(uvm_phase phase);
 
     master_spi_seq_item_converter::to_class(struct_packet, master_packet);
 
-    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+   `uvm_info(get_type_name(),$sformatf("Received packet from MASTER MONITOR BFM : , \n %s",
                                         master_packet.sprint()),UVM_HIGH)
 
     // Clone and publish the cloned item to the subscribers

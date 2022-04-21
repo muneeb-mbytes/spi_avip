@@ -125,8 +125,8 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
     slave_drv_bfm_h.wait_for_transfer_start();
 
     seq_item_port.get_next_item(req);
-    `uvm_info(get_type_name(),$sformatf("Received packet from slave seqeuncer : , \n %s",
-                                        req.sprint()),UVM_LOW)
+    `uvm_info(get_type_name(),$sformatf("Received packet from slave sequencer : , \n %s",
+                                        req.sprint()),UVM_HIGH)
 
     slave_spi_seq_item_converter::from_class(req, struct_packet); 
     slave_spi_cfg_converter::from_class(slave_agent_cfg_h, struct_cfg); 
@@ -134,7 +134,7 @@ task slave_driver_proxy::run_phase(uvm_phase phase);
     drive_to_bfm(struct_packet, struct_cfg);
 
     slave_spi_seq_item_converter::to_class(struct_packet, req);
-    `uvm_info(get_type_name(),$sformatf("Received packet from BFM : , \n %s",
+    `uvm_info(get_type_name(),$sformatf("Received packet from SLAVE DRIVER BFM : , \n %s",
                                         req.sprint()),UVM_LOW)
 
     seq_item_port.item_done();
@@ -158,12 +158,19 @@ task slave_driver_proxy::drive_to_bfm(inout spi_transfer_char_s packet, input sp
 
    // {CPOL0_CPHA0,MSB_FIRST}: slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
   
-   `uvm_info(get_type_name(),$sformatf("Before STRUCT PACKET : , \n %p",
-                                        packet),UVM_LOW)
+   `uvm_info(get_type_name(),$sformatf("Before DRIVING DATA TO DRIVER BFM STRUCT DATA PACKET : , \n %p",
+                                        packet),UVM_HIGH)
     
   slave_drv_bfm_h.drive_the_miso_data(packet,struct_cfg);
-  `uvm_info(get_type_name(),$sformatf("AFTER STRUCT PACKET : , \n %p",
-                                        packet),UVM_LOW)
+  `uvm_info(get_type_name(),$sformatf("BFM STRUCT DATA : , \n %p",
+                                        packet),UVM_MEDIUM)
+  if(packet.no_of_miso_bits_transfer == packet.no_of_mosi_bits_transfer) begin
+    `uvm_info("DEBUG_SLAVE_DRIVER_PROXY","MOSI AND MISO TRANSFER BITS SIZE IS SAME",UVM_HIGH)
+  end
+  else begin
+    `uvm_error("DEBUG_SLAVE_DRIVER_PROXY","MOSI AND MISO TRANSFER SIZE IS DIFFERENT")
+  end
+
 
 //  endcase
 

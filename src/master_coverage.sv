@@ -27,6 +27,10 @@ class master_coverage extends uvm_subscriber#(master_tx);
       option.comment = "Operation mode SPI. CPOL and CPHA";
       // TODO(mshariff): 
        bins MODE[] = {[0:3]};
+      // bins cpol0_cpha0 = 0;
+      // bins cpol0_cpha1 = 1;
+      // bins cpol1_cpha0 = 2;
+      // bins cpol1_cpha1 = 3;
     }
 
     // Chip-selcet to first SCLK-edge delay
@@ -36,7 +40,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
        bins DELAY_1 = {1};
        bins DELAY_2 = {2};
        bins DELAY_3 = {3};
-       bins DELAY_4_TO_MAX = {[4:MAXIMUM_BITS]};
+       bins DELAY_4_to_10 = {[4:10]};
     
        illegal_bins illegal_bin = {0};
      } 
@@ -47,7 +51,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
        bins DELAY_1 = {1};
        bins DELAY_2 = {2};
        bins DELAY_3 = {3};
-       bins DELAY_4_TO_MAX = {[4:MAXIMUM_BITS]};
+       bins DELAY_4_TO_10 = {[4:10]};
     
      }
 
@@ -58,8 +62,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
       bins W_DELAY_3 = {3}; 
       bins W_DELAY_MAX = {[4:MAXIMUM_BITS]}; 
     } 
-   
-    
+     // direction = shift_direction_e'(cfg.spi_mode); 
     SHIFT_DIRECTION_CP : coverpoint shift_direction_e'(cfg.shift_dir) {
       option.comment = "Shift direction SPI. MSB and LSB";
       bins LSB_FIRST = {0};
@@ -75,6 +78,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
     }
     
     
+    
     MOSI_DATA_TRANSFER_CP : coverpoint packet.master_out_slave_in.size()*CHAR_LENGTH {
       option.comment = "Data size of the packet transfer";
       bins TRANSFER_8BIT = {8};
@@ -84,8 +88,6 @@ class master_coverage extends uvm_subscriber#(master_tx);
       bins TRANSFER_64BIT = {64};
       bins TRANSFER_MANY_BITS = {[72:MAXIMUM_BITS]};
     } 
-   
-    
     MISO_DATA_TRANSFER_CP : coverpoint packet.master_in_slave_out.size()*CHAR_LENGTH {
       option.comment = "Data size of the packet transfer";
       bins TRANSFER_8BIT = {8};
@@ -103,11 +105,11 @@ class master_coverage extends uvm_subscriber#(master_tx);
       BAUD_RATE_CP : coverpoint cfg.get_baudrate_divisor() {
       option.comment = "it control the rate of transfer in communication channel";
      
-      bins BAUDRATE_DIVISOR_2 = {2}; 
-      bins BAUDRATE_DIVISOR_4 = {4}; 
-      bins BAUDRATE_DIVISOR_6 = {6}; 
-      bins BAUDRATE_DIVISOR_8 = {8}; 
-      bins BAUDRATE_DIVISOR_MORE_THAN_10 = {[10:$]}; 
+      bins BAUDRATE_DIVISOR_1 = {2}; 
+      bins BAUDRATE_DIVISOR_2 = {4}; 
+      bins BAUDRATE_DIVISOR_3 = {6}; 
+      bins BAUDRATE_DIVISOR_4 = {8}; 
+      bins BAUDRATE_DIVISOR_5 = {[8:$]}; 
 
        illegal_bins illegal_bin = {0};
 
@@ -127,9 +129,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
       //cross of the mosi_data_trasfer_cp with shift direction and the operation mode  and the delays
       MOSI_DATA_TRANSFER_CP_X_SHIFT_DIRECTION_CP : cross MOSI_DATA_TRANSFER_CP,SHIFT_DIRECTION_CP;
       MOSI_DATA_TRANSFER_CP_X_OPERATION_MODE_CP : cross MOSI_DATA_TRANSFER_CP,OPERATION_MODE_CP;
-      //MOSI_DATA_TRANSFER_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,C2T_DELAY_CP,T2C_DELAY_CP;
-      MOSI_DATA_TRANSFER_CP_X_C2T_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,C2T_DELAY_CP;
-      MOSI_DATA_TRANSFER_CP_X_T2C_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,T2C_DELAY_CP;
+      MOSI_DATA_TRANSFER_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,C2T_DELAY_CP,T2C_DELAY_CP;
       MOSI_DATA_TRANSFER_CP_X_W_DELAY_CP : cross MOSI_DATA_TRANSFER_CP,W_DELAY_CP;
       
       //Cross of the mosi_data_transfer_cp with teh baudrate
@@ -139,10 +139,7 @@ class master_coverage extends uvm_subscriber#(master_tx);
       CS_CP_X_MOSI_DATA_TRANSFER_CP : cross CS_CP,MOSI_DATA_TRANSFER_CP;
       CS_CP_X_SHIFT_DIRECTION_CP : cross CS_CP,SHIFT_DIRECTION_CP;
       CS_CP_X_OPERATION_MODE_CP : cross CS_CP,OPERATION_MODE_CP;
-      //CS_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP_X_W_DELAY_CP : cross CS_CP,C2T_DELAY_CP,T2C_DELAY_CP,W_DELAY_CP;
-      CS_CP_X_T2C_DELAY_CP : cross CS_CP,T2C_DELAY_CP;
-      CS_CP_X_C2T_DELAY_CP : cross CS_CP,C2T_DELAY_CP;
-      CS_CP_X_W_DELAY_CP : cross CS_CP,W_DELAY_CP;
+      CS_CP_X_C2T_DELAY_CP_X_T2C_DELAY_CP_X_W_DELAY_CP : cross CS_CP,C2T_DELAY_CP,T2C_DELAY_CP,W_DELAY_CP;
     
 
   endgroup : master_covergroup
@@ -151,11 +148,16 @@ class master_coverage extends uvm_subscriber#(master_tx);
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "master_coverage", uvm_component parent = null);
-  extern virtual function void display();
+  //extern virtual function void build_phase(uvm_phase phase);
+  //extern virtual function void connect_phase(uvm_phase phase);
+  //extern virtual function void end_of_elaboration_phase(uvm_phase phase);
+  //extern virtual function void start_of_simulation_phase(uvm_phase phase);
+  //extern virtual task run_phase(uvm_phase phase);
   extern virtual function void write(master_tx t);
   extern virtual function void report_phase(uvm_phase phase);
 
 endclass : master_coverage
+
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
@@ -167,33 +169,25 @@ endclass : master_coverage
 function master_coverage::new(string name = "master_coverage", uvm_component parent = null);
   super.new(name, parent);
   // TODO(mshariff): Create the covergroup
+//`uvm_info(get_type_name(),$sformatf(master_cg),UVM_LOW);
+//
      master_covergroup = new(); 
+//  `uvm_info(get_type_name(),$sformatf(master_cg),UVM_LOW); 
 endfunction : new
 
 //--------------------------------------------------------------------------------------------
-// HAVING THE DISPLAY STATEMENTS
-//--------------------------------------------------------------------------------------------
-function void  master_coverage::display(); 
-  
-  $display("");
-  $display("--------------------------------------");
-  $display("MASTER COVERAGE");
-  $display("--------------------------------------");
-  $display("");
-
-endfunction : display
-//--------------------------------------------------------------------------------------------
 // Function: write
 // // TODO(mshariff): Add comments
-// To acess the subscriber write function is required with default parameter as t
+// sampiling is done
 //--------------------------------------------------------------------------------------------
 function void master_coverage::write(master_tx t);
-//  // TODO(mshariff):
-  
-  `uvm_info("MUNEEB_DEBUG", $sformatf("Config values = %0s", master_agent_cfg_h.sprint()), UVM_HIGH);
-//sampling for the covergroup is started over here
+//  // TODO(mshariff): 
+  `uvm_info("MUNEEB_DEBUG", $sformatf("Config values = \n %0s", master_agent_cfg_h.sprint()), UVM_HIGH);
    master_covergroup.sample(master_agent_cfg_h,t);     
-
+//   `uvm_info(get_type_name(),$sformatf("master_cg=%0d",master_cg),UVM_LOW);
+//
+//   `uvm_info(get_type_name(),$sformatf(master_cg),UVM_LOW);
+//
 endfunction: write
 
 //--------------------------------------------------------------------------------------------
@@ -201,8 +195,6 @@ endfunction: write
 // Used for reporting the coverage instance percentage values
 //--------------------------------------------------------------------------------------------
 function void master_coverage::report_phase(uvm_phase phase);
- 
-  display();
   `uvm_info(get_type_name(), $sformatf("Master Agent Coverage = %0.2f %%",master_covergroup.get_coverage()), UVM_NONE);
 //  `uvm_info(get_type_name(), $sformatf("Master Agent Coverage") ,UVM_NONE);
 endfunction: report_phase

@@ -35,17 +35,12 @@ endfunction:new
 //-----------------------------------------------------------------------------
 task spi_fd_8b_ct_slave_seq::body(); 
   req=slave_tx::type_id::create("req");
-  //for(int i=0; i < 8;i++)
   start_item(req);
   if(!req.randomize () with {req.master_in_slave_out.size()==1;}) begin
     `uvm_fatal(get_type_name(),"Randomization failed")
   end
-  req.print();
+  `uvm_info(get_type_name(),$sformatf("slave_seq = \n %0p",req.sprint()),UVM_MEDIUM)
   finish_item(req);
-    //start_item(req);
-  //if(!req.randomize () with {req.master_in_slave_out.size()==2;})
-    //`uvm_fatal(get_type_name(),"Randomization failed")
-  //finish_item(req);
 
 endtask:body
 
