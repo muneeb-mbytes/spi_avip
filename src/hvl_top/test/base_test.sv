@@ -8,14 +8,14 @@
 //--------------------------------------------------------------------------------------------
 class base_test extends uvm_test;
   `uvm_component_utils(base_test)
+  // Variable: env_cfg_h
+  // Declaring environment config handle
+  env_config env_cfg_h;
 
-   // Variable: e_cfg_h
-   // Declaring environment config handle
-   env_config e_cfg_h;
+  // Variable: env_h
+  // Handle for environment 
+  env env_h;
 
-   // Variable: env_h
-   // Handle for environment 
-   env env_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
@@ -26,6 +26,7 @@ class base_test extends uvm_test;
   extern virtual function void setup_master_agent_cfg();
   extern virtual function void setup_slave_agents_cfg();
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
+  extern virtual task run_phase(uvm_phase phase);
 
 endclass : base_test
 
@@ -43,19 +44,18 @@ endfunction : new
 
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
-//  Create required ports
-//
+// Create required ports
 // Parameters:
-//  phase - uvm phase
+// phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
-
   // Setup the environemnt cfg 
+  env_cfg_h = env_config::type_id::create("env_cfg_h");
+  env_cfg_h.master_agent_cfg_h = master_agent_config::type_id::create("master_agent_cfg_h");
   setup_env_cfg();
-
   // Create the environment
-  env_h = env::type_id::create("env",this);
+  env_h = env::type_id::create("env_h",this);
 
 endfunction : build_phase
 
@@ -64,44 +64,54 @@ endfunction : build_phase
 // Setup the environment configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test:: setup_env_cfg();
-
-  e_cfg_h = env_config::type_id::create("e_cfg_h");
- 
-  e_cfg_h.no_of_slaves = NO_OF_SLAVES;
-  e_cfg_h.has_scoreboard = 1;
-  e_cfg_h.has_virtual_sqr = 1;
+ function void base_test::setup_env_cfg();
+  env_cfg_h.no_of_slaves = NO_OF_SLAVES;
+  env_cfg_h.has_scoreboard = 1;
+  env_cfg_h.has_virtual_seqr = 1;
   
   // Setup the master agent cfg 
   setup_master_agent_cfg();
-
+  uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",env_cfg_h.master_agent_cfg_h);
+  `uvm_info(get_type_name(),$sformatf("master_agent_cfg = \n %0p",
+  env_cfg_h.master_agent_cfg_h.sprint()),UVM_NONE)
+  
   // Setup the slave agent(s) cfg 
+  env_cfg_h.slave_agent_cfg_h = new[env_cfg_h.no_of_slaves];
+  foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
+    env_cfg_h.slave_agent_cfg_h[i] = slave_agent_config::type_id::create($sformatf("slave_agent_cfg_h[%0d]",i));
+  end
   setup_slave_agents_cfg();
+  foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
+    uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
+                                             "slave_agent_config", env_cfg_h.slave_agent_cfg_h[i]);
+    `uvm_info(get_type_name(),$sformatf("slave_agent_cfg = \n %0p",
+    env_cfg_h.slave_agent_cfg_h[i].sprint()),UVM_NONE)
+  end
 
-  uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
-
-endfunction: setup_env_cfg
+  // set method for env_cfg
+  uvm_config_db #(env_config)::set(this,"*","env_config",env_cfg_h);
+  `uvm_info(get_type_name(),$sformatf("env_cfg = \n %0p", env_cfg_h.sprint()),UVM_NONE)
+ endfunction: setup_env_cfg
 
 //--------------------------------------------------------------------------------------------
 // Function: setup_master_agent_cfg
 // Setup the master agent configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_master_agent_cfg();
-
-  e_cfg_h.ma_cfg_h = master_agent_config::type_id::create("ma_cfg_h");
-
+ function void base_test::setup_master_agent_cfg();
   // Configure the Master agent configuration
-  e_cfg_h.ma_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
-  e_cfg_h.ma_cfg_h.no_of_slaves         = NO_OF_SLAVES;
-  e_cfg_h.ma_cfg_h.spi_mode             = operation_modes_e'(CPOL0_CPHA0);
-  e_cfg_h.ma_cfg_h.shift_dir            = shift_direction_e'(LSB_FIRST);
-  e_cfg_h.ma_cfg_h.c2tdelay             = 1;
-  e_cfg_h.ma_cfg_h.t2cdelay             = 1;
-  e_cfg_h.ma_cfg_h.primary_prescalar    = 0;
-  e_cfg_h.ma_cfg_h.secondary_prescalar  = 0;
+  env_cfg_h.master_agent_cfg_h.is_active            = uvm_active_passive_enum'(UVM_ACTIVE);
+  env_cfg_h.master_agent_cfg_h.no_of_slaves         = NO_OF_SLAVES;
+  env_cfg_h.master_agent_cfg_h.spi_mode             = operation_modes_e'(CPOL0_CPHA0);
+  env_cfg_h.master_agent_cfg_h.shift_dir            = shift_direction_e'(LSB_FIRST);
+  env_cfg_h.master_agent_cfg_h.c2tdelay             = 1;
+  env_cfg_h.master_agent_cfg_h.t2cdelay             = 1;
+  env_cfg_h.master_agent_cfg_h.has_coverage         = 1;
+  env_cfg_h.master_agent_cfg_h.wdelay               = 1;
 
-  uvm_config_db #(master_agent_config)::set(this,"*master_agent*","master_agent_config",e_cfg_h.ma_cfg_h);
+  // baudrate_divisor_divisor = (secondary_prescalar+1) * (2 ** (primary_prescalar+1))
+  // baudrate = busclock / baudrate_divisor_divisor;
+  env_cfg_h.master_agent_cfg_h.set_baudrate_divisor(.primary_prescalar(0), .secondary_prescalar(0));
 
 endfunction: setup_master_agent_cfg
 
@@ -110,27 +120,16 @@ endfunction: setup_master_agent_cfg
 // Setup the slave agent(s) configuration with the required values
 // and store the handle into the config_db
 //--------------------------------------------------------------------------------------------
-function void base_test::setup_slave_agents_cfg();
-
+ function void base_test::setup_slave_agents_cfg();
   // Create slave agent(s) configurations
-  e_cfg_h.sa_cfg_h = new[e_cfg_h.no_of_slaves];
-
   // Setting the configuration for each slave
-  foreach(e_cfg_h.sa_cfg_h[i]) begin
+  foreach(env_cfg_h.slave_agent_cfg_h[i]) begin
+    env_cfg_h.slave_agent_cfg_h[i].slave_id     = i;
+    env_cfg_h.slave_agent_cfg_h[i].is_active    = uvm_active_passive_enum'(UVM_ACTIVE);
+    env_cfg_h.slave_agent_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
+    env_cfg_h.slave_agent_cfg_h[i].shift_dir    = shift_direction_e'(LSB_FIRST);
+    env_cfg_h.slave_agent_cfg_h[i].has_coverage = 1;
 
-    e_cfg_h.sa_cfg_h[i] = slave_agent_config::type_id::create($sformatf("sa_cfg_h[%0d]",i));
-
-    e_cfg_h.sa_cfg_h[i].slave_id     = i;
-    e_cfg_h.sa_cfg_h[i].is_active    = uvm_active_passive_enum'(UVM_ACTIVE);
-    e_cfg_h.sa_cfg_h[i].spi_mode     = operation_modes_e'(CPOL0_CPHA0);
-    e_cfg_h.sa_cfg_h[i].shift_dir    = shift_direction_e'(LSB_FIRST);
-
-    // MSHA:uvm_config_db #(slave_agent_config)::set(this,"*slave_agent*",
-    // MSHA:                                         $sformatf("slave_agent_config[%0d]",i),
-    // MSHA:                                         e_cfg_h.sa_cfg_h[i]);
-
-    uvm_config_db #(slave_agent_config)::set(this,$sformatf("*slave_agent_h[%0d]*",i),
-                                             "slave_agent_config", e_cfg_h.sa_cfg_h[i]);
   end
 
 endfunction: setup_slave_agents_cfg
@@ -145,6 +144,32 @@ endfunction: setup_slave_agents_cfg
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
 endfunction : end_of_elaboration_phase
+
+//--------------------------------------------------------------------------------------------
+// Task: run_phase
+// Used for giving basic delay for simulation 
+//
+// Parameters:
+//  phase - uvm phase
+//--------------------------------------------------------------------------------------------
+task base_test::run_phase(uvm_phase phase);
+
+  phase.raise_objection(this, "base_test");
+
+  `uvm_info(get_type_name(), $sformatf("Inside BASE_TEST"), UVM_NONE);
+  super.run_phase(phase);
+
+  // TODO(mshariff): 
+  // Need to be replaced with delay task in BFM interface
+  // in-order to get rid of time delays in HVL side
+  //spi_fd_8b_master_seq_h = spi_fd_8b_master_seq::type_id::create("spi_fd_8b_master_seq_h"); 
+  //spi_fd_8b_master_seq_h.start(env_h.master_agent_h.master_seqr_h);
+  #100;
+  
+  `uvm_info(get_type_name(), $sformatf("Done BASE_TEST"), UVM_NONE);
+  phase.drop_objection(this);
+
+endtask : run_phase
 
 `endif
 

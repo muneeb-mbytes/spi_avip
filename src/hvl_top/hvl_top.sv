@@ -10,19 +10,14 @@ module hvl_top;
   import uvm_pkg::*;
 
   //-------------------------------------------------------
-  // Declaring SPI Interface
-  //-------------------------------------------------------
-  spi_if vif();
-
-  //-------------------------------------------------------
   // run_test for simulation
   //-------------------------------------------------------
-  initial begin
-    //-------------------------------------------------------
-    // Setting SPI Interface
-    //-------------------------------------------------------
-    uvm_config_db #(virtual spi_if)::set(null,"*","vif",vif); 
+  initial begin : START_TEST 
+    
+    // The test to start is given at the command line
+    // The command-line UVM_TESTNAME takes the precedance
     run_test("base_test");
+
   end
 
 endmodule : hvl_top

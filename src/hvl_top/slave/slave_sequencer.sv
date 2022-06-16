@@ -2,28 +2,28 @@
 `define SLAVE_SEQUENCER_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
-// Class: slave_sequencer
-// It send transactions to driver via tlm ports
+//  Class: slave_sequencer
+//  It send transactions to driver via tlm ports
 //--------------------------------------------------------------------------------------------
 class slave_sequencer extends uvm_sequencer#(slave_tx);
   `uvm_component_utils(slave_sequencer)
+  
+    // Variable: slave_agent_cfg_h;
+    // Handle for slave agent configuration
+     slave_agent_config slave_agent_cfg_h;
 
-  // Variable: sa_cfg_h;
-  // Handle for slave agent configuration
-  slave_agent_config sa_cfg_h;
-
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
-  extern function new(string name = "slave_sequencer", uvm_component parent = null);
-
+     //-------------------------------------------------------
+     // Externally defined Tasks and Functions
+     //-------------------------------------------------------
+     extern function new(string name = "slave_sequencer", uvm_component parent = null);
+  
 endclass : slave_sequencer
 
 //--------------------------------------------------------------------------------------------
-// Construct: new
-// slave_sequencer class object is initialized
+//  Construct: new
+//  slave_sequencer class object is initialized
 //
-// Parameters:
+//  Parameters:
 //  name - slave_sequencer
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
